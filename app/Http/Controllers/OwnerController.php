@@ -1,0 +1,62 @@
+<?php
+
+namespace App\Http\Controllers;
+
+
+use App\Http\Requests\OwnerRequest;
+use App\Http\Resources\OwnerResource;
+use Illuminate\Http\Request;
+use App\Models\Owner;
+
+class OwnerController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request)
+    {
+        $perPage= $request->input("perPage");
+        $search= $request->input("search");
+
+        $owners= Owner::search($search)->latest()->paginate($perPage);
+        return OwnerResource::collection($owners);
+        
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(OwnerRequest $request)
+    {
+        $validated= $request->validated();
+        $owner= Owner::create($validated);
+        return new OwnerResource($owner);
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Owner $owner)
+    {
+        return OwnerResource::make($owner);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(OwnerRequest $request, Owner $owner)
+    {
+        $validated= $request->validated();
+        $owner->update($validated);
+        return new OwnerResource($owner);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Owner $owner)
+    {
+        $owner->delete();
+        return new OwnerResource($owner);
+    }
+}
