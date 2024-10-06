@@ -14,6 +14,12 @@ class ExpenseRequest extends FormRequest
         return true;
     }
 
+    public function prePareForValidation(){
+        return $this->merge([
+            "expense_category_id"=> $this->input("expenseCategoryId"),
+        ]);
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -24,7 +30,6 @@ class ExpenseRequest extends FormRequest
         return [
             'date' => 'required|date',
             'amount' => 'required|numeric|min:0', // Ensures 'amount' is present, a numeric value, and non-negative
-            'user_id' => 'required|exists:users,id', // Ensures 'user_id' is present and exists in the 'users' table
             'expense_category_id' => 'required|exists:expense_categories,id', // Ensures 'expense_category_id' is present and exists in the 'expense_categories' table
         ];
     }

@@ -14,6 +14,16 @@ class BillExpenseRequest extends FormRequest
         return true;
     }
 
+    public function prePareForValidation(){
+        return $this->merge([
+            "bill_number"=> $this->input("billNumber"),
+            "bill_date"=> $this->input("billDate"),
+            "grand_total"=> $this->input("grandTotal"),
+            "supplier_id"=> $this->input("supplierId"),
+            "billable_details'"=> $this->input("billableDetails'"),
+        ]);
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -29,7 +39,7 @@ class BillExpenseRequest extends FormRequest
             'note' => 'nullable|string',
             'supplier_id' => 'required|exists:suppliers,id',
             'billable_details' => 'required|array',
-            'billable_details.*.product_id' => 'required',
+            'billable_details.*.productId' => 'required',
             'billable_details.*.quantity' => 'required|integer|min:1',
             'billable_details.*.cost' => 'required|numeric|between:0,999999.99',
             'billable_details.*.total' => 'required|numeric|between:0,999999.99',
