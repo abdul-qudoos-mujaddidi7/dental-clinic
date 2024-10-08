@@ -14,7 +14,7 @@ class SystemSettingResource extends JsonResource
             "name"=> $this->name,
             "email"=> $this->email,
             "address"=> $this->address,
-            "photoUrl" => $this->photo ? asset("storage/" . $this->photo) : null,
+            "photoUrl" => $this->image ? asset("storage/" . $this->image) : null,
             // This refers to the path of the photo stored in the database.
             //  If it exists, the asset() function will generate a URL for it.
 

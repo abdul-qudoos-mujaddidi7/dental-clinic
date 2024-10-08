@@ -16,7 +16,7 @@ class CurePaymentResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'cure_id' => $this->cure_id,
+            'cureId' => $this->cure_id,
             'amount' => $this->amount,
             'date' => $this->date
         ];

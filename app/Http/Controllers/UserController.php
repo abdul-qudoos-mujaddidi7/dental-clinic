@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
-
+use App\Traits\ImageHandler;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 // use Spatie\Permission\Contracts\Role;
@@ -13,6 +13,7 @@ use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
+    use ImageHandler;
     /**
      * Display a listing of the resource.
      */
@@ -31,11 +32,11 @@ class UserController extends Controller
     public function store(UserRequest $request)
     {
         $validated= $request->validated();
+        $validated['image'] = $request->hasFile('image') ? $this->storeImage($request,'user'):null;
         $role = Role::findOrFail($validated["role_id"]);
         $user= User::create($validated);
         // $user->password = Hash::make($request->input('password'));
         // $user->save();
-
         $user->assignRole($role);
         
         return new UserResource($user);
@@ -56,7 +57,11 @@ class UserController extends Controller
     public function update(UserRequest $request, User $user)
     {
         $validated= $request->validated();
+        $validated['image'] = $request->hasFile('image') ? $this->updateImage($request,$user,'user'): null;
+        $role = Role::findOrFail($validated['role_id']);
         $user->update($validated);
+        $user->syncRoles([$role]);
+
         return new UserResource($user);
     }
 
@@ -65,6 +70,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        $this->deleteImage($user);
         $user->delete();
         return new UserResource($user);
     }

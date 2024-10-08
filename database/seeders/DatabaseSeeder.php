@@ -25,14 +25,14 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        ExpenseCategory::factory(5)->create();
-        Expense::factory(5)->create();
-        BillExpense::factory(5)->create();
-        Product::factory(3)->create();
+        // ExpenseCategory::factory(5)->create();
+        // Expense::factory(5)->create();
+        // BillExpense::factory(5)->create();
+        // Product::factory(3)->create();
 
 
         // Supplier::factory(3)->create();
-        $this->call(SystemSettingSeeder::class);
+        // $this->call(SystemSettingSeeder::class);
         $this->call(AdminSeeder::class);
     }
 }

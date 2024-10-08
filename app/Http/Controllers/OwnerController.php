@@ -29,6 +29,7 @@ class OwnerController extends Controller
     public function store(OwnerRequest $request)
     {
         $validated= $request->validated();
+        $validated['image'] = $request->hasFile('image') ? $this->storeImage($request,'owner'):null;
         $owner= Owner::create($validated);
         return new OwnerResource($owner);
     }
@@ -47,6 +48,7 @@ class OwnerController extends Controller
     public function update(OwnerRequest $request, Owner $owner)
     {
         $validated= $request->validated();
+        $validated['image'] = $request->hasFile('image') ? $this->updateImage($request,$$owner,'owner'): null;
         $owner->update($validated);
         return new OwnerResource($owner);
     }
@@ -56,6 +58,7 @@ class OwnerController extends Controller
      */
     public function destroy(Owner $owner)
     {
+        $this->deleteImage($owner);
         $owner->delete();
         return new OwnerResource($owner);
     }

@@ -15,11 +15,12 @@ class UserRequest extends FormRequest
     }
 
 
-    public function prePareForValidation(){
+    public function prePareForValidation()
+    {
         return $this->merge([
-            "first_name"=> $this->input("firstName"),
-            "last_name"=> $this->input("lastName"),
-            "role_id"=> $this->input("roleId"),
+            "first_name" => $this->input("firstName"),
+            "last_name" => $this->input("lastName"),
+            "role_id" => $this->input("roleId"),
         ]);
     }
 
@@ -31,14 +32,14 @@ class UserRequest extends FormRequest
     public function rules(): array
     {
         return [
-                'first_name' => 'required|string',
-                'last_name' => 'required|string',
-                'phone' => 'required|string|max:15', 
-                'password' => 'required|string|min:8', 
-                'status' => 'required|boolean',
-                'email' => 'required|email|unique:users,email', 
-                'image' => 'nullable|string|max:255',
-                'role_id'=>'required|numeric'
+            'first_name' => 'required|string',
+            'last_name' => 'required|string',
+            'phone' => 'required|string|max:15',
+            'password' => 'required|string|min:8',
+            'status' => 'required|boolean',
+            'email' => 'required|email|unique:users,email',
+            'image' => 'nullable|file',
+            'role_id' => 'required|numeric|exists:roles,id'
         ];
     }
 }

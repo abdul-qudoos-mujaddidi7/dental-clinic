@@ -8,6 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class SystemSetting extends Model
 {
     use HasFactory;
-    protected $fillable = ['name','email','phone','address','photo'];
+    protected $fillable = ['name','email','phone','address','image'];
 
 }

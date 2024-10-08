@@ -25,7 +25,7 @@ class SystemSettingRequest extends FormRequest
             'name' => 'required|string',
             'email' => 'required|string|max:192',
             'phone' => 'required|string|max:15',
-            'photo' => 'nullable|file',
+            'image' => 'nullable|file',
             'address' => 'required|string',
         ];
     }

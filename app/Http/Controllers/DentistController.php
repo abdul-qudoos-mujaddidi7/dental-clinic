@@ -30,6 +30,7 @@ class DentistController extends Controller
     public function store(DentistRequest $request)
     {
         $validated= $request->validated();
+        $validated['image'] = $request->hasFile('image') ? $this->storeImage($request,'dentist'):null;
         $dentist= Dentist::create($validated);
         return new DentistResource($dentist);
     }
@@ -50,6 +51,7 @@ class DentistController extends Controller
     public function update(DentistRequest $request, Dentist $dentist)
     {
         $validated= $request->validated();
+        $validated['image'] = $request->hasFile('image') ? $this->updateImage($request,$dentist,'dentist'): null;
         $dentist->update($validated);
         return new DentistResource($dentist);
     }
@@ -59,6 +61,7 @@ class DentistController extends Controller
      */
     public function destroy(Dentist $dentist)
     {
+        $this->deleteImage($dentist);
         $dentist->delete();
         return new DentistResource($dentist);
     }

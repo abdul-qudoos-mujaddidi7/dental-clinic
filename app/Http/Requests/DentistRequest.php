@@ -35,7 +35,7 @@ class DentistRequest extends FormRequest
             'phone' => 'required|string|max:15',
             'address' => 'required|string|max:255',
             'email' => 'required|email|unique:dentists,email',
-            'image' => 'nullable|string|max:255',
+            'image' => 'nullable|file',
             'status' => 'required|boolean',
             'hire_date' => 'required|date',
         ];
