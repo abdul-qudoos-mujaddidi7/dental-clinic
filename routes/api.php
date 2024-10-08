@@ -25,9 +25,12 @@ use App\Http\Controllers\StageController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\SystemSettingController;
 use App\Http\Controllers\UserController;
-use Illuminate\Support\Facades\Auth;
 
 Route::post('/login', [AuthController::class, 'login']);
+
+Route::get('/', function(){
+    return view('welcome');
+});
 
 // Group all routes that need authentication
 Route::middleware('auth:sanctum')->group(function () {
