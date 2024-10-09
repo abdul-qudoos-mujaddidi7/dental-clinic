@@ -63,12 +63,7 @@
         }
     },
     "minimum-stability": "dev",
-    "prefer-stable": true,
-    "repositories": [
-    {
-        "type": "vcs",
-        "url": "https://github.com/laravel/vite"
-    }
-]
+    "prefer-stable": true
+   
 
 }
