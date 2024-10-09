@@ -1,6 +1,7 @@
 <template>
     <div>
         <h1>In the name of Allah!</h1>
+        <h1>front is ok</h1>
     </div>
 </template>
 
