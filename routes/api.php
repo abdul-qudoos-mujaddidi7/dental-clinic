@@ -73,5 +73,12 @@ Route::middleware('auth:sanctum')->group(function () {
     
 });
 
+// "repositories": [
+//     {
+//         "type": "vcs",
+//         "url": "https://github.com/laravel/vite"
+//     }
+// ]
+
 
 
