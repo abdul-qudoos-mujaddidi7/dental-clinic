@@ -4,16 +4,12 @@ import { createPinia } from 'pinia'; // Pinia for state management
 import ExampleComponent from './components/exp.vue';
 import vuetify from '../plugins/vuetify'; 
 import "../css/app.css"; 
-import "vuetify/styles";
-
-
+import "vuetify/styles"; // Import Vuetify styles here
 
 const app = createApp({});
 
-
 app.use(createPinia());
-app.use(vuetify);
-
+app.use(vuetify); // Use Vuetify instance
 // Register components
 app.component('example-component', ExampleComponent);
 
