@@ -19,6 +19,7 @@ return new class extends Migration
              $table->decimal('amount', 10, 2); //with precision (10, 2)
              $table->foreignIdFor(User::class)->constrained();
              $table->foreignIdFor(ExpenseCategory::class)->constrained();
+             $table->softDeletes();
             $table->timestamps();
         });
     }

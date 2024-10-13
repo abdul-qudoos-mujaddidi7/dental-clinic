@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignIdFor(Patient::class)->constrained();
             $table->date('start_date');
             $table->decimal('grand_total',10,2);
-            $table->decimal('paid',10,2);
+            $table->decimal('paid',10,2)->default(0);
             $table->string('status');
             $table->text('description')->nullable();
             $table->timestamps();

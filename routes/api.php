@@ -7,6 +7,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CureController;
 use App\Http\Controllers\CureCycleController;
 use App\Http\Controllers\CurePaymentController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DentistController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -25,6 +26,7 @@ use App\Http\Controllers\StageController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\SystemSettingController;
 use App\Http\Controllers\UserController;
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 Route::post('/login', [AuthController::class, 'login']);
 
@@ -70,6 +72,9 @@ Route::middleware('auth:sanctum')->group(function () {
     // Logout route (requires authentication)
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::apiResource('/role_permissions', RolePermissionController::class);
+
+    // Reports
+    Route::get('dashboardReport', DashboardController::class);
     
 });
 

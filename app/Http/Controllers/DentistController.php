@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\DentistRequest;
 use App\Http\Resources\DentistResource;
 use App\Models\Dentist;
+use App\Traits\ImageHandler;
 use Illuminate\Http\Request;
 
 class DentistController extends Controller
 {
+
+    use ImageHandler;
     /**
      * Display a listing of the resource.
      */

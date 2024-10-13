@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignIdFor(BillExpense::class) ;
             $table->foreignIdFor(User::class) ;
             $table->decimal('amount',10,2);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

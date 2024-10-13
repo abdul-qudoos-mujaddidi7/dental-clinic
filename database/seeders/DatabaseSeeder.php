@@ -3,8 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\BillExpense;
+use App\Models\Cure;
 use App\Models\Expense;
 use App\Models\ExpenseCategory;
+use App\Models\Patient;
 use App\Models\Product;
 use App\Models\Supplier;
 use App\Models\User;
@@ -33,6 +35,8 @@ class DatabaseSeeder extends Seeder
 
         // Supplier::factory(3)->create();
         // $this->call(SystemSettingSeeder::class);
+        Patient::factory(3)->create();
+        Cure::factory(2)->create();
         $this->call(AdminSeeder::class);
     }
 }
