@@ -12,13 +12,17 @@ use App\Http\Controllers\DentistController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ExpenseCategoryController;
+use App\Http\Controllers\ExpenseCategoryReportController;
 use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\ExpenseProductReportController;
 use App\Http\Controllers\LeadController;
 use App\Http\Controllers\OwnerController;
 use App\Http\Controllers\OwnerPickupController;
+use App\Http\Controllers\OwnerPickupReportController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProfitLossReportController;
 use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\ServiceGroupController;
@@ -75,6 +79,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Reports
     Route::get('dashboardReport', DashboardController::class);
+    Route::get('financialReport', ProfitLossReportController::class);
+    Route::get('pickupReport', OwnerPickupReportController::class);
+    Route::get('expenseProductReport', ExpenseProductReportController::class);
+    Route::get('expenseCategoryReport', ExpenseCategoryReportController::class);
     
 });
 

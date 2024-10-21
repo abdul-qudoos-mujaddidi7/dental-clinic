@@ -21,7 +21,7 @@ class OwnerPickupResource extends JsonResource
             "description"=> $this->description,
             "owner"=> [
                 "ownerID"=> $this->owner->id,
-                "name"=> $this->owner->name,
+                "name"=> $this->owner->first_name,
             ],
                 ];
     }
