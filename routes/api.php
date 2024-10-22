@@ -20,6 +20,7 @@ use App\Http\Controllers\OwnerController;
 use App\Http\Controllers\OwnerPickupController;
 use App\Http\Controllers\OwnerPickupReportController;
 use App\Http\Controllers\PatientController;
+use App\Http\Controllers\PatientPaymentReportController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfitLossReportController;
@@ -83,6 +84,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('pickupReport', OwnerPickupReportController::class);
     Route::get('expenseProductReport', ExpenseProductReportController::class);
     Route::get('expenseCategoryReport', ExpenseCategoryReportController::class);
+    Route::get('patientPaymentReport', PatientPaymentReportController::class);
     
 });
 

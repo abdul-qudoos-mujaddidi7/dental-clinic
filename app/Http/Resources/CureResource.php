@@ -15,6 +15,8 @@ class CureResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+
+        $due= $this->grand_total - $this->paid;
         return 
         [
             'id' => $this->id,
@@ -25,6 +27,7 @@ class CureResource extends JsonResource
             'start_date' => $this->start_date,
             'grand_total' => $this->grand_total,
             'paid' => $this->paid,
+            'due'=> $due,
             'status' => $this->status,
             'description' => $this->description,
             'services' => CureServiceResource::collection($this->whenLoaded('cureServices')),
