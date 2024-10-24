@@ -17,6 +17,16 @@ class Expense extends Model
         'expense_category_id',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($expense) {
+            $expense->reference = 'EXP' . (self::max('id') + 1);
+        });
+    }
+
+
     public function expenseCategory(){
         return $this->belongsTo(ExpenseCategory::class);
     }

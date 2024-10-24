@@ -11,12 +11,13 @@ class Patient extends Model
     protected $fillable = [
         'name',
         'last_name',
-        'date_of_birth',
-        'gender',
-        'diseases_history',
-        'particular_to_female',
-        'doctor_warning',
         'phone',
+        'address'
+        // 'date_of_birth',
+        // 'gender',
+        // 'diseases_history',
+        // 'particular_to_female',
+        // 'doctor_warning',
     ];
     protected $casts = [
         'diseases_history' => 'array',

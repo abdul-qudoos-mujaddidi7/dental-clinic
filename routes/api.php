@@ -33,14 +33,15 @@ use App\Http\Controllers\SystemSettingController;
 use App\Http\Controllers\UserController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
+// Authentication routes
 Route::post('/login', [AuthController::class, 'login']);
-
 Route::get('/', function(){
     return view('welcome');
 });
 
 // Group all routes that need authentication
 Route::middleware('auth:sanctum')->group(function () {
+
     // Authenticated user route
     Route::get('/user', function (Request $request) {
         return $request->user();
@@ -55,7 +56,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/payments', PaymentController::class);
     Route::apiResource('/suppliers', SupplierController::class);
     Route::apiResource('/dentists', DentistController::class);
+    
+    Route::post('/dentists/updateDentist/{dentist}', [DentistController::class, 'updateDentist']);
     Route::apiResource('/owners', OwnerController::class);
+    Route::post('/owners/updateOwners/{owner}',[OwnerController::class,'updateOwner']);
     Route::apiResource('/users', UserController::class);
     Route::apiResource('/patients', PatientController::class);
     Route::apiResource('/appointments', AppointmentController::class);
@@ -94,6 +98,3 @@ Route::middleware('auth:sanctum')->group(function () {
 //         "url": "https://github.com/laravel/vite"
 //     }
 // ]
-
-
-

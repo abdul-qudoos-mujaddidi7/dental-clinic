@@ -32,8 +32,9 @@ class CureController extends Controller
     {
 
         $validated = $request->validated();
-        $patient = Patient::findOrFail($validated['patient_id']);
-        $patient->fill($request->only(['diseases_history', 'particular_to_female']))->save();
+
+        // $patient = Patient::findOrFail($validated['patient_id']);
+        // $patient->fill($request->only(['diseases_history', 'particular_to_female']))->save();
         //  The fill() method is flexible. It only updates the fields that are present in the request.
         //  If a field is missing, it won’t be changed in the database. This is useful when you're dealing
         //  with optional fields that may not always be provided.
@@ -92,8 +93,8 @@ class CureController extends Controller
     public function update(CureRequest $request, Cure $cure)
     {
         $validated = $request->validated();
-        $patient = Patient::findOrFail($validated['patient_id']);
-        $patient->fill($request->only(['diseases_history', 'particular_to_female']))->save();
+        // $patient = Patient::findOrFail($validated['patient_id']);
+        // $patient->fill($request->only(['diseases_history', 'particular_to_female']))->save();
 
 
         // $updateData = [];

@@ -7,9 +7,11 @@ use App\Http\Requests\OwnerRequest;
 use App\Http\Resources\OwnerResource;
 use Illuminate\Http\Request;
 use App\Models\Owner;
+use App\Traits\ImageHandler;
 
 class OwnerController extends Controller
 {
+    use ImageHandler;
     /**
      * Display a listing of the resource.
      */
@@ -45,7 +47,7 @@ class OwnerController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(OwnerRequest $request, Owner $owner)
+    public function updateOwner(OwnerRequest $request, Owner $owner)
     {
         $validated= $request->validated();
         $validated['image'] = $request->hasFile('image') ? $this->updateImage($request,$$owner,'owner'): null;

@@ -20,6 +20,7 @@ class CureResource extends JsonResource
         return 
         [
             'id' => $this->id,
+            'reference'=> $this->reference,
             'patient' => [
                 'id'=> $this->patient->id,
                 'name'=> $this->patient->name,

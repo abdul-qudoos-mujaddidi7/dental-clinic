@@ -15,13 +15,14 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('last_name');
-            $table->date('date_of_birth');
-            $table->enum('gender', ['Male', 'Female']);
-            $table->json('diseases_history')->nullable(); // JSON format for diseases history
-            $table->json('particular_to_female')->nullable(); // JSON format, nullable if not applicable
-            $table->text('doctor_warning')->nullable();
             $table->string('phone');
+            $table->string('address');
             $table->timestamps();
+            // $table->date('date_of_birth');
+            // $table->enum('gender', ['Male', 'Female']);
+            // $table->json('diseases_history')->nullable(); // JSON format for diseases history
+            // $table->json('particular_to_female')->nullable(); // JSON format, nullable if not applicable
+            // $table->text('doctor_warning')->nullable();
         });
     }
 

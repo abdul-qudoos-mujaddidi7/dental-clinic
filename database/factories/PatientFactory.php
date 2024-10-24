@@ -19,10 +19,11 @@ class PatientFactory extends Factory
         return [
             'name' => $this->faker->firstName(),
             'last_name' => $this->faker->lastName(),
-            'date_of_birth' => $this->faker->date(),
-            'gender' => $this->faker->randomElement(['Male', 'Female']),
-            'doctor_warning' => $this->faker->sentence(),
-            'phone' => $this->faker->phoneNumber()
+            'phone' => $this->faker->phoneNumber(),
+            'address'=>$this->faker->address(),
+            // 'date_of_birth' => $this->faker->date(),
+            // 'gender' => $this->faker->randomElement(['Male', 'Female']),
+            // 'doctor_warning' => $this->faker->sentence(),
     ];
 }
 }

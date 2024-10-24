@@ -25,12 +25,13 @@ class PatientRequest extends FormRequest
             return [
                 'name' => 'required|string',
                 'last_name' => 'required|string',
-                'date_of_birth' => 'required|date',
-                'gender' => 'required|in:Male,Female',
-                'diseases_history' => 'nullable|array',
-                'particular_to_female' => 'nullable|array',
-                'doctor_warning' => 'nullable|string',
+                'address'=>'required|string',
                 'phone' => 'required|string|max:15', // Adjust max length as needed
+                // 'date_of_birth' => 'required|date',
+                // 'gender' => 'required|in:Male,Female',
+                // 'diseases_history' => 'nullable|array',
+                // 'particular_to_female' => 'nullable|array',
+                // 'doctor_warning' => 'nullable|string',
             ];
     
     }

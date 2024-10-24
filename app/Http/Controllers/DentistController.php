@@ -51,7 +51,7 @@ class DentistController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(DentistRequest $request, Dentist $dentist)
+    public function updateDentist(DentistRequest $request, Dentist $dentist)
     {
         $validated= $request->validated();
         $validated['image'] = $request->hasFile('image') ? $this->updateImage($request,$dentist,'dentist'): null;

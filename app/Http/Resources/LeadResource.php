@@ -14,6 +14,15 @@ class LeadResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'gender' => $this->gender,
+            'phone' => $this->phone,
+            'description'=>$this->description,
+            'status'=> $this->stage->name,
+            'category'=> $this->category->name,
+            'address'=>$this->address
+        ];
     }
 }
