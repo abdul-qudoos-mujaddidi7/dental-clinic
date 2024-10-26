@@ -26,15 +26,18 @@ class AuthController extends Controller
         // Generate an access token for the user
         $accessToken = $user->createToken('api_token')->plainTextToken;
 
-        // Return a success response
+       
         return response()->json([
             'access_token' => $accessToken,
             'token_type' => 'Bearer',
             'user' => [
                 "id" => $user->id,
-                "name" => $user->first_name
-            ]
+                "name" => $user->first_name,
+            ],
+            'role' => $user->getRoleNames(),
+            'permissions' => $user->getAllPermissions()->pluck('name'),
         ]);
+        
     }
 
     public function logout(Request $request)

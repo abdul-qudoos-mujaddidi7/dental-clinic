@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LeadRequest;
-use App\Http\Requests\PaymentRequest;
 use App\Http\Resources\LeadResource;
 use App\Models\Lead;
 use Illuminate\Http\Request;

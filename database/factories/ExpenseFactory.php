@@ -22,8 +22,8 @@ class ExpenseFactory extends Factory
         return [
             'date' => $this->faker->date(),
             'amount' => $this->faker->randomFloat(2, 10, 1000),
-            'user_id' => User::factory(), // Generates a valid user ID (assuming you have a User model factory)
-            'expense_category_id' => ExpenseCategory::factory(), // Generates a valid category ID (assuming you have a Category model factory)
+            'user_id' => rand(1,3),
+            'expense_category_id' => rand(1,3)
         ];
     }
 }
