@@ -22,7 +22,7 @@ class Expense extends Model
         parent::boot();
 
         static::creating(function ($expense) {
-            $expense->reference = 'EXP' . (self::max('id') + 1);
+            $expense->reference = 'EXP_' . (self::max('id') + 1);
         });
     }
 
