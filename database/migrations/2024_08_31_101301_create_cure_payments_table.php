@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignIdFor(Cure::class)->constrained();
             $table->date('date');
             $table->decimal('amount',10,2);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -17,11 +17,12 @@ return new class extends Migration
             $table->id();
             $table->string('bill_number')->unique(); 
             $table->date('bill_date'); 
-            $table->decimal('paid',10,2);
+            $table->decimal('paid',10,2)->default(0);
             $table->decimal('grand_total', 10, 2);
             $table->text('note')->nullable();
             $table->foreignIdFor(Supplier::class)->constrained();
             $table->foreignIdFor(User::class)->constrained();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

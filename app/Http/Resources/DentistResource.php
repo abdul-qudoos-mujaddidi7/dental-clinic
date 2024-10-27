@@ -22,7 +22,7 @@ class DentistResource extends JsonResource
             "phone"=> $this->phone,
             "address"=> $this->address,
             "hireDate"=> $this->hire_date,
-            "image"=> $this->image,
+            "image"=> $this->image? asset("storage/". $this->image) : null,
             "status"=> $this->status
         ];
     }

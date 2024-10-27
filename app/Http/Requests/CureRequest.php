@@ -36,7 +36,7 @@ class CureRequest extends FormRequest
         'patient_id' => 'required|exists:patients,id',
         'start_date' => 'required|date',
         'grand_total' => 'required|numeric|min:0',
-        'paid' => 'required|numeric|min:0',
+        'paid' => 'nullable|numeric|min:0',
         'status' => 'required|string',
         'description' => 'nullable|string',
         'diseases_history' => 'nullable|array', // Validate disease_history as JSON

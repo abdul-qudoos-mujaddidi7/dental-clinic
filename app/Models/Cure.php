@@ -17,6 +17,15 @@ class Cure extends Model
         'description',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($cure) {
+            $cure->reference = 'CURE' . (self::max('id') + 1);
+        });
+    }
+
     public function patient()
     {
         return $this->belongsTo(Patient::class);

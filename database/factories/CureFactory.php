@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Patient;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,12 @@ class CureFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'patient_id' => rand(1,3),
+            'start_date' => $this->faker->date(),
+            'grand_total' => $this->faker->randomFloat(2, 100, 10000), // Random total between 100 and 10000
+            'paid' => 0,
+            'status' => $this->faker->randomElement(['Pending', 'Completed', 'In Progress', 'Canceled']), // Random status
+            'description' => $this->faker->optional()->sentence(),
         ];
     }
 }

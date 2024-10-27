@@ -3,8 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\BillExpense;
+use App\Models\Cure;
 use App\Models\Expense;
 use App\Models\ExpenseCategory;
+use App\Models\Patient;
 use App\Models\Product;
 use App\Models\Supplier;
 use App\Models\User;
@@ -18,21 +20,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        // User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
-
-        // ExpenseCategory::factory(5)->create();
-        // Expense::factory(5)->create();
-        // BillExpense::factory(5)->create();
-        // Product::factory(3)->create();
-
-
-        // Supplier::factory(3)->create();
-        // $this->call(SystemSettingSeeder::class);
         $this->call(AdminSeeder::class);
+        User::factory(3)->create();
+        Supplier::factory(3)->create();
+
+        ExpenseCategory::factory(3)->create();
+        Expense::factory(3)->create();
+        BillExpense::factory(3)->create();
+        Product::factory(3)->create();
+
+
+    
+        // $this->call(SystemSettingSeeder::class);
+        Patient::factory(3)->create();
+        Cure::factory(2)->create();
     }
 }

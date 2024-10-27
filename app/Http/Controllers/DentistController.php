@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\DentistRequest;
 use App\Http\Resources\DentistResource;
 use App\Models\Dentist;
+use App\Traits\ImageHandler;
 use Illuminate\Http\Request;
 
 class DentistController extends Controller
 {
+
+    use ImageHandler;
     /**
      * Display a listing of the resource.
      */
@@ -48,7 +51,7 @@ class DentistController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(DentistRequest $request, Dentist $dentist)
+    public function updateDentist(DentistRequest $request, Dentist $dentist)
     {
         $validated= $request->validated();
         $validated['image'] = $request->hasFile('image') ? $this->updateImage($request,$dentist,'dentist'): null;

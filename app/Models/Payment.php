@@ -4,11 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Payment extends Model
 {
+    use HasFactory, SoftDeletes;
     protected $fillable = ['date','amount','bill_expense_id','user_id'];
-    use HasFactory;
 
     public function scopeSearch( $query, $search){
         if( !$search){

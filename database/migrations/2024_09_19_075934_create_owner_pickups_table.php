@@ -18,6 +18,7 @@ return new class extends Migration
             $table->date('date');
             $table->decimal('amount',10,2);
             $table->text('description')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

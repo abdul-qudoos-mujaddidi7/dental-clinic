@@ -4,12 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 use function Laravel\Prompts\search;
 
 class CurePayment extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     protected $fillable = ['cure_id', 'amount', 'date'];
     public function cure()
     {

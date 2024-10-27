@@ -7,21 +7,35 @@ use App\Http\Requests\OwnerRequest;
 use App\Http\Resources\OwnerResource;
 use Illuminate\Http\Request;
 use App\Models\Owner;
+use App\Traits\ImageHandler;
+use Illuminate\Support\Facades\DB;
 
 class OwnerController extends Controller
 {
+    use ImageHandler;
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
-    {
-        $perPage= $request->input("perPage");
-        $search= $request->input("search");
+{
+    $perPage = $request->input("perPage",5);
+    $search = $request->input("search");
 
-        $owners= Owner::search($search)->latest()->paginate($perPage);
-        return OwnerResource::collection($owners);
-        
-    }
+    // Query for owner pickups with total amounts
+    $ownerPickup = DB::table('owner_pickups')
+        ->selectRaw('owners.first_name, owners.phone, SUM(amount) as totalAmount')
+        ->leftJoin('owners', 'owner_pickups.owner_id', '=', 'owners.id')
+        ->groupBy('owner_pickups.owner_id', 'owners.first_name','owners.phone');
+
+        if($search){
+            $ownerPickup->search($search);
+        }
+
+        $ownerPickupPaginated=$ownerPickup->latest('owner_pickups.created_at')->paginate($perPage);
+
+    return  $ownerPickupPaginated;
+}
+
 
     /**
      * Store a newly created resource in storage.
@@ -45,7 +59,7 @@ class OwnerController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(OwnerRequest $request, Owner $owner)
+    public function updateOwner(OwnerRequest $request, Owner $owner)
     {
         $validated= $request->validated();
         $validated['image'] = $request->hasFile('image') ? $this->updateImage($request,$$owner,'owner'): null;

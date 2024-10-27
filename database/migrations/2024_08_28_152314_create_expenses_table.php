@@ -16,9 +16,11 @@ return new class extends Migration
         Schema::create('expenses', function (Blueprint $table) {
             $table->id(); 
             $table->date('date');
+            $table->string('reference',20);
              $table->decimal('amount', 10, 2); //with precision (10, 2)
              $table->foreignIdFor(User::class)->constrained();
              $table->foreignIdFor(ExpenseCategory::class)->constrained();
+             $table->softDeletes();
             $table->timestamps();
         });
     }

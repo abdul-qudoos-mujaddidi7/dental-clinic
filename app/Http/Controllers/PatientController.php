@@ -38,7 +38,7 @@ class PatientController extends Controller
      */
     public function show(Patient $patient)
     {
-        return dd($patient->diseases_history);
+        return PatientResource::make($patient);
     
     }
 
