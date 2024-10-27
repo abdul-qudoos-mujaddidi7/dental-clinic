@@ -8,7 +8,8 @@
 </head>
 <body>
     <div id="app">
-        <example-component></example-component>
+        <!-- <example-component></example-component> -->
+        <Expense></Expense>
     </div>
 </body>
 </html>
