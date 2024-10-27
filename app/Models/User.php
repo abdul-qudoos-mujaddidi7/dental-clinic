@@ -27,6 +27,11 @@ class User extends Authenticatable
         return $this->hasMany(BillExpense::class);
     }
 
+    public function expenses()
+    {
+        return $this->hasMany(Expense::class);
+    }
+
     public function payments()
     {
         return $this->hasMany(Payment::class);
@@ -36,6 +41,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Appointment::class);
     }
+
+
 
 
 
