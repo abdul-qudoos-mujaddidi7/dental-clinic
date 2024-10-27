@@ -11,14 +11,14 @@ use Illuminate\Support\Facades\Auth;
 
 class ExpenseController extends Controller
 {
-    function __construct()
-    {
-        $this->middleware("can:viewExpense")->only(["index", "show"]);
-        $this->middleware("can:addExpense")->only('store');
-        $this->middleware("can:updateExpense")->only('update');
-        $this->middleware("can:deleteExpense")->only('destroy');
+    // function __construct()
+    // {
+    //     $this->middleware("can:viewExpense")->only(["index", "show"]);
+    //     $this->middleware("can:addExpense")->only('store');
+    //     $this->middleware("can:updateExpense")->only('update');
+    //     $this->middleware("can:deleteExpense")->only('destroy');
 
-    }
+    // }
     /**
      * Display a listing of the resource.
      */

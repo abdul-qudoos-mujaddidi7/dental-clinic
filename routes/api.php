@@ -34,18 +34,18 @@ use App\Http\Controllers\UserController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 // Authentication routes
-Route::post('/login', [AuthController::class, 'login']);
-Route::get('/', function(){
-    return view('welcome');
-});
+// Route::post('/login', [AuthController::class, 'login']);
+// Route::get('/', function(){
+//     return view('welcome');
+// });
 
-// Group all routes that need authentication
-Route::middleware('auth:sanctum')->group(function () {
+// // Group all routes that need authentication
+// Route::middleware('auth:sanctum')->group(function () {
 
-    // Authenticated user route
-    Route::get('/user', function (Request $request) {
-        return $request->user();
-    });
+//     // Authenticated user route
+//     Route::get('/user', function (Request $request) {
+//         return $request->user();
+//     });
 
     // Resource routes that require authentication
     Route::apiResource('/expenseCategories', ExpenseCategoryController::class);
@@ -90,7 +90,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('expenseCategoryReport', ExpenseCategoryReportController::class);
     Route::get('patientPaymentReport', PatientPaymentReportController::class);
     
-});
+// });
 
 // "repositories": [
 //     {
