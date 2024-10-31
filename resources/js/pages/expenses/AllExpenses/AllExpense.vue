@@ -3,7 +3,7 @@
     <UpdateAllExpense v-if="ExpenseRepository.updateDialog" />
     <div class="all-expense rounded-xl m-4">
         <div class="card rounded-xl bg-white" rtl>
-            <Menu mainTitle="مصارف" sub-title=" مصارف بدون بل" />
+            <AppBar mainTitle="مصارف" sub-title=" مصارف بدون بل" />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
@@ -30,7 +30,10 @@
                     >
                     &nbsp;
                     <v-btn
-                    
+                        v-if="
+                            AuthRepository.permissions &&
+                            AuthRepository.permissions.includes('createExpense')
+                        "
                         @click="CreateDialogShow"
                         color="#112F53"
                         variant="flat"
@@ -74,7 +77,16 @@
 
                                     <template
                                         v-slot:item.action="{ item }"
-                           
+                                        v-if="
+                                            (AuthRepository.permissions &&
+                                                AuthRepository.permissions.includes(
+                                                    'editExpense'
+                                                )) ||
+                                            (AuthRepository.permissions &&
+                                                AuthRepository.permissions.includes(
+                                                    'deleteExpense'
+                                                ))
+                                        "
                                     >
                                         <v-menu>
                                             <template
@@ -89,7 +101,12 @@
                                             <v-list>
                                                 <v-list-item>
                                                     <v-list-item-title
-                                                  
+                                                        v-if="
+                                                            AuthRepository.permissions &&
+                                                            AuthRepository.permissions.includes(
+                                                                'editExpense'
+                                                            )
+                                                        "
                                                         @click="edit(item)"
                                                         class="cursor-pointer d-flex gap-3 justify-left pb-3"
                                                     >
@@ -100,7 +117,12 @@
                                                     </v-list-item-title>
 
                                                     <v-list-item-title
-                                                  
+                                                        v-if="
+                                                            AuthRepository.permissions &&
+                                                            AuthRepository.permissions.includes(
+                                                                'deleteExpense'
+                                                            )
+                                                        "
                                                         class="cursor-pointer d-flex gap-3"
                                                         @click="
                                                             deleteItem(item)
@@ -136,15 +158,16 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { useExpenseRepository } from "@/store/ExpenseRepository";
+import AppBar from "../../../components/AppBar.vue";
+// import { useExpenseRepository } from "@/store/ExpenseRepository";
 // import { useAuthRepository } from "@/store/AuthRepository";
 
-// ignore
+// // ignore
 // import CreateAllExpense from "./createallexpense.vue";
 // import UpdateAllExpense from "./UpdateAllExpense.vue";
 // import Menu from "../../components/UI/Menu.vue";
 
-const ExpenseRepository = useExpenseRepository();
+// const ExpenseRepository = useExpenseRepository();
 // const AuthRepository = useAuthRepository();
 
 // delete and update

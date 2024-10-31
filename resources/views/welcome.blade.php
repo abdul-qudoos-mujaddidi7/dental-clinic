@@ -1,15 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laravel with Vite and Vue</title>
-    @vite('resources/js/app.js') <!-- Vite directive -->
-</head>
-<body>
-    <div id="app">
-        <!-- <example-component></example-component> -->
-        <Expense></Expense>
-    </div>
-</body>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }} "  >
+    <head>
+        <meta charset="utf-8">
+        
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Dental-Clinic</title>
+
+        <!-- Fonts -->
+        <link rel="preconnect" href="https://fonts.bunny.net">
+        <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
+        <link href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css" rel="stylesheet">
+
+
+        <!-- Styles -->
+
+        @vite('resources/css/app.css')
+                   
+ 
+
+        <!-- <link rel="stylesheet" href="{{ asset('build/assets/app-zzGLCxDt.css') }}"> -->
+    </head>
+    <body class="antialiased">
+        <div id="app">
+
+        </div>
+
+        @vite('resources/js/app.js')
+
+                                                          
+                            
+
+
+        <!-- <script src="{{ asset('build/assets/app-aUMbknpw.js') }}"></script> -->
+
+    </body>
 </html>

@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import AllExpense from "./components/expenses/allExpenses/AllExpenses.vue"
-
+import AllExpense from  "./pages/expenses/AllExpenses/AllExpense.vue"
 
 
 const router = createRouter({
