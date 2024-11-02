@@ -20,3 +20,7 @@ Route::get('/', function () {
 Route::get('hi', function(){
     return view('welcome');
 });
+// web.php
+Route::get('/{any}', function () {
+    return view('welcome'); // Replace 'welcome' with your main Blade template
+})->where('any', '.*');

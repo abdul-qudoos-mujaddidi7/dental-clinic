@@ -1,28 +1,165 @@
 <template>
-  
-    <v-list density="compact" nav>
+    <router-link to="/dashboard">
+        <div class="flex items-center justify-center py-4">
+            <img
+                src="https://i.pinimg.com/736x/a7/7a/a5/a77aa5d8c889c3beee52aa1a7c7dcf23.jpg"
+                alt="Logo"
+                class="w-20 h-20 rounded-full object-cover"
+            />
+        </div>
+    </router-link>
+
+    <!-- Scrollable content with hidden scrollbar -->
+    <div class="scrollable-content overflow-y-auto max-h-[80vh]">
+        <router-link to="/dashboard">
+            <v-list-item
+                value="home"
+                prepend-icon="mdi mdi-home-lightning-bolt-outline"
+                active-class="bg-primary  text-white"
+                >Dashboard
+            </v-list-item>
+        </router-link>
         <v-list-item
-            prepend-icon="mdi-home-city"
-            title="Home"
-            value="home"
-        ></v-list-item>
-        <v-list-item
-            prepend-icon="mdi-account"
-            title="My Account"
-            value="account"
-        ></v-list-item>
-        <v-list-item
-            prepend-icon="mdi-account-group-outline"
-            title="Users"
-            value="users"
-        ></v-list-item>
-    </v-list>
-    <v-divider></v-divider>
+            prepend-icon="mdi mdi-cash-marker"
+            value="expenses"
+            @click="toggleList"
+            class="hover:bg-primary transition-all duration-300 cursor-pointer"
+            active-class="bg-primary text-white"
+        >
+            Expenses
+        </v-list-item>
+
+        <transition name="slide-fade">
+            <v-list v-if="isListVisible" class="pl-4">
+                <router-link
+                    v-for="item in navItems"
+                    :key="item.to"
+                    :to="item.to"
+                >
+                    <v-list-item
+                        :title="item.title"
+                        :prepend-icon="item.icon"
+                        :value="item.value"
+                        color="primaryOld"
+                        class="child rounded-lg"
+                        
+                        
+                    />
+                </router-link>
+            </v-list>
+        </transition>
+    </div>
+
+    <v-divider class="my-4"></v-divider>
+
     <v-list-item
         prepend-avatar="https://randomuser.me/api/portraits/men/85.jpg"
         title="John Leider"
         nav
-    >
-    </v-list-item>
+        class="px-4 py-2"
+    />
 </template>
-<script setup></script>
+
+<script setup>
+import { ref } from "vue";
+
+// State for list visibility
+const isListVisible = ref(false);
+
+// Toggle for list items
+const toggleList = () => {
+    isListVisible.value = !isListVisible.value;
+};
+
+// Define navigation items in a structured list for cleaner handling
+const navItems = [
+    {
+        to: "/expense",
+        title: "All Expense",
+        icon: "mdi mdi-circle-medium",
+        value: "AllExpenses",
+    },
+    {
+        to: "/billExpense",
+        title: "Bill Expense",
+        icon: "mdi mdi-circle-medium",
+        value: "billExpense",
+    },
+
+    {
+        to: "/expenseProducts",
+        title: "Products",
+        icon: "mdi mdi-circle-medium",
+        value: "expense product",
+    },
+    {
+        to: "/expensecat",
+        title: "Category",
+        icon: "mdi mdi-circle-medium",
+        value: "categories",
+    },
+    {
+        to: "/supplier",
+        title: "Owner Pickup",
+        icon: "mdi mdi-circle-medium",
+        value: "supplier",
+    },
+];
+</script>
+
+<style scoped>
+/* Hide scrollbar across all browsers */
+.child {
+    font-size: 14px;
+    transition: color 0.3s;
+}
+.child > :nth-child(3) {
+    /* background-color: red; */
+    display: flex;
+    justify-content: flex-start;
+    width: 2rem;
+}
+
+.scrollable-content {
+    max-height: 80vh;
+    overflow-y: auto;
+    /* direction: ltr; */
+}
+.scrollable-content::-webkit-scrollbar {
+    width: 4px;
+    display: none;
+}
+
+.scrollable-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.scrollable-content::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.scrollable-content::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Smooth slide transition */
+.slide-fade-enter-active,
+.slide-fade-leave-active {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+/* Styling for child items */
+.child {
+    font-size: 0.875rem; /* text-sm */
+    transition: color 0.3s ease;
+}
+.child:hover {
+    color: #333;
+}
+</style>

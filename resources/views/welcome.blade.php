@@ -22,9 +22,8 @@
         <!-- <link rel="stylesheet" href="{{ asset('build/assets/app-zzGLCxDt.css') }}"> -->
     </head>
     <body class="antialiased">
-        <div id="app">
+    <div id="app"></div>
 
-        </div>
 
         @vite('resources/js/app.js')
 

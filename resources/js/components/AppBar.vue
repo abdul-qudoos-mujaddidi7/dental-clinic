@@ -1,7 +1,7 @@
 <template>
     <v-toolbar
         density="compact"
-        class=" toolbar w-100"
+        class=""
         color="white"
         :order="order"
       
@@ -142,12 +142,12 @@ const order = 0;
 <style scoped>
 .icon-bar {
     display: flex;
-    gap: 0.5rem; /* Space between the buttons */
+    gap: 0.5rem; 
 }
 
 .icon-wrapper {
     background-color: #112f531a; /* Light gray background */
-    padding: 0.5rem; 
+    padding: 0.4rem; 
     border-radius: 0.5rem; /* Rounded corners */
     display: flex;
     justify-content: center;
@@ -160,4 +160,12 @@ const order = 0;
     color: #000; /* Black color for the icons */
 }
 
+.breadCrumbTitle{
+    cursor: pointer;
+}
+
+.breadCrumbSub {
+    opacity: 0.6;
+    cursor: pointer;
+}
 </style>

@@ -8,6 +8,7 @@
             <h1>In the name of Allah!</h1>
             <h1>front is ok</h1>
             <router-view></router-view>
+            <AppBar mainTitle="man" subTitle="women" />
         </div>
         <h1 class="text-4xl underline bg-blue-100">Hello world!</h1>
         <table
@@ -90,6 +91,7 @@ Lorem ipsum dolor, sit amet consectetur adipisicing elit. Amet maiores cumque iu
 </template>
 
 <script>
+import AppBar from "./AppBar.vue";
 export default {
     name: "ExampleComponent",
 };
