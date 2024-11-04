@@ -1,4 +1,5 @@
 <template>
+    <CreateExpense v-if="ExpenseRepository.createDialog" />
     <div class="all-expense rounded-xl">
         <div class="card rounded-xl">
             <AppBar mainTitle="Expense" sub-title="expense" />
@@ -131,6 +132,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import AppBar from "../../../components/AppBar.vue";
+import CreateExpense from "./CreateExpense.vue";
 import { useExpenseRepository } from "@/store/ExpenseRepository";
 const ExpenseRepository = useExpenseRepository();
 // delete and update
@@ -181,19 +183,26 @@ const headers = [
         sortable: false,
     },
     { title: "Amount", key: "amount", align: "center", sortable: false },
+    // { title: "Details", key: "note", align: "center", sortable: false },
     { title: "Action", key: "action", align: "center", sortable: false },
 ];
+const isEdit = ref(false);
 
 const CreateDialogShow = () => {
+    ExpenseRepository.Expenses = {};
+    ExpenseRepository.Expense = {};
+    ExpenseRepository.setEditMode(false);
     ExpenseRepository.createDialog = true;
 };
 
 const edit = (item) => {
+    console.log(item, "me");
+    ExpenseRepository.setEditMode(true);
     ExpenseRepository.Expense = {};
     if (Object.keys(ExpenseRepository.Expense).length === 0) {
         ExpenseRepository.fetchExpense(item.id)
             .then(() => {
-                ExpenseRepository.updateDialog = true;
+                ExpenseRepository.createDialog = true;
             })
             .catch((error) => {
                 console.error("Error fetching data:", error);

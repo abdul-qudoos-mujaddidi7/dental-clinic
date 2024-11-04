@@ -6,6 +6,7 @@ import { useRouter } from "vue-router";
 export let useExpenseRepository = defineStore("ExpenseRepository", {
     state() {
         return {
+            isEditMode: ref(false),
             //  all the variable are in camelCase and except fetch all data all of them don't have sin there
             router: useRouter(),
 
@@ -22,13 +23,13 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
             createDialog: ref(false),
             updateDialog: ref(false),
             createPaymentBill: ref(false),
-            SubCategoriesForExpense:reactive([]),
+            SubCategoriesForExpense: reactive([]),
 
             // CREATE ALL EXPENSE
             categories: reactive([]),
             people: reactive([]),
             currency: reactive([]),
-            subCat:reactive([]),
+            subCat: reactive([]),
             getCurrencySymbol: reactive(""),
             getBillCurrencySymbol: reactive(""),
             paymentId: ref(""),
@@ -53,14 +54,14 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
             updateExpenseCatDialog: ref(""),
             ShowExpensePayment: ref(false),
             // expenseSubCategories
-            expenseSubCategories:reactive([]),
-            expenseSubCatSearch:ref(""),
-            expenseSubCategory:reactive([]),
+            expenseSubCategories: reactive([]),
+            expenseSubCatSearch: ref(""),
+            expenseSubCategory: reactive([]),
             // expense people
             expensePeople: reactive([]),
             expensePeoples: reactive([]),
             expensePeopleSearch: ref(""),
-            suppliersForPeople:reactive([]),
+            suppliersForPeople: reactive([]),
             createDialog: ref(false),
             updateDialog: ref(false),
             // expenseProduct
@@ -86,11 +87,15 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
             billExpensePaymentUpdate: reactive([]),
 
             //
-            expensePaymentUsers:reactive([]),
-            currencySymbolForCreateExp:ref(""),
+            expensePaymentUsers: reactive([]),
+            currencySymbolForCreateExp: ref(""),
         };
     },
     actions: {
+        setEditMode(editMode) {
+            console.log(editMode, "wee");
+            this.isEditMode = editMode; // set the value directly
+        },
         getTodaysDate() {
             const today = new Date();
             const year = today.getFullYear();
@@ -125,9 +130,7 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
         async fetchUsersForExpensePayment() {
             this.loading = true;
 
-            const response = await axios.get(
-                `users`
-            );
+            const response = await axios.get(`users`);
             this.expensePaymentUsers = response.data.data;
             console.log(this.expensePaymentUsers);
             this.loading = false;
@@ -136,11 +139,9 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
         async FetchSubCatsForExpense() {
             this.loading = true;
 
-            const response = await axios.get(
-                `subcategories`
-            );
+            const response = await axios.get(`subcategories`);
             this.SubCategoriesForExpense = response.data.data;
-       
+
             this.loading = false;
         },
         async bulkDeleteExpense(data) {
@@ -257,11 +258,10 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
             };
             const response = await axios(config);
             this.subCat = response.data.data;
-          
         },
         async Categories() {
             const config = {
-                url: "expense_categories",
+                url: "expenseCategories",
             };
             const response = await axios(config);
             this.categories = response.data.data;
@@ -473,7 +473,7 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
             this.loading = true;
 
             const response = await axios.get(
-                `expense_categories?page=${page}&perPage=${itemsPerPage}&search=${this.expenseCatSearch}`
+                `expenseCategories?page=${page}&perPage=${itemsPerPage}&search=${this.expenseCatSearch}`
             );
             this.expenseCategories = response.data.data;
             this.totalItems = response.data.meta.total;
@@ -482,7 +482,7 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
         async FetchExpenseCat(id) {
             // this.error = null;
             try {
-                const response = await axios.get(`expense_categories/${id}`);
+                const response = await axios.get(`expenseCategories/${id}`);
 
                 this.expenseCategory = response.data.data;
                 console.log(this.expenseCategory);
@@ -496,7 +496,7 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
                 // Adding a custom header to the Axios request
                 const config = {
                     method: "POST",
-                    url: "expense_categories",
+                    url: "expenseCategories",
 
                     data: formData,
                 };
@@ -517,7 +517,7 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
             try {
                 const config = {
                     method: "PUT",
-                    url: "expense_categories/" + id,
+                    url: "expenseCategories/" + id,
 
                     data: data,
                 };
@@ -542,7 +542,7 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
             try {
                 const config = {
                     method: "DELETE",
-                    url: "expense_categories/" + id,
+                    url: "expenseCategories/" + id,
                 };
 
                 const response = await axios(config);
@@ -649,11 +649,9 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
         async FetchSuppliersForPeople() {
             this.loading = true;
 
-            const response = await axios.get(
-                `suppliers`
-            );
+            const response = await axios.get(`suppliers`);
             this.suppliersForPeople = response.data.data;
-          
+
             this.loading = false;
         },
 
@@ -838,7 +836,7 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
             }
         },
         // supplier
-        
+
         async FetchSuppliers({ page, itemsPerPage }) {
             this.loading = true;
 

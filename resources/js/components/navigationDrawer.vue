@@ -1,63 +1,65 @@
 <template>
-    <router-link to="/dashboard">
-        <div class="flex items-center justify-center py-4">
-            <img
-                src="https://i.pinimg.com/736x/a7/7a/a5/a77aa5d8c889c3beee52aa1a7c7dcf23.jpg"
-                alt="Logo"
-                class="w-20 h-20 rounded-full object-cover"
+    <v-list class="flex flex-col min-h-screen">
+        <router-link to="/dashboard">
+            <div class="flex items-center justify-center py-4">
+                <img
+                    src="https://i.pinimg.com/736x/a7/7a/a5/a77aa5d8c889c3beee52aa1a7c7dcf23.jpg"
+                    alt="Logo"
+                    class="w-20 h-20 rounded-full object-cover"
+                />
+            </div>
+        </router-link>
+
+        <!-- Scrollable content with hidden scrollbar -->
+        <div class="scrollable-content overflow-y-auto max-h-[80vh]">
+            <router-link to="/dashboard">
+                <v-list-item
+                    active-class="bg-primaryOld text-white"
+                    value="home"
+                    prepend-icon="mdi mdi-home-lightning-bolt-outline"
+                    class="transition-all duration-300 cursor-pointer py-3 borderRadius"
+                    >Dashboard
+                </v-list-item>
+            </router-link>
+            <v-list-item
+                active-class="bg-primaryOld text-white"
+                prepend-icon="mdi mdi-cash-marker"
+                value="expenses"
+                @click="toggleList"
+                class="transition-all duration-300 cursor-pointer py-3 borderRadius"
+            >
+                Expenses
+            </v-list-item>
+
+            <transition name="slide-fade">
+                <v-list v-if="isListVisible" class="pl-4">
+                    <router-link
+                        v-for="item in navItems"
+                        :key="item.to"
+                        :to="item.to"
+                    >
+                        <v-list-item
+                            :title="item.title"
+                            :prepend-icon="item.icon"
+                            :value="item.value"
+                            color="primaryOld"
+                            class="child rounded-lg"
+                        />
+                    </router-link>
+                </v-list>
+            </transition>
+        </div>
+
+        <div class="mt-auto">
+            <hr />
+            <v-list-item
+                prepend-avatar="https://randomuser.me/api/portraits/men/85.jpg"
+                title="John Leider"
+                nav
+                class="px-4 py-2"
             />
         </div>
-    </router-link>
-
-    <!-- Scrollable content with hidden scrollbar -->
-    <div class="scrollable-content overflow-y-auto max-h-[80vh]">
-        <router-link to="/dashboard">
-            <v-list-item
-                value="home"
-                prepend-icon="mdi mdi-home-lightning-bolt-outline"
-                active-class="bg-primary  text-white"
-                >Dashboard
-            </v-list-item>
-        </router-link>
-        <v-list-item
-            prepend-icon="mdi mdi-cash-marker"
-            value="expenses"
-            @click="toggleList"
-            class="hover:bg-primary transition-all duration-300 cursor-pointer"
-            active-class="bg-primary text-white"
-        >
-            Expenses
-        </v-list-item>
-
-        <transition name="slide-fade">
-            <v-list v-if="isListVisible" class="pl-4">
-                <router-link
-                    v-for="item in navItems"
-                    :key="item.to"
-                    :to="item.to"
-                >
-                    <v-list-item
-                        :title="item.title"
-                        :prepend-icon="item.icon"
-                        :value="item.value"
-                        color="primaryOld"
-                        class="child rounded-lg"
-                        
-                        
-                    />
-                </router-link>
-            </v-list>
-        </transition>
-    </div>
-
-    <v-divider class="my-4"></v-divider>
-
-    <v-list-item
-        prepend-avatar="https://randomuser.me/api/portraits/men/85.jpg"
-        title="John Leider"
-        nav
-        class="px-4 py-2"
-    />
+    </v-list>
 </template>
 
 <script setup>
@@ -161,5 +163,9 @@ const navItems = [
 }
 .child:hover {
     color: #333;
+}
+.borderRadius {
+    border-top-right-radius: 8px !important;
+    border-bottom-right-radius: 8px !important;
 }
 </style>
