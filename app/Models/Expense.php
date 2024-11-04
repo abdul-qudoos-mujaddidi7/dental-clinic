@@ -15,6 +15,7 @@ class Expense extends Model
         'amount',
         'user_id',
         'expense_category_id',
+        'note'
     ];
 
     protected static function boot()

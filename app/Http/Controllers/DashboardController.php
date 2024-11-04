@@ -6,7 +6,6 @@ use App\Models\BillExpense;
 use App\Models\CurePayment;
 use App\Models\Expense;
 use App\Models\Patient;
-use App\Models\Payment;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;

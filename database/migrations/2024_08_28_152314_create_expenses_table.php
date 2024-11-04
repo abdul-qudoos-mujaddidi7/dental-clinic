@@ -17,10 +17,11 @@ return new class extends Migration
             $table->id(); 
             $table->date('date');
             $table->string('reference',20);
-             $table->decimal('amount', 10, 2); //with precision (10, 2)
-             $table->foreignIdFor(User::class)->constrained();
-             $table->foreignIdFor(ExpenseCategory::class)->constrained();
-             $table->softDeletes();
+            $table->decimal('amount', 10, 2); //with precision (10, 2)
+            $table->text('note')->nullable();
+            $table->foreignIdFor(User::class)->constrained();
+            $table->foreignIdFor(ExpenseCategory::class)->constrained();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

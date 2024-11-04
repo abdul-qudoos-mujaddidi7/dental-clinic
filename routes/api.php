@@ -31,7 +31,6 @@ use App\Http\Controllers\StageController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\SystemSettingController;
 use App\Http\Controllers\UserController;
-use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 // Authentication routes
 // Route::post('/login', [AuthController::class, 'login']);
