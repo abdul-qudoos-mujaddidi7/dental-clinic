@@ -39,7 +39,7 @@ class BillExpenseController extends Controller
 
                 BillExpenseDetail::create([
                     'bill_expense_id' => $billExpense->id,
-                    'product_id' => $detail['productId'],
+                    'product_id' => $detail['id'],
                     'quantity' => $detail['quantity'],
                     'cost' => $detail['cost'],
                     'total' => $detail['total'],
@@ -78,7 +78,7 @@ class BillExpenseController extends Controller
             BillExpenseDetail::updateOrCreate(
                 [
                     'bill_expense_id' => $billExpense->id,
-                    'product_id' => $detail['product_id'],
+                    'product_id' => $detail['id'],
                 ],
                 [
                     'quantity' => $detail['quantity'],
