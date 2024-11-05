@@ -20,7 +20,7 @@ class BillExpenseRequest extends FormRequest
             "bill_date"=> $this->input("billDate"),
             "grand_total"=> $this->input("grandTotal"),
             "supplier_id"=> $this->input("supplierId"),
-            "billable_details'"=> $this->input("expenseDetails'"),
+            "billable_details"=> $this->input("expenseDetails"),
         ]);
     }
 
