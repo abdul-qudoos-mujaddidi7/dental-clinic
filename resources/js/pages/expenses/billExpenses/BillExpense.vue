@@ -2,7 +2,7 @@
     <CreateExpense v-if="ExpenseRepository.createDialog" />
     <div class="all-expense rounded-xl">
         <div class="card rounded-xl">
-            <AppBar mainTitle="Expense" sub-title="expense" />
+            <AppBar mainTitle="Bill Expense" sub-title="expense" />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
@@ -19,7 +19,7 @@
                         label="Search ..."
                         append-inner-icon="mdi-magnify"
                         hide-details
-                        v-model="ExpenseRepository.ExpenseSearch"
+                        v-model="ExpenseRepository.billExpenseSearch"
                     ></v-text-field>
                 </div>
                 <div class="btn">
@@ -27,14 +27,17 @@
                         Filter
                     </v-btn>
                     &nbsp;
-                    <v-btn
+                    <router-link to="/createBillExpense">
+
+                        <v-btn
                         @click="CreateDialogShow"
                         color="primaryOld"
                         variant="flat"
                         text="Create"
                         class="px-6"
-                    >
+                        >
                     </v-btn>
+                </router-link>
                 </div>
             </div>
             <!-- v-table server  -->
@@ -50,13 +53,13 @@
                                     "
                                     :headers="headers"
                                     :items-length="ExpenseRepository.totalItems"
-                                    :items="ExpenseRepository.Expenses"
+                                    :items="ExpenseRepository.billExpenses"
                                     :loading="ExpenseRepository.loading"
-                                    :search="ExpenseRepository.ExpenseSearch"
+                                    :search="ExpenseRepository.billExpenseSearch"
                                     @update:options="
-                                        ExpenseRepository.fetchExpensesData
+                                        ExpenseRepository.fetchBillExpenses
                                     "
-                                    :item-key="ExpenseRepository.Expenses"
+                                    :item-key="ExpenseRepository.billExpenses"
                                     hover
                                     class="w-100 mx-auto"
                                 >
@@ -66,7 +69,7 @@
                                         <v-checkbox
                                             :value="item.id"
                                             v-model="selectedIds"
-                                            class="w-6 d-flex"
+                                            class="w-10 d-flex"
                                         ></v-checkbox>
                                     </template>
 
@@ -83,8 +86,14 @@
                                             </template>
                                             <v-list>
                                                 <v-list-item>
+                                                    <router-link
+                                                        :to="
+                                                            '/updateBillExpense/' +
+                                                            item.id
+                                                        "
+                                                    >
                                                     <v-list-item-title
-                                                        @click="edit(item)"
+                                                       
                                                         class="cursor-pointer d-flex gap-3 justify-left pb-3"
                                                     >
                                                         <v-icon
@@ -93,6 +102,7 @@
                                                         >
                                                         Edit
                                                     </v-list-item-title>
+                                                    </router-link>
 
                                                     <v-list-item-title
                                                         class="cursor-pointer d-flex gap-3"
@@ -115,9 +125,10 @@
                                     v-if="selectedIds.length > 0"
                                     @click="sendSelectedIds"
                                     color="#B71C1C"
+                                    text="Delete"
                                     flat
-                                    text="delete"
                                 >
+                                    
                                 </v-btn>
                             </v-col>
                         </v-row>
@@ -129,33 +140,27 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import AppBar from "../../../components/AppBar.vue";
-import CreateExpense from "./CreateExpense.vue";
+// 
 import { useExpenseRepository } from "@/store/ExpenseRepository";
 const ExpenseRepository = useExpenseRepository();
 // bulk delete
-const selectedIds = ref([]);
+const selectedIds = ref([]); 
 const sendSelectedIds = () => {
     if (selectedIds.value.length > 0) {
+
         const data = {
             expenseIds: selectedIds.value,
         };
 
         console.log("Sending data:", data);
 
+
         ExpenseRepository.bulkDeleteExpense(data);
     } else {
         console.log("No IDs selected.");
     }
-};
-
-// delete and update Create
-const CreateDialogShow = () => {
-    ExpenseRepository.Expenses = {};
-    ExpenseRepository.Expense = {};
-    ExpenseRepository.setEditMode(false);
-    ExpenseRepository.createDialog = true;
 };
 
 const edit = (item) => {
@@ -183,23 +188,26 @@ const headers = [
     { title: "Reference", key: "reference", align: "center", sortable: false },
     { title: "Added By", key: "addedBy", align: "center", sortable: false },
     {
-        title: "Category",
-        key: "expenseCategory.name",
+        title: "Supplier",
+        key: "supplier.name",
         align: "center",
         sortable: false,
     },
-    { title: "Amount", key: "amount", align: "center", sortable: false },
+    { title: "Amount", key: "grandTotal", align: "center", sortable: false },
+    { title: "PAID", key: "paid", align: "center", sortable: false },
+    { title: "DUE", key: "due", align: "center", sortable: false },
+    
     { title: "Action", key: "action", align: "center", sortable: false },
 ];
 </script>
 
 <style scoped>
 .v-data-table-server {
-    position: relative;
+    position: relative; 
 }
 .header-button {
     position: absolute;
-    top: 0.7rem;
+    top: 0.7rem; 
     left: 0.7rem;
     z-index: 1;
 }

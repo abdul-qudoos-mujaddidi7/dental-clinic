@@ -61,7 +61,7 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
             expensePeople: reactive([]),
             expensePeoples: reactive([]),
             expensePeopleSearch: ref(""),
-            suppliersForPeople: reactive([]),
+            suppliersFor: reactive([]),
             createDialog: ref(false),
             updateDialog: ref(false),
             // expenseProduct
@@ -149,7 +149,7 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
             try {
                 const config = {
                     method: "DELETE",
-                    url: "expenses_bulk_delete",
+                    url: "expensesBulkDelete",
                     data: data,
                 };
 
@@ -196,7 +196,7 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
 
                 // Using Axios to make a post request with async/await and custom headers
                 const response = await axios(config);
-                this.updateDialog = false;
+                this.createDialog = false;
                 this.fetchExpensesData({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
@@ -266,7 +266,6 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
             const response = await axios(config);
             this.categories = response.data.data;
         },
-
         async People() {
             const config = {
                 url: "peoples",
@@ -275,7 +274,6 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
             this.people = response.data.data;
             // console.log(this.people);
         },
-
         async ManyAccounts() {
             const config = {
                 url: "accounts",
@@ -556,105 +554,16 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
                 this.error = err;
             }
         },
-        // subcategories
-        async FetchExpenseSubCats({ page, itemsPerPage }) {
-            this.loading = true;
-
-            const response = await axios.get(
-                `subcategories?page=${page}&perPage=${itemsPerPage}&search=${this.expenseSubCatSearch}`
-            );
-            this.expenseSubCategories = response.data.data;
-            this.totalItems = response.data.meta.total;
-            this.loading = false;
-        },
-        async FetchExpenseSubCat(id) {
-            // this.error = null;
-            try {
-                const response = await axios.get(`subcategories/${id}`);
-
-                this.expenseSubCategory = response.data.data;
-                console.log(this.expenseCategory);
-            } catch (err) {
-                // this.error = err.message;
-            }
-        },
-        async CreateExpenseSubCat(formData) {
-            console.log(formData);
-            try {
-                // Adding a custom header to the Axios request
-                const config = {
-                    method: "POST",
-                    url: "subcategories",
-
-                    data: formData,
-                };
-
-                // Using Axios to make a GET request with async/await and custom headers
-                const response = await axios(config);
-                this.createDialog = false;
-                this.FetchExpenseSubCats({
-                    page: this.page,
-                    itemsPerPage: this.itemsPerPage,
-                });
-            } catch (err) {
-                // If there's an error, set the error in the stor
-            }
-        },
-        async UpdateExpenseSubCat(id, data) {
-            console.log(data);
-            try {
-                const config = {
-                    method: "PUT",
-                    url: "subcategories/" + id,
-
-                    data: data,
-                };
-
-                // Using Axios to make a post request with async/await and custom headers
-                const response = await axios(config);
-                this.updateDialog = false;
-                this.FetchExpenseSubCats({
-                    page: this.page,
-                    itemsPerPage: this.itemsPerPage,
-                });
-            } catch (err) {
-                // If there's an error, set the error in the store
-                this.error = err;
-            }
-        },
-        async DeleteExpenseSubCat(id) {
-            this.isLoading = true;
-            this.Expenses = [];
-            this.error = null;
-
-            try {
-                const config = {
-                    method: "DELETE",
-                    url: "subcategories/" + id,
-                };
-
-                const response = await axios(config);
-
-                this.expenseSubCategory = response.data.data;
-                this.FetchExpenseSubCats({
-                    page: this.page,
-                    itemsPerPage: this.itemsPerPage,
-                });
-            } catch (err) {
-                this.error = err;
-            }
-        },
 
         // the people data
-        async FetchSuppliersForPeople() {
+        async Suppliers() {
             this.loading = true;
 
             const response = await axios.get(`suppliers`);
-            this.suppliersForPeople = response.data.data;
+            this.suppliersFor = response.data.data;
 
             this.loading = false;
         },
-
         async FetchExpensePeoples({ page, itemsPerPage }) {
             this.loading = true;
 
@@ -665,7 +574,6 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
             this.totalItems = response.data.meta.total;
             this.loading = false;
         },
-
         async FetchExpensePeople(id) {
             // this.error = null;
             try {
@@ -677,7 +585,6 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
                 // this.error = err.message;
             }
         },
-
         async CreateExpensePeople(formData) {
             console.log(formData);
             try {
@@ -700,7 +607,6 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
                 // If there's an error, set the error in the stor
             }
         },
-
         async UpdateExpensePeople(id, data) {
             console.log(data);
             try {
@@ -723,7 +629,6 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
                 this.error = err;
             }
         },
-
         async DeleteExpensePeople(id) {
             this.isLoading = true;
             this.Expenses = [];
@@ -761,7 +666,7 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
         async FetchExpenseProduct(id) {
             // this.error = null;
             try {
-                const response = await axios.get(`expense_products/${id}`);
+                const response = await axios.get(`products/${id}`);
 
                 this.expenseProduct = response.data.data;
                 console.log(this.expenseProduct);
@@ -821,7 +726,7 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
             try {
                 const config = {
                     method: "DELETE",
-                    url: "expense_products/" + id,
+                    url: "products/" + id,
                 };
 
                 const response = await axios(config);
@@ -951,7 +856,7 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
             this.loading = true;
 
             const response = await axios.get(
-                `expense_products?&search=${this.billExpenseSearch}`
+                `products?&search=${this.billExpenseSearch}`
             );
             this.searchFetch = response.data.data;
             this.loading = false;
@@ -960,7 +865,7 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
         async fetchProduct(id, isUpdate = false) {
             // this.error = null;
             try {
-                const response = await axios.get(`expense_products/${id}`);
+                const response = await axios.get(`products/${id}`);
 
                 // console.log("id", response.data.data.id);
                 if (isUpdate) {
@@ -975,20 +880,20 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
                 // this.error = err.message;
             }
         },
-        async FetchBillExpenses({ page, itemsPerPage }) {
+        async fetchBillExpenses({ page, itemsPerPage }) {
             this.loading = true;
 
             const response = await axios.get(
-                `bill_expenses?page=${page}&perPage=${itemsPerPage}&search=${this.billExpenseSearch}`
+                `billExpenses?page=${page}&perPage=${itemsPerPage}&search=${this.billExpenseSearch}`
             );
             this.billExpenses = response.data.data;
             this.totalItems = response.data.meta.total;
             this.loading = false;
         },
-        async FetchBillExpense(id) {
+        async fetchBillExpense(id) {
             // this.error = null;
             try {
-                const response = await axios.get(`bill_expenses/${id}`);
+                const response = await axios.get(`billExpenses/${id}`);
 
                 this.billExpense = response.data.data;
                 this.expenseProduct = response.data.data.expenseDetails;
@@ -1008,7 +913,7 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
                 // Adding a custom header to the Axios request
                 const config = {
                     method: "POST",
-                    url: "bill_expenses",
+                    url: "billExpenses",
 
                     data: formData,
                 };
@@ -1031,7 +936,7 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
             try {
                 const config = {
                     method: "PUT",
-                    url: `bill_expenses/${id}`,
+                    url: `billExpenses/${id}`,
 
                     data: data,
                 };
@@ -1058,7 +963,7 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
             try {
                 const config = {
                     method: "DELETE",
-                    url: "bill_expenses/" + id,
+                    url: "billExpenses/" + id,
                 };
 
                 const response = await axios(config);

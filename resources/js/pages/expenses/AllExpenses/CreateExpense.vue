@@ -11,19 +11,21 @@
                     <v-card-title
                         class="px-2 pt-4 d-flex justify-space-between"
                     >
-                        <h2 class="font-weight-bold">
+                        <h2 class="font-weight-bold pl-4">
                             {{
                                 ExpenseRepository.isEditMode
                                     ? "Update"
                                     : "Create"
                             }}
-                            Expense
                         </h2>
                         <v-btn variant="text" @click="isActive.value = false">
                             <v-icon>mdi-close</v-icon>
                         </v-btn>
                     </v-card-title>
-                    <v-divider></v-divider>
+                    <v-divider
+                        class="border-opacity-100 mx-6"
+                        style=""
+                    ></v-divider>
 
                     <v-card-text>
                         <v-form ref="formRef" class="pt-4">
@@ -97,30 +99,28 @@ const formData = reactive({
     id: ExpenseRepository.Expense.id,
     date: ExpenseRepository.Expense.date,
     amount: ExpenseRepository.Expense.amount,
-    expenseCategoryId: ExpenseRepository.Expense.expenseCategoryId,
+    expenseCategoryId: ExpenseRepository.Expense.expenseCategory?.id,
     note: ExpenseRepository.Expense.note,
 });
 const rules = {
     required: (value) => !!value || "This field is required.",
 
     name: (value) =>
-        /^[a-zA-Z\u0600-\u06FF\s]*$/.test(value) || 
+        /^[a-zA-Z\u0600-\u06FF\s]*$/.test(value) ||
         "Please enter a valid name with letters only.",
 
-    number: (value) => 
-        /^\d+$/.test(value) || 
-        "Please enter a valid number.",
+    number: (value) =>
+        /^\d*\.?\d+$/.test(value) || "Please enter a valid number.",
 
     numberLength: (value) =>
-        value.length <= 12 || 
-        "Must be 12 characters or fewer.",
+        value.length <= 12 || "Must be 12 characters or fewer.",
 };
-
+console.log(ExpenseRepository.Expense, "man");
 const saveExpense = async () => {
     const isValid = await formRef.value.validate();
     if (isValid) {
         if (ExpenseRepository.isEditMode) {
-            await ExpenseRepository.UpdateExpense(formData, formData.id);
+            await ExpenseRepository.UpdateExpense(formData.id, formData);
         } else {
             await ExpenseRepository.CreateExpense(formData);
         }
