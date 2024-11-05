@@ -16,6 +16,7 @@ class BillExpenseResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'reference'=> $this->reference,
             'billNumber' => $this->bill_number,
             'supplier' => [
                 'id' => $this->supplier->id,

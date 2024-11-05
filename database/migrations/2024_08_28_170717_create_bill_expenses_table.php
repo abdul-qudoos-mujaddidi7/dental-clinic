@@ -20,6 +20,7 @@ return new class extends Migration
             $table->decimal('paid',10,2)->default(0);
             $table->decimal('grand_total', 10, 2);
             $table->text('note')->nullable();
+            $table->string('reference',20);
             $table->foreignIdFor(Supplier::class)->constrained();
             $table->foreignIdFor(User::class)->constrained();
             $table->softDeletes();

@@ -22,6 +22,16 @@ class BillExpense extends Model
         'user_id'
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($billExpense) {
+            $billExpense->reference = 'EXP_' . (self::max('id') + 1);
+        });
+    }
+
+
     public function billExpenseDetails(){
         return $this->hasMany(BillExpenseDetail::class);
     }
