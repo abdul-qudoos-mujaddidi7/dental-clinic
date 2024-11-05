@@ -78,4 +78,21 @@ class ExpenseController extends Controller
         $expense->delete();
         return response()->json(["message" => "record deleted successfully"]);
     }
+
+
+    public function bulkDelete(Request $request)
+    {
+        $validated= $request->validate([
+            "expenseIds"=>"required|array",
+            "expenseIds.*"=>"required|exists:expenses,id"
+        ]);
+
+        Expense::whereIn('id',$validated['expenseIds'])->delete();
+
+        return response()->noContent();
+
+
+
+    }
 }
+

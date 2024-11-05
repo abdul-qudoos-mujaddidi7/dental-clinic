@@ -52,6 +52,8 @@ use App\Http\Controllers\UserController;
     Route::apiResource('/ownerPickups', OwnerPickupController::class);
     Route::apiResource('/products', ProductController::class);
     Route::apiResource('/expenses', ExpenseController::class);
+    Route::delete('/expensesBulkDelete',[ ExpenseController::class,"bulkDelete"]);
+
     Route::apiResource('/payments', PaymentController::class);
     Route::apiResource('/suppliers', SupplierController::class);
     Route::apiResource('/dentists', DentistController::class);
