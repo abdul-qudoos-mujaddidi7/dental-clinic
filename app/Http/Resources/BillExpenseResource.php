@@ -18,6 +18,7 @@ class BillExpenseResource extends JsonResource
             'id' => $this->id,
             'reference'=> $this->reference,
             'billNumber' => $this->bill_number,
+            'date' => $this->bill_date,
             'supplier' => [
                 'id' => $this->supplier->id,
                 'name' => $this->supplier->name,
