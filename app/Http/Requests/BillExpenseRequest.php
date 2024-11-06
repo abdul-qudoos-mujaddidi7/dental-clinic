@@ -39,7 +39,7 @@ class BillExpenseRequest extends FormRequest
             'bill_number' => [
                 'required',
                 'string',
-                Rule::unique('bill_expenses')->ignore($billExpenseId), // Ignore the current record
+                Rule::unique('bill_expenses')->ignore($this->route('billExpense') ? $this->route('billExpense')->id : null), // Ignore the current record
                 'max:255'
             ],
             'bill_date' => 'required|date',
