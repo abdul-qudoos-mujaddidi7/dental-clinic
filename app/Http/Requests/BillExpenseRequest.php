@@ -45,6 +45,6 @@ class BillExpenseRequest extends FormRequest
             'billable_details.*.total' => 'required|numeric|between:0,999999.99',
         
         ];
-        
+         
     }
 }
