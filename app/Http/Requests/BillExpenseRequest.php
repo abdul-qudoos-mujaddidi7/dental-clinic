@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class BillExpenseRequest extends FormRequest
 {
@@ -14,13 +15,14 @@ class BillExpenseRequest extends FormRequest
         return true;
     }
 
-    public function prePareForValidation(){
+    public function prePareForValidation()
+    {
         return $this->merge([
-            "bill_number"=> $this->input("billNumber"),
-            "bill_date"=> $this->input("billDate"),
-            "grand_total"=> $this->input("grandTotal"),
-            "supplier_id"=> $this->input("supplierId"),
-            "billable_details"=> $this->input("expenseDetails"),
+            "bill_number" => $this->input("billNumber"),
+            "bill_date" => $this->input("billDate"),
+            "grand_total" => $this->input("grandTotal"),
+            "supplier_id" => $this->input("supplierId"),
+            "billable_details" => $this->input("expenseDetails"),
         ]);
     }
 
@@ -31,8 +33,15 @@ class BillExpenseRequest extends FormRequest
      */
     public function rules(): array
     {
+        $billExpenseId = $this->route('billExpense')->id; // Get the bill expense ID from the route (assuming it's in the route)
+    
         return [
-            'bill_number' => 'required|string|unique:bill_expenses|max:255',
+            'bill_number' => [
+                'required',
+                'string',
+                Rule::unique('bill_expenses')->ignore($billExpenseId), // Ignore the current record
+                'max:255'
+            ],
             'bill_date' => 'required|date',
             'paid' => 'required|numeric|between:0,99999999.99',
             'grand_total' => 'required|numeric|between:0,99999999.99',
@@ -43,8 +52,6 @@ class BillExpenseRequest extends FormRequest
             'billable_details.*.quantity' => 'required|integer|min:1',
             'billable_details.*.cost' => 'required|numeric|between:0,999999.99',
             'billable_details.*.total' => 'required|numeric|between:0,999999.99',
-        
         ];
-         
     }
 }
