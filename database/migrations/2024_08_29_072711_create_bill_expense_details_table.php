@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('bill_expense_details', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Product::class)->constrained();
-            $table->foreignIdFor(BillExpense::class)->constrained();
+            $table->foreignIdFor(Product::class);
+            $table->foreignIdFor(BillExpense::class);
             $table->integer('quantity');
             $table->decimal('cost', 10, 2);
             $table->decimal('total', 10, 2);
