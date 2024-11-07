@@ -44,7 +44,7 @@
                 ></v-text-field>
             </v-form>
             <v-divider></v-divider>
-            <v-row no-gutters class="justify-space-between">
+            <v-row no-gutters class="justify-space-between mt-16">
                 <v-col cols="full" class="w-50" sm="12" md="12">
                     <div class="d-flex">
                         <v-text-field
@@ -105,6 +105,7 @@
                             </th>
                         </tr>
                     </thead>
+
                     <tbody>
                         <tr
                             class="product-table"
@@ -206,6 +207,7 @@ import { reactive, computed, ref, watch, onMounted } from "vue";
 import { useRoute } from "vue-router";
 
 import { useExpenseRepository } from "@/store/ExpenseRepository";
+
 // import CReateExpensePRoduct from "../expenceProduct/CreateExpenseProduct.vue";
 const ExpenseRepository = useExpenseRepository();
 const CalcFetchProduct = (index) => {
@@ -225,19 +227,21 @@ const createExpenseProduct = () => {
     ExpenseRepository.createDialog = true;
 };
 
-const routeParams = useRoute()
+const routeParams = useRoute();
 let formData = [];
 ExpenseRepository.fetchBillExpense(routeParams.params.id).then((res) => {
-     formData = reactive({
-    expenseDetails: ExpenseRepository.billExpense.expenseDetails,
-    grandTotal: ExpenseRepository.billExpense.grandTotal,
-    supplierId: ExpenseRepository.billExpense.supplier?.id,
-    deletedIds:[],
-    billNumber: ExpenseRepository.billExpense.billNumber,
-    billDate: ExpenseRepository.billExpense.billDate,
-    note: ExpenseRepository.billExpense.note,
-    paid: ExpenseRepository.billExpense.paid || 0,
-});
+    console.log("Fetched Data:", ExpenseRepository.billExpense);
+    formData = reactive({
+        id: ExpenseRepository.billExpense.id,
+        expenseDetails: ExpenseRepository.billExpense.expenseDetails,
+        grandTotal: ExpenseRepository.billExpense.grandTotal,
+        supplierId: ExpenseRepository.billExpense.supplier?.id,
+        deletedIds: [],
+        billNumber: ExpenseRepository.billExpense.billNumber,
+        billDate: ExpenseRepository.billExpense.date,
+        note: ExpenseRepository.billExpense.note,
+        paid: ExpenseRepository.billExpense.paid,
+    });
 });
 const formRef = ref(null);
 const rules = {
@@ -280,27 +284,25 @@ const Duo = computed(() => {
 
 const update = async () => {
     // Check if formData.expenseDetails is defined and an array
+    console.log("Before transformation:", formData.expenseDetails);
     if (Array.isArray(formData.expenseDetails)) {
         formData.expenseDetails = formData.expenseDetails.map((data) => {
-            // Ensure expenseProduct exists before assigning the id
             if (data.expenseProduct && data.expenseProduct.id) {
                 return {
                     ...data,
                     product: { id: data.expenseProduct.id },
                 };
             } else {
-                // Handle the case where expenseProduct is undefined or does not have an id
-                console.error(
-                    "expenseProduct is missing or invalid in expenseDetails:",
-                    data
-                );
+                console.error("Missing or invalid expenseProduct:", data);
                 return data;
             }
         });
     }
+    console.log("After transformation:", formData.expenseDetails);
 
     const isValid = await formRef.value.validate();
     if (isValid) {
+        console.log(formData.id, "Update Id");
         await ExpenseRepository.UpdateBillExpense(formData.id, formData);
     }
 };

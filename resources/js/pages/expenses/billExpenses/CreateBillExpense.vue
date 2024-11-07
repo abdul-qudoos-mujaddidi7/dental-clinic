@@ -44,7 +44,7 @@
                 ></v-text-field>
             </v-form>
             <v-divider></v-divider>
-            <v-row no-gutters class="justify-space-between">
+            <v-row no-gutters class="justify-space-between mt-16">
                 <v-col cols="full" class="w-50" sm="12" md="12">
                     <div class="d-flex">
                         <v-text-field
@@ -290,9 +290,7 @@ const deleteItem = async (item) => {
     await ExpenseRepository.deleteEarning(item.id);
 };
 formData.billDate = ExpenseRepository.getTodaysDate();
-ExpenseRepository.ExpenseAllData();
-ExpenseRepository.ManyAccounts();
-ExpenseRepository.Currency();
+
 ExpenseRepository.Suppliers();
 // ====================
 // =====================================

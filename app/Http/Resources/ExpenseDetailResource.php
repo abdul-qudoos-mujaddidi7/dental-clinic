@@ -17,8 +17,8 @@ class ExpenseDetailResource extends JsonResource
             return [
                 'id' => $this->id,
                 'billExpenseId' => $this->bill_expense_id,
-                'productId' => $this->product->id, 
-                'name' => $this->product->name, 
+                'productId' => $this->product?->id, 
+                'name' => $this->product?->name, 
                 'cost' => $this->cost,
                 'quantity' => $this->quantity,
                 'total' => $this->total,

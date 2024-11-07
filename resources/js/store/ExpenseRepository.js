@@ -657,7 +657,7 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
             this.loading = true;
 
             const response = await axios.get(
-                `expense_products?page=${page}&perPage=${itemsPerPage}&search=${this.expenseProductSearch}`
+                `products?page=${page}&perPage=${itemsPerPage}&search=${this.expenseProductSearch}`
             );
             this.expenseProducts = response.data.data;
             this.totalItems = response.data.meta.total;
@@ -680,7 +680,7 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
                 // Adding a custom header to the Axios request
                 const config = {
                     method: "POST",
-                    url: "expense_products",
+                    url: "products",
 
                     data: formData,
                 };
@@ -701,7 +701,7 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
             try {
                 const config = {
                     method: "PUT",
-                    url: `expense_products/${id}`,
+                    url: `products/${id}`,
 
                     data: data,
                 };
@@ -902,7 +902,7 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
                     return { ...data, name: data.expenseProduct.name };
                 });
 
-                console.log(this.expenseProduct, "fetchBillExpense");
+                console.log(this.expenseProduct, "fetchBillExpenses");
             } catch (err) {
                 // this.error = err.message;
             }
@@ -923,7 +923,7 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
                 this.createDialog = false;
                 this.router.push("/billExpense");
 
-                this.FetchBillExpenses({
+                this.fetchBillExpenses({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });
@@ -946,7 +946,7 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
 
                 this.router.push("/billExpense");
 
-                this.FetchBillExpenses({
+                this.fetchBillExpenses({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });
@@ -969,7 +969,7 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
                 const response = await axios(config);
 
                 this.supplier = response.data.data;
-                this.FetchBillExpenses({
+                this.fetchBillExpenses({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });
