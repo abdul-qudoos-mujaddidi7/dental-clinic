@@ -32,16 +32,16 @@
                             <v-text-field
                                 v-model="formData.name"
                                 variant="outlined"
-                                label="Product"
+                                label="Category *"
                                 class="pb-4"
                                 density="compact"
                                 :rules="[rules.required]"
                             ></v-text-field>
 
                             <v-text-field
-                                v-model="formData.unit"
+                                v-model="formData.description"
                                 variant="outlined"
-                                label="Unit "
+                                label="Description "
                                 class="pb-3"
                                 density="compact"
                                 :rules="[rules.required]"
@@ -72,9 +72,9 @@ const ExpenseRepository = useExpenseRepository();
 const formRef = ref(null);
 
 const formData = reactive({
-    id: ExpenseRepository.expenseProduct.id,
-    name: ExpenseRepository.expenseProduct.name,
-    unit: ExpenseRepository.expenseProduct.unit,
+    id: ExpenseRepository.expenseCategory.id,
+    name: ExpenseRepository.expenseCategory.name,
+    description: ExpenseRepository.expenseCategory.description,
 });
 const rules = {
     required: (value) => !!value || "This field is required.",
@@ -83,16 +83,16 @@ const rules = {
         /^[a-zA-Z\u0600-\u06FF\s]*$/.test(value) ||
         "Please enter a valid name.",
 };
-console.log(ExpenseRepository.Expense, "man");
+
 const save = async () => {
     const isValid = await formRef.value.validate();
     if (isValid) {
         if (ExpenseRepository.isEditMode) {
-            await ExpenseRepository.UpdateExpenseProduct(formData.id, formData);
+            await ExpenseRepository.UpdateExpenseCat(formData.id, formData);
         } else {
-            await ExpenseRepository.CreateExpenseProduct(formData);
+            await ExpenseRepository.CreateExpenseCat(formData);
         }
     }
 };
-formData.date = ExpenseRepository.getTodaysDate();
+
 </script>

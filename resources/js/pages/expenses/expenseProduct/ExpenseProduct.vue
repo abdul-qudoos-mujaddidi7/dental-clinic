@@ -156,18 +156,18 @@ const sendSelectedIds = () => {
 
 // delete and update Create
 const CreateDialogShow = () => {
-    ExpenseRepository.Expenses = {};
-    ExpenseRepository.Expense = {};
+    ExpenseRepository.expenseProducts = {};
+    ExpenseRepository.expenseProduct = {};
     ExpenseRepository.setEditMode(false);
     ExpenseRepository.createDialog = true;
 };
 
 const edit = (item) => {
-    console.log(item, "me");
+    console.log(item, "id what ");
     ExpenseRepository.setEditMode(true);
-    ExpenseRepository.Expense = {};
-    if (Object.keys(ExpenseRepository.Expense).length === 0) {
-        ExpenseRepository.fetchExpense(item.id)
+    ExpenseRepository.expenseProduct = {};
+    if (Object.keys(ExpenseRepository.expenseProduct).length === 0) {
+        ExpenseRepository.FetchExpenseProduct(item.id)
             .then(() => {
                 ExpenseRepository.createDialog = true;
             })
@@ -178,7 +178,7 @@ const edit = (item) => {
 };
 
 const deleteItem = async (item) => {
-    await ExpenseRepository.DeleteExpense(item.id);
+    await ExpenseRepository.DeleteExpenseProduct(item.id);
 };
 // header
 const headers = [

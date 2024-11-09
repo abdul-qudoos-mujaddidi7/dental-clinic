@@ -48,6 +48,33 @@
                     </router-link>
                 </v-list>
             </transition>
+            <!-- people -->
+            <v-list-item
+                active-class="bg-primaryOld text-white"
+                prepend-icon="mdi mdi-card-account-details-outline"
+                value="people"
+                @click="togglePeople"
+                class="transition-all duration-300 cursor-pointer py-3 borderRadius"
+            >
+                People
+            </v-list-item>
+            <transition name="slide-fade">
+                <v-list v-if="isPeopleVisible" class="pl-4">
+                    <router-link
+                        v-for="item in peopleItems"
+                        :key="item.to"
+                        :to="item.to"
+                    >
+                        <v-list-item
+                            :title="item.title"
+                            :prepend-icon="item.icon"
+                            :value="item.value"
+                            color="primaryOld"
+                            class="child rounded-lg"
+                        />
+                    </router-link>
+                </v-list>
+            </transition>
         </div>
 
         <div class="mt-auto">
@@ -67,10 +94,14 @@ import { ref } from "vue";
 
 // State for list visibility
 const isListVisible = ref(false);
+const isPeopleVisible = ref(false);
 
 // Toggle for list items
 const toggleList = () => {
     isListVisible.value = !isListVisible.value;
+};
+const togglePeople = () => {
+    isPeopleVisible.value = !isPeopleVisible.value;
 };
 
 // Define navigation items in a structured list for cleaner handling
@@ -95,7 +126,7 @@ const navItems = [
         value: "expense product",
     },
     {
-        to: "/expensecat",
+        to: "/expenseCat",
         title: "Category",
         icon: "mdi mdi-circle-medium",
         value: "categories",
@@ -105,6 +136,39 @@ const navItems = [
         title: "Owner Pickup",
         icon: "mdi mdi-circle-medium",
         value: "supplier",
+    },
+];
+const peopleItems = [
+    {
+        to: "/patients",
+        title: "Patient",
+        icon: "mdi mdi-circle-medium",
+        value: "AllExpenses",
+    },
+    {
+        to: "/billExpense",
+        title: "Bill Expense",
+        icon: "mdi mdi-circle-medium",
+        value: "billExpense",
+    },
+
+    {
+        to: "/expenseProducts",
+        title: "Products",
+        icon: "mdi mdi-circle-medium",
+        value: "expense product",
+    },
+    {
+        to: "/expenseCat",
+        title: "Category",
+        icon: "mdi mdi-circle-medium",
+        value: "categories",
+    },
+    {
+        to: "/ownerPickup",
+        title: "Owner Pickup",
+        icon: "mdi mdi-circle-medium",
+        value: "ownerPickup",
     },
 ];
 </script>

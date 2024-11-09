@@ -22,30 +22,51 @@
                             <v-icon>mdi-close</v-icon>
                         </v-btn>
                     </v-card-title>
-                    <v-divider
-                        class="border-opacity-100 mx-6"
-                        style=""
-                    ></v-divider>
+                    <v-divider class="border-opacity-100 mx-6"></v-divider>
 
                     <v-card-text>
                         <v-form ref="formRef" class="pt-4">
+                            <div class="d-flex w-100">
+                                <v-text-field
+                                    v-model="formData.date"
+                                    variant="outlined"
+                                    label="Date"
+                                    class="pb-4 w-50 pr-2"
+                                    density="compact"
+                                    :rules="[rules.required]"
+                                    type="date"
+                                ></v-text-field>
+                                <v-autocomplete
+                                    v-model="formData.ownerId"
+                                    :items="ExpenseRepository.owner"
+                                    :return-object="false"
+                                    variant="outlined"
+                                    label="owners *"
+                                    item-value="id"
+                                    item-title="first_name"
+                                    density="compact"
+                                    :rules="[rules.required]"
+                                    class="w-50 pl-2 pb-4"
+                                >
+                                </v-autocomplete>
+                            </div>
+
                             <v-text-field
-                                v-model="formData.name"
+                                v-model="formData.amount"
                                 variant="outlined"
-                                label="Product"
-                                class="pb-4"
+                                label="Amount "
+                       
                                 density="compact"
                                 :rules="[rules.required]"
                             ></v-text-field>
 
-                            <v-text-field
-                                v-model="formData.unit"
+                            <v-textarea
+                                v-model="formData.note"
                                 variant="outlined"
-                                label="Unit "
-                                class="pb-3"
+                                label="Description "
                                 density="compact"
-                                :rules="[rules.required]"
-                            ></v-text-field>
+                            >
+                            </v-textarea>
                         </v-form>
                     </v-card-text>
 
@@ -72,9 +93,11 @@ const ExpenseRepository = useExpenseRepository();
 const formRef = ref(null);
 
 const formData = reactive({
-    id: ExpenseRepository.expenseProduct.id,
-    name: ExpenseRepository.expenseProduct.name,
-    unit: ExpenseRepository.expenseProduct.unit,
+    id: ExpenseRepository.ownerPickup.id,
+    amount: ExpenseRepository.ownerPickup.amount,
+    date: ExpenseRepository.ownerPickup.date,
+    note: ExpenseRepository.ownerPickup.description,
+    ownerId: ExpenseRepository.ownerPickup.owner?.ownerID,
 });
 const rules = {
     required: (value) => !!value || "This field is required.",
@@ -83,16 +106,17 @@ const rules = {
         /^[a-zA-Z\u0600-\u06FF\s]*$/.test(value) ||
         "Please enter a valid name.",
 };
-console.log(ExpenseRepository.Expense, "man");
+
 const save = async () => {
     const isValid = await formRef.value.validate();
     if (isValid) {
         if (ExpenseRepository.isEditMode) {
-            await ExpenseRepository.UpdateExpenseProduct(formData.id, formData);
+            await ExpenseRepository.UpdateOwnerPickup(formData.id, formData);
         } else {
-            await ExpenseRepository.CreateExpenseProduct(formData);
+            await ExpenseRepository.CreateOwnerPickup(formData);
         }
     }
 };
-formData.date = ExpenseRepository.getTodaysDate();
+ExpenseRepository.fetchOwners();
+formData.date = ExpenseRepository.getTodaysDate()
 </script>

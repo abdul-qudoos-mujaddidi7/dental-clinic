@@ -203,46 +203,46 @@
 
 <script setup>
 import AppBar from "../../../components/AppBar.vue";
-import { reactive, computed, ref, watch, onMounted } from "vue";
+import { reactive, ref, watch, onMounted, computed } from "vue";
 import { useRoute } from "vue-router";
-
 import { useExpenseRepository } from "@/store/ExpenseRepository";
 
-// import CReateExpensePRoduct from "../expenceProduct/CreateExpenseProduct.vue";
 const ExpenseRepository = useExpenseRepository();
-const CalcFetchProduct = (index) => {
-    console.log(index, "man of the match");
-    ExpenseRepository.fetchProduct(index.id);
-    clearSearch();
-};
-const clearSearch = () => {
-    ExpenseRepository.billExpenseSearch = ""; // Clear repository's search
-    ExpenseRepository.searchFetch = [];
-};
-const removeProduct = (index) => {
-    ExpenseRepository.expenseProduct.splice(index, 1);
-    // console.log(ExpenseRepository.expenseProduct);
-};
-const createExpenseProduct = () => {
-    ExpenseRepository.createDialog = true;
-};
-
 const routeParams = useRoute();
-let formData = [];
-ExpenseRepository.fetchBillExpense(routeParams.params.id).then((res) => {
-    console.log("Fetched Data:", ExpenseRepository.billExpense);
-    formData = reactive({
-        id: ExpenseRepository.billExpense.id,
-        expenseDetails: ExpenseRepository.billExpense.expenseDetails,
-        grandTotal: ExpenseRepository.billExpense.grandTotal,
-        supplierId: ExpenseRepository.billExpense.supplier?.id,
-        deletedIds: [],
-        billNumber: ExpenseRepository.billExpense.billNumber,
-        billDate: ExpenseRepository.billExpense.date,
-        note: ExpenseRepository.billExpense.note,
-        paid: ExpenseRepository.billExpense.paid,
-    });
+
+let formData = reactive({
+    id: null,
+    expenseDetails: [],
+    grandTotal: 0,
+    supplierId: null,
+    deletedIds: [],
+    billNumber: "",
+    billDate: "",
+    note: "",
+    paid: 0,
 });
+
+// Fetch data and initialize formData on component mount
+onMounted(async () => {
+    await ExpenseRepository.fetchBillExpense(routeParams.params.id);
+
+    // Update each property individually for reactivity
+    const billExpense = ExpenseRepository.billExpense;
+    formData.id = billExpense.id;
+    formData.expenseDetails = billExpense.expenseDetails || [];
+    formData.grandTotal = billExpense.grandTotal;
+    formData.supplierId = billExpense.supplier?.id;
+    formData.billNumber = billExpense.billNumber;
+    formData.billDate = billExpense.date;
+    formData.note = billExpense.note;
+    formData.paid = billExpense.paid;
+
+    // Deduplicate expenseProduct array without losing reactivity
+    ExpenseRepository.expenseProduct = ExpenseRepository.expenseProduct.filter(
+        (item, index, self) => index === self.findIndex((i) => i.id === item.id)
+    );
+});
+
 const formRef = ref(null);
 const rules = {
     required: (value) => !!value || "This field is required.",
@@ -250,74 +250,66 @@ const rules = {
         /^[a-zA-Z\u0600-\u06FF\s]*$/.test(value) || "Invalid name.",
 };
 
-const multiple = (pro) => {
-    console.log(pro);
-    const add = pro.quantity * pro.cost;
-    console.log(add);
-    return add || 0;
+// Handle selecting a product from search results without duplicates
+const CalcFetchProduct = (selectedProduct) => {
+    const exists = ExpenseRepository.expenseProduct.some(
+        (product) => product.id === selectedProduct.id
+    );
+    if (!exists) {
+        ExpenseRepository.expenseProduct.push(selectedProduct);
+    }
+    clearSearch();
 };
 
+// Clear search results
+const clearSearch = () => {
+    ExpenseRepository.billExpenseSearch = "";
+    ExpenseRepository.searchFetch = [];
+};
+
+// Remove product by index
+const removeProduct = (index) => {
+    ExpenseRepository.expenseProduct.splice(index, 1);
+};
+
+// Calculate total for each product
+const multiple = (pro) => (pro.quantity * pro.cost) || 0;
+
+// Watch for changes in expenseProduct to recalculate subtotals
 watch(
     () => ExpenseRepository.expenseProduct,
     () => {
-        ExpenseRepository.expenseProduct.forEach((expenseProduct) => {
-            // Update the 'subtotal' property for each service
-            expenseProduct.total = multiple(expenseProduct);
-            console.log(expenseProduct);
+        ExpenseRepository.expenseProduct.forEach((product) => {
+            product.total = multiple(product);
         });
     },
     { deep: true }
 );
 
+// Calculate total sum
 const totalSum = computed(() => {
-    const total = ExpenseRepository.expenseProduct.reduce(
+    return ExpenseRepository.expenseProduct.reduce(
         (acc, item) => acc + multiple(item),
         0
     );
-    formData.grandTotal = total;
-    return total;
-});
-// Computed Duo (remaining balance)
-const Duo = computed(() => {
-    return totalSum.value - formData.paid || 0;
 });
 
+// Update function to transform and submit formData
 const update = async () => {
-    // Check if formData.expenseDetails is defined and an array
-    console.log("Before transformation:", formData.expenseDetails);
-    if (Array.isArray(formData.expenseDetails)) {
-        formData.expenseDetails = formData.expenseDetails.map((data) => {
-            if (data.expenseProduct && data.expenseProduct.id) {
-                return {
-                    ...data,
-                    product: { id: data.expenseProduct.id },
-                };
-            } else {
-                console.error("Missing or invalid expenseProduct:", data);
-                return data;
-            }
-        });
-    }
-    console.log("After transformation:", formData.expenseDetails);
-
+    formData.expenseDetails = formData.expenseDetails.map(data => {
+        return data.expenseProduct && data.expenseProduct.id
+            ? { ...data, product: { id: data.expenseProduct.id } }
+            : data;
+    });
+    
     const isValid = await formRef.value.validate();
     if (isValid) {
-        console.log(formData.id, "Update Id");
         await ExpenseRepository.UpdateBillExpense(formData.id, formData);
     }
 };
 
-const saveData = async (id) => {
-    await ExpenseRepository.fetchProduct(id);
-};
-
-const deleteItem = async (item) => {
-    await ExpenseRepository.deleteEarning(item.id);
-};
-formData.billDate = ExpenseRepository.getTodaysDate();
+// Fetch suppliers for dropdown
 ExpenseRepository.Suppliers();
-// ====================
-// =====================================
 </script>
 
 <style scoped>
