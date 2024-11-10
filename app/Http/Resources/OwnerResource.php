@@ -16,7 +16,7 @@ class OwnerResource extends JsonResource
     {
         return [
             "id"=> $this->id,
-            "name"=> $this->first_name,
+            "name"=> $this->name,
             "phone"=> $this->phone,
             // "lastName"=> $this->last_name,
             // "email"=> $this->email,
