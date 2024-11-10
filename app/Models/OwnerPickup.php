@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class OwnerPickup extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $fillable = ['date','amount','owner_id','description'];
+    protected $fillable = ['date','amount','owner_id','amount'];
 
     public function owner(){
         return $this->belongsTo(Owner::class);
