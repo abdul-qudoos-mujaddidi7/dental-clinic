@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignIdFor(Owner::class);
             $table->date('date');
             $table->decimal('amount',10,2);
-            $table->text('description')->nullable();
+            $table->text('note')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

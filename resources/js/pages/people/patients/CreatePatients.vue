@@ -3,7 +3,7 @@
         <v-dialog
             transition="dialog-top-transition"
             width="50rem"
-            v-model="ExpenseRepository.createDialog"
+            v-model="PeopleRepository.createDialog"
             class="rtl-dialog"
         >
             <template v-slot:default="{ isActive }">
@@ -13,7 +13,7 @@
                     >
                         <h2 class="font-weight-bold pl-4">
                             {{
-                                ExpenseRepository.isEditMode
+                                PeopleRepository.isEditMode
                                     ? "Update"
                                     : "Create"
                             }}
@@ -22,37 +22,47 @@
                             <v-icon>mdi-close</v-icon>
                         </v-btn>
                     </v-card-title>
-                    <v-divider
-                        class="border-opacity-100 mx-6"
-                        style=""
-                    ></v-divider>
+                    <v-divider class="border-opacity-100 mx-6"></v-divider>
 
                     <v-card-text>
                         <v-form ref="formRef" class="pt-4">
+                       
+                                <v-text-field
+                                    v-model="formData.name"
+                                    variant="outlined"
+                                    label="Name *"
+                                    class="pb-4"
+                                    density="compact"
+                                    :rules="[rules.required]"
+                                  
+                                ></v-text-field>
+                     
+                            
                             <v-text-field
-                                v-model="formData.name"
+                                v-model="formData.phone"
                                 variant="outlined"
-                                label="Product"
-                                class="pb-4"
+                                label="Phone "
                                 density="compact"
+                                :counter="10"
+                                type="tel"
+                                class="pb-4"
                                 :rules="[rules.required]"
                             ></v-text-field>
 
-                            <v-text-field
-                                v-model="formData.unit"
+                            <v-textarea
+                                v-model="formData.address"
                                 variant="outlined"
-                                label="Unit "
-                                class="pb-3"
+                                label="Address  "
                                 density="compact"
-                                :rules="[rules.required]"
-                            ></v-text-field>
+                            >
+                            </v-textarea>
                         </v-form>
                     </v-card-text>
 
                     <div class="d-flex flex-row-reverse mb-6 mx-6">
                         <v-btn color="#112F53" class="px-4" @click="save">
                             {{
-                                ExpenseRepository.isEditMode
+                                PeopleRepository.isEditMode
                                     ? "Update"
                                     : "Submit"
                             }}
@@ -66,15 +76,18 @@
 
 <script setup>
 import { ref, reactive } from "vue";
-import { useExpenseRepository } from "@/store/ExpenseRepository";
+import { usePeopleRepository } from "@/store/PeopleRepository";
 
-const ExpenseRepository = useExpenseRepository();
+const PeopleRepository = usePeopleRepository();
 const formRef = ref(null);
 
 const formData = reactive({
-    id: ExpenseRepository.expenseProduct.id,
-    name: ExpenseRepository.expenseProduct.name,
-    unit: ExpenseRepository.expenseProduct.unit,
+    id: PeopleRepository.patient.id,
+    name: PeopleRepository.patient.name,
+    phone: PeopleRepository.patient.phone,
+    address: PeopleRepository.patient.address,
+    last_name:"nadeem"
+  
 });
 const rules = {
     required: (value) => !!value || "This field is required.",
@@ -83,16 +96,16 @@ const rules = {
         /^[a-zA-Z\u0600-\u06FF\s]*$/.test(value) ||
         "Please enter a valid name.",
 };
-console.log(ExpenseRepository.Expense, "man");
+
 const save = async () => {
     const isValid = await formRef.value.validate();
     if (isValid) {
-        if (ExpenseRepository.isEditMode) {
-            await ExpenseRepository.UpdateExpenseProduct(formData.id, formData);
+        if (PeopleRepository.isEditMode) {
+            await PeopleRepository.UpdatePatient(formData.id, formData);
         } else {
-            await ExpenseRepository.CreateExpenseProduct(formData);
+            await PeopleRepository.CreatePatient(formData);
         }
     }
 };
-formData.date = ExpenseRepository.getTodaysDate();
+
 </script>
