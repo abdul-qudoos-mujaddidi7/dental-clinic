@@ -18,13 +18,14 @@ class PatientResource extends JsonResource
             
                 'id' => $this->id,
                 'name' => $this->name,
-                'last_name' => $this->last_name,
-                'dateOfBirth' => $this->date_of_birth,
-                'gender' => $this->gender,
-                'diseasesHistory' => $this->diseases_history,
-                'particularToFemale' => $this->particular_to_female,
-                'doctorWarning' => $this->doctor_warning,
+                'address'=>$this->address,
                 'phone' => $this->phone,
+                // 'last_name' => $this->last_name,
+                // 'dateOfBirth' => $this->date_of_birth,
+                // 'gender' => $this->gender,
+                // 'diseasesHistory' => $this->diseases_history,
+                // 'particularToFemale' => $this->particular_to_female,
+                // 'doctorWarning' => $this->doctor_warning,
             ];
     }
 }

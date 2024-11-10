@@ -24,9 +24,9 @@ class PatientRequest extends FormRequest
         
             return [
                 'name' => 'required|string',
-                'last_name' => 'required|string',
                 'address'=>'required|string',
                 'phone' => 'required|string|max:15', // Adjust max length as needed
+                // 'last_name' => 'required|string',
                 // 'date_of_birth' => 'required|date',
                 // 'gender' => 'required|in:Male,Female',
                 // 'diseases_history' => 'nullable|array',

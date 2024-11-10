@@ -23,7 +23,7 @@ class OwnerController extends Controller
 
     // Query for owner pickups with total amounts
     $ownerPickup = DB::table('owner_pickups')
-        ->selectRaw('owners.first_name, owners.phone, owners.id, SUM(amount) as totalAmount')
+        ->selectRaw('owners.id , owners.first_name, owners.phone, , SUM(amount) as totalAmount')
         ->leftJoin('owners', 'owner_pickups.owner_id', '=', 'owners.id')
         ->groupBy('owner_pickups.owner_id', 'owners.first_name','owners.phone','owners.id');
 

@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('patients', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('last_name');
             $table->string('phone');
             $table->string('address');
             $table->timestamps();
+            // $table->string('last_name');
             // $table->date('date_of_birth');
             // $table->enum('gender', ['Male', 'Female']);
             // $table->json('diseases_history')->nullable(); // JSON format for diseases history
