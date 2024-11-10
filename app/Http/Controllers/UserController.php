@@ -19,10 +19,10 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $perPage= $request->input("perPage");
-        $search= $request->input("search");
+        $perPage = $request->input("perPage");
+        $search = $request->input("search");
 
-        $users= User::search($search)->latest()->paginate($perPage);
+        $users = User::search($search)->latest()->paginate($perPage);
         return UserResource::collection($users);
     }
 
@@ -31,14 +31,14 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
-        $validated= $request->validated();
-        $validated['image'] = $request->hasFile('image') ? $this->storeImage($request,'user'):null;
+        $validated = $request->validated();
+        $validated['image'] = $request->hasFile('image') ? $this->storeImage($request, 'user') : null;
         $role = Role::findOrFail($validated["role_id"]);
-        $user= User::create($validated);
+        $user = User::create($validated);
         // $user->password = Hash::make($request->input('password'));
         // $user->save();
         $user->assignRole($role);
-        
+
         return new UserResource($user);
     }
 
@@ -48,7 +48,6 @@ class UserController extends Controller
     public function show(User $user)
     {
         return UserResource::make($user);
-
     }
 
     /**
@@ -56,14 +55,29 @@ class UserController extends Controller
      */
     public function update(UserRequest $request, User $user)
     {
-        $validated= $request->validated();
-        $validated['image'] = $request->hasFile('image') ? $this->updateImage($request,$user,'user'): null;
+        $validated = $request->validated();
+        $validated['image'] = $request->hasFile('image') ? $this->updateImage($request, $user, 'user') : null;
         $role = Role::findOrFail($validated['role_id']);
         $user->update($validated);
         $user->syncRoles([$role]);
 
         return new UserResource($user);
     }
+
+
+    public function updateStatus(Request $request, User $user)
+{
+    $request->validate([
+        'status' => 'required|boolean', // validate the status as required and boolean
+    ]);
+
+    $user->status = $request->status;
+    $user->save();
+
+    return response()->json(['message' => 'User status updated successfully', 'status' => $user->status], 200);
+}
+
+
 
     /**
      * Remove the specified resource from storage.
