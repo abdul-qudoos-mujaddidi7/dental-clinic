@@ -30,12 +30,12 @@ class OwnerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "first_name"=> "required|string",
-            "last_name"=> "required|string",
-            "email"=> "required|unique:owners,email",
+            "name"=> "required|string",
             "phone"=> "required|max:15",
-            "share"=> "required|numeric",
-            "image"=>"required|string"
+            // "last_name"=> "required|string",
+            // "email"=> "required|unique:owners,email",
+            // "share"=> "required|numeric",
+            // "image"=>"required|string"
         ];
     }
 }

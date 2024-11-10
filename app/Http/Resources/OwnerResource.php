@@ -16,12 +16,12 @@ class OwnerResource extends JsonResource
     {
         return [
             "id"=> $this->id,
-            "firstName"=> $this->first_name,
-            "lastName"=> $this->last_name,
-            "email"=> $this->email,
+            "name"=> $this->first_name,
             "phone"=> $this->phone,
-            "image"=> $this->image,
-            "share"=> $this->share,
+            // "lastName"=> $this->last_name,
+            // "email"=> $this->email,
+            // "image"=> $this->image,
+            // "share"=> $this->share,
         ];
     }
 }

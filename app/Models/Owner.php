@@ -10,12 +10,12 @@ class Owner extends Model
     use HasFactory;
 
     protected $fillable = [
-        'first_name',
-        'last_name',
+        'name',
         'phone',
-        'email',
-        'image',
-        'share'
+        // 'last_name',
+        // 'email',
+        // 'image',
+        // 'share'
     ];
 
     public function ownerPickups()
