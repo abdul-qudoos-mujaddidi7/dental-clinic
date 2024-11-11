@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Dentist extends Model
 {
     use HasFactory;
-    protected $fillable = ['first_name','phone'
+    protected $fillable = ['first_name','phone'];
     // ,'last_name',
 
     // 'address',
@@ -16,7 +16,6 @@ class Dentist extends Model
     // 'image',
     // 'status',
     // 'hire_date'
-    ];
 
 
     public function scopeSearch($query,$search){
