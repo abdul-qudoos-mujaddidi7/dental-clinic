@@ -74,7 +74,7 @@ class DentistController extends Controller
 
         $validated= $request->validate([
             "doctorsIds"=>"required|array",
-            "doctorsIds.*"=>"required|exists,dentists,id"
+            "doctorsIds.*"=>"required|exists:dentists,id"
         ]);
 
         Dentist::whereIn('id',$validated['doctorsIds'])->delete();
