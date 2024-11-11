@@ -601,6 +601,27 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
             }
         }
         ,
+        // 
+        async bulkDeleteBillExpense(data) {
+            console.log(data);
+            try {
+                const config = {
+                    method: "DELETE",
+                    url: "billExpenseBulkDelete",
+                    data: data,
+                };
+
+                const response = await axios(config);
+
+                this.expenses = response.data.data;
+                this.fetchBillExpenses({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                this.error = err;
+            }
+        },
         async fetchBillExpenses({ page, itemsPerPage }) {
             this.loading = true;
 
@@ -629,9 +650,7 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
             } catch (err) {
                 // Handle error (e.g., display error message)
             }
-        }
-            
-        ,
+        },
         async CreateBillExpense(formData) {
             console.log(formData);
             try {
@@ -726,7 +745,6 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
                 // this.error = err.message;
             }
         },
-
         async CreateBillExpensePayment(formData) {
             console.log(formData);
             try {

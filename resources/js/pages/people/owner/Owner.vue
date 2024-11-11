@@ -1,8 +1,8 @@
 <template>
-    <CreateExpense v-if="ExpenseRepository.createDialog" />
+    <CreateOwner v-if="PeopleRepository.createDialog" />
     <div class="all-expense rounded-xl">
         <div class="card rounded-xl">
-            <AppBar mainTitle="Bill Expense" sub-title="expense" />
+            <AppBar mainTitle="Owners" sub-title="people" />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
@@ -19,7 +19,7 @@
                         label="Search ..."
                         append-inner-icon="mdi-magnify"
                         hide-details
-                        v-model="ExpenseRepository.billExpenseSearch"
+                        v-model="PeopleRepository.ownerSearch"
                     ></v-text-field>
                 </div>
                 <div class="btn">
@@ -27,17 +27,14 @@
                         Filter
                     </v-btn>
                     &nbsp;
-                    <router-link to="/createBillExpense">
-
-                        <v-btn
+                    <v-btn
                         @click="CreateDialogShow"
                         color="primaryOld"
                         variant="flat"
                         text="Create"
                         class="px-6"
-                        >
+                    >
                     </v-btn>
-                </router-link>
                 </div>
             </div>
             <!-- v-table server  -->
@@ -49,30 +46,20 @@
                                 <v-data-table-server
                                     theme="cursor-pointer"
                                     v-model:items-per-page="
-                                        ExpenseRepository.itemsPerPage
+                                        PeopleRepository.itemsPerPage
                                     "
                                     :headers="headers"
-                                    :items-length="ExpenseRepository.totalItems"
-                                    :items="ExpenseRepository.billExpenses"
-                                    :loading="ExpenseRepository.loading"
-                                    :search="ExpenseRepository.billExpenseSearch"
+                                    :items-length="PeopleRepository.totalItems"
+                                    :items="PeopleRepository.owners"
+                                    :loading="PeopleRepository.loading"
+                                    :search="PeopleRepository.ownerSearch"
                                     @update:options="
-                                        ExpenseRepository.fetchBillExpenses
+                                        PeopleRepository.fetchOwners
                                     "
-                                    :item-key="ExpenseRepository.billExpenses"
+                                    :item-key="PeopleRepository.owners"
                                     hover
                                     class="w-100 mx-auto"
                                 >
-                                    <!-- Checkbox for selecting rows -->
-
-                                    <template v-slot:item.checkbox="{ item }">
-                                        <v-checkbox
-                                            :value="item.id"
-                                            v-model="selectedIds"
-                                            class="w-10 d-flex"
-                                        ></v-checkbox>
-                                    </template>
-
                                     <template v-slot:item.action="{ item }">
                                         <v-menu>
                                             <template
@@ -86,14 +73,8 @@
                                             </template>
                                             <v-list>
                                                 <v-list-item>
-                                                    <router-link
-                                                        :to="
-                                                            '/updateBillExpense/' +
-                                                            item.id
-                                                        "
-                                                    >
                                                     <v-list-item-title
-                                                       
+                                                        @click="edit(item)"
                                                         class="cursor-pointer d-flex gap-3 justify-left pb-3"
                                                     >
                                                         <v-icon
@@ -102,7 +83,6 @@
                                                         >
                                                         Edit
                                                     </v-list-item-title>
-                                                    </router-link>
 
                                                     <v-list-item-title
                                                         class="cursor-pointer d-flex gap-3"
@@ -120,16 +100,6 @@
                                         </v-menu>
                                     </template>
                                 </v-data-table-server>
-                                <v-btn
-                                    class="header-button"
-                                    v-if="selectedIds.length > 0"
-                                    @click="sendSelectedIds"
-                                    color="#B71C1C"
-                                    text="Delete"
-                                    flat
-                                >
-                                    
-                                </v-btn>
                             </v-col>
                         </v-row>
                     </v-main>
@@ -140,59 +110,44 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import AppBar from "../../../components/AppBar.vue";
-// 
-import { useExpenseRepository } from "@/store/ExpenseRepository";
-const ExpenseRepository = useExpenseRepository();
+import CreateOwner from "./CreateOwner.vue";
+import { usePeopleRepository } from "@/store/PeopleRepository";
+const PeopleRepository = usePeopleRepository();
 // bulk delete
-const selectedIds = ref([]); 
-const sendSelectedIds = () => {
-    if (selectedIds.value.length > 0) {
 
-        const data = {
-            billExpenseIds: selectedIds.value,
-        };
+// delete and update Create
+const CreateDialogShow = () => {
+    PeopleRepository.owner = {},
+    PeopleRepository.setEditMode(false);
+    PeopleRepository.createDialog = true;
+};
 
-        console.log("Sending data:", data);
-
-
-        ExpenseRepository.bulkDeleteBillExpense(data);
-    } else {
-        console.log("No IDs selected.");
+const edit = (item) => {
+    console.log(item, "me");
+    PeopleRepository.setEditMode(true);
+    PeopleRepository.owner = {};
+    if (Object.keys(PeopleRepository.owner).length === 0) {
+        PeopleRepository.fetchOwner(item.id)
+            .then(() => {
+                PeopleRepository.createDialog = true;
+            })
+            .catch((error) => {
+                console.error("Error fetching data:", error);
+            });
     }
 };
+
 const deleteItem = async (item) => {
-    await ExpenseRepository.DeleteBillExpense(item.id);
+    await PeopleRepository.DeleteOwner(item.id);
 };
 // header
 const headers = [
-    { title: "", key: "checkbox", align: "start", sortable: false },
-    { title: "Date", key: "date", align: "start", sortable: false },
-    { title: "Reference", key: "reference", align: "center", sortable: false },
-    { title: "Added By", key: "addedBy", align: "center", sortable: false },
-    {
-        title: "Supplier",
-        key: "supplier.name",
-        align: "center",
-        sortable: false,
-    },
-    { title: "Amount", key: "grandTotal", align: "center", sortable: false },
-    { title: "PAID", key: "paid", align: "center", sortable: false },
-    { title: "DUE", key: "due", align: "center", sortable: false },
-    
-    { title: "Action", key: "action", align: "center", sortable: false },
+    { title: "Name", key: "name", align: "start", sortable: false },
+    { title: "Pickup", key: "totalAmount", align: "center", sortable: false },
+    { title: "Phone", key: "phone", align: "center", sortable: false },
+
+    { title: "Action", key: "action", align: "end", sortable: false },
 ];
 </script>
-
-<style scoped>
-.v-data-table-server {
-    position: relative; 
-}
-.header-button {
-    position: absolute;
-    top: 0.7rem; 
-    left: 0.7rem;
-    z-index: 1;
-}
-</style>

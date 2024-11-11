@@ -131,12 +131,7 @@ const navItems = [
         icon: "mdi mdi-circle-medium",
         value: "categories",
     },
-    {
-        to: "/supplier",
-        title: "Owner Pickup",
-        icon: "mdi mdi-circle-medium",
-        value: "supplier",
-    },
+  
 ];
 const peopleItems = [
     {
@@ -153,14 +148,14 @@ const peopleItems = [
     },
 
     {
-        to: "/expenseProducts",
-        title: "Products",
+        to: "/owners",
+        title: "Owner",
         icon: "mdi mdi-circle-medium",
-        value: "expense product",
+        value: "owner",
     },
     {
-        to: "/expenseCat",
-        title: "Category",
+        to: "/doctors",
+        title: "Doctor",
         icon: "mdi mdi-circle-medium",
         value: "categories",
     },

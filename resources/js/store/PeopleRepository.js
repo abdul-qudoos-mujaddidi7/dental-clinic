@@ -23,6 +23,11 @@ export let usePeopleRepository =defineStore("PeopleRepository",{
             patients:reactive([]),
             patient:reactive([]),
             patientSearch:ref(""),
+            // owners 
+            owners:reactive([]),
+            owner:reactive([]),
+            ownerSearch:ref(""),
+
         }
     },
     actions:{
@@ -137,6 +142,210 @@ export let usePeopleRepository =defineStore("PeopleRepository",{
 
                 // this.patients = response.data.data;
                 this.fetchPatients({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                this.error = err;
+            }
+        },
+        // fetch owners 
+        async fetchOwners({ page, itemsPerPage }) {
+            this.loading = true;
+
+            const response = await axios.get(
+                `owners?page=${page}&perPage=${itemsPerPage}&search=${this.ownerSearch}`
+            );
+            this.owners = response.data.data;
+            this.totalItems = response.data.meta.total;
+            this.loading = false;
+        },
+        async fetchOwner(id) {
+            // this.error = null;
+            try {
+                const response = await axios.get(`owners/${id}`);
+                
+
+                this.owner = response.data.data;
+                console.log(this.Expense);
+            } catch (err) {
+                // this.error = err.message;
+            }
+        },
+        async UpdateOwner(id, data) {
+            try {
+                const config = {
+                    method: "POST",
+                    url: "owners/updateOwners/" + id,
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+
+                    data: data,
+                };
+
+                // Using Axios to make a post request with async/await and custom headers
+                const response = await axios(config);
+                this.createDialog = false;
+                this.fetchOwners({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                // If there's an error, set the error in the store
+                this.error = err;
+            }
+        },
+        async CreateOwner(formData) {
+            console.log(formData);
+            try {
+                // Adding a custom header to the Axios request
+                const config = {
+                    method: "POST",
+                    url: "owners",
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                    data: formData,
+                };
+
+                // Using Axios to make a GET request with async/await and custom headers
+                const response = await axios(config);
+                this.createDialog = false;
+                this.fetchOwners({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                // If there's an error, set the error in the stor
+            }
+        },
+        async DeleteOwner(id) {
+            this.isLoading = true;
+            this.owners = [];
+            this.error = null;
+
+            try {
+                const config = {
+                    method: "DELETE",
+                    url: "owners/" + id,
+                };
+
+                const response = await axios(config);
+
+                // this.patients = response.data.data;
+                this.fetchOwners({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                this.error = err;
+            }
+        },
+        // doctors
+        async bulkDeleteDoctor(data) {
+            console.log(data);
+            try {
+                const config = {
+                    method: "DELETE",
+                    url: "doctorBulkDelete",
+                    data: data,
+                };
+
+                const response = await axios(config);
+
+                this.doctors = response.data.data;
+                this.fetchPatients({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                this.error = err;
+            }
+        },
+        async fetchDoctors({ page, itemsPerPage }) {
+            this.loading = true;
+
+            const response = await axios.get(
+                `dentists?page=${page}&perPage=${itemsPerPage}&search=${this.doctorSearch}`
+            );
+            this.doctors = response.data.data;
+            this.totalItems = response.data.meta.total;
+            this.loading = false;
+        },
+        async fetchDoctor(id) {
+            // this.error = null;
+            try {
+                const response = await axios.get(`dentists/${id}`);
+
+                this.doctor = response.data.data;
+                console.log(this.Expense);
+            } catch (err) {
+                // this.error = err.message;
+            }
+        },
+        async UpdateDoctor(id, data) {
+            try {
+                const config = {
+                    method: "POST",
+                    url: "dentists/updateDentist/" + id,
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                    data: data,
+                };
+
+                // Using Axios to make a post request with async/await and custom headers
+                const response = await axios(config);
+                this.createDialog = false;
+                this.fetchDoctors({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                // If there's an error, set the error in the store
+                this.error = err;
+            }
+        },
+        async CreateDoctor(formData) {
+            console.log(formData);
+            try {
+                // Adding a custom header to the Axios request
+                const config = {
+                    method: "POST",
+                    url: "dentists",
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                    data: formData,
+                };
+
+                // Using Axios to make a GET request with async/await and custom headers
+                const response = await axios(config);
+                this.createDialog = false;
+                this.fetchDoctors({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                // If there's an error, set the error in the stor
+            }
+        },
+        async DeleteDoctor(id) {
+            this.isLoading = true;
+            this.dentists = [];
+            this.error = null;
+
+            try {
+                const config = {
+                    method: "DELETE",
+                    url: "dentists/" + id,
+                };
+
+                const response = await axios(config);
+
+                // this.patients = response.data.data;
+                this.fetchDoctors({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });
