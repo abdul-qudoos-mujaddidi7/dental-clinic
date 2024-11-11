@@ -27,6 +27,19 @@ export let usePeopleRepository =defineStore("PeopleRepository",{
             owners:reactive([]),
             owner:reactive([]),
             ownerSearch:ref(""),
+            // doctors
+            doctors:reactive([]),
+            doctor:reactive([]),
+            doctorSearch:ref(""),
+            // supplier 
+            suppliers:reactive([]),
+            supplier:reactive([]),
+            supplierSearch:ref(""),
+            // users
+            users:reactive([]),
+            user:reactive([]),
+            userSearch:ref(""),
+
 
         }
     },
@@ -248,14 +261,14 @@ export let usePeopleRepository =defineStore("PeopleRepository",{
             try {
                 const config = {
                     method: "DELETE",
-                    url: "doctorBulkDelete",
+                    url: "dentistBulkDelete",
                     data: data,
                 };
 
                 const response = await axios(config);
 
                 this.doctors = response.data.data;
-                this.fetchPatients({
+                this.fetchDoctors({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });
@@ -346,6 +359,240 @@ export let usePeopleRepository =defineStore("PeopleRepository",{
 
                 // this.patients = response.data.data;
                 this.fetchDoctors({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                this.error = err;
+            }
+        },
+        // supplier
+        async bulkDeleteSupplier(data) {
+            console.log(data);
+            try {
+                const config = {
+                    method: "DELETE",
+                    url: "supplierBulkDelete",
+                    data: data,
+                };
+
+                const response = await axios(config);
+
+                this.doctors = response.data.data;
+                this.fetchPatients({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                this.error = err;
+            }
+        },
+        async FetchSuppliers({ page, itemsPerPage }) {
+            this.loading = true;
+
+            const response = await axios.get(
+                `suppliers?page=${page}&perPage=${itemsPerPage}&search=${this.supplierSearch}`
+            );
+            this.suppliers = response.data.data;
+            this.totalItems = response.data.meta.total;
+            this.loading = false;
+        },
+        async FetchSupplier(id) {
+            // this.error = null;
+            try {
+                const response = await axios.get(`suppliers/${id}`);
+
+                this.supplier = response.data.data;
+                console.log(this.supplier);
+            } catch (err) {
+                // this.error = err.message;
+            }
+        },
+        async CreateSupplier(formData) {
+            console.log(formData);
+            try {
+                // Adding a custom header to the Axios request
+                const config = {
+                    method: "POST",
+                    url: "suppliers",
+
+                    data: formData,
+                };
+
+                // Using Axios to make a GET request with async/await and custom headers
+                const response = await axios(config);
+                this.createDialog = false;
+                this.FetchSuppliers({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                // If there's an error, set the error in the stor
+            }
+        },
+        async UpdateSupplier(id, data) {
+            console.log(data);
+            try {
+                const config = {
+                    method: "PUT",
+                    url: `suppliers/${id}`,
+
+                    data: data,
+                };
+
+                // Using Axios to make a post request with async/await and custom headers
+                const response = await axios(config);
+                this.updateDialog = false;
+                this.FetchSuppliers({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                // If there's an error, set the error in the store
+                this.error = err;
+            }
+        },
+        async DeleteSupplier(id) {
+            this.isLoading = true;
+            this.Expenses = [];
+            this.error = null;
+
+            try {
+                const config = {
+                    method: "DELETE",
+                    url: "suppliers/" + id,
+                };
+
+                const response = await axios(config);
+
+                // this.supplier = response.data.data;
+                this.FetchSuppliers({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                this.error = err;
+            }
+        },
+        // user 
+        async CreateForSwitch(status, id) {
+            console.log(status, "man", id);
+            try {
+                // Adding a custom header to the Axios request
+                const config = {
+                    method: "PUT",
+                    url: "users/status/" + id,
+
+                    data: status,
+                };
+
+                // Using Axios to make a GET request with async/await and custom headers
+                const response = await axios(config);
+                console.log(status, "man", id);
+            } catch (err) {
+                // If there's an error, set the error in the stor
+            }
+        },
+        async bulkDeleteUser(data) {
+            console.log(data);
+            try {
+                const config = {
+                    method: "DELETE",
+                    url: "userBulkDelete",
+                    data: data,
+                };
+
+                const response = await axios(config);
+
+                this.doctors = response.data.data;
+                this.FetchUsers({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                this.error = err;
+            }
+        },
+        async FetchUsers({ page, itemsPerPage }) {
+            this.loading = true;
+
+            const response = await axios.get(
+                `users?page=${page}&perPage=${itemsPerPage}&search=${this.userSearch}`
+            );
+            this.users = response.data.data;
+            this.totalItems = response.data.meta.total;
+            this.loading = false;
+        },
+        async FetchUser(id) {
+            // this.error = null;
+            try {
+                const response = await axios.get(`users/${id}`);
+
+                this.user = response.data.data;
+                console.log(this.supplier);
+            } catch (err) {
+                // this.error = err.message;
+            }
+        },
+        async CreateUser(formData) {
+            console.log(formData);
+            try {
+                // Adding a custom header to the Axios request
+                const config = {
+                    method: "POST",
+                    url: "users",
+
+                    data: formData,
+                };
+
+                // Using Axios to make a GET request with async/await and custom headers
+                const response = await axios(config);
+                this.createDialog = false;
+                this.FetchUsers({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                // If there's an error, set the error in the stor
+            }
+        },
+        async UpdateUser(id, data) {
+            console.log(data);
+            try {
+                const config = {
+                    method: "PUT",
+                    url: `users/${id}`,
+
+                    data: data,
+                };
+
+                // Using Axios to make a post request with async/await and custom headers
+                const response = await axios(config);
+                this.updateDialog = false;
+                this.FetchUsers({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                // If there's an error, set the error in the store
+                this.error = err;
+            }
+        },
+        async DeleteUser(id) {
+            this.isLoading = true;
+            this.Expenses = [];
+            this.error = null;
+
+            try {
+                const config = {
+                    method: "DELETE",
+                    url: "users/" + id,
+                };
+
+                const response = await axios(config);
+
+                // this.supplier = response.data.data;
+                this.FetchUsers({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });

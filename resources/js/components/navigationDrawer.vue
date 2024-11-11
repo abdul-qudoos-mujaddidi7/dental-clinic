@@ -141,10 +141,10 @@ const peopleItems = [
         value: "AllExpenses",
     },
     {
-        to: "/billExpense",
-        title: "Bill Expense",
+        to: "/user",
+        title: "User",
         icon: "mdi mdi-circle-medium",
-        value: "billExpense",
+        value: "user",
     },
 
     {
@@ -152,6 +152,13 @@ const peopleItems = [
         title: "Owner",
         icon: "mdi mdi-circle-medium",
         value: "owner",
+    },
+    
+    {
+        to: "/supplier",
+        title: "Supplier",
+        icon: "mdi mdi-circle-medium",
+        value: "supplier",
     },
     {
         to: "/doctors",

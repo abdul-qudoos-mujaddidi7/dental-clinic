@@ -13,6 +13,8 @@ import OwnerPickup from "./pages/expenses/ownerPickup/OwnerPickup.vue";
 import Patients from "./pages/people/patients/Patients.vue";
 import Owner from "./pages/people/owner/Owner.vue";
 import Doctor from "./pages/people/doctor/Doctor.vue";
+import Supplier from "./pages/people/supplier/Supplier.vue";
+import User from "./pages/people/user/User.vue";
 
 
 const router = createRouter({
@@ -32,6 +34,8 @@ const router = createRouter({
         {path: "/patients", component:Patients},
         {path: "/owners", component:Owner},
         {path: "/doctors", component:Doctor},
+        {path: "/supplier", component:Supplier},
+        {path: "/user", component:User},
 
 
         

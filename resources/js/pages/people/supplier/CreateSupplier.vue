@@ -28,7 +28,7 @@
                         <v-form ref="formRef" class="pt-4">
                        
                                 <v-text-field
-                                    v-model="formData.firstName"
+                                    v-model="formData.name"
                                     variant="outlined"
                                     label="Name *"
                                     class="pb-4"
@@ -76,9 +76,9 @@ const PeopleRepository = usePeopleRepository();
 const formRef = ref(null);
 
 const formData = reactive({
-    id: PeopleRepository.doctor.id,
-    firstName: PeopleRepository.doctor.firstName,
-    phone: PeopleRepository.doctor.phone,
+    id: PeopleRepository.supplier.id,
+    name: PeopleRepository.supplier.name,
+    phone: PeopleRepository.supplier.phone,
   
 });
 const rules = {
@@ -93,9 +93,9 @@ const save = async () => {
     const isValid = await formRef.value.validate();
     if (isValid) {
         if (PeopleRepository.isEditMode) {
-            await PeopleRepository.UpdateDoctor(formData.id, formData);
+            await PeopleRepository.UpdateSupplier(formData.id, formData);
         } else {
-            await PeopleRepository.CreateDoctor(formData);
+            await PeopleRepository.CreateSupplier(formData);
         }
     }
 };
