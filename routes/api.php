@@ -49,6 +49,7 @@ use App\Http\Controllers\UserController;
     // Resource routes that require authentication
     Route::apiResource('/expenseCategories', ExpenseCategoryController::class);
     Route::apiResource('/billExpenses', BillExpenseController::class);
+    Route::delete('/billExpenseBulkDelete', [BillExpenseController::class,"bulkDelete"]);
     Route::apiResource('/ownerPickups', OwnerPickupController::class);
     Route::apiResource('/products', ProductController::class);
     Route::apiResource('/expenses', ExpenseController::class);
@@ -94,10 +95,3 @@ use App\Http\Controllers\UserController;
     Route::get('patientPaymentReport', PatientPaymentReportController::class);
     
 // });
-
-// "repositories": [
-//     {
-//         "type": "vcs",
-//         "url": "https://github.com/laravel/vite"
-//     }
-// ]

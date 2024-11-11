@@ -119,4 +119,18 @@ class BillExpenseController extends Controller
     return response()->json(['message' => 'Record deleted successfully.']);
 }
 
+public function bulkDelete(Request $request)
+    {
+        $validated= $request->validate([
+            "billExpenseIds"=>"required|array",
+            "billExpenseIds.*"=>"required|exists:bill_expenses,id"
+        ]);
+
+        BillExpense::whereIn('id',$validated['billExpenseIds'])->delete();
+
+        return response()->noContent();
+
+
+
+    }
 }
