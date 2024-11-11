@@ -14,13 +14,13 @@ return new class extends Migration
         Schema::create('dentists', function (Blueprint $table) {
             $table->id();
             $table->string('first_name');
-            $table->string('last_name');
             $table->string('phone');
-            $table->string('address');
-            $table->string('email')->unique();
-            $table->string('image')->nullable();
-            $table->boolean('status');
-            $table->date('hire_date');
+            // $table->string('last_name');
+            // $table->string('address');
+            // $table->string('email')->unique();
+            // $table->string('image')->nullable();
+            // $table->boolean('status');
+            // $table->date('hire_date');
             $table->timestamps();
         });
     }

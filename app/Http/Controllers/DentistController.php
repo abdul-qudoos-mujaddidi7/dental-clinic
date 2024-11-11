@@ -68,4 +68,17 @@ class DentistController extends Controller
         $dentist->delete();
         return new DentistResource($dentist);
     }
+
+
+    public function bulkDelete(Request $request){
+
+        $validated= $request->validate([
+            "doctorIds"=>"required|array",
+            "doctorsIds.*"=>"required|exits,dentists,id"
+        ]);
+
+        Dentist::whereIn('id',$validated['doctorsIds'])->delete();
+
+        return response()->noContent();
+    }
 }

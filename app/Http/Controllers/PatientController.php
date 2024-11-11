@@ -62,4 +62,19 @@ class PatientController extends Controller
         $patient->delete();
         return new PatientResource($patient);
     }
+
+    public function bulkDelete(Request $request)
+    {
+        $validated= $request->validate([
+            "patientIds"=>"required|array",
+            "patientIds.*"=>"required|exists:patients,id"
+        ]);
+
+        Patient::whereIn('id',$validated['patientIds'])->delete();
+
+        return response()->noContent();
+
+
+
+    }
 }

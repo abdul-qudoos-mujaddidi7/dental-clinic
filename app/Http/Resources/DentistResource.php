@@ -17,13 +17,13 @@ class DentistResource extends JsonResource
         return[
             "id"=> $this->id,
             "firstName"=> $this->first_name,
-            "lastName"=> $this->last_name,
-            "email"=> $this->email,
             "phone"=> $this->phone,
-            "address"=> $this->address,
-            "hireDate"=> $this->hire_date,
-            "image"=> $this->image? asset("storage/". $this->image) : null,
-            "status"=> $this->status
+            // "lastName"=> $this->last_name,
+            // "email"=> $this->email,
+            // "address"=> $this->address,
+            // "hireDate"=> $this->hire_date,
+            // "image"=> $this->image? asset("storage/". $this->image) : null,
+            // "status"=> $this->status
         ];
     }
 }

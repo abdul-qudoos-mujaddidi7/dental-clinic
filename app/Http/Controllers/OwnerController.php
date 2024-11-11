@@ -27,12 +27,10 @@ class OwnerController extends Controller
             ->groupBy('owners.id', 'owners.name', 'owners.phone');
     
         
-        if ($search) {
-            $owners->search($search);
-        }
+        
     
         
-        $ownersPaginated = $owners->orderByDesc('owners.id')->paginate($perPage);
+        $ownersPaginated = $owners->search($search)->orderByDesc('owners.id')->paginate($perPage);
     
         
         return OwnerResource::collection($ownersPaginated);
@@ -68,7 +66,7 @@ class OwnerController extends Controller
     public function updateOwner(OwnerRequest $request, Owner $owner)
     {
         $validated= $request->validated();
-        $validated['image'] = $request->hasFile('image') ? $this->updateImage($request,$$owner,'owner'): null;
+        $validated['image'] = $request->hasFile('image') ? $this->updateImage($request,$owner,'owner'): null;
         $owner->update($validated);
         return new OwnerResource($owner);
     }

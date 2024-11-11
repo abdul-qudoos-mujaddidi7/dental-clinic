@@ -8,6 +8,23 @@ use Illuminate\Database\Eloquent\Model;
 class Dentist extends Model
 {
     use HasFactory;
-    protected $fillable = ['first_name','last_name','phone','address','email','image','status','hire_date'];
+    protected $fillable = ['first_name','phone'
+    // ,'last_name',
+
+    // 'address',
+    // 'email',
+    // 'image',
+    // 'status',
+    // 'hire_date'
+    ];
+
+
+    public function scopeSearch($query,$search){
+        if(!$search){
+            return $query;
+        }
+
+        return $query->where('name','like','%'. $search. '%');
+    }
     
 }

@@ -58,6 +58,7 @@ use App\Http\Controllers\UserController;
     Route::apiResource('/payments', PaymentController::class);
     Route::apiResource('/suppliers', SupplierController::class);
     Route::apiResource('/dentists', DentistController::class);
+    Route::delete('/dentistBulkDelete', [DentistController::class,'bulkDelete']);
     
     Route::post('/dentists/updateDentist/{dentist}', [DentistController::class, 'updateDentist']);
     Route::apiResource('/owners', OwnerController::class);
@@ -66,6 +67,7 @@ use App\Http\Controllers\UserController;
     Route::put('/users//status/{user}', [UserController::class, 'updateStatus'])->name('users.updateStatus');
 
     Route::apiResource('/patients', PatientController::class);
+    Route::delete('/patientBulkDelete', [PatientController::class,'bulkDelete']);
     Route::apiResource('/appointments', AppointmentController::class);
     Route::apiResource('/categories', CategoryController::class);
     Route::apiResource('/stages', StageController::class);
