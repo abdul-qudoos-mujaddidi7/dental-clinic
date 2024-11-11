@@ -18,6 +18,7 @@ class OwnerResource extends JsonResource
             "id"=> $this->id,
             "name"=> $this->name,
             "phone"=> $this->phone,
+            'totalAmount' => $this->totalAmount,
             // "lastName"=> $this->last_name,
             // "email"=> $this->email,
             // "image"=> $this->image,

@@ -21,19 +21,24 @@ class OwnerController extends Controller
         $perPage = $request->input("perPage", 5);
         $search = $request->input("search");
     
-        $ownerPickup = DB::table('owners')
-            ->selectRaw('owners.id, owners.name, owners.phone, SUM(owner_pickups.amount) as totalAmount')
+        
+        $owners = Owner::selectRaw('owners.id, owners.name, owners.phone, SUM(owner_pickups.amount) as totalAmount')
             ->leftJoin('owner_pickups', 'owner_pickups.owner_id', '=', 'owners.id')
             ->groupBy('owners.id', 'owners.name', 'owners.phone');
     
+        
         if ($search) {
-            $ownerPickup->search($search);
-            };
+            $owners->search($search);
+        }
     
-        $ownerPickupPaginated = $ownerPickup->orderByDesc('owners.id')->paginate($perPage);
+        
+        $ownersPaginated = $owners->orderByDesc('owners.id')->paginate($perPage);
     
-        return $ownerPickupPaginated;
+        
+        return OwnerResource::collection($ownersPaginated);
     }
+    
+
     
     
 
