@@ -73,7 +73,7 @@ class DentistController extends Controller
     public function bulkDelete(Request $request){
 
         $validated= $request->validate([
-            "doctorIds"=>"required|array",
+            "doctorsIds"=>"required|array",
             "doctorsIds.*"=>"required|exits,dentists,id"
         ]);
 
