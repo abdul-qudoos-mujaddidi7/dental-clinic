@@ -180,7 +180,7 @@ const headers = [
     { title: "Date", key: "date", align: "start", sortable: false },
     { title: "Owner", key: "owner.name", align: "start", sortable: false },
     { title: "Amount", key: "amount", align: "start", sortable: false },
-    { title: "Details", key: "description", align: "center", sortable: false },
+    { title: "Details", key: "note", align: "center", sortable: false },
     { title: "Action", key: "action", align: "center", sortable: false },
 ];
 </script>

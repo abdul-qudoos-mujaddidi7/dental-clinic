@@ -39,7 +39,7 @@ const authRepo = useAuthRepository();
 const drawer = ref(true); // Set to true to make the sidebar open by default
 const rail = ref(authRepo.rail); // Bind to the store state
 
-// Watch the store's rail state and update local rail variable
+
 watch(
     () => authRepo.rail,
     (newValue) => {

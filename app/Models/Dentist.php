@@ -24,7 +24,7 @@ class Dentist extends Model
             return $query;
         }
 
-        return $query->where('name','like','%'. $search. '%');
+        return $query->where('first_name','like','%'. $search. '%');
     }
     
 }
