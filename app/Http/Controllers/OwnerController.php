@@ -17,24 +17,25 @@ class OwnerController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-{
-    $perPage = $request->input("perPage",5);
-    $search = $request->input("search");
-
-    // Query for owner pickups with total amounts
-    $ownerPickup = DB::table('owner_pickups')
-        ->selectRaw('owners.id , owners.name, owners.phone, SUM(amount) as totalAmount')
-        ->leftJoin('owners', 'owner_pickups.owner_id', '=', 'owners.id')
-        ->groupBy('owner_pickups.owner_id', 'owners.name','owners.phone','owners.id');
-
-        if($search){
+    {
+        $perPage = $request->input("perPage", 5);
+        $search = $request->input("search");
+    
+        $ownerPickup = DB::table('owners')
+            ->selectRaw('owners.id, owners.name, owners.phone, SUM(owner_pickups.amount) as totalAmount')
+            ->leftJoin('owner_pickups', 'owner_pickups.owner_id', '=', 'owners.id')
+            ->groupBy('owners.id', 'owners.name', 'owners.phone');
+    
+        if ($search) {
             $ownerPickup->search($search);
-        }
-
-        $ownerPickupPaginated=$ownerPickup->latest('owner_pickups.created_at')->paginate($perPage);
-
-    return  $ownerPickupPaginated;
-}
+            };
+    
+        $ownerPickupPaginated = $ownerPickup->orderByDesc('owners.id')->paginate($perPage);
+    
+        return $ownerPickupPaginated;
+    }
+    
+    
 
 
     /**
