@@ -17,8 +17,8 @@ class DentistRequest extends FormRequest
     public function prePareForValidation(){
         return $this->merge([
             "first_name"=> $this->input("firstName"),
-            "last_name"=> $this->input("lastName"),
-            "hire_date"=> $this->input("hireDate"),
+            // "last_name"=> $this->input("lastName"),
+            // "hire_date"=> $this->input("hireDate"),
         ]);
     }
 
@@ -31,13 +31,13 @@ class DentistRequest extends FormRequest
     {
         return [
             'first_name' => 'required|string',
-            'last_name' => 'required|string',
+            // 'last_name' => 'required|string',
             'phone' => 'required|string|max:15',
-            'address' => 'required|string|max:255',
-            'email' => 'required|email|unique:dentists,email',
-            'image' => 'nullable|file',
-            'status' => 'required|boolean',
-            'hire_date' => 'required|date',
+            // 'address' => 'required|string|max:255',
+            // 'email' => 'required|email|unique:dentists,email',
+            // 'image' => 'nullable|file',
+            // 'status' => 'required|boolean',
+            // 'hire_date' => 'required|date',
         ];
     }
 }
