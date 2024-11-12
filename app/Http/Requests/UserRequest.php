@@ -33,7 +33,7 @@ class UserRequest extends FormRequest
     {
         return [
             'first_name' => 'required|string',
-            'last_name' => 'required|string',
+            'last_name' => 'nullable|string',
             'phone' => 'required|string|max:15',
             'password' => 'required|string|min:8',
             'status' => 'required|boolean',
