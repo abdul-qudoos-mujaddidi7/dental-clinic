@@ -7,6 +7,7 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Traits\ImageHandler;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 // use Spatie\Permission\Contracts\Role;
 use Spatie\Permission\Models\Role;
@@ -66,17 +67,21 @@ class UserController extends Controller
 
 
     public function updateStatus(Request $request, User $user)
-{
-    $request->validate([
-        'status' => 'required|boolean', // validate the status as required and boolean
-    ]);
-
-    $user->status = $request->status;
-    $user->save();
-
-    return new UserResource($user);
-}
-
+    {
+        if ($user->id == Auth::id()) {
+            return response()->json(['message' => "You cannot change the active user's status"], 403);
+        }
+    
+        $request->validate([
+            'status' => 'required|boolean',
+        ]);
+    
+        $user->status = $request->status;
+        $user->save();
+    
+        return new UserResource($user);
+    }
+    
 
 
     /**
