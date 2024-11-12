@@ -19,8 +19,8 @@ return new class extends Migration
             $table->string('reference',20);
             $table->decimal('amount', 10, 2); //with precision (10, 2)
             $table->text('note')->nullable();
-            $table->foreignIdFor(User::class)->constrained();
-            $table->foreignIdFor(ExpenseCategory::class)->constrained();
+            $table->foreignIdFor(User::class);
+            $table->foreignIdFor(ExpenseCategory::class);
             $table->softDeletes();
             $table->timestamps();
         });
