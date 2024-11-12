@@ -489,6 +489,11 @@ export let usePeopleRepository =defineStore("PeopleRepository",{
                 // Using Axios to make a GET request with async/await and custom headers
                 const response = await axios(config);
                 console.log(status, "man", id);
+                this.FetchUsers({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+
             } catch (err) {
                 // If there's an error, set the error in the stor
             }

@@ -32,7 +32,7 @@ class OwnerPickupRequest extends FormRequest
             "date" => "required|date", 
             "amount" => "required|numeric|min:0",
             "owner_id" => "required",
-            "description" => "nullable|string",
+            "note" => "nullable|string",
         ];
         
     }
