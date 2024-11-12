@@ -74,7 +74,7 @@ class UserController extends Controller
     $user->status = $request->status;
     $user->save();
 
-    return response()->json(['message' => 'User status updated successfully', 'status' => $user->status], 200);
+    return new UserResource($user);
 }
 
 
