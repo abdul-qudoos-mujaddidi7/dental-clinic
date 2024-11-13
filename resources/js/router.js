@@ -15,6 +15,10 @@ import Owner from "./pages/people/owner/Owner.vue";
 import Doctor from "./pages/people/doctor/Doctor.vue";
 import Supplier from "./pages/people/supplier/Supplier.vue";
 import User from "./pages/people/user/User.vue";
+// leads 
+import Leads from "./pages/lead/leads/Leads.vue";
+import LeadCategory from "./pages/lead/leadCategory/LeadCategory.vue";
+import LeadStage from "./pages/lead/leadStage/LeadStage.vue";
 
 
 const router = createRouter({
@@ -36,6 +40,11 @@ const router = createRouter({
         {path: "/doctors", component:Doctor},
         {path: "/supplier", component:Supplier},
         {path: "/user", component:User},
+        // leads 
+        {path: "/lead", component:Leads},
+        {path: "/leadCategory", component:LeadCategory},
+        {path: "/leadStage", component:LeadStage},
+
 
 
         
