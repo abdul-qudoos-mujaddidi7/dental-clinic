@@ -6,6 +6,7 @@ use App\Http\Requests\LeadRequest;
 use App\Http\Resources\LeadResource;
 use App\Models\Lead;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class LeadController extends Controller
 {
@@ -52,6 +53,20 @@ class LeadController extends Controller
         $lead->update($validated);
         return new LeadResource($lead);
     }
+
+    public function updateStage(Request $request, Lead $lead)
+{
+    // Validate the request
+    $validated = $request->validate([
+        'stageId'=>'required|exists:stages,id'
+    ]);
+    if ($lead) {
+        $lead->stage_id = $validated['stageId'];
+        $lead->save();
+    }
+
+    return new LeadResource($lead);
+}
 
     /**
      * Remove the specified resource from storage.
