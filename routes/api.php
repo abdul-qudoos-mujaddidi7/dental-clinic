@@ -72,6 +72,8 @@ use App\Http\Controllers\UserController;
     Route::apiResource('/categories', CategoryController::class);
     Route::apiResource('/stages', StageController::class);
     Route::apiResource('/leads', LeadController::class);
+    Route::put('/leads/stage/{lead}', [LeadController::class, 'updateStage'])->name('leads.updateStage');
+
     Route::apiResource('/services', ServiceController::class);
     Route::apiResource('/serviceGroups', ServiceGroupController::class);
 
