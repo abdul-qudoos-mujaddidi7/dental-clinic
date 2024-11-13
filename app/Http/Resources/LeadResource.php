@@ -19,7 +19,7 @@ class LeadResource extends JsonResource
             'name' => $this->name,
             'gender' => $this->gender,
             'phone' => $this->phone,
-            'description'=>$this->description,
+            'note'=>$this->note,
             'status'=> $this->stage->name,
             'category'=> $this->category->name,
             'address'=>$this->address

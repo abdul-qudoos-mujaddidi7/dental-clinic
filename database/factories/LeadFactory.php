@@ -17,7 +17,14 @@ class LeadFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => $this->faker->name,                         // Random name
+            'phone' => $this->faker->phoneNumber,                 // Random phone number
+            'gender' => $this->faker->randomElement(['Male', 'Female']),  // Random gender
+            'address' => $this->faker->address,                   // Random address
+            'date' => $this->faker->date,                         // Random date
+            'category_id' => rand(1,3),                 // Creates and associates a Category
+            'stage_id' => rand(1,3),                       // Creates and associates a Stage
+            'note' => $this->faker->sentence,   
         ];
     }
 }

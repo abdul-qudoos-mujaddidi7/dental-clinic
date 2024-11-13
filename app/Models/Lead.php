@@ -9,7 +9,7 @@ class Lead extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name','phone','gender','address','date','category_id','stage_id','description'];
+    protected $fillable = ['name','phone','gender','address','date','category_id','stage_id','note'];
 
 
     public function scopeSearch($query, $search)
