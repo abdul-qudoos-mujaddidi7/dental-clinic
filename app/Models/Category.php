@@ -14,4 +14,11 @@ class Category extends Model
     {
         return $this->hasMany(Lead::class);
     }
+
+    public function scopeSearch($query, $search){
+        if(!$search){
+            return $query;
+        }
+        return $query->where('name','LIKE','%'. $search .'%');
+    }
 }
