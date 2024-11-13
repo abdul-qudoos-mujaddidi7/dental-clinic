@@ -37,7 +37,7 @@ class LeadRequest extends FormRequest
             'date' => 'required|date',
             'category_id' => 'required', 
             'stage_id' => 'required',
-            'description' => 'nullable|string',
+            'note' => 'nullable|string',
         ];
     }
 }

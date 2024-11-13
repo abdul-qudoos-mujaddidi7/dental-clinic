@@ -3,11 +3,14 @@
 namespace Database\Seeders;
 
 use App\Models\BillExpense;
+use App\Models\Category;
 use App\Models\Cure;
 use App\Models\Expense;
 use App\Models\ExpenseCategory;
+use App\Models\Lead;
 use App\Models\Patient;
 use App\Models\Product;
+use App\Models\Stage;
 use App\Models\Supplier;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -28,6 +31,11 @@ class DatabaseSeeder extends Seeder
         Expense::factory(3)->create();
         BillExpense::factory(3)->create();
         Product::factory(3)->create();
+
+        // Lead
+        Stage::factory(3)->create();
+        Category::factory(3)->create();
+        Lead::factory(3)->create();
 
 
     

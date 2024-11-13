@@ -22,7 +22,7 @@ return new class extends Migration
             $table->date('date');
             $table->foreignIdFor(Category::class); // Foreign key to Category table
             $table->foreignIdFor(Stage::class); // Foreign key to Stage table
-            $table->text('description')->nullable();
+            $table->text('note')->nullable();
             $table->timestamps();
         });
     }
