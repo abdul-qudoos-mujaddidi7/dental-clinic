@@ -14,22 +14,30 @@ class StageController extends Controller
      */
     public function index(Request $request)
     {
-        $perPage= $request->input("perPage");
-        $search= $request->input("search");
+        $perPage = $request->input("perPage", 5);
+        $search = $request->input("search");
+        // $stages = Stage::with('leads')
+        $stages = Stage::selectRaw("stages.name, MAX(stages.id) as id, COUNT(leads.id) as leads_count")
+            ->leftJoin('leads', 'stages.id', '=', 'leads.stage_id')
+            ->groupBy('stages.name');
 
-        $stages= Stage::search($search)->latest()->paginate($perPage);
+
+
+
+        $stages=$stages->search($search)->orderBy('stages.name', 'asc')->paginate($perPage);    
+
         return StageResource::collection($stages);
     }
 
-  
+
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(StageRequest $request)
     {
-        $validated= $request->validated();
-        $lead= Stage::create($validated);
+        $validated = $request->validated();
+        $lead = Stage::create($validated);
         return new StageResource($lead);
     }
 
@@ -41,14 +49,14 @@ class StageController extends Controller
         return StageResource::make($stage);
     }
 
-  
+
 
     /**
      * Update the specified resource in storage.
      */
     public function update(StageRequest $request, Stage $stage)
     {
-        $validated= $request->validated();
+        $validated = $request->validated();
         $stage->update($validated);
         return new StageResource($stage);
     }
@@ -62,4 +70,3 @@ class StageController extends Controller
         return new StageResource($stage);
     }
 }
-

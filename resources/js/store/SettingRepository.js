@@ -40,7 +40,8 @@ export let useSettingRepository = defineStore("SettingRepository", {
             const response = await axios.get(`systemSettings`);
             this.systemSettings = response.data.data;
             // this.totalItems = response.data.meta.total;
-            
+            console.log(this.systemSettings,'system setting');
+
             this.loading = false;
         },
         async fetchSystemSetting(id) {
