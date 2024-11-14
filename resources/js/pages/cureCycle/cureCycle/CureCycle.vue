@@ -1,8 +1,7 @@
 <template>
-    <CreateLeads v-if="LeadRepository.createDialog" />
     <div class="all-expense rounded-xl">
         <div class="card rounded-xl">
-            <AppBar mainTitle="Owner Pickups" sub-title="people" />
+            <AppBar mainTitle="Bill Expense" sub-title="expense" />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
@@ -19,7 +18,7 @@
                         label="Search ..."
                         append-inner-icon="mdi-magnify"
                         hide-details
-                        v-model="LeadRepository.leadSearch"
+                        v-model="ExpenseRepository.billExpenseSearch"
                     ></v-text-field>
                 </div>
                 <div class="btn">
@@ -27,14 +26,17 @@
                         Filter
                     </v-btn>
                     &nbsp;
-                    <v-btn
+                    <router-link to="/createBillExpense">
+
+                        <v-btn
                         @click="CreateDialogShow"
                         color="primaryOld"
                         variant="flat"
                         text="Create"
                         class="px-6"
-                    >
+                        >
                     </v-btn>
+                </router-link>
                 </div>
             </div>
             <!-- v-table server  -->
@@ -46,46 +48,27 @@
                                 <v-data-table-server
                                     theme="cursor-pointer"
                                     v-model:items-per-page="
-                                        LeadRepository.itemsPerPage
+                                        ExpenseRepository.itemsPerPage
                                     "
                                     :headers="headers"
-                                    :items-length="LeadRepository.totalItems"
-                                    :items="LeadRepository.leads"
-                                    :loading="LeadRepository.loading"
-                                    :search="LeadRepository.leadSearch"
-                                    @update:options="LeadRepository.FetchLeads"
-                                    :item-key="LeadRepository.leads"
+                                    :items-length="ExpenseRepository.totalItems"
+                                    :items="ExpenseRepository.billExpenses"
+                                    :loading="ExpenseRepository.loading"
+                                    :search="ExpenseRepository.billExpenseSearch"
+                                    @update:options="
+                                        ExpenseRepository.fetchBillExpenses
+                                    "
+                                    :item-key="ExpenseRepository.billExpenses"
                                     hover
                                     class="w-100 mx-auto"
                                 >
-                                    <template v-slot:item.stage="{ item }">
-                                        <td class="px-4 py-2 font-semibold">
-                                            <v-btn
-                                                flat
-                                                fluid
-                                                small
-                                                rounded
-                                                @click="changeStage(item.id)"
-                                                :style="{
-                                                    backgroundColor:
-                                                        getStageColor(item.id),
-                                                    color: 'white',
-                                                }"
-                                            >
-                                                <p class="text-gray-200">
-                                                    {{ getStageName(item.id) }}
-                                                </p>
-                                            </v-btn>
-                                        </td>
-                                    </template>
-
                                     <!-- Checkbox for selecting rows -->
 
                                     <template v-slot:item.checkbox="{ item }">
                                         <v-checkbox
                                             :value="item.id"
                                             v-model="selectedIds"
-                                            class="w-6 d-flex"
+                                            class="w-10 d-flex"
                                         ></v-checkbox>
                                     </template>
 
@@ -102,8 +85,14 @@
                                             </template>
                                             <v-list>
                                                 <v-list-item>
+                                                    <router-link
+                                                        :to="
+                                                            '/updateBillExpense/' +
+                                                            item.id
+                                                        "
+                                                    >
                                                     <v-list-item-title
-                                                        @click="edit(item)"
+                                                       
                                                         class="cursor-pointer d-flex gap-3 justify-left pb-3"
                                                     >
                                                         <v-icon
@@ -112,6 +101,7 @@
                                                         >
                                                         Edit
                                                     </v-list-item-title>
+                                                    </router-link>
 
                                                     <v-list-item-title
                                                         class="cursor-pointer d-flex gap-3"
@@ -134,9 +124,10 @@
                                     v-if="selectedIds.length > 0"
                                     @click="sendSelectedIds"
                                     color="#B71C1C"
+                                    text="Delete"
                                     flat
-                                    text="delete"
                                 >
+                                    
                                 </v-btn>
                             </v-col>
                         </v-row>
@@ -148,138 +139,58 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import AppBar from "../../../components/AppBar.vue";
-import CreateLeads from "./CreateLeads.vue";
-import { useLeadRepository } from "@/store/LeadRepository";
-const LeadRepository = useLeadRepository();
-// swap function
 
-const stageIndexes = ref({}); // Track individual indexes for each item
-
-// Computed property to get the current stage name for each item based on its ID
-const getStageName = (itemId) => {
-    const leadStage = LeadRepository.leadStageFor;
-    if (
-        !leadStage ||
-        leadStage.length === 0 ||
-        stageIndexes.value[itemId] === undefined
-    ) {
-        return "...";
-    }
-    const currentIndex = stageIndexes.value[itemId] % leadStage.length;
-    return leadStage[currentIndex]?.name || "...";
-};
-
-// Function to get button color based on stage name
-const getStageColor = (itemId) => {
-    const stageName = getStageName(itemId);
-    switch (stageName.toLowerCase()) {
-        case "new":
-            return "#00893F";
-        case "ongoing":
-            return "#0080FF";
-        case "completed":
-            return "#3C3C54";
-        default:
-            return "#112F53";
-    }
-};
-
-// Method to change the stage for a specific item and update the backend
-const changeStage = async (itemId) => {
-    const leadStage = LeadRepository.leadStageFor;
-    if (!leadStage || leadStage.length === 0) return;
-
-    // Initialize index for item if it doesn’t exist
-    if (stageIndexes.value[itemId] === undefined) {
-        stageIndexes.value[itemId] = 0;
-    }
-
-    // Increment the index and cycle through stages for the specific item
-    stageIndexes.value[itemId] =
-        (stageIndexes.value[itemId] + 1) % leadStage.length;
-
-    const selectedStage = leadStage[stageIndexes.value[itemId]];
-
-    // Send the selected stage ID to the backend for this specific item
-    try {
-        await LeadRepository.leadStages(itemId, selectedStage.id); // Pass both itemId and selected stage ID
-        console.log(
-            `Stage for item ${itemId} updated to: ${selectedStage.name}`
-        );
-    } catch (error) {
-        console.error(`Error updating stage for item ${itemId}:`, error);
-    }
-};
-
+import { useExpenseRepository } from "@/store/ExpenseRepository";
+const ExpenseRepository = useExpenseRepository();
 // bulk delete
-const selectedIds = ref([]);
+const selectedIds = ref([]); 
 const sendSelectedIds = () => {
     if (selectedIds.value.length > 0) {
+
         const data = {
-            leadsIds: selectedIds.value,
+            billExpenseIds: selectedIds.value,
         };
 
         console.log("Sending data:", data);
 
-        LeadRepository.bulkDeleteLead(data);
+
+        ExpenseRepository.bulkDeleteBillExpense(data);
     } else {
         console.log("No IDs selected.");
     }
 };
-
-// delete and update Create
-const CreateDialogShow = () => {
-    LeadRepository.lead = {};
-    LeadRepository.setEditMode(false);
-    LeadRepository.createDialog = true;
-};
-
-const edit = (item) => {
-    console.log(item, "me");
-    LeadRepository.setEditMode(true);
-    LeadRepository.lead = {};
-    if (Object.keys(LeadRepository.lead).length === 0) {
-        LeadRepository.FetchLead(item.id)
-            .then(() => {
-                LeadRepository.createDialog = true;
-            })
-            .catch((error) => {
-                console.error("Error fetching data:", error);
-            });
-    }
-};
-
 const deleteItem = async (item) => {
-    await LeadRepository.DeleteLead(item.id);
+    await ExpenseRepository.DeleteBillExpense(item.id);
 };
 // header
 const headers = [
     { title: "", key: "checkbox", align: "start", sortable: false },
-    { title: "Name", key: "name", align: "start", sortable: false },
-    { title: "Phone", key: "phone", align: "start", sortable: false },
+    { title: "Date", key: "date", align: "start", sortable: false },
+    { title: "Reference", key: "reference", align: "center", sortable: false },
+    { title: "Added By", key: "addedBy", align: "center", sortable: false },
     {
-        title: "Category",
-        key: "category.name",
-        align: "start",
+        title: "Supplier",
+        key: "supplier.name",
+        align: "center",
         sortable: false,
     },
-    { title: "Status", key: "stage", align: "start", sortable: false },
-    { title: "Address", key: "address", align: "start", sortable: false },
-    { title: "Details", key: "note", align: "start", sortable: false },
+    { title: "Amount", key: "grandTotal", align: "center", sortable: false },
+    { title: "PAID", key: "paid", align: "center", sortable: false },
+    { title: "DUE", key: "due", align: "center", sortable: false },
+    
     { title: "Action", key: "action", align: "center", sortable: false },
 ];
-LeadRepository.leadStages();
 </script>
 
 <style scoped>
 .v-data-table-server {
-    position: relative;
+    position: relative; 
 }
 .header-button {
     position: absolute;
-    top: 0.7rem;
+    top: 0.7rem; 
     left: 0.7rem;
     z-index: 1;
 }

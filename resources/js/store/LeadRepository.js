@@ -42,7 +42,7 @@ export let useLeadRepository = defineStore("LeadRepository", {
             const response = await axios.get("categories");
             this.leadCategoriesFor = response.data.data;
         },
-        async leadStages() {
+        async leadStages(item,id) {
             const response = await axios.get("stages");
             this.leadStageFor = response.data.data;
         },
