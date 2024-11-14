@@ -21,12 +21,12 @@ class LeadResource extends JsonResource
             'phone' => $this->phone,
             'note' => $this->note,
             'stage' => [
-                'name' => $this->stage->name,
-                'id' => $this->stage->id,
+                'name' => $this->stage?->name,
+                'id' => $this->stage?->id,
             ],
             'category' => [
-                'name' => $this->category->name,
-                'id' => $this->category->id
+                'name' => $this->category?->name,
+                'id' => $this->category?->id
             ],
             'address' => $this->address
         ];

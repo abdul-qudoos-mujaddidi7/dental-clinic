@@ -23,7 +23,7 @@
             </router-link>
             <v-list-item
                 active-class="bg-primaryOld text-white"
-                prepend-icon="mdi mdi-cash-marker"
+                prepend-icon="mdi mdi-gauge"
                 value="lead"
                 @click="toggleLead"
                 class="transition-all duration-300 cursor-pointer py-3 borderRadius"
@@ -102,6 +102,33 @@
                     </router-link>
                 </v-list>
             </transition>
+            <!-- setting -->
+            <v-list-item
+                active-class="bg-primaryOld text-white"
+                prepend-icon="mdi-cog-outline"
+                value="Setting"
+                @click="toggleSetting"
+                class="transition-all duration-300 cursor-pointer py-3 borderRadius"
+            >
+                Setting
+            </v-list-item>
+            <transition name="slide-fade">
+                <v-list v-if="isSettingVisible" class="pl-4">
+                    <router-link
+                        v-for="item in settingItems"
+                        :key="item.to"
+                        :to="item.to"
+                    >
+                        <v-list-item
+                            :title="item.title"
+                            :prepend-icon="item.icon"
+                            :value="item.value"
+                            color="primaryOld"
+                            class="child rounded-lg"
+                        />
+                    </router-link>
+                </v-list>
+            </transition>
         </div>
 
         <div class="mt-auto">
@@ -123,9 +150,10 @@ import { ref } from "vue";
 const isListVisible = ref(false);
 const isPeopleVisible = ref(false);
 const isLeadVisible = ref(false);
+const isSettingVisible = ref(false);
 
 
-
+// 
 // Toggle for list items
 const toggleList = () => {
     isListVisible.value = !isListVisible.value;
@@ -135,6 +163,9 @@ const togglePeople = () => {
 };
 const toggleLead =() =>{
     isLeadVisible.value = !isLeadVisible.value;
+}
+const toggleSetting =()=>{
+    isSettingVisible.value = !isSettingVisible.value;
 }
 
 // Define navigation items in a structured list for cleaner handling
@@ -227,6 +258,14 @@ const leadItems = [
     },
 
 ];
+const settingItems = [
+{
+        to: "/systemSetting",
+        title: "System Setting",
+        icon: "mdi mdi-circle-medium",
+        value: "system ",
+    },
+]
 </script>
 
 <style scoped>

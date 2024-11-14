@@ -19,6 +19,8 @@ import User from "./pages/people/user/User.vue";
 import Leads from "./pages/lead/leads/Leads.vue";
 import LeadCategory from "./pages/lead/leadCategory/LeadCategory.vue";
 import LeadStage from "./pages/lead/leadStage/LeadStage.vue";
+// system setting 
+import SystemSetting from "./pages/setting/system Setting/SystemSetting.vue";
 
 
 const router = createRouter({
@@ -44,6 +46,9 @@ const router = createRouter({
         {path: "/lead", component:Leads},
         {path: "/leadCategory", component:LeadCategory},
         {path: "/leadStage", component:LeadStage},
+        // system setting 
+        {path: "/systemSetting", component:SystemSetting},
+
 
 
 
