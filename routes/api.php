@@ -64,7 +64,7 @@ use App\Http\Controllers\UserController;
     Route::apiResource('/owners', OwnerController::class);
     Route::post('/owners/updateOwners/{owner}',[OwnerController::class,'updateOwner']);
     Route::apiResource('/users', UserController::class);
-    Route::put('/users//status/{user}', [UserController::class, 'updateStatus'])->name('users.updateStatus');
+    Route::put('/users/status/{user}', [UserController::class, 'updateStatus'])->name('users.updateStatus');
 
     Route::apiResource('/patients', PatientController::class);
     Route::delete('/patientBulkDelete', [PatientController::class,'bulkDelete']);

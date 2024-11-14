@@ -24,6 +24,33 @@
             <v-list-item
                 active-class="bg-primaryOld text-white"
                 prepend-icon="mdi mdi-cash-marker"
+                value="lead"
+                @click="toggleLead"
+                class="transition-all duration-300 cursor-pointer py-3 borderRadius"
+            >
+                Lead
+            </v-list-item>
+
+            <transition name="slide-fade">
+                <v-list v-if="isLeadVisible" class="pl-4">
+                    <router-link
+                        v-for="item in leadItems"
+                        :key="item.to"
+                        :to="item.to"
+                    >
+                        <v-list-item
+                            :title="item.title"
+                            :prepend-icon="item.icon"
+                            :value="item.value"
+                            color="primaryOld"
+                            class="child rounded-lg"
+                        />
+                    </router-link>
+                </v-list>
+            </transition>
+            <v-list-item
+                active-class="bg-primaryOld text-white"
+                prepend-icon="mdi mdi-cash-marker"
                 value="expenses"
                 @click="toggleList"
                 class="transition-all duration-300 cursor-pointer py-3 borderRadius"
@@ -95,6 +122,9 @@ import { ref } from "vue";
 // State for list visibility
 const isListVisible = ref(false);
 const isPeopleVisible = ref(false);
+const isLeadVisible = ref(false);
+
+
 
 // Toggle for list items
 const toggleList = () => {
@@ -103,6 +133,9 @@ const toggleList = () => {
 const togglePeople = () => {
     isPeopleVisible.value = !isPeopleVisible.value;
 };
+const toggleLead =() =>{
+    isLeadVisible.value = !isLeadVisible.value;
+}
 
 // Define navigation items in a structured list for cleaner handling
 const navItems = [
@@ -141,10 +174,10 @@ const peopleItems = [
         value: "AllExpenses",
     },
     {
-        to: "/billExpense",
-        title: "Bill Expense",
+        to: "/user",
+        title: "User",
         icon: "mdi mdi-circle-medium",
-        value: "billExpense",
+        value: "user",
     },
 
     {
@@ -152,6 +185,13 @@ const peopleItems = [
         title: "Owner",
         icon: "mdi mdi-circle-medium",
         value: "owner",
+    },
+    
+    {
+        to: "/supplier",
+        title: "Supplier",
+        icon: "mdi mdi-circle-medium",
+        value: "supplier",
     },
     {
         to: "/doctors",
@@ -165,6 +205,27 @@ const peopleItems = [
         icon: "mdi mdi-circle-medium",
         value: "ownerPickup",
     },
+];
+const leadItems = [
+    {
+        to: "/lead",
+        title: "Lead",
+        icon: "mdi mdi-circle-medium",
+        value: "lead",
+    },
+    {
+        to: "/leadCategory",
+        title: "Lead Category",
+        icon: "mdi mdi-circle-medium",
+        value: "user",
+    },
+    {
+        to: "/leadStage",
+        title: "Lead Stage",
+        icon: "mdi mdi-circle-medium",
+        value: "stage",
+    },
+
 ];
 </script>
 

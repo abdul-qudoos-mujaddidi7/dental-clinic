@@ -1,8 +1,8 @@
 <template>
-    <CreateDoctor v-if="PeopleRepository.createDialog" />
+    <CreateSupplier v-if="PeopleRepository.createDialog" />
     <div class="all-expense rounded-xl">
         <div class="card rounded-xl">
-            <AppBar mainTitle="Doctor" sub-title="people" />
+            <AppBar mainTitle="Supplier" sub-title="people" />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
@@ -19,7 +19,7 @@
                         label="Search ..."
                         append-inner-icon="mdi-magnify"
                         hide-details
-                        v-model="PeopleRepository.doctorSearch"
+                        v-model="PeopleRepository.supplierSearch"
                     ></v-text-field>
                 </div>
                 <div class="btn">
@@ -50,13 +50,13 @@
                                     "
                                     :headers="headers"
                                     :items-length="PeopleRepository.totalItems"
-                                    :items="PeopleRepository.doctors"
+                                    :items="PeopleRepository.suppliers"
                                     :loading="PeopleRepository.loading"
-                                    :search="PeopleRepository.doctorSearch"
+                                    :search="PeopleRepository.supplierSearch"
                                     @update:options="
-                                        PeopleRepository.fetchDoctors
+                                        PeopleRepository.FetchSuppliers
                                     "
-                                    :item-key="PeopleRepository.doctors"
+                                    :item-key="PeopleRepository.suppliers"
                                     hover
                                     class="w-100 mx-auto"
                                 >
@@ -64,7 +64,7 @@
                                         <v-checkbox
                                             :value="item.id"
                                             v-model="selectedIds"
-                                            class="w-6 d-flex"
+                                            class="w-0 d-flex"
                                         ></v-checkbox>
                                     </template>
                                     <template v-slot:item.action="{ item }">
@@ -128,7 +128,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import AppBar from "../../../components/AppBar.vue";
-import CreateDoctor from "./CreateDoctor.vue";
+import CreateSupplier from "./CreateSupplier.vue";
 import { usePeopleRepository } from "@/store/PeopleRepository";
 const PeopleRepository = usePeopleRepository();
 // bulk delete
@@ -136,12 +136,12 @@ const selectedIds = ref([]);
 const sendSelectedIds = () => {
     if (selectedIds.value.length > 0) {
         const data = {
-            doctorsIds: selectedIds.value,
+            supplierIds: selectedIds.value,
         };
 
         console.log("Sending data:", data);
 
-        PeopleRepository.bulkDeleteDoctor(data);
+        PeopleRepository.bulkDeleteSupplier(data);
     } else {
         console.log("No IDs selected.");
     }
@@ -149,7 +149,7 @@ const sendSelectedIds = () => {
 
 // delete and update Create
 const CreateDialogShow = () => {
-    PeopleRepository.doctor = {};
+    PeopleRepository.supplier = {};
     PeopleRepository.setEditMode(false);
     PeopleRepository.createDialog = true;
 };
@@ -157,9 +157,9 @@ const CreateDialogShow = () => {
 const edit = (item) => {
     console.log(item, "me");
     PeopleRepository.setEditMode(true);
-    PeopleRepository.doctor = {};
-    if (Object.keys(PeopleRepository.doctor).length === 0) {
-        PeopleRepository.fetchDoctor(item.id)
+    PeopleRepository.supplier = {};
+    if (Object.keys(PeopleRepository.supplier).length === 0) {
+        PeopleRepository.FetchSupplier(item.id)
             .then(() => {
                 PeopleRepository.createDialog = true;
             })
@@ -170,13 +170,12 @@ const edit = (item) => {
 };
 
 const deleteItem = async (item) => {
-    await PeopleRepository.DeleteDoctor(item.id);
+    await PeopleRepository.DeleteSupplier(item.id);
 };
 // header
 const headers = [
-
     { title: "", key: "checkbox", align: "start", sortable: false },
-    { title: "Name", key: "firstName", align: "start", sortable: false },
+    { title: "Name", key: "name", align: "start", sortable: false },
     { title: "Phone", key: "phone", align: "start", sortable: false },
 
     { title: "Action", key: "action", align: "center", sortable: false },
@@ -194,4 +193,3 @@ const headers = [
     z-index: 1;
 }
 </style>
-

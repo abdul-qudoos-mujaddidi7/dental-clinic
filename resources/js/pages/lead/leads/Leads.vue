@@ -1,8 +1,8 @@
 <template>
-    <CreateDoctor v-if="PeopleRepository.createDialog" />
+    <CreateLeads v-if="LeadRepository.createDialog" />
     <div class="all-expense rounded-xl">
         <div class="card rounded-xl">
-            <AppBar mainTitle="Doctor" sub-title="people" />
+            <AppBar mainTitle="Owner Pickups" sub-title="people" />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
@@ -19,7 +19,7 @@
                         label="Search ..."
                         append-inner-icon="mdi-magnify"
                         hide-details
-                        v-model="PeopleRepository.doctorSearch"
+                        v-model="LeadRepository.leadSearch"
                     ></v-text-field>
                 </div>
                 <div class="btn">
@@ -46,27 +46,47 @@
                                 <v-data-table-server
                                     theme="cursor-pointer"
                                     v-model:items-per-page="
-                                        PeopleRepository.itemsPerPage
+                                        LeadRepository.itemsPerPage
                                     "
                                     :headers="headers"
-                                    :items-length="PeopleRepository.totalItems"
-                                    :items="PeopleRepository.doctors"
-                                    :loading="PeopleRepository.loading"
-                                    :search="PeopleRepository.doctorSearch"
-                                    @update:options="
-                                        PeopleRepository.fetchDoctors
-                                    "
-                                    :item-key="PeopleRepository.doctors"
+                                    :items-length="LeadRepository.totalItems"
+                                    :items="LeadRepository.leads"
+                                    :loading="LeadRepository.loading"
+                                    :search="LeadRepository.leadSearch"
+                                    @update:options="LeadRepository.FetchLeads"
+                                    :item-key="LeadRepository.leads"
                                     hover
                                     class="w-100 mx-auto"
                                 >
-                                <template v-slot:item.checkbox="{ item }">
+                                    <template v-slot:item.stage="{ item }">
+                                        <td class="px-4 py-2 font-semibold">
+                                            <v-btn
+                                                flat
+                                                fluid
+                                                @click="changeCurrency"
+                                                :style="{
+                                                    backgroundColor: 'gray',
+                                                    color: 'white',
+                                                }"
+                                            >
+                                                <p class="text-gray-200">
+                                                    {{
+                                                        currentCurrencySymbol.name
+                                                    }}
+                                                </p>
+                                            </v-btn>
+                                        </td>
+                                    </template>
+                                    <!-- Checkbox for selecting rows -->
+
+                                    <template v-slot:item.checkbox="{ item }">
                                         <v-checkbox
                                             :value="item.id"
                                             v-model="selectedIds"
                                             class="w-6 d-flex"
                                         ></v-checkbox>
                                     </template>
+
                                     <template v-slot:item.action="{ item }">
                                         <v-menu>
                                             <template
@@ -126,22 +146,46 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, computed } from "vue";
 import AppBar from "../../../components/AppBar.vue";
-import CreateDoctor from "./CreateDoctor.vue";
-import { usePeopleRepository } from "@/store/PeopleRepository";
-const PeopleRepository = usePeopleRepository();
+import CreateLeads from "./CreateLeads.vue";
+import { useLeadRepository } from "@/store/LeadRepository";
+const LeadRepository = useLeadRepository();
+// swap function
+const currencyIndex = ref(0);
+
+const currentCurrencySymbol = computed(() => {
+    const leadStage = LeadRepository.leadStageFor;
+    if (!leadStage || leadStage.length === 0) {
+        return { name: "...", id: null };
+    }
+    if (currencyIndex.value >= leadStage.length) {
+        currencyIndex.value = 0;
+    }
+    LeadRepository.leadStageFor = leadStage[currencyIndex.value]?.id;
+
+    return {
+        name: leadStage[currencyIndex.value]?.name,
+        id: leadStage[currencyIndex.value]?.id,
+    };
+});
+let Stage = [];
+const changeCurrency = () => {
+    Stage = leadStage;
+    console.log(currencyIndex, Stage, "chia tyt");
+    currencyIndex.value = (currencyIndex.value + 1) % Stage.length;
+};
 // bulk delete
 const selectedIds = ref([]);
 const sendSelectedIds = () => {
     if (selectedIds.value.length > 0) {
         const data = {
-            doctorsIds: selectedIds.value,
+            leadsIds: selectedIds.value,
         };
 
         console.log("Sending data:", data);
 
-        PeopleRepository.bulkDeleteDoctor(data);
+        LeadRepository.bulkDeleteLead(data);
     } else {
         console.log("No IDs selected.");
     }
@@ -149,19 +193,19 @@ const sendSelectedIds = () => {
 
 // delete and update Create
 const CreateDialogShow = () => {
-    PeopleRepository.doctor = {};
-    PeopleRepository.setEditMode(false);
-    PeopleRepository.createDialog = true;
+    LeadRepository.lead = {};
+    LeadRepository.setEditMode(false);
+    LeadRepository.createDialog = true;
 };
 
 const edit = (item) => {
     console.log(item, "me");
-    PeopleRepository.setEditMode(true);
-    PeopleRepository.doctor = {};
-    if (Object.keys(PeopleRepository.doctor).length === 0) {
-        PeopleRepository.fetchDoctor(item.id)
+    LeadRepository.setEditMode(true);
+    LeadRepository.lead = {};
+    if (Object.keys(LeadRepository.lead).length === 0) {
+        LeadRepository.FetchLead(item.id)
             .then(() => {
-                PeopleRepository.createDialog = true;
+                LeadRepository.createDialog = true;
             })
             .catch((error) => {
                 console.error("Error fetching data:", error);
@@ -170,17 +214,25 @@ const edit = (item) => {
 };
 
 const deleteItem = async (item) => {
-    await PeopleRepository.DeleteDoctor(item.id);
+    await LeadRepository.DeleteLead(item.id);
 };
 // header
 const headers = [
-
     { title: "", key: "checkbox", align: "start", sortable: false },
-    { title: "Name", key: "firstName", align: "start", sortable: false },
+    { title: "Name", key: "name", align: "start", sortable: false },
     { title: "Phone", key: "phone", align: "start", sortable: false },
-
+    {
+        title: "Category",
+        key: "category.name",
+        align: "start",
+        sortable: false,
+    },
+    { title: "Status", key: "stage", align: "start", sortable: false },
+    { title: "Address", key: "address", align: "start", sortable: false },
+    { title: "Details", key: "note", align: "start", sortable: false },
     { title: "Action", key: "action", align: "center", sortable: false },
 ];
+LeadRepository.leadStages();
 </script>
 
 <style scoped>
@@ -194,4 +246,3 @@ const headers = [
     z-index: 1;
 }
 </style>
-

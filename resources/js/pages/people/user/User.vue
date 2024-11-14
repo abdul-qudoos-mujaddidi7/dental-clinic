@@ -1,8 +1,8 @@
 <template>
-    <CreateDoctor v-if="PeopleRepository.createDialog" />
+    <CreateUser v-if="PeopleRepository.createDialog" />
     <div class="all-expense rounded-xl">
         <div class="card rounded-xl">
-            <AppBar mainTitle="Doctor" sub-title="people" />
+            <AppBar mainTitle="User" sub-title="people" />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
@@ -19,7 +19,7 @@
                         label="Search ..."
                         append-inner-icon="mdi-magnify"
                         hide-details
-                        v-model="PeopleRepository.doctorSearch"
+                        v-model="PeopleRepository.userSearch"
                     ></v-text-field>
                 </div>
                 <div class="btn">
@@ -50,23 +50,42 @@
                                     "
                                     :headers="headers"
                                     :items-length="PeopleRepository.totalItems"
-                                    :items="PeopleRepository.doctors"
+                                    :items="PeopleRepository.users"
                                     :loading="PeopleRepository.loading"
-                                    :search="PeopleRepository.doctorSearch"
+                                    :search="PeopleRepository.userSearch"
                                     @update:options="
-                                        PeopleRepository.fetchDoctors
+                                        PeopleRepository.FetchUsers
                                     "
-                                    :item-key="PeopleRepository.doctors"
+                                    :item-key="PeopleRepository.users"
                                     hover
                                     class="w-100 mx-auto"
                                 >
-                                <template v-slot:item.checkbox="{ item }">
+                                    <!-- Checkbox for selecting rows -->
+
+                                    <template v-slot:item.checkbox="{ item }">
                                         <v-checkbox
                                             :value="item.id"
                                             v-model="selectedIds"
                                             class="w-6 d-flex"
                                         ></v-checkbox>
                                     </template>
+                                    <template v-slot:item.status="{ item }">
+                                        <div class="pr-14">
+                                            <v-switch
+                                                v-model="item.status"
+                                                color="#0080FF"
+                                                :label="
+                                                    item.status
+                                                        ? 'Active'
+                                                        : 'Un Active '
+                                                "
+                                                @change="updateState(item)"
+                                                class="switchStyle"
+                                                hide-details
+                                            ></v-switch>
+                                        </div>
+                                    </template>
+
                                     <template v-slot:item.action="{ item }">
                                         <v-menu>
                                             <template
@@ -128,7 +147,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import AppBar from "../../../components/AppBar.vue";
-import CreateDoctor from "./CreateDoctor.vue";
+import CreateUser from "./CreateUser.vue";
 import { usePeopleRepository } from "@/store/PeopleRepository";
 const PeopleRepository = usePeopleRepository();
 // bulk delete
@@ -136,20 +155,26 @@ const selectedIds = ref([]);
 const sendSelectedIds = () => {
     if (selectedIds.value.length > 0) {
         const data = {
-            doctorsIds: selectedIds.value,
+            usersIds: selectedIds.value,
         };
 
         console.log("Sending data:", data);
 
-        PeopleRepository.bulkDeleteDoctor(data);
+        PeopleRepository.bulkDeleteUser(data);
     } else {
         console.log("No IDs selected.");
     }
 };
+const updateState = async (item) => {
+    const formData = {
+        status: item.status,
+    };
+    await PeopleRepository.CreateForSwitch(formData, item.id);
+};
 
 // delete and update Create
 const CreateDialogShow = () => {
-    PeopleRepository.doctor = {};
+    PeopleRepository.user= {};
     PeopleRepository.setEditMode(false);
     PeopleRepository.createDialog = true;
 };
@@ -157,9 +182,9 @@ const CreateDialogShow = () => {
 const edit = (item) => {
     console.log(item, "me");
     PeopleRepository.setEditMode(true);
-    PeopleRepository.doctor = {};
-    if (Object.keys(PeopleRepository.doctor).length === 0) {
-        PeopleRepository.fetchDoctor(item.id)
+    PeopleRepository.user = {};
+    if (Object.keys(PeopleRepository.user).length === 0) {
+        PeopleRepository.FetchUser(item.id)
             .then(() => {
                 PeopleRepository.createDialog = true;
             })
@@ -170,15 +195,16 @@ const edit = (item) => {
 };
 
 const deleteItem = async (item) => {
-    await PeopleRepository.DeleteDoctor(item.id);
+    await PeopleRepository.DeleteUser(item.id);
 };
 // header
 const headers = [
-
     { title: "", key: "checkbox", align: "start", sortable: false },
     { title: "Name", key: "firstName", align: "start", sortable: false },
+    { title: "Email", key: "email", align: "start", sortable: false },
     { title: "Phone", key: "phone", align: "start", sortable: false },
-
+    { title: "Role", key: "role.name", align: "start", sortable: false },
+    { title: "STATUS", key: "status", align: "start", sortable: false },
     { title: "Action", key: "action", align: "center", sortable: false },
 ];
 </script>
@@ -193,5 +219,20 @@ const headers = [
     left: 0.7rem;
     z-index: 1;
 }
-</style>
+.switchStyle > :nth-child(1) > :nth-child(1) > :nth-child(1) {
+    width: 40px; /* Adjusted width for the switch background */
+    height: 20px; /* Adjusted height for the switch background */
+    border-radius: 30px; /* Ensures the edges are round */
 
+    transition: background-color 0.3s ease;
+}
+
+/* Target the switch thumb (dot) */
+.switchStyle > :nth-child(1) > :nth-child(1) > :nth-child(1) > :nth-child(1) {
+    width: 18px; /* Adjusted width for the thumb */
+    height: 18px; /* Adjusted height for the thumb */
+    border-radius: 20px; /* Makes it fully circular */
+
+    transition: all 0.3s ease; /* Smooth animation */
+}
+</style>

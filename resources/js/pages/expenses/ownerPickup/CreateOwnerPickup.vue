@@ -43,7 +43,7 @@
                                     variant="outlined"
                                     label="Owner *"
                                     item-value="id"
-                                    item-title="first_name"
+                                    item-title="name"
                                     density="compact"
                                     :rules="[rules.required]"
                                     class="w-50 pl-2 pb-4"
