@@ -265,6 +265,26 @@ const settingItems = [
         icon: "mdi mdi-circle-medium",
         value: "system ",
     },
+    {
+        to: "/rolePermissions",
+        title: "Role Permissions",
+        icon: "mdi mdi-circle-medium",
+        value: "roles  ",
+    },
+    
+    {
+        to: "/serviceGroup",
+        title: "Service Group",
+        icon: "mdi mdi-circle-medium",
+        value: "service group  ",
+    },
+    
+    {
+        to: "/service",
+        title: "Service",
+        icon: "mdi mdi-circle-medium",
+        value: "service   ",
+    },
 ]
 </script>
 
