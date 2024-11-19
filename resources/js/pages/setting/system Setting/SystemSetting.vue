@@ -13,14 +13,14 @@
 
                         <form
                             @submit.prevent="CreateComponySetting"
-                            class="p-10 m-6 border-2 border-[#d3e2f8] rounded-xl"
+                            class="px-6 pb-4  border-2  rounded-xl"
                         >
                         <h1 class=" p-6">System Setting </h1>
 
                             <v-row>
                                 <v-divider
                                 :thickness="2"
-                                class="border-opacity-100 mb-8 border-[#d3e2f8]"
+                                class="border-opacity-100 mb-8 "
                                 color="#d3e2f8"
                             ></v-divider>
                                 <v-col cols="10" class="">
@@ -107,7 +107,7 @@
                             <div>
                                 <v-btn
                                     class="me-4"
-                                    color="primary"
+                                    color="primaryOld"
                                     type="submit"
                                     >submit</v-btn
                                 >
