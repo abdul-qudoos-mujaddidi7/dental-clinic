@@ -8,7 +8,7 @@ trait ImageHandler
 {
     public function storeImage($request, $folder)
     {
-            return $request->file("image")->store('images/'. $folder, 'public');
+            return $request->file("logo")->store('images/'. $folder, 'public');
         
     }
 
@@ -22,8 +22,9 @@ trait ImageHandler
 
     public function deleteImage($model)
     {
-        if ($model->image) {
-            Storage::disk('public')->delete($model->image);
+        
+        if ($model->logo) {
+            Storage::disk('public')->delete($model->logo);
         }
     }
 }
