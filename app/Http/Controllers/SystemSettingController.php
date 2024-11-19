@@ -29,7 +29,7 @@ class SystemSettingController extends Controller
 
     public function store(SystemSettingRequest $request){
         $validated= $request->validated();
-        $validated['image'] = $request->hasFile('image') ? $this->storeImage($request,'company'): null;
+        $validated['logo'] = $request->hasFile('logo') ? $this->storeImage($request,'company'): null;
         $system= SystemSetting::create($validated);
 
         return new SystemSettingResource($system);
@@ -40,7 +40,7 @@ class SystemSettingController extends Controller
     public function updateSetting(SystemSettingRequest $request, SystemSetting $systemSetting)
     {
         $validated = $request->validated();
-        $validated['image'] = $request->hasFile('image') ? $this->updateImage($request, $systemSetting, 'company') : null;        
+        $validated['logo'] = $request->hasFile('logo') ? $this->updateImage($request, $systemSetting, 'company') : null;        
 
        
         $systemSetting->update($validated); // Update the system setting
