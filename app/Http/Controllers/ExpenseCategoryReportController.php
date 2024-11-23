@@ -17,7 +17,7 @@ class ExpenseCategoryReportController extends Controller
         ->join('expense_categories', 'expense_categories.id', '=', 'expenses.expense_category_id')
         ->whereNull('expenses.deleted_at')
         ->groupBy('expense_categories.name')
-        ->get();
+        ->paginate(5);
 
 
         return $productCategory;

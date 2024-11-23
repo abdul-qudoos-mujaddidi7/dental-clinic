@@ -12,8 +12,8 @@ class PatientPaymentReportController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $patientPayment= DB::table('patients')->selectRaw('patients.id ,patients.name,patients.phone,Sum(grand_total) - Sum(paid) as due')
-        ->join('cures','cures.patient_id','=','patients.id')->groupBy('patients.id','patients.name','patients.phone')->paginate(5);
+        $patientPayment= DB::table('patients')->selectRaw('patients.id ,patients.name,patients.phone,patients.address,Sum(grand_total) - Sum(paid) as due')
+        ->join('cures','cures.patient_id','=','patients.id')->groupBy('patients.id','patients.name','patients.phone','patients.address')->paginate(5);
 
         return $patientPayment;
     }

@@ -28,6 +28,9 @@ import Service from "./pages/setting/service/Service.vue";
 // reports 
 import ProfitLoss from "./pages/reports/profit and loss/Profit&Loss.vue";
 import PatientsReport from "./pages/reports/patients report/PatientsReport.vue";
+import ExpenseCatReport from "./pages/reports/Expense category report/ExpenseCatReport.vue";
+import ExpenseProductReport from "./pages/reports/Expense Product report/ExpenseProductReport.vue";
+import PickupReport from "./pages/reports/pickup report/PickupReport.vue";
 
 
 const router = createRouter({
@@ -62,6 +65,10 @@ const router = createRouter({
         // reports
         {path: "/profitLoss", component:ProfitLoss},
         {path: "/patientsReport", component:PatientsReport},
+        {path: "/categoryReport", component:ExpenseCatReport},
+        {path: "/productReport", component:ExpenseProductReport},
+        {path: "/pickupReport", component:PickupReport},
+        
 
         
 

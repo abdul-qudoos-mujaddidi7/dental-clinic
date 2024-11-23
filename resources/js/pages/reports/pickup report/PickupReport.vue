@@ -19,10 +19,9 @@
                         label="Search ..."
                         append-inner-icon="mdi-magnify"
                         hide-details
-                        v-model="ReportRepository.patientReportSearch"
+                        v-model="ReportRepository.pickUpReportSearch"
                     ></v-text-field>
                 </div>
-           
             </div>
             <!-- v-table server  -->
             <div class="overflow-x-hidden">
@@ -37,15 +36,17 @@
                                     "
                                     :headers="headers"
                                     :items-length="ReportRepository.totalItems"
-                                    :items="ReportRepository.patientReports"
+                                    :items="ReportRepository.pickupReport"
                                     :loading="ReportRepository.loading"
                                     :search="
-                                        ReportRepository.patientReportSearch
+                                        ReportRepository.pickUpReportSearch
                                     "
                                     @update:options="
-                                        ReportRepository.fetchPatientsReports
+                                        ReportRepository.fetchPickupReports
                                     "
-                                    :item-key="ReportRepository.patientReports"
+                                    :item-key="
+                                        ReportRepository.pickupReport
+                                    "
                                     hover
                                     class="w-100 mx-auto"
                                 >
@@ -67,9 +68,12 @@ const ReportRepository = useReportRepository();
 
 // header
 const headers = [
-    { title: "Patients", key: "name", align: "start", sortable: false },
-    { title: "Phone", key: "phone", align: "start", sortable: false },
-    { title: "Address", key: "address", align: "start", sortable: false },
-    { title: "Due", key: "due", align: "center", sortable: false },
+    { title: "Category Name", key: "name", align: "start", sortable: false },
+    {
+        title: "Total Amount",
+        key: "totalAmount",
+        align: "start",
+        sortable: false,
+    },
 ];
 </script>

@@ -20,9 +20,18 @@ export let useReportRepository = defineStore("ReportRepository", {
             totalAllExpense: reactive([]),
             totalAllProfit: reactive([]),
             totalAllProfit: reactive([]),
-            // patients report 
-            patientReports:reactive([]),
-            patientReportSearch:ref("")
+            // patients report
+            patientReports: reactive([]),
+            patientReportSearch: ref(""),
+            // expense cat report
+            expenseCatReport: reactive([]),
+            expenseCatReportSearch: ref(""),
+            // expense cat report
+            expenseProductReport: reactive([]),
+            expenseProductReportSearch: ref(""),
+            // pickup report 
+            pickUpReportSearch:ref(""),
+            pickupReport:reactive([]),
         };
     },
     actions: {
@@ -38,7 +47,7 @@ export let useReportRepository = defineStore("ReportRepository", {
             console.log(response.data, "profit and loss ");
             this.loading = false;
         },
-        // meter cycle payment ================================
+        // patients payment ================================
         async fetchPatientsReports({ page, itemsPerPage }) {
             this.loading = true;
             const response = await axios.get(
@@ -49,5 +58,39 @@ export let useReportRepository = defineStore("ReportRepository", {
             this.totalItems = response.data.total;
             this.loading = false;
         },
+        // expense Category report =============================
+        async fetchExpenseCategoryReports({ page, itemsPerPage }) {
+            this.loading = true;
+            const response = await axios.get(
+                `expenseCategoryReport?page=${page}&perPage=${itemsPerPage}&search=${this.expenseCatReportSearch}`
+            );
+            this.expenseCatReport = response.data.data;
+            console.log(this.expenseCatReport, "expense category report");
+            this.totalItems = response.data.total;
+            this.loading = false;
+        },
+        // expense Category report =============================
+        async fetchExpenseProductReports({ page, itemsPerPage }) {
+            this.loading = true;
+            const response = await axios.get(
+                `expenseProductReport?page=${page}&perPage=${itemsPerPage}&search=${this.expenseProductReportSearch}`
+            );
+            this.expenseProductReport = response.data.data;
+            console.log(this.expenseProductReport, "expense product report");
+            this.totalItems = response.data.total;
+            this.loading = false;
+        },
+        
+             // expense Category report =============================
+             async fetchPickupReports({ page, itemsPerPage }) {
+                this.loading = true;
+                const response = await axios.get(
+                    `pickupReport?page=${page}&perPage=${itemsPerPage}&search=${this.pickUpReportSearch}`
+                );
+                this.pickupReport = response.data.data;
+                console.log(this.pickupReport, "pickup report");
+                this.totalItems = response.data.total;
+                this.loading = false;
+            },
     },
 });

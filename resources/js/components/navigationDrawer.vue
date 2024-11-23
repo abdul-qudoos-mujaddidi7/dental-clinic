@@ -333,17 +333,23 @@ const reportItems = [
     },
     
     {
-        to: "/serviceGroup",
-        title: "Service Group",
+        to: "/categoryReport",
+        title: "Expense Category report",
         icon: "mdi mdi-circle-medium",
-        value: "service group  ",
+        value: "cat report  ",
     },
     
     {
-        to: "/service",
-        title: "Service",
+        to: "/productReport",
+        title: "Expense Product report",
         icon: "mdi mdi-circle-medium",
-        value: "service   ",
+        value: "expense pro report    ",
+    },
+    {
+        to: "/pickupReport",
+        title: "Pickup report",
+        icon: "mdi mdi-circle-medium",
+        value: "pickup report    ",
     },
 ]
 // 
