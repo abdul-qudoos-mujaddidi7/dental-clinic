@@ -722,12 +722,12 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
             }
         },
         // create payment
-        // expense_payments
+        // payments
         async FetchBillExpensesPayments(expenseId) {
             this.loading = true;
 
             const response = await axios.get(
-                `expense_payments?expense=${expenseId}`
+                `payments?expense=${expenseId}`
             );
             this.billExpensesPayments = response.data.data;
             console.log(this.billExpensesPayments, "this is the data i want ");
@@ -737,7 +737,7 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
         async FetchBillExpensePayment(id) {
             // this.error = null;
             try {
-                const response = await axios.get(`expense_payments/${id}`);
+                const response = await axios.get(`payments/${id}`);
 
                 this.billExpensePayment = response.data.data;
                 console.log(billExpensePayment, "this is the data i want ");
@@ -751,14 +751,14 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
                 // Adding a custom header to the Axios request
                 const config = {
                     method: "POST",
-                    url: "expense_payments",
+                    url: "payments",
 
                     data: formData,
                 };
 
                 // Using Axios to make a GET request with async/await and custom headers
                 const response = await axios(config);
-                this.createPaymentBill = false;
+                this.createDialog = false;
                 // this.router.push("/billExpense");
 
                 this.FetchBillExpensesPayment({
@@ -774,7 +774,7 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
             try {
                 const config = {
                     method: "PUT",
-                    url: `expense_payments/${id}`,
+                    url: `payments/${id}`,
 
                     data: data,
                 };
@@ -800,7 +800,7 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
             try {
                 const config = {
                     method: "DELETE",
-                    url: "expense_payments/" + id,
+                    url: "payments/" + id,
                 };
 
                 const response = await axios(config);

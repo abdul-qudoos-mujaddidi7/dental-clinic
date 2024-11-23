@@ -102,6 +102,33 @@
                     </router-link>
                 </v-list>
             </transition>
+            <!-- reports -->
+            <v-list-item
+                active-class="bg-primaryOld text-white"
+                prepend-icon="mdi-finance"
+                value="Reports"
+                @click="toggleReports"
+                class="transition-all duration-300 cursor-pointer py-3 borderRadius"
+            >
+                Reports
+            </v-list-item>
+            <transition name="slide-fade">
+                <v-list v-if="isReportVisible" class="pl-4">
+                    <router-link
+                        v-for="item in reportItems"
+                        :key="item.to"
+                        :to="item.to"
+                    >
+                        <v-list-item
+                            :title="item.title"
+                            :prepend-icon="item.icon"
+                            :value="item.value"
+                            color="primaryOld"
+                            class="child rounded-lg"
+                        />
+                    </router-link>
+                </v-list>
+            </transition>
             <!-- setting -->
             <v-list-item
                 active-class="bg-primaryOld text-white"
@@ -151,6 +178,7 @@ const isListVisible = ref(false);
 const isPeopleVisible = ref(false);
 const isLeadVisible = ref(false);
 const isSettingVisible = ref(false);
+const isReportVisible = ref(false)
 
 
 // 
@@ -166,6 +194,10 @@ const toggleLead =() =>{
 }
 const toggleSetting =()=>{
     isSettingVisible.value = !isSettingVisible.value;
+}
+const toggleReports =()=>{
+    isReportVisible.value = !isReportVisible.value;
+
 }
 
 // Define navigation items in a structured list for cleaner handling
@@ -286,6 +318,35 @@ const settingItems = [
         value: "service   ",
     },
 ]
+const reportItems = [
+{
+        to: "/profitLoss",
+        title: "Profit & Loss",
+        icon: "mdi mdi-circle-medium",
+        value: "profit",
+    },
+    {
+        to: "/patientsReport",
+        title: "Patient Reports",
+        icon: "mdi mdi-circle-medium",
+        value: "patients report ",
+    },
+    
+    {
+        to: "/serviceGroup",
+        title: "Service Group",
+        icon: "mdi mdi-circle-medium",
+        value: "service group  ",
+    },
+    
+    {
+        to: "/service",
+        title: "Service",
+        icon: "mdi mdi-circle-medium",
+        value: "service   ",
+    },
+]
+// 
 </script>
 
 <style scoped>
