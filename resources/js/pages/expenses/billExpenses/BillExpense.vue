@@ -1,5 +1,6 @@
 <template>
-    <CreateExpense v-if="ExpenseRepository.createDialog" />
+    <BillExpensePayment v-if="ExpenseRepository.createDialog" />
+    <ShowExpensePayment v-if="ExpenseRepository.ShowExpensePayment" />
     <div class="all-expense rounded-xl">
         <div class="card rounded-xl">
             <AppBar mainTitle="Bill Expense" sub-title="expense" />
@@ -28,16 +29,14 @@
                     </v-btn>
                     &nbsp;
                     <router-link to="/createBillExpense">
-
                         <v-btn
-                        @click="CreateDialogShow"
-                        color="primaryOld"
-                        variant="flat"
-                        text="Create"
-                        class="px-6"
+                            color="primaryOld"
+                            variant="flat"
+                            text="Create"
+                            class="px-6"
                         >
-                    </v-btn>
-                </router-link>
+                        </v-btn>
+                    </router-link>
                 </div>
             </div>
             <!-- v-table server  -->
@@ -55,7 +54,9 @@
                                     :items-length="ExpenseRepository.totalItems"
                                     :items="ExpenseRepository.billExpenses"
                                     :loading="ExpenseRepository.loading"
-                                    :search="ExpenseRepository.billExpenseSearch"
+                                    :search="
+                                        ExpenseRepository.billExpenseSearch
+                                    "
                                     @update:options="
                                         ExpenseRepository.fetchBillExpenses
                                     "
@@ -86,22 +87,51 @@
                                             </template>
                                             <v-list>
                                                 <v-list-item>
+                                                    <v-list-item-title
+                                                        class="cursor-pointer d-flex gap-3 justify-left pb-3"
+                                                        @click="
+                                                            CreateDialogShow(
+                                                                item.id
+                                                            )
+                                                        "
+                                                    >
+                                                        <v-icon
+                                                            color="tealColor"
+                                                            >mdi
+                                                            mdi-cash-edit</v-icon
+                                                        >
+                                                        Create Payment
+                                                    </v-list-item-title>
+                                                    <v-list-item-title
+                                                        class="cursor-pointer d-flex gap-3 justify-left pb-3"
+                                                        @click="
+                                                            ViewPaymentDialog(
+                                                                item.id
+                                                            )
+                                                        "
+                                                    >
+                                                        <v-icon
+                                                            color="tealColor"
+                                                            >mdi
+                                                            mdi-cash-sync</v-icon
+                                                        >
+                                                        Show Payment
+                                                    </v-list-item-title>
                                                     <router-link
                                                         :to="
                                                             '/updateBillExpense/' +
                                                             item.id
                                                         "
                                                     >
-                                                    <v-list-item-title
-                                                       
-                                                        class="cursor-pointer d-flex gap-3 justify-left pb-3"
-                                                    >
-                                                        <v-icon
-                                                            color="tealColor"
-                                                            >mdi-square-edit-outline</v-icon
+                                                        <v-list-item-title
+                                                            class="cursor-pointer d-flex gap-3 justify-left pb-3"
                                                         >
-                                                        Edit
-                                                    </v-list-item-title>
+                                                            <v-icon
+                                                                color="tealColor"
+                                                                >mdi-square-edit-outline</v-icon
+                                                            >
+                                                            Edit
+                                                        </v-list-item-title>
                                                     </router-link>
 
                                                     <v-list-item-title
@@ -128,7 +158,6 @@
                                     text="Delete"
                                     flat
                                 >
-                                    
                                 </v-btn>
                             </v-col>
                         </v-row>
@@ -142,26 +171,50 @@
 <script setup>
 import { ref } from "vue";
 import AppBar from "../../../components/AppBar.vue";
-// 
+import BillExpensePayment from "../bill Expense Payment/BillExpensePayment.vue";
+import ShowExpensePayment from "../bill Expense Payment/ShowExpensePayment.vue";
+//
 import { useExpenseRepository } from "@/store/ExpenseRepository";
 const ExpenseRepository = useExpenseRepository();
 // bulk delete
-const selectedIds = ref([]); 
+const selectedIds = ref([]);
 const sendSelectedIds = () => {
     if (selectedIds.value.length > 0) {
-
         const data = {
             billExpenseIds: selectedIds.value,
         };
 
         console.log("Sending data:", data);
 
-
         ExpenseRepository.bulkDeleteBillExpense(data);
     } else {
         console.log("No IDs selected.");
     }
 };
+// create and update
+const CreateDialogShow = (id) => {
+    ExpenseRepository.billExpenseId = id;
+
+    ExpenseRepository.billExpensesPayments = {};
+    ExpenseRepository.setEditMode(false);
+    ExpenseRepository.createDialog = true;
+};
+const ViewPaymentDialog = (item) => {
+    console.log(item.id, "payment id");
+    const expenseId = item.id;
+    ExpenseRepository.paymentId = item.id;
+    // ExpenseRepository.billExpensesPayments = {};
+    // if (Object.keys(ExpenseRepository.billExpensesPayments).length === 0) {
+    ExpenseRepository.FetchBillExpensesPayments(expenseId)
+        .then(() => {
+            ExpenseRepository.ShowExpensePayment = true;
+        })
+        .catch((error) => {
+            console.error("Error fetching data: ", error);
+        });
+    // }
+};
+
 const deleteItem = async (item) => {
     await ExpenseRepository.DeleteBillExpense(item.id);
 };
@@ -180,18 +233,18 @@ const headers = [
     { title: "Amount", key: "grandTotal", align: "center", sortable: false },
     { title: "PAID", key: "paid", align: "center", sortable: false },
     { title: "DUE", key: "due", align: "center", sortable: false },
-    
+
     { title: "Action", key: "action", align: "center", sortable: false },
 ];
 </script>
 
 <style scoped>
 .v-data-table-server {
-    position: relative; 
+    position: relative;
 }
 .header-button {
     position: absolute;
-    top: 0.7rem; 
+    top: 0.7rem;
     left: 0.7rem;
     z-index: 1;
 }
