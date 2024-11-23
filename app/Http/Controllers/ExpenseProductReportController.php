@@ -15,7 +15,7 @@ class ExpenseProductReportController extends Controller
         $expenseProduct= DB::table('products')
         ->selectRaw('products.name, Sum(total) as totalAmount')
         ->join('bill_expense_details','bill_expense_details.product_id','=','products.id')
-        ->groupBy('products.name')->get();
+        ->groupBy('products.name')->paginate(5);
 
         return $expenseProduct;
     }
