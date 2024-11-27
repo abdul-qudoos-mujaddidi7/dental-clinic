@@ -65,7 +65,12 @@
                                                 fluid
                                                 small
                                                 rounded
-                                                @click="changeStage(item.id)"
+                                                @click="
+                                                    changeStage(
+                                                        item.id,
+                                                        item.stage.id
+                                                    )
+                                                "
                                                 :style="{
                                                     backgroundColor:
                                                         getStageColor(item.id),
@@ -73,7 +78,7 @@
                                                 }"
                                             >
                                                 <p class="text-gray-200">
-                                                    {{ getStageName(item.id) }}
+                                                    {{ item.stage.name }}
                                                 </p>
                                             </v-btn>
                                         </td>
@@ -148,7 +153,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, reactive } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 import CreateLeads from "./CreateLeads.vue";
 import { useLeadRepository } from "@/store/LeadRepository";
@@ -173,11 +178,13 @@ const getStageName = (itemId) => {
 
 // Function to get button color based on stage name
 const getStageColor = (itemId) => {
-    const stageName = getStageName(itemId);
-    switch (stageName.toLowerCase()) {
+    const item = LeadRepository.leads.find((lead) => lead.id === itemId);
+    if (!item || !item.stage) return "#112F53"; // Default color
+
+    switch (item.stage.name.toLowerCase()) {
         case "new":
             return "#00893F";
-        case "ongoing":
+        case "on going":
             return "#0080FF";
         case "completed":
             return "#3C3C54";
@@ -186,32 +193,41 @@ const getStageColor = (itemId) => {
     }
 };
 
+
 // Method to change the stage for a specific item and update the backend
-const changeStage = async (itemId) => {
+const changeStage = async (itemId, currentStageId) => {
     const leadStage = LeadRepository.leadStageFor;
     if (!leadStage || leadStage.length === 0) return;
 
-    // Initialize index for item if it doesn’t exist
-    if (stageIndexes.value[itemId] === undefined) {
-        stageIndexes.value[itemId] = 0;
-    }
+    // Find the index of the current stage
+    const currentIndex = leadStage.findIndex(
+        (stage) => stage.id === currentStageId
+    );
 
-    // Increment the index and cycle through stages for the specific item
-    stageIndexes.value[itemId] =
-        (stageIndexes.value[itemId] + 1) % leadStage.length;
+    // Cycle to the next stage
+    const nextIndex = (currentIndex + 1) % leadStage.length;
+    const nextStage = leadStage[nextIndex];
 
-    const selectedStage = leadStage[stageIndexes.value[itemId]];
+    const formData = reactive({
+        stageId: nextStage.id,
+    });
 
-    // Send the selected stage ID to the backend for this specific item
     try {
-        await LeadRepository.leadStages(itemId, selectedStage.id); // Pass both itemId and selected stage ID
-        console.log(
-            `Stage for item ${itemId} updated to: ${selectedStage.name}`
-        );
+        // Update backend
+        await LeadRepository.UpdateLeadStages(itemId, formData);
+
+        // Reflect the change in UI by updating the item's stage locally
+        const item = LeadRepository.leads.find((lead) => lead.id === itemId);
+        if (item) {
+            item.stage = nextStage;
+        }
+
+        console.log(`Stage for item ${itemId} updated to: ${nextStage.name}`);
     } catch (error) {
         console.error(`Error updating stage for item ${itemId}:`, error);
     }
 };
+
 
 // bulk delete
 const selectedIds = ref([]);

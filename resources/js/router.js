@@ -31,7 +31,8 @@ import PatientsReport from "./pages/reports/patients report/PatientsReport.vue";
 import ExpenseCatReport from "./pages/reports/Expense category report/ExpenseCatReport.vue";
 import ExpenseProductReport from "./pages/reports/Expense Product report/ExpenseProductReport.vue";
 import PickupReport from "./pages/reports/pickup report/PickupReport.vue";
-
+//dashboard
+import Dashboard from "./pages/dashboard/Dashboard.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -68,6 +69,9 @@ const router = createRouter({
         {path: "/categoryReport", component:ExpenseCatReport},
         {path: "/productReport", component:ExpenseProductReport},
         {path: "/pickupReport", component:PickupReport},
+        // Dashboard
+        {path: "/dashboard", component:Dashboard},
+        
         
 
         

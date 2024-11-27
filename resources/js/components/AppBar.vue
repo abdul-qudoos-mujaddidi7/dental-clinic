@@ -1,12 +1,6 @@
 <template>
-    <v-toolbar
-        density="compact"
-        class=""
-        color="white"
-        :order="order"
-      
-    >
-    <v-btn icon="mdi mdi-menu" @click="toggleSidebar"></v-btn>
+    <v-toolbar density="compact" class="" color="white" :order="order">
+        <v-btn icon="mdi mdi-menu" @click="toggleSidebar"></v-btn>
         <span dir="rtl" class="breadCrumbSub"> {{ subTitle }}</span> &nbsp; -
         &nbsp;
         <span dir="rtl" class="breadCrumbTitle"> {{ mainTitle }}</span>
@@ -14,7 +8,11 @@
 
         <div class="icon-bar">
             <!-- Render the icons with button-like styling -->
-            <div class="icon-wrapper">
+            <div
+                class="icon-wrapper"
+                @click="toggleFullscreen"
+                style="cursor: pointer"
+            >
                 <svg
                     width="20"
                     height="20"
@@ -121,15 +119,26 @@
                 </svg>
             </div>
         </div>
-        
-       
     </v-toolbar>
 </template>
 
 <script setup>
-import {useAuthRepository} from "@/store/AuthRepository"
+import { useAuthRepository } from "@/store/AuthRepository";
 const AuthRepository = useAuthRepository();
 
+const toggleFullscreen = async () => {
+  try {
+    if (!document.fullscreenElement) {
+      // Enter fullscreen mode
+      await document.documentElement.requestFullscreen();
+    } else {
+      // Exit fullscreen mode
+      await document.exitFullscreen();
+    }
+  } catch (err) {
+    console.error("Failed to toggle fullscreen mode:", err);
+  }
+};
 const toggleSidebar = () => {
     AuthRepository.toggleRail(); // This will update the store and trigger reactivity
 };
@@ -142,12 +151,12 @@ const order = 0;
 <style scoped>
 .icon-bar {
     display: flex;
-    gap: 0.5rem; 
+    gap: 0.5rem;
 }
 
 .icon-wrapper {
     background-color: #112f531a; /* Light gray background */
-    padding: 0.4rem; 
+    padding: 0.4rem;
     border-radius: 0.5rem; /* Rounded corners */
     display: flex;
     justify-content: center;
@@ -160,7 +169,7 @@ const order = 0;
     color: #000; /* Black color for the icons */
 }
 
-.breadCrumbTitle{
+.breadCrumbTitle {
     cursor: pointer;
 }
 

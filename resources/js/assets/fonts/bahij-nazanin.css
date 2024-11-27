@@ -1,0 +1,6 @@
+@font-face {
+    font-family: "Bahij Nazanin";
+    src: url("@/assets/fonts/Bahij-Nazanin.ttf") format("truetype"); /* Update the path and format if necessary */
+    font-weight: bolder;
+    font-style: normal;
+}

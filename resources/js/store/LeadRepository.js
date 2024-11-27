@@ -126,6 +126,21 @@ export let useLeadRepository = defineStore("LeadRepository", {
                 this.error = err;
             }
         },
+        async UpdateLeadStages(id, formData) {
+            console.log(formData, id, "Update ");
+            try {
+                const config = {
+                    method: "PUT",
+                    url: `leads/stage/${id}`,
+                    data: formData,
+                };
+                const response = await axios(config);
+             
+            } catch (err) {
+                this.error = err;
+            }
+        },
+        // /leads/stage/{lead}
         // category
         async FetchCategories({ page, itemsPerPage }) {
             this.loading = true;

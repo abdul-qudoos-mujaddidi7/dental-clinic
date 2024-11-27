@@ -5,7 +5,7 @@
                 <img
                     src="https://i.pinimg.com/736x/a7/7a/a5/a77aa5d8c889c3beee52aa1a7c7dcf23.jpg"
                     alt="Logo"
-                    class="w-20 h-20 rounded-full object-cover"
+                    class="w-[5rem] h-[5rem] rounded-lg  object-cover"
                 />
             </div>
         </router-link>
