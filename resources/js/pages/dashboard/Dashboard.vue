@@ -1,7 +1,7 @@
-<template>
-    <div class="all-expense rounded-xl m-4">
-        <div class="card rounded-xl" rtl>
-            <AppBar subTitle="Dashboard" class="MenuColor" />
+<template >
+
+        <div class=" bg-[#f8f8f8] rounded-xl" rtl>
+            <AppBar subTitle="Dashboard" main-title="dashboard" class="MenuColor"/>
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
@@ -10,7 +10,7 @@
 
             <v-row class="pt-6">
                 <v-col>
-                    <v-card variant="flat" dir="rtl" rounded="lg">
+                    <v-card variant="flat" dir="rtl" rounded="lg" >
                         <template v-slot:title>
                             <div
                                 class="d-flex w-25 align-center justify-space-between"
@@ -72,9 +72,10 @@
                                         class="w-4"
                                     />
                                 </v-avatar>
-                                <div class="font-weight-black pb-2 mr-4">
+                                <div class="font-weight-black pb-2 mr-4 " style="background-color: red;">
                                     {{
-                                        DashboardRepository.dashboards.expenses
+                                        DashboardRepository.dashboardReport.lastMonthProfit
+
                                     }}
                                 </div>
                             </div>
@@ -99,8 +100,8 @@
                                 </v-avatar>
                                 <div class="font-weight-black pb-2 mr-4">
                                     {{
-                                        DashboardRepository.dashboards
-                                            .activeMeters
+                                        DashboardRepository.dashboardReport
+                                            .thisMonthProfit
                                     }}
                                 </div>
                             </div>
@@ -296,8 +297,7 @@
                 </v-col>
             </v-row>
         </div>
-        <!-- four cards of Dashboard in four columns==================== -->
-    </div>
+  
 </template>
 
 <!-- ============================================================================================================================= -->
@@ -340,12 +340,9 @@ const randomColor = () => {
 };
 </script>
 <style scoped>
+
 .MenuColor {
     background-color: #f8f8f8 !important;
 }
-.calibri_font {
-    font-family: "Calibri", sans-serif;
-    font-weight: bold;
-    font-style: normal;
-}
+
 </style>

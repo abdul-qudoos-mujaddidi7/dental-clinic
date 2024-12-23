@@ -29,8 +29,9 @@ export let useDashboardRepository = defineStore("DashboardRepository", {
             thisMonthExpenses: [],
             thisYearExpenses: [],
             expensesList: [],
-            dashboards: {
-                todayExpenses: [],
+            dashboardReport: {
+                totalTodayExpense: [],
+                thisMonthProfit:[],
                 thisMonthExpenses: [],
                 thisYearExpenses: [],
             },
@@ -42,13 +43,13 @@ export let useDashboardRepository = defineStore("DashboardRepository", {
         // Original method for fetching dashboard data
         async fetchDashboardData() {
             try {
-                const response = await axios.get("dashboards");
-                const data = response.data.data;
+                const response = await axios.get("dashboardReport");
+                const data = response.data;
 
                 console.log("Fetched dashboard data:", data);
 
                 this.$patch({
-                    dashboards: data,
+                    dashboardReport: data,
                     totalExpenses: data.todayExpenses.reduce(
                         (acc, expense) => acc + (expense.expAmount || 0),
                         0

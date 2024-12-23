@@ -1,7 +1,7 @@
 <template>
     <div class="all-expense rounded-xl">
         <div class="card rounded-xl">
-            <AppBar mainTitle="Bill Expense" sub-title="expense" />
+            <AppBar mainTitle="Cure Cycle" sub-title="cure Cycle" />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
@@ -18,7 +18,7 @@
                         label="Search ..."
                         append-inner-icon="mdi-magnify"
                         hide-details
-                        v-model="ExpenseRepository.billExpenseSearch"
+                        v-model="CureRepository.curesSearch"
                     ></v-text-field>
                 </div>
                 <div class="btn">
@@ -48,17 +48,17 @@
                                 <v-data-table-server
                                     theme="cursor-pointer"
                                     v-model:items-per-page="
-                                        ExpenseRepository.itemsPerPage
+                                        CureRepository.itemsPerPage
                                     "
                                     :headers="headers"
-                                    :items-length="ExpenseRepository.totalItems"
-                                    :items="ExpenseRepository.billExpenses"
-                                    :loading="ExpenseRepository.loading"
-                                    :search="ExpenseRepository.billExpenseSearch"
+                                    :items-length="CureRepository.totalItems"
+                                    :items="CureRepository.cures"
+                                    :loading="CureRepository.loading"
+                                    :search="CureRepository.curesSearch"
                                     @update:options="
-                                        ExpenseRepository.fetchBillExpenses
+                                        CureRepository.FetchCures
                                     "
-                                    :item-key="ExpenseRepository.billExpenses"
+                                    :item-key="CureRepository.cures"
                                     hover
                                     class="w-100 mx-auto"
                                 >
@@ -142,8 +142,8 @@
 import { ref } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 
-import { useExpenseRepository } from "@/store/ExpenseRepository";
-const ExpenseRepository = useExpenseRepository();
+import { useCureRepository } from "@/store/CureRepository";
+const CureRepository = useCureRepository();
 // bulk delete
 const selectedIds = ref([]); 
 const sendSelectedIds = () => {
@@ -156,13 +156,13 @@ const sendSelectedIds = () => {
         console.log("Sending data:", data);
 
 
-        ExpenseRepository.bulkDeleteBillExpense(data);
+        CureRepository.bulkDeleteBillExpense(data);
     } else {
         console.log("No IDs selected.");
     }
 };
 const deleteItem = async (item) => {
-    await ExpenseRepository.DeleteBillExpense(item.id);
+    await CureRepository.DeleteBillExpense(item.id);
 };
 // header
 const headers = [
