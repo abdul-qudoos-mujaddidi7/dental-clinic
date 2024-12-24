@@ -26,10 +26,10 @@
                         Filter
                     </v-btn>
                     &nbsp;
-                    <router-link to="/createBillExpense">
+                    <router-link to="/createCure">
 
                         <v-btn
-                        @click="CreateDialogShow"
+                    
                         color="primaryOld"
                         variant="flat"
                         text="Create"
@@ -167,18 +167,20 @@ const deleteItem = async (item) => {
 // header
 const headers = [
     { title: "", key: "checkbox", align: "start", sortable: false },
-    { title: "Date", key: "date", align: "start", sortable: false },
-    { title: "Reference", key: "reference", align: "center", sortable: false },
-    { title: "Added By", key: "addedBy", align: "center", sortable: false },
+    { title: "Reference", key: "reference", align: "start", sortable: false },
+    { title: "Date", key: "start_date", align: "start", sortable: false },
+    { title: "Doctor", key: "", align: "start", sortable: false },
+    { title: "patient", key: "patient.name", align: "center", sortable: false },
     {
-        title: "Supplier",
-        key: "supplier.name",
+        title: "Cure State",
+        key: "status",
         align: "center",
         sortable: false,
     },
-    { title: "Amount", key: "grandTotal", align: "center", sortable: false },
+    { title: "Grand total", key: "grand_total", align: "center", sortable: false },
     { title: "PAID", key: "paid", align: "center", sortable: false },
     { title: "DUE", key: "due", align: "center", sortable: false },
+    { title: "Payment Sent", key: "paymentSent", align: "center", sortable: false },
     
     { title: "Action", key: "action", align: "center", sortable: false },
 ];

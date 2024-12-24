@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { reactive, ref } from "vue";
 import { axios } from "../axios";
 import { useRouter } from "vue-router";
+import Patients from "../pages/people/patients/Patients.vue";
 
 export let useCureRepository = defineStore("CureRepository", {
     state() {
@@ -21,8 +22,10 @@ export let useCureRepository = defineStore("CureRepository", {
             cures: reactive([]),
             lead: reactive([]),
             leadSearch: ref(""),
-            leadCategoriesFor: reactive([]),
-            leadStageFor:reactive([]),
+            patientsFor: reactive([]),
+            doctorFor:reactive([]),
+            searchFetch: reactive([]),
+            expenseProduct: reactive([]),
         };
     },
     actions: {
@@ -37,14 +40,43 @@ export let useCureRepository = defineStore("CureRepository", {
             const day = String(today.getDay()).padStart(2, "0");
             return `${year}-${month}-${day}`;
         },
-        // leads
-        async leadCategories() {
-            const response = await axios.get("categories");
-            this.leadCategoriesFor = response.data.data;
+        // cure
+        async SearchFetchData() {
+            console.log(this.billExpenseSearch);
+            this.loading = true;
+
+            const response = await axios.get(
+                `services?&search=${this.billExpenseSearch}`
+            );
+            this.searchFetch = response.data.data;
+            this.loading = false;
+            // this.searchFetch = "";
         },
-        async leadStages(item,id) {
-            const response = await axios.get("stages");
-            this.leadStageFor = response.data.data;
+        async fetchProduct(id, isUpdate = false) {
+       
+            try {
+                const response = await axios.get(`services/${id}`);
+                const productData = response.data.data;
+        
+                if (isUpdate) delete productData.id;
+        
+                // Only add if it doesn’t already exist
+                if (!this.expenseProduct.some(item => item.id === productData.id)) {
+                    this.expenseProduct.push(productData);
+                    this.billExpense.expenseDetails.push(productData);
+                }
+                this.searchFetch = [];
+            } catch (err) {
+                // this.error = err.message;
+            }
+        },
+        async Patients() {
+            const response = await axios.get("patients");
+            this.patientsFor = response.data.data;
+        },
+        async Doctor() {
+            const response = await axios.get("dentists");
+            this.doctorFor = response.data.data;
         },
         async bulkDeleteLead(data) {
             console.log(data);
@@ -68,23 +100,23 @@ export let useCureRepository = defineStore("CureRepository", {
             this.totalItems = response.data.meta.total;
             this.loading = false;
         },
-        async FetchLead(id) {
+        async FetchCure(id) {
             // this.loading = true;
             console.log(id);
             try {
-                const response = await axios.get(`leads/${id}`);
+                const response = await axios.get(`cures/${id}`);
                 this.lead = response.data.data;
                 console.log(this.lead);
             } catch (err) {
                 this.error = err;
             }
         },
-        async CreateLead(formData) {
+        async CreateCure(formData) {
             console.log(formData);
             try {
                 const config = {
                     method: "POST",
-                    url: "leads",
+                    url: "cures",
                     data: formData,
                 };
                 const response = await axios(config);
@@ -97,12 +129,12 @@ export let useCureRepository = defineStore("CureRepository", {
                 this.error = err;
             }
         },
-        async UpdateLead(id, formData) {
+        async UpdateCure(id, formData) {
             console.log(formData, id, "Update ");
             try {
                 const config = {
                     method: "PUT",
-                    url: `leads/${id}`,
+                    url: `cures/${id}`,
                     data: formData,
                 };
                 const response = await axios(config);
@@ -111,11 +143,11 @@ export let useCureRepository = defineStore("CureRepository", {
                 this.error = err;
             }
         },
-        async DeleteLead(id) {
+        async DeleteCure(id) {
             try {
                 const config = {
                     method: "DELETE",
-                    url: `leads/${id}`,
+                    url: `cures/${id}`,
                 };
                 const response = await axios(config);
                 this.FetchLeads({
@@ -131,7 +163,7 @@ export let useCureRepository = defineStore("CureRepository", {
             try {
                 const config = {
                     method: "PUT",
-                    url: `leads/stage/${id}`,
+                    url: `cures/stage/${id}`,
                     data: formData,
                 };
                 const response = await axios(config);

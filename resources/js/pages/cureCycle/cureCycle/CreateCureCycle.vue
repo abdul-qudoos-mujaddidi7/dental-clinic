@@ -1,8 +1,8 @@
 <template>
-    <CReateExpensePRoduct v-if="ExpenseRepository.createDialog" />
+    <CReateExpensePRoduct v-if="CureRepository.createDialog" />
     <div class="all-expense rounded-xl m-4">
         <div class="card rounded-xl bg-white" rtl>
-            <AppBar mainTitle="Create Bill Expense" subTitle="expense" />
+            <AppBar mainTitle="Create Cure Cycle" subTitle="cure cycle" />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
@@ -11,7 +11,7 @@
             <v-form ref="formRef" class="d-flex pt-12">
                 <v-text-field
                     type="date"
-                    v-model="formData.billDate"
+                    v-model="formData.startDate"
                     variant="outlined"
                     label="Date *"
                     class="pr-2"
@@ -21,11 +21,11 @@
                 ></v-text-field>
 
                 <v-autocomplete
-                    :items="ExpenseRepository.suppliersFor"
-                    v-model="formData.supplierId"
+                v-model="formData.patientId"
+                    :items="CureRepository.patientsFor"
                     :return-object="false"
                     variant="outlined"
-                    label="Supplier *"
+                    label="Patient *"
                     class="pr-2 pl-2"
                     style="width: 45%"
                     item-value="id"
@@ -33,27 +33,33 @@
                     density="compact"
                     :rules="[rules.required]"
                 ></v-autocomplete>
-                <v-text-field
-                    v-model="formData.billNumber"
+                
+                <v-autocomplete
+                v-model="formData.dentist"
+                    :items="CureRepository.doctorFor"
+                    :return-object="false"
                     variant="outlined"
-                    label="Bill Number"
-                    class="pl-2"
-                    density="compact"
+                    label="Doctor *"
+                    class="pr-2 pl-2"
                     style="width: 45%"
-                    :rules="[rules.required, rules.number]"
-                ></v-text-field>
+                    item-value="id"
+                    item-title="firstName"
+                    density="compact"
+                    :rules="[rules.required]"
+                ></v-autocomplete>
+            
             </v-form>
             <v-divider></v-divider>
             <v-row no-gutters class="justify-space-between mt-16">
                 <v-col cols="full" class="w-50" sm="12" md="12">
                     <div class="d-flex">
                         <v-text-field
-                            v-model="ExpenseRepository.billExpenseSearch"
-                            @keyup.enter="ExpenseRepository.SearchFetchData"
-                            @input="ExpenseRepository.SearchFetchData"
+                            v-model="CureRepository.billExpenseSearch"
+                            @keyup.enter="CureRepository.SearchFetchData"
+                            @input="CureRepository.SearchFetchData"
                             @click:clear="clearSearch"
                             variant="outlined"
-                            label="Search Product"
+                            label="Search Services"
                             density="compact"
                             append-inner-icon="mdi-magnify"
                             clearable
@@ -62,11 +68,11 @@
                     </div>
                     <div
                         class="rounded shadow-lg px-5 mb-12"
-                        v-if="ExpenseRepository.searchFetch.length > 0"
+                        v-if="CureRepository.searchFetch.length > 0"
                     >
                         <div>
                             <div
-                                v-for="index in ExpenseRepository.searchFetch"
+                                v-for="index in CureRepository.searchFetch"
                                 :key="index"
                             >
                                 <p
@@ -89,7 +95,7 @@
                         <tr>
                             <th scope="col" class="px-3 py-3 text-start">#</th>
                             <th scope="col" class="px-3 py-3 text-start">
-                                Product
+                                Service
                             </th>
                             <th scope="col" class="px-3 py-3 text-start">
                                 Qty
@@ -98,7 +104,7 @@
                                 Cost
                             </th>
                             <th scope="col" class="px-3 py-3 text-center">
-                                Grand Total
+                                Sub Total
                             </th>
                             <th scope="col" class="px-3 py-3 text-end">
                                 Action
@@ -110,7 +116,7 @@
                             class="product-table"
                             v-for="(
                                 pro, index
-                            ) in ExpenseRepository.expenseProduct"
+                            ) in CureRepository.expenseProduct"
                             :key="index"
                         >
                             <td class="pl-3 text-start">
@@ -204,36 +210,36 @@
 import AppBar from "../../../components/AppBar.vue";
 import { reactive, computed, ref, watch, onMounted } from "vue";
 
-import { useExpenseRepository } from "@/store/ExpenseRepository";
+import { useCureRepository } from "@/store/CureRepository";
 
-const ExpenseRepository = useExpenseRepository();
+const CureRepository = useCureRepository();
 const CalcFetchProduct = (index) => {
     console.log(index, "man of the match");
-    ExpenseRepository.fetchProduct(index.id);
+    CureRepository.fetchProduct(index.id);
     clearSearch();
 };
 
 // ======================
 const clearSearch = () => {
-    ExpenseRepository.billExpenseSearch = ""; // Clear repository's search
-    ExpenseRepository.searchFetch = [];
+    CureRepository.billExpenseSearch = ""; // Clear repository's search
+    CureRepository.searchFetch = [];
 };
 const removeProduct = (index) => {
-    ExpenseRepository.expenseProduct.splice(index, 1);
-    console.log(ExpenseRepository.expenseProduct);
+    CureRepository.expenseProduct.splice(index, 1);
+    console.log(CureRepository.expenseProduct);
 };
 const createExpenseProduct = () => {
-    ExpenseRepository.createDialog = true;
+    CureRepository.createDialog = true;
 };
 
 const formData = reactive({
-    expenseDetails: ExpenseRepository.expenseProduct,
+    services: CureRepository.expenseProduct,
     grandTotal: "",
-    supplierId: "",
-    billNumber: "",
-    billDate: "",
-    note: "",
+    patientId: "",
+    startDate: "",
+    description: "",
     paid: "",
+    status:"",
 });
 const formRef = ref(null);
 const rules = {
@@ -250,9 +256,9 @@ const multiple = (pro) => {
 };
 
 watch(
-    () => ExpenseRepository.expenseProduct,
+    () => CureRepository.expenseProduct,
     () => {
-        ExpenseRepository.expenseProduct.forEach((expenseProduct) => {
+        CureRepository.expenseProduct.forEach((expenseProduct) => {
             // Update the 'subtotal' property for each service
             expenseProduct.total = multiple(expenseProduct);
             console.log(expenseProduct);
@@ -262,7 +268,7 @@ watch(
 );
 
 const totalSum = computed(() => {
-    const total = ExpenseRepository.expenseProduct.reduce(
+    const total = CureRepository.expenseProduct.reduce(
         (acc, item) => acc + multiple(item),
         0
     );
@@ -277,21 +283,22 @@ const Duo = computed(() => {
 const createEarning = async () => {
     const isValid = await formRef.value.validate();
     if (isValid) {
-        formData.expenseDetails.map((data) => (data.expenseProduct = data.id));
-        await ExpenseRepository.CreateBillExpense(formData);
+        formData.services.map((data) => (data.expenseProduct = data.id));
+        await CureRepository.CreateCure(formData);
     }
 };
 
 const saveData = async (id) => {
-    await ExpenseRepository.fetchProduct(id);
+    await CureRepository.fetchProduct(id);
 };
 
 const deleteItem = async (item) => {
-    await ExpenseRepository.deleteEarning(item.id);
+    await CureRepository.deleteEarning(item.id);
 };
-formData.billDate = ExpenseRepository.getTodaysDate();
+formData.startDate = CureRepository.getTodaysDate();
 
-ExpenseRepository.Suppliers();
+CureRepository.Patients();
+CureRepository.Doctor();
 // ====================
 // =====================================
 </script>

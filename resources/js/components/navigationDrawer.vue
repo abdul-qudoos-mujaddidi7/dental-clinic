@@ -331,8 +331,8 @@ const cureItems = [
         value: "cure cycle ",
     },
     {
-        to: "/leadCategory",
-        title: "Lead Category",
+        to: "/createCure",
+        title: "create Cure Cycle",
         icon: "mdi mdi-circle-medium",
         value: "idk",
     },

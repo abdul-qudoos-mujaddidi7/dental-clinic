@@ -50,6 +50,7 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
             expenseProducts: reactive([]),
             expenseProduct: reactive([]),
             // Supplier
+            suppliersFor:reactive([]),
            
             // bill expense
             billExpenseSearch: ref(""),
@@ -188,7 +189,6 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
             }
         },
         //   this is data fro ALL EXPENSE FETCH
-     
         async Categories() {
             const config = {
                 url: "expenseCategories",
@@ -202,6 +202,14 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
             };
             const response = await axios(config);
             this.people = response.data.data;
+            // console.log(this.people);
+        },
+        async Suppliers() {
+            const config = {
+                url: "suppliers",
+            };
+            const response = await axios(config);
+            this.suppliersFor = response.data.data;
             // console.log(this.people);
         },
  
@@ -480,7 +488,6 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
             }
         },
         // supplier
-
         async FetchSuppliers({ page, itemsPerPage }) {
             this.loading = true;
 
@@ -599,8 +606,7 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
             } catch (err) {
                 // this.error = err.message;
             }
-        }
-        ,
+        },
         // 
         async bulkDeleteBillExpense(data) {
             console.log(data);

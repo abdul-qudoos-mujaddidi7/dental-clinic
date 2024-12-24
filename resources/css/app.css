@@ -6,6 +6,16 @@
 
 /* Add more weights if necessary */
 
+div.v-data-table-footer
+{
+    position: absolute;
+    top: 66%;
+    bottom: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
 .btn-search {
     display: flex;
     justify-content: space-between;
