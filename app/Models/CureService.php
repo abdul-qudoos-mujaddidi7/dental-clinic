@@ -12,7 +12,6 @@ class CureService extends Model
         'cure_id',
         'service_id',
         'cost',
-        'discount',
         'total',
         'status',
     ];
