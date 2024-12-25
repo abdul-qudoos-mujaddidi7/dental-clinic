@@ -17,7 +17,9 @@ class DentistFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+           'name' => $this->faker->firstName(),
+            // 'last_name' => $this->faker->lastName(),
+            'phone' => $this->faker->phoneNumber(),
         ];
     }
 }

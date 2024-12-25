@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\BillExpense;
 use App\Models\Category;
 use App\Models\Cure;
+use App\Models\Dentist;
 use App\Models\Expense;
 use App\Models\ExpenseCategory;
 use App\Models\Lead;
@@ -43,6 +44,7 @@ class DatabaseSeeder extends Seeder
     
         // $this->call(SystemSettingSeeder::class);
         Patient::factory(3)->create();
-        Cure::factory(2)->create();
+        Dentist::factory(3)->create();
+        // Cure::factory(2)->create();
     }
 }

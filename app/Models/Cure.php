@@ -9,7 +9,8 @@ class Cure extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'patient_id',  
+        'patient_id',
+        'dentist_id',
         'start_date',
         'grand_total',
         'paid',
@@ -30,6 +31,10 @@ class Cure extends Model
     {
         return $this->belongsTo(Patient::class);
     }
+    public function dentist()
+{
+    return $this->belongsTo(Dentist::class);
+}
 
     public function cureCycles()
     {
@@ -39,14 +44,27 @@ class Cure extends Model
     {
         return $this->hasMany(CureService::class);
     }
-    public function payments() {
+    public function payments()
+    {
         return $this->hasMany(CurePayment::class);
     }
 
-    public function scopeSearch($query, $search){
-        if(!$search){
+    public function scopeSearch($query, $search)
+    {
+        if (!$search) {
             return $query;
         }
-        return $query->where('name','LIKE','%'.$search. '%');
+        return $query->where('name', 'LIKE', '%' . $search . '%');
+    }
+
+    public function getPaymentStatus()
+    {
+        if ($this->paid >= $this->grand_total) {
+            return 'PAID';
+        } elseif ($this->paid > 0) {
+            return 'PARTIAL';
+        } else {
+            return 'DUE';
+        }
     }
 }
