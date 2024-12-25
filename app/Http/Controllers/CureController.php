@@ -81,7 +81,7 @@ class CureController extends Controller
      */
     public function show(Cure $cure)
     {
-        $cure->load(['patient', 'cureService']);
+        $cure->load(['patient', 'cureServices']);
         return new CureResource($cure);
     }
 
