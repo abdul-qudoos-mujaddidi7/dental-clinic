@@ -67,7 +67,7 @@ class CureController extends Controller
                     'cure_id' => $cure->id,
                     'service_id' => $service['serviceId'],
                     'cost' => $service['cost'],
-                    'discount' => $service['discount'],
+                    // 'discount' => $service['discount'],
                     'total' => $service['total'],
                     'status' => $service['status']
                 ]);
