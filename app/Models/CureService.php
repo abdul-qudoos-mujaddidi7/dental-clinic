@@ -22,7 +22,7 @@ class CureService extends Model
     }
 
     public function cure(){
-        return $this->belongsTo(cure::class);
+        return $this->belongsTo(Cure::class);
     }
 
     
