@@ -36,6 +36,7 @@ import Dashboard from "./pages/dashboard/Dashboard.vue";
 // cure cycle 
 import CureCycle from "./pages/cureCycle/cureCycle/CureCycle.vue";
 import CreateCureCycle from "./pages/cureCycle/cureCycle/CreateCureCycle.vue";
+import UpdateCureCycle from "./pages/cureCycle/cureCycle/UpdateCureCycle.vue"
 
 const router = createRouter({
     history: createWebHistory(),
@@ -77,6 +78,8 @@ const router = createRouter({
         // CureCycle 
         {path: "/cure", component:CureCycle},
         {path: "/createCure", component:CreateCureCycle},
+        {path: "/updateCure/:id", props:true, component:UpdateCureCycle},
+
 
         
         

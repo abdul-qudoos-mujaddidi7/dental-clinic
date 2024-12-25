@@ -35,7 +35,7 @@
                 ></v-autocomplete>
                 
                 <v-autocomplete
-                v-model="formData.dentist"
+                v-model="formData.dentistId"
                     :items="CureRepository.doctorFor"
                     :return-object="false"
                     variant="outlined"
@@ -48,15 +48,15 @@
                     :rules="[rules.required]"
                 ></v-autocomplete>
                 <v-autocomplete
-                v-model="formData.dentist"
-                    :items="CureRepository.doctorFor"
+                v-model="formData.status"
+                    :items="CureRepository.leadStageFor"
                     :return-object="false"
                     variant="outlined"
-                    label="Doctor *"
+                    label="Status *"
                     class="pr-2 pl-2"
                     style="width: 45%"
-                    item-value="id"
-                    item-title="firstName"
+                    item-value="name"
+                    item-title="name"
                     density="compact"
                     :rules="[rules.required]"
                 ></v-autocomplete>
@@ -328,6 +328,7 @@ formData.startDate = CureRepository.getTodaysDate();
 
 CureRepository.Patients();
 CureRepository.Doctor();
+CureRepository.leadStagesFor();
 // ====================
 // =====================================
 </script>
