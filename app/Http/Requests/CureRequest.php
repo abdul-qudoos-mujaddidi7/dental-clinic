@@ -17,6 +17,7 @@ class CureRequest extends FormRequest
     public function prePareForValidation(){
         return $this->merge([
             "patient_id"=> $this->input("patientId"),
+            "dentist_id"=>$this->input("doctorId"),
             "start_date"=> $this->input("startDate"),
             "grand_total"=> $this->input("grandTotal"),
             "diseases_history"=> $this->input("diseasesHistory"),
@@ -34,6 +35,7 @@ class CureRequest extends FormRequest
 {
     return [
         'patient_id' => 'required|exists:patients,id',
+        'dentist_id' => 'required|exists:dentists,id',
         'start_date' => 'required|date',
         'grand_total' => 'required|numeric|min:0',
         'paid' => 'nullable|numeric|min:0',

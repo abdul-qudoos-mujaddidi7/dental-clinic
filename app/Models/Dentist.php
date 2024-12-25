@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Dentist extends Model
 {
     use HasFactory;
-    protected $fillable = ['first_name','phone'];
+    protected $fillable = ['name','phone'];
     // ,'last_name',
 
     // 'address',
@@ -25,5 +25,8 @@ class Dentist extends Model
 
         return $query->where('first_name','like','%'. $search. '%');
     }
-    
+    public function cures()
+    {
+        return $this->hasMany(Cure::class);
+    }
 }

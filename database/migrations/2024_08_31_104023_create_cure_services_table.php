@@ -16,8 +16,8 @@ return new class extends Migration
     {
         Schema::create('cure_services', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Cure::class)->constrained();
-            $table->foreignIdFor(Service::class)->constrained();
+            $table->foreignIdFor(Cure::class);
+            $table->foreignIdFor(Service::class);
             $table->decimal('cost',10,2);
             // $table->decimal('discount',10,2);
             $table->decimal('total',10,2);
