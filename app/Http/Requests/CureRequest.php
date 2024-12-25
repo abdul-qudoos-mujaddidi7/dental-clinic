@@ -17,7 +17,7 @@ class CureRequest extends FormRequest
     public function prePareForValidation(){
         return $this->merge([
             "patient_id"=> $this->input("patientId"),
-            "dentist_id"=>$this->input("doctorId"),
+            "dentist_id"=>$this->input("dentistId"),
             "start_date"=> $this->input("startDate"),
             "grand_total"=> $this->input("grandTotal"),
             "diseases_history"=> $this->input("diseasesHistory"),
