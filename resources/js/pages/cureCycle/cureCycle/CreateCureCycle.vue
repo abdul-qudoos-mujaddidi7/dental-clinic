@@ -47,6 +47,19 @@
                     density="compact"
                     :rules="[rules.required]"
                 ></v-autocomplete>
+                <v-autocomplete
+                v-model="formData.dentist"
+                    :items="CureRepository.doctorFor"
+                    :return-object="false"
+                    variant="outlined"
+                    label="Doctor *"
+                    class="pr-2 pl-2"
+                    style="width: 45%"
+                    item-value="id"
+                    item-title="firstName"
+                    density="compact"
+                    :rules="[rules.required]"
+                ></v-autocomplete>
             
             </v-form>
             <v-divider></v-divider>
@@ -103,6 +116,9 @@
                             <th scope="col" class="px-3 py-3 text-start">
                                 Cost
                             </th>
+                            <th scope="col" class="px-3 py-3 text-start">
+                                status
+                            </th>
                             <th scope="col" class="px-3 py-3 text-center">
                                 Sub Total
                             </th>
@@ -133,9 +149,10 @@
                                     density="compact"
                                     class="w-75"
                                 >
-                                    <span class="span"> {{ pro.unit }}</span>
+                                   
                                 </v-text-field>
                             </td>
+                            
 
                             <td class="pt-2 pb-0 text-center w-[14rem]">
                                 <v-text-field
@@ -149,6 +166,18 @@
                                         {{ displayedCurrencySymbol }}
                                     </span>
                                 </v-text-field>
+                            </td>
+                            <td class="pt-2 text-center pb-0 w-[14rem]">
+                                <v-autocomplete
+                                :items="['complete', 'start']"
+                                v-model="pro.status"
+                                variant="outlined"
+                                density="compact"
+                                    class="w-75"
+                                >
+
+                                </v-autocomplete>
+
                             </td>
                             <td class="text-center">
                                 <span>{{ multiple(pro) }}</span>
@@ -283,7 +312,7 @@ const Duo = computed(() => {
 const createEarning = async () => {
     const isValid = await formRef.value.validate();
     if (isValid) {
-        formData.services.map((data) => (data.expenseProduct = data.id));
+        formData.services.map((data) => (data.serviceId = data.id));
         await CureRepository.CreateCure(formData);
     }
 };

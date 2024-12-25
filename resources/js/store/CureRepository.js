@@ -41,6 +41,7 @@ export let useCureRepository = defineStore("CureRepository", {
             return `${year}-${month}-${day}`;
         },
         // cure
+        
         async SearchFetchData() {
             console.log(this.billExpenseSearch);
             this.loading = true;

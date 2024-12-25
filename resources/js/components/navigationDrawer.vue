@@ -1,5 +1,5 @@
 <template>
-    <v-list class="flex flex-col min-h-screen">
+    <v-list class="flex flex-col min-h-screen"   @update:model="handleDrawerState">
         <router-link to="/dashboard">
             <div class="flex items-center justify-center py-4">
                 <img
@@ -399,7 +399,14 @@ const reportItems = [
         value: "pickup report    ",
     },
 ]
-// 
+
+function handleDrawerState(isOpen) {
+  if (isOpen) {
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.body.style.overflow = '';
+  }
+}
 </script>
 
 <style scoped>
@@ -456,6 +463,7 @@ const reportItems = [
 }
 .child:hover {
     color: #333;
+ 
 }
 .borderRadius {
     border-top-right-radius: 8px !important;
