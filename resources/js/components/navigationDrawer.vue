@@ -1,5 +1,5 @@
 <template>
-    <v-list class="flex flex-col min-h-screen">
+    <v-list class="flex flex-col min-h-screen"   @update:model="handleDrawerState">
         <router-link to="/dashboard">
             <div class="flex items-center justify-center py-4">
                 <img
@@ -48,6 +48,35 @@
                     </router-link>
                 </v-list>
             </transition>
+            <!-- cure cycle  -->
+            <v-list-item
+                active-class="bg-primaryOld text-white"
+                prepend-icon="mdi mdi-cart-outline"
+                value="cure"
+                @click="toggleCure"
+                class="transition-all duration-300 cursor-pointer py-3 borderRadius"
+            >
+                Cure Cycle
+            </v-list-item>
+
+            <transition name="slide-fade">
+                <v-list v-if="isCureVisible" class="pl-4">
+                    <router-link
+                        v-for="item in cureItems"
+                        :key="item.to"
+                        :to="item.to"
+                    >
+                        <v-list-item
+                            :title="item.title"
+                            :prepend-icon="item.icon"
+                            :value="item.value"
+                            color="primaryOld"
+                            class="child rounded-lg"
+                        />
+                    </router-link>
+                </v-list>
+            </transition>
+             <!-- cure -->
             <v-list-item
                 active-class="bg-primaryOld text-white"
                 prepend-icon="mdi mdi-cash-marker"
@@ -177,6 +206,7 @@ import { ref } from "vue";
 const isListVisible = ref(false);
 const isPeopleVisible = ref(false);
 const isLeadVisible = ref(false);
+const isCureVisible = ref(false);
 const isSettingVisible = ref(false);
 const isReportVisible = ref(false)
 
@@ -191,6 +221,9 @@ const togglePeople = () => {
 };
 const toggleLead =() =>{
     isLeadVisible.value = !isLeadVisible.value;
+}
+const toggleCure =() =>{
+    isCureVisible.value = !isCureVisible.value;
 }
 const toggleSetting =()=>{
     isSettingVisible.value = !isSettingVisible.value;
@@ -290,6 +323,20 @@ const leadItems = [
     },
 
 ];
+const cureItems = [
+    {
+        to: "/cure",
+        title: "Cure Cycle",
+        icon: "mdi mdi-circle-medium",
+        value: "cure cycle ",
+    },
+    {
+        to: "/createCure",
+        title: "create Cure Cycle",
+        icon: "mdi mdi-circle-medium",
+        value: "idk",
+    },
+];
 const settingItems = [
 {
         to: "/systemSetting",
@@ -352,7 +399,14 @@ const reportItems = [
         value: "pickup report    ",
     },
 ]
-// 
+
+function handleDrawerState(isOpen) {
+  if (isOpen) {
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.body.style.overflow = '';
+  }
+}
 </script>
 
 <style scoped>
@@ -409,6 +463,7 @@ const reportItems = [
 }
 .child:hover {
     color: #333;
+ 
 }
 .borderRadius {
     border-top-right-radius: 8px !important;

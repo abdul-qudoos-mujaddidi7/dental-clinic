@@ -1,7 +1,7 @@
 <template>
     <div class="all-expense rounded-xl">
         <div class="card rounded-xl">
-            <AppBar mainTitle="Bill Expense" sub-title="expense" />
+            <AppBar mainTitle="Cure Cycle" sub-title="cure Cycle" />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
@@ -18,7 +18,7 @@
                         label="Search ..."
                         append-inner-icon="mdi-magnify"
                         hide-details
-                        v-model="ExpenseRepository.billExpenseSearch"
+                        v-model="CureRepository.curesSearch"
                     ></v-text-field>
                 </div>
                 <div class="btn">
@@ -26,10 +26,10 @@
                         Filter
                     </v-btn>
                     &nbsp;
-                    <router-link to="/createBillExpense">
+                    <router-link to="/createCure">
 
                         <v-btn
-                        @click="CreateDialogShow"
+                    
                         color="primaryOld"
                         variant="flat"
                         text="Create"
@@ -48,17 +48,17 @@
                                 <v-data-table-server
                                     theme="cursor-pointer"
                                     v-model:items-per-page="
-                                        ExpenseRepository.itemsPerPage
+                                        CureRepository.itemsPerPage
                                     "
                                     :headers="headers"
-                                    :items-length="ExpenseRepository.totalItems"
-                                    :items="ExpenseRepository.billExpenses"
-                                    :loading="ExpenseRepository.loading"
-                                    :search="ExpenseRepository.billExpenseSearch"
+                                    :items-length="CureRepository.totalItems"
+                                    :items="CureRepository.cures"
+                                    :loading="CureRepository.loading"
+                                    :search="CureRepository.curesSearch"
                                     @update:options="
-                                        ExpenseRepository.fetchBillExpenses
+                                        CureRepository.FetchCures
                                     "
-                                    :item-key="ExpenseRepository.billExpenses"
+                                    :item-key="CureRepository.cures"
                                     hover
                                     class="w-100 mx-auto"
                                 >
@@ -142,8 +142,8 @@
 import { ref } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 
-import { useExpenseRepository } from "@/store/ExpenseRepository";
-const ExpenseRepository = useExpenseRepository();
+import { useCureRepository } from "@/store/CureRepository";
+const CureRepository = useCureRepository();
 // bulk delete
 const selectedIds = ref([]); 
 const sendSelectedIds = () => {
@@ -156,29 +156,31 @@ const sendSelectedIds = () => {
         console.log("Sending data:", data);
 
 
-        ExpenseRepository.bulkDeleteBillExpense(data);
+        CureRepository.bulkDeleteBillExpense(data);
     } else {
         console.log("No IDs selected.");
     }
 };
 const deleteItem = async (item) => {
-    await ExpenseRepository.DeleteBillExpense(item.id);
+    await CureRepository.DeleteBillExpense(item.id);
 };
 // header
 const headers = [
     { title: "", key: "checkbox", align: "start", sortable: false },
-    { title: "Date", key: "date", align: "start", sortable: false },
-    { title: "Reference", key: "reference", align: "center", sortable: false },
-    { title: "Added By", key: "addedBy", align: "center", sortable: false },
+    { title: "Reference", key: "reference", align: "start", sortable: false },
+    { title: "Date", key: "start_date", align: "start", sortable: false },
+    { title: "Doctor", key: "", align: "start", sortable: false },
+    { title: "patient", key: "patient.name", align: "center", sortable: false },
     {
-        title: "Supplier",
-        key: "supplier.name",
+        title: "Cure State",
+        key: "status",
         align: "center",
         sortable: false,
     },
-    { title: "Amount", key: "grandTotal", align: "center", sortable: false },
+    { title: "Grand total", key: "grand_total", align: "center", sortable: false },
     { title: "PAID", key: "paid", align: "center", sortable: false },
     { title: "DUE", key: "due", align: "center", sortable: false },
+    { title: "Payment Sent", key: "paymentSent", align: "center", sortable: false },
     
     { title: "Action", key: "action", align: "center", sortable: false },
 ];

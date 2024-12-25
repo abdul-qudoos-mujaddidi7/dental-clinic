@@ -33,6 +33,9 @@ import ExpenseProductReport from "./pages/reports/Expense Product report/Expense
 import PickupReport from "./pages/reports/pickup report/PickupReport.vue";
 //dashboard
 import Dashboard from "./pages/dashboard/Dashboard.vue";
+// cure cycle 
+import CureCycle from "./pages/cureCycle/cureCycle/CureCycle.vue";
+import CreateCureCycle from "./pages/cureCycle/cureCycle/CreateCureCycle.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -71,6 +74,10 @@ const router = createRouter({
         {path: "/pickupReport", component:PickupReport},
         // Dashboard
         {path: "/dashboard", component:Dashboard},
+        // CureCycle 
+        {path: "/cure", component:CureCycle},
+        {path: "/createCure", component:CreateCureCycle},
+
         
         
 
