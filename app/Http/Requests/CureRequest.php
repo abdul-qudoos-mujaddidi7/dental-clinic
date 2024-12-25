@@ -44,7 +44,7 @@ class CureRequest extends FormRequest
         'services' => 'nullable|array',        // Validate services array
         'services.*.serviceId' => 'required', // Validate each service name
         'services.*.cost' => 'nullable|numeric', // Validate service details
-        'services.*.discount' => 'nullable|numeric', // Validate service details
+        // 'services.*.discount' => 'nullable|numeric', // Validate service details
         'services.*.total' => 'nullable|numeric', // Validate service details
         'services.*.status' => 'required|string' // Validate service details
     ];
