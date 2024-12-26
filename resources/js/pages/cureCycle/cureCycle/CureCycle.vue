@@ -184,7 +184,7 @@ const sendSelectedIds = () => {
     }
 };
 const deleteItem = async (item) => {
-    await CureRepository.DeleteBillExpense(item.id);
+    await CureRepository.DeleteCure(item.id);
 };
 // change the color 
 function getPaymentStatusClass(status) {

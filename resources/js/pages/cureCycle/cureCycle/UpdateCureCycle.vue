@@ -121,7 +121,7 @@
             :key="index"
         >
             <td class="pl-3 text-start">{{ index + 1 }}</td>
-            <td class="pl-3 text-start">{{ pro.serviceName  }}</td>
+            <td class="pl-3 text-start">{{ pro.serviceName || pro.name }}</td>
             <td class="pt-2 text-center pb-0 w-[14rem]">
                 <v-text-field
                     v-model="pro.quantity"
@@ -250,7 +250,7 @@ CureRepository.FetchCure(routeParams.params.id).then((res) => {
     formData.dentistId = CureRepository.cure.dentist?.id;
     formData.grandTotal = CureRepository.cure.grandTotal;
     formData.patientId = CureRepository.cure.patient?.id;
-    formData.startDate = CureRepository.cure.startDate;
+    formData.startDate = CureRepository.cure.start_date;
     formData.description = CureRepository.cure.description;
     formData.paid = CureRepository.cure.paid;
     formData.status = CureRepository.cure.status;

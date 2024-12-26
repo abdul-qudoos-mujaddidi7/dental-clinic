@@ -44,10 +44,11 @@ import Home from "./Home.vue";
 const router = createRouter({
     history: createWebHistory(),
     routes: [
-        { path: "/login", component: Login },
+        { path: "/", component: Login ,meta:''},
         {
             path: "/home",
             component: Home,
+            meta: { authentication: true },
             children: [
                 { path: "/dashboard", alias: "/dashboard", component: Dashboard },
 
