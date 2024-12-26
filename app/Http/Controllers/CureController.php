@@ -67,6 +67,7 @@ class CureController extends Controller
                     'cure_id' => $cure->id,
                     'service_id' => $service['serviceId'],
                     'cost' => $service['cost'],
+                    'quantity'=>['quantity'],
                     // 'discount' => $service['discount'],
                     'total' => $service['total'],
                     'status' => $service['status']
@@ -122,7 +123,7 @@ class CureController extends Controller
                         'cure_id' => $cure->id,
                         'service_id' => $service['serviceId'],
                         'cost' => $service['cost'],
-                        'cost' => $service['quantity'],
+                        'quantity'=>['quantity'],
                         'total' => $service['total'],
                         'status' => $service['status']
                     ];
