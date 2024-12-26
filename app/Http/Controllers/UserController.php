@@ -34,10 +34,9 @@ class UserController extends Controller
     {
         $validated = $request->validated();
         $validated['image'] = $request->hasFile('image') ? $this->storeImage($request, 'user') : null;
+        $validated['password'] = Hash::make($validated['password']);
         $role = Role::findOrFail($validated["role_id"]);
         $user = User::create($validated);
-        // $user->password = Hash::make($request->input('password'));
-        // $user->save();
         $user->assignRole($role);
 
         return new UserResource($user);
