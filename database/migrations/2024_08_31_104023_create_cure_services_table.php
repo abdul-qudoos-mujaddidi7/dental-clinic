@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignIdFor(Cure::class);
             $table->foreignIdFor(Service::class);
             $table->decimal('cost',10,2);
+            $table->integer('quantity');
             // $table->decimal('discount',10,2);
             $table->decimal('total',10,2);
             $table->string('status');

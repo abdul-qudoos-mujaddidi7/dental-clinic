@@ -45,7 +45,8 @@ class CureRequest extends FormRequest
         'particular_to_female' => 'nullable|array', // Validate disease_history as JSON
         'services' => 'nullable|array',        // Validate services array
         'services.*.serviceId' => 'required', // Validate each service name
-        'services.*.cost' => 'nullable|numeric', // Validate service details
+        'services.*.cost' => 'required|numeric',//te service details
+        'services.*.quantity'=>'required|numeric',//ce details
         // 'services.*.discount' => 'nullable|numeric', // Validate service details
         'services.*.total' => 'nullable|numeric', // Validate service details
         'services.*.status' => 'required|string' // Validate service details

@@ -14,6 +14,7 @@ class CureService extends Model
         'cost',
         'total',
         'status',
+        'quantity'
     ];
 
     public function service()

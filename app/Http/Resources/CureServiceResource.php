@@ -21,6 +21,7 @@ class CureServiceResource extends JsonResource
             'serviceName'=>$this->service?->name,
             'cost' => $this->cost,
             'total' => $this->total,
+            'quantity'=>$this->quantity,
             'status' => $this->status,
         ];
     }
