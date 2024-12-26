@@ -248,12 +248,13 @@ CureRepository.FetchCure(routeParams.params.id).then((res) => {
     formData.id = CureRepository.cure.id;
     formData.services = CureRepository.cure.services;
     formData.dentistId = CureRepository.cure.dentist?.id;
-    formData.grandTotal = CureRepository.cure.grandTotal;
+    formData.grandTotal = CureRepository.cure.grand_total;
     formData.patientId = CureRepository.cure.patient?.id;
     formData.startDate = CureRepository.cure.start_date;
     formData.description = CureRepository.cure.description;
     formData.paid = CureRepository.cure.paid;
     formData.status = CureRepository.cure.status;
+    console.log( typeof(CureRepository.cure.grand_total), 'the grand total')
 });
 
 // Combine services from both repositories
@@ -288,13 +289,15 @@ watch(
 );
 
 const totalSum = computed(() => {
+    const grandTotal = parseInt(CureRepository.cure.grand_total || 0, 10); // Convert to integer, default to 0 if undefined
     const total = CureRepository.services.reduce(
         (acc, item) => acc + multiple(item),
         0
     );
-    formData.grandTotal = total;
-    return total;
+    formData.grandTotal = total + grandTotal;
+    return formData.grandTotal;
 });
+
 // Computed Duo (remaining balance)
 const Duo = computed(() => {
     return totalSum.value - formData.paid || 0;
