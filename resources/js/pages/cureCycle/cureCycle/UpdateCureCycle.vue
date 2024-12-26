@@ -121,7 +121,7 @@
             :key="index"
         >
             <td class="pl-3 text-start">{{ index + 1 }}</td>
-            <td class="pl-3 text-start">{{ pro.serviceName || pro.serviceId }}</td>
+            <td class="pl-3 text-start">{{ pro.serviceName  }}</td>
             <td class="pt-2 text-center pb-0 w-[14rem]">
                 <v-text-field
                     v-model="pro.quantity"
