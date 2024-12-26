@@ -132,7 +132,7 @@
                             class="product-table"
                             v-for="(
                                 pro, index
-                            ) in CureRepository.expenseProduct"
+                            ) in CureRepository.services"
                             :key="index"
                         >
                             <td class="pl-3 text-start">
@@ -238,6 +238,7 @@
 <script setup>
 import AppBar from "../../../components/AppBar.vue";
 import { reactive, computed, ref, watch, onMounted } from "vue";
+import {useRoute} from "vue-router"
 
 import { useCureRepository } from "@/store/CureRepository";
 
@@ -250,28 +251,33 @@ const CalcFetchProduct = (index) => {
 
 // ======================
 const clearSearch = () => {
-    CureRepository.billExpenseSearch = ""; // Clear repository's search
+    CureRepository.billExpenseSearch = ""; 
     CureRepository.searchFetch = [];
 };
 const removeProduct = (index) => {
-    CureRepository.expenseProduct.splice(index, 1);
-    console.log(CureRepository.expenseProduct);
+    CureRepository.services.splice(index, 1);
+    console.log(CureRepository.services);
 };
 const createExpenseProduct = () => {
     CureRepository.createDialog = true;
 };
-
-const formData = reactive({
+const routeParams = useRoute();
+let formData = [];
+CureRepository.FetchCure(routeParams.params.id).then((res)=>{
+    formData = reactive({
     id:CureRepository.cure.id,
     deletedIds: [],
     services: CureRepository.cure.services,
+    dentistId:CureRepository.cure.dentist?.id,
     grandTotal: CureRepository.cure.grandTotal,
-    patientId: CureRepository.cure.patientId,
+    patientId: CureRepository.cure.patient?.id,
     startDate: CureRepository.cure.startDate,
     description: CureRepository.cure.description,    
     paid: CureRepository.cure.paid,
     status:CureRepository.cure.status,
 });
+})
+
 const formRef = ref(null);
 const rules = {
     required: (value) => !!value || "This field is required.",
@@ -287,19 +293,19 @@ const multiple = (pro) => {
 };
 
 watch(
-    () => CureRepository.expenseProduct,
+    () => CureRepository.services,
     () => {
-        CureRepository.expenseProduct.forEach((expenseProduct) => {
+        CureRepository.services.forEach((services) => {
             // Update the 'subtotal' property for each service
-            expenseProduct.total = multiple(expenseProduct);
-            console.log(expenseProduct);
+            services.total = multiple(services);
+            console.log(services,'watch');
         });
     },
     { deep: true }
 );
 
 const totalSum = computed(() => {
-    const total = CureRepository.expenseProduct.reduce(
+    const total = CureRepository.services.reduce(
         (acc, item) => acc + multiple(item),
         0
     );
@@ -314,16 +320,16 @@ const Duo = computed(() => {
 const update = async () => {
     if (Array.isArray(formData.services)) {
         formData.services = formData.services.map((data) => {
-            // Ensure expenseProduct exists before assigning the id
-            if (data.expenseProduct && data.expenseProduct.id) {
+            // Ensure services exists before assigning the id
+            if (data.services && data.services.id) {
                 return {
                     ...data,
-                    product: { id: data.expenseProduct.id },
+                    product: { id: data.services.id },
                 };
             } else {
-                // Handle the case where expenseProduct is undefined or does not have an id
+                // Handle the case where services is undefined or does not have an id
                 console.error(
-                    "expenseProduct is missing or invalid in services:",
+                    "services is missing or invalid in services:",
                     data
                 );
                 return data;

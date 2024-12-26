@@ -25,7 +25,7 @@ export let useCureRepository = defineStore("CureRepository", {
             patientsFor: reactive([]),
             doctorFor:reactive([]),
             searchFetch: reactive([]),
-            expenseProduct: reactive([]),
+            services: reactive([]),
             leadStageFor:reactive([]),
         };
     },
@@ -66,8 +66,8 @@ export let useCureRepository = defineStore("CureRepository", {
                 if (isUpdate) delete productData.id;
         
                 // Only add if it doesn’t already exist
-                if (!this.expenseProduct.some(item => item.id === productData.id)) {
-                    this.expenseProduct.push(productData);
+                if (!this.services.some(item => item.id === productData.id)) {
+                    this.services.push(productData);
                     this.billExpense.expenseDetails.push(productData);
                 }
                 this.searchFetch = [];
@@ -126,7 +126,7 @@ export let useCureRepository = defineStore("CureRepository", {
                 };
                 const response = await axios(config);
                this.router.push("/cure")
-                this.FetchLeads({
+                this.FetchCures({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });
@@ -145,6 +145,10 @@ export let useCureRepository = defineStore("CureRepository", {
                 const response = await axios(config);
                 
                 this.router.push("/cure");
+                this.FetchCures({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
             } catch (err) {
                 this.error = err;
             }
@@ -156,7 +160,7 @@ export let useCureRepository = defineStore("CureRepository", {
                     url: `cures/${id}`,
                 };
                 const response = await axios(config);
-                this.FetchLeads({
+                this.FetchCures({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });
