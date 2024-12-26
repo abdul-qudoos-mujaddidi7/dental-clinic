@@ -35,7 +35,7 @@
                 ></v-autocomplete>
                 
                 <v-autocomplete
-                v-model="formData.dentist"
+                v-model="formData.dentistId"
                     :items="CureRepository.doctorFor"
                     :return-object="false"
                     variant="outlined"
@@ -48,15 +48,15 @@
                     :rules="[rules.required]"
                 ></v-autocomplete>
                 <v-autocomplete
-                v-model="formData.dentist"
-                    :items="CureRepository.doctorFor"
+                v-model="formData.status"
+                    :items="CureRepository.leadStageFor"
                     :return-object="false"
                     variant="outlined"
-                    label="Doctor *"
+                    label="Status *"
                     class="pr-2 pl-2"
                     style="width: 45%"
-                    item-value="id"
-                    item-title="firstName"
+                    item-value="name"
+                    item-title="name"
                     density="compact"
                     :rules="[rules.required]"
                 ></v-autocomplete>
@@ -132,7 +132,7 @@
                             class="product-table"
                             v-for="(
                                 pro, index
-                            ) in CureRepository.expenseProduct"
+                            ) in CureRepository.services"
                             :key="index"
                         >
                             <td class="pl-3 text-start">
@@ -254,15 +254,15 @@ const clearSearch = () => {
     CureRepository.searchFetch = [];
 };
 const removeProduct = (index) => {
-    CureRepository.expenseProduct.splice(index, 1);
-    console.log(CureRepository.expenseProduct);
+    CureRepository.services.splice(index, 1);
+    console.log(CureRepository.services);
 };
 const createExpenseProduct = () => {
     CureRepository.createDialog = true;
 };
 
 const formData = reactive({
-    services: CureRepository.expenseProduct,
+    services: CureRepository.services,
     grandTotal: "",
     patientId: "",
     startDate: "",
@@ -285,19 +285,19 @@ const multiple = (pro) => {
 };
 
 watch(
-    () => CureRepository.expenseProduct,
+    () => CureRepository.services,
     () => {
-        CureRepository.expenseProduct.forEach((expenseProduct) => {
+        CureRepository.services.forEach((services) => {
             // Update the 'subtotal' property for each service
-            expenseProduct.total = multiple(expenseProduct);
-            console.log(expenseProduct);
+            services.total = multiple(services);
+            console.log(services);
         });
     },
     { deep: true }
 );
 
 const totalSum = computed(() => {
-    const total = CureRepository.expenseProduct.reduce(
+    const total = CureRepository.services.reduce(
         (acc, item) => acc + multiple(item),
         0
     );
@@ -328,6 +328,7 @@ formData.startDate = CureRepository.getTodaysDate();
 
 CureRepository.Patients();
 CureRepository.Doctor();
+CureRepository.leadStagesFor();
 // ====================
 // =====================================
 </script>

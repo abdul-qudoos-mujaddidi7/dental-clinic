@@ -20,12 +20,13 @@ export let useCureRepository = defineStore("CureRepository", {
 
             // lead
             cures: reactive([]),
-            lead: reactive([]),
+            cure: reactive([]),
             leadSearch: ref(""),
             patientsFor: reactive([]),
             doctorFor:reactive([]),
             searchFetch: reactive([]),
-            expenseProduct: reactive([]),
+            services: reactive([]),
+            leadStageFor:reactive([]),
         };
     },
     actions: {
@@ -41,7 +42,10 @@ export let useCureRepository = defineStore("CureRepository", {
             return `${year}-${month}-${day}`;
         },
         // cure
-        
+        async leadStagesFor() {
+            const response = await axios.get("stages");
+            this.leadStageFor = response.data.data;
+        },
         async SearchFetchData() {
             console.log(this.billExpenseSearch);
             this.loading = true;
@@ -62,8 +66,8 @@ export let useCureRepository = defineStore("CureRepository", {
                 if (isUpdate) delete productData.id;
         
                 // Only add if it doesn’t already exist
-                if (!this.expenseProduct.some(item => item.id === productData.id)) {
-                    this.expenseProduct.push(productData);
+                if (!this.services.some(item => item.id === productData.id)) {
+                    this.services.push(productData);
                     this.billExpense.expenseDetails.push(productData);
                 }
                 this.searchFetch = [];
@@ -106,8 +110,8 @@ export let useCureRepository = defineStore("CureRepository", {
             console.log(id);
             try {
                 const response = await axios.get(`cures/${id}`);
-                this.lead = response.data.data;
-                console.log(this.lead);
+                this.cure = response.data.data;
+                console.log(this.cure,'fetch cure ');
             } catch (err) {
                 this.error = err;
             }
@@ -121,8 +125,8 @@ export let useCureRepository = defineStore("CureRepository", {
                     data: formData,
                 };
                 const response = await axios(config);
-                this.createDialog = false;
-                this.FetchLeads({
+               this.router.push("/cure")
+                this.FetchCures({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });
@@ -139,7 +143,12 @@ export let useCureRepository = defineStore("CureRepository", {
                     data: formData,
                 };
                 const response = await axios(config);
-                this.createDialog = false;
+                
+                this.router.push("/cure");
+                this.FetchCures({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
             } catch (err) {
                 this.error = err;
             }
@@ -151,7 +160,7 @@ export let useCureRepository = defineStore("CureRepository", {
                     url: `cures/${id}`,
                 };
                 const response = await axios(config);
-                this.FetchLeads({
+                this.FetchCures({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });

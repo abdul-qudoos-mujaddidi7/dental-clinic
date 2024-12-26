@@ -6,6 +6,7 @@ use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Traits\ImageHandler;
+use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -34,10 +35,9 @@ class UserController extends Controller
     {
         $validated = $request->validated();
         $validated['image'] = $request->hasFile('image') ? $this->storeImage($request, 'user') : null;
+        $validated['password'] = Hash::make($validated['password']);
         $role = Role::findOrFail($validated["role_id"]);
         $user = User::create($validated);
-        // $user->password = Hash::make($request->input('password'));
-        // $user->save();
         $user->assignRole($role);
 
         return new UserResource($user);
@@ -58,6 +58,7 @@ class UserController extends Controller
     {
         $validated = $request->validated();
         $validated['image'] = $request->hasFile('image') ? $this->updateImage($request, $user, 'user') : null;
+        $validated['password']=Hash::make($validated['password']);
         $role = Role::findOrFail($validated['role_id']);
         $user->update($validated);
         $user->syncRoles([$role]);

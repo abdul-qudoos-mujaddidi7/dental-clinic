@@ -67,7 +67,8 @@ class CureController extends Controller
                     'cure_id' => $cure->id,
                     'service_id' => $service['serviceId'],
                     'cost' => $service['cost'],
-                    'discount' => $service['discount'],
+                    'quantity'=>$service['quantity'],
+                    // 'discount' => $service['discount'],
                     'total' => $service['total'],
                     'status' => $service['status']
                 ]);
@@ -81,7 +82,7 @@ class CureController extends Controller
      */
     public function show(Cure $cure)
     {
-        $cure->load(['patient', 'cureService']);
+        $cure->load(['patient', 'cureServices']);
         return new CureResource($cure);
     }
 
@@ -122,7 +123,7 @@ class CureController extends Controller
                         'cure_id' => $cure->id,
                         'service_id' => $service['serviceId'],
                         'cost' => $service['cost'],
-                        'discount' => $service['discount'],
+                        'quantity'=>$service['quantity'],
                         'total' => $service['total'],
                         'status' => $service['status']
                     ];

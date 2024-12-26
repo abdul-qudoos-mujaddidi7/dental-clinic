@@ -17,6 +17,7 @@ class CureRequest extends FormRequest
     public function prePareForValidation(){
         return $this->merge([
             "patient_id"=> $this->input("patientId"),
+            "dentist_id"=>$this->input("dentistId"),
             "start_date"=> $this->input("startDate"),
             "grand_total"=> $this->input("grandTotal"),
             "diseases_history"=> $this->input("diseasesHistory"),
@@ -34,6 +35,7 @@ class CureRequest extends FormRequest
 {
     return [
         'patient_id' => 'required|exists:patients,id',
+        'dentist_id' => 'required|exists:dentists,id',
         'start_date' => 'required|date',
         'grand_total' => 'required|numeric|min:0',
         'paid' => 'nullable|numeric|min:0',
@@ -43,8 +45,9 @@ class CureRequest extends FormRequest
         'particular_to_female' => 'nullable|array', // Validate disease_history as JSON
         'services' => 'nullable|array',        // Validate services array
         'services.*.serviceId' => 'required', // Validate each service name
-        'services.*.cost' => 'nullable|numeric', // Validate service details
-        'services.*.discount' => 'nullable|numeric', // Validate service details
+        'services.*.cost' => 'required|numeric',//te service details
+        'services.*.quantity'=>'required|numeric',//ce details
+        // 'services.*.discount' => 'nullable|numeric', // Validate service details
         'services.*.total' => 'nullable|numeric', // Validate service details
         'services.*.status' => 'required|string' // Validate service details
     ];

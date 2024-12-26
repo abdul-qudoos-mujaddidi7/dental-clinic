@@ -27,16 +27,14 @@
                     </v-btn>
                     &nbsp;
                     <router-link to="/createCure">
-
                         <v-btn
-                    
-                        color="primaryOld"
-                        variant="flat"
-                        text="Create"
-                        class="px-6"
+                            color="primaryOld"
+                            variant="flat"
+                            text="Create"
+                            class="px-6"
                         >
-                    </v-btn>
-                </router-link>
+                        </v-btn>
+                    </router-link>
                 </div>
             </div>
             <!-- v-table server  -->
@@ -55,9 +53,7 @@
                                     :items="CureRepository.cures"
                                     :loading="CureRepository.loading"
                                     :search="CureRepository.curesSearch"
-                                    @update:options="
-                                        CureRepository.FetchCures
-                                    "
+                                    @update:options="CureRepository.FetchCures"
                                     :item-key="CureRepository.cures"
                                     hover
                                     class="w-100 mx-auto"
@@ -71,7 +67,37 @@
                                             class="w-10 d-flex"
                                         ></v-checkbox>
                                     </template>
+                                    <template
+                                        v-slot:item.paymentStatus="{ item }"
+                                    >
+                                        <span
+                                            :class="
+                                                getPaymentStatusClass(
+                                                    item.paymentStatus
+                                                )
+                                            "
+                                        >
+                                            {{ item.paymentStatus }}
+                                        </span>
+                                    </template>
+                                    <template v-slot:item.due="{item}">
+                                        <span class="text-[#E54141]">{{item.due}}</span>
 
+                                    </template>
+
+                                    <template
+                                        v-slot:item.status="{ item }"
+                                    >
+                                        <span
+                                            :class="
+                                                getStatusClass(
+                                                    item.status
+                                                )
+                                            "
+                                        >
+                                            {{ item.status }}
+                                        </span>
+                                    </template>
                                     <template v-slot:item.action="{ item }">
                                         <v-menu>
                                             <template
@@ -87,20 +113,19 @@
                                                 <v-list-item>
                                                     <router-link
                                                         :to="
-                                                            '/updateBillExpense/' +
+                                                            '/updateCure/' +
                                                             item.id
                                                         "
                                                     >
-                                                    <v-list-item-title
-                                                       
-                                                        class="cursor-pointer d-flex gap-3 justify-left pb-3"
-                                                    >
-                                                        <v-icon
-                                                            color="tealColor"
-                                                            >mdi-square-edit-outline</v-icon
+                                                        <v-list-item-title
+                                                            class="cursor-pointer d-flex gap-3 justify-left pb-3"
                                                         >
-                                                        Edit
-                                                    </v-list-item-title>
+                                                            <v-icon
+                                                                color="tealColor"
+                                                                >mdi-square-edit-outline</v-icon
+                                                            >
+                                                            Edit
+                                                        </v-list-item-title>
                                                     </router-link>
 
                                                     <v-list-item-title
@@ -127,7 +152,6 @@
                                     text="Delete"
                                     flat
                                 >
-                                    
                                 </v-btn>
                             </v-col>
                         </v-row>
@@ -145,16 +169,14 @@ import AppBar from "../../../components/AppBar.vue";
 import { useCureRepository } from "@/store/CureRepository";
 const CureRepository = useCureRepository();
 // bulk delete
-const selectedIds = ref([]); 
+const selectedIds = ref([]);
 const sendSelectedIds = () => {
     if (selectedIds.value.length > 0) {
-
         const data = {
             billExpenseIds: selectedIds.value,
         };
 
         console.log("Sending data:", data);
-
 
         CureRepository.bulkDeleteBillExpense(data);
     } else {
@@ -164,35 +186,62 @@ const sendSelectedIds = () => {
 const deleteItem = async (item) => {
     await CureRepository.DeleteBillExpense(item.id);
 };
+// change the color 
+function getPaymentStatusClass(status) {
+  const statusClasses = {
+    DUE: 'text-[#E54141]  font-bold',
+    PAID: 'text-[#00893F] font-bold',
+    PARTIAL: 'text-[#EC942C] font-bold',
+  };
+  return statusClasses[status] || 'text-[#000000]'; // Default fallback
+}
+function getStatusClass(state) {
+  const status = {
+    completed: 'text-[#E54141]  font-bold',
+    ongoing: 'text-[#00893F] font-bold',
+    new: 'text-[#EC942C] font-bold',
+  };
+  return status[state] || 'text-[#000000]'; // Default fallback
+}
 // header
 const headers = [
     { title: "", key: "checkbox", align: "start", sortable: false },
     { title: "Reference", key: "reference", align: "start", sortable: false },
     { title: "Date", key: "start_date", align: "start", sortable: false },
-    { title: "Doctor", key: "", align: "start", sortable: false },
+    { title: "Doctor", key: "dentist.name", align: "start", sortable: false },
     { title: "patient", key: "patient.name", align: "center", sortable: false },
     {
-        title: "Cure State",
+        title: "CURE STATUS",
         key: "status",
         align: "center",
         sortable: false,
     },
-    { title: "Grand total", key: "grand_total", align: "center", sortable: false },
+    {
+        title: "Grand total",
+        key: "grand_total",
+        align: "center",
+        sortable: false,
+    },
     { title: "PAID", key: "paid", align: "center", sortable: false },
     { title: "DUE", key: "due", align: "center", sortable: false },
-    { title: "Payment Sent", key: "paymentSent", align: "center", sortable: false },
-    
+    {
+        title: "Payment Status",
+        key: "paymentStatus",
+        align: "center",
+        sortable: false,
+    },
+
     { title: "Action", key: "action", align: "center", sortable: false },
 ];
 </script>
 
 <style scoped>
 .v-data-table-server {
-    position: relative; 
+    position: relative;
 }
 .header-button {
     position: absolute;
-    top: 0.7rem; 
+    top: 0.7rem;
     left: 0.7rem;
     z-index: 1;
 }

@@ -30,7 +30,7 @@
                             </div>
                         </template>
                         <v-card-text class="pt-2 text-h5 mr-14 calibri_font">
-                            مشتری
+                            customer
                         </v-card-text>
                     </v-card>
                 </v-col>
@@ -55,7 +55,7 @@
                             </div>
                         </template>
                         <v-card-text class="pt-2 text-h5 mr-14 calibri_font">
-                            درآمد
+                            Earning
                         </v-card-text>
                     </v-card></v-col
                 >
@@ -81,7 +81,7 @@
                             </div>
                         </template>
                         <v-card-text class="pt-2 text-h5 mr-14 calibri_font">
-                            مصارف
+                            Expense
                         </v-card-text>
                     </v-card></v-col
                 >
@@ -107,7 +107,7 @@
                             </div>
                         </template>
                         <v-card-text class="pt-2 text-h5 mr-14 calibri_font">
-                            میتر‌های فعال
+                             Month Profit
                         </v-card-text>
                     </v-card></v-col
                 >

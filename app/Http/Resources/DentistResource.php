@@ -16,7 +16,7 @@ class DentistResource extends JsonResource
     {
         return[
             "id"=> $this->id,
-            "firstName"=> $this->first_name,
+            "firstName"=> $this->name,
             "phone"=> $this->phone,
             // "lastName"=> $this->last_name,
             // "email"=> $this->email,

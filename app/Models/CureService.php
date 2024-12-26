@@ -12,18 +12,18 @@ class CureService extends Model
         'cure_id',
         'service_id',
         'cost',
-        'discount',
         'total',
         'status',
+        'quantity'
     ];
 
     public function service()
     {
-        return $this->belongsTo(Service::class);
+        return $this->belongsTo(Service::class, 'service_id', 'id');
     }
 
     public function cure(){
-        return $this->belongsTo(cure::class);
+        return $this->belongsTo(Cure::class, 'cure_id', 'id');
     }
 
     

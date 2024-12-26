@@ -17,6 +17,8 @@ class ServiceResource extends JsonResource
         return [
             "id"=> $this->id,
             "name"=> $this->name,
+            "quantity"=>1,
+            "cost"=>0,
             "description"=> $this->description,
 
         ];
