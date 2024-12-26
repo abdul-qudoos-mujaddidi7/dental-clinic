@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use COM;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,11 +19,22 @@ class Service extends Model
                                                                                    #named service_service_groups, which stores the mapping
                                                                                     #between service_id and service_group_id.
     }
-
-    public function cureDetails()
+    public function cures()
     {
-        return $this->hasMany(CureDetail::class);
+        return $this->belongsToMany(CureService::class, 'cure_services');#The pivot table that stores this relationship is
+                                                                                   #named service_service_groups, which stores the mapping
+                                                                                    #between service_id and service_group_id.
     }
+
+    public function cureServices()
+    {
+        return $this->hasMany(CureService::class);
+    }
+
+    // public function cureDetails()
+    // {
+    //     return $this->hasMany(CureDetail::class);
+    // }
 
     public function scopeSearch($query, $search){
         if(!$search){

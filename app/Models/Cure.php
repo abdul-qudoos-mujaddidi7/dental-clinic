@@ -40,10 +40,6 @@ class Cure extends Model
     {
         return $this->hasMany(CureCycle::class);
     }
-    public function cureServices()
-    {
-        return $this->hasMany(CureService::class);
-    }
     public function payments()
     {
         return $this->hasMany(CurePayment::class);
@@ -66,5 +62,10 @@ class Cure extends Model
         } else {
             return 'DUE';
         }
+    }
+
+    public function cureServices()
+    {
+        return $this->hasMany(CureService::class);
     }
 }
