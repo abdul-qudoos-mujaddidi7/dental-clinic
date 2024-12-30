@@ -6,7 +6,7 @@ let DashboardRepository = useDashboardRepository();
 
 // Watch for changes in the data and update the chart
 watch(
-    () => DashboardRepository.dashboards.moneyAccounts,
+    () => DashboardRepository.dashboardReport.monthIncomes,
     () => {
         updateChart();
     },
@@ -29,7 +29,7 @@ async function updateChart() {
                 type: "pie",
                 radius: "70%",
                 center: ["50%", "50%"],
-                data: DashboardRepository.dashboards.moneyAccounts,
+                data: DashboardRepository.dashboardReport.monthIncomes,
                 itemStyle: {
                     emphasis: {
                         shadowBlur: 10,

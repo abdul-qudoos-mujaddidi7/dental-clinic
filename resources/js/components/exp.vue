@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
     <v-app>
         <v-container>
             <v-btn color="primary">Test Button</v-btn>
@@ -74,7 +74,7 @@
                 </tr>
             </tbody>
         </table>
-        <!-- ================= -->
+ ================= 
         <hr />
         <v-card
             width="300"
@@ -99,4 +99,41 @@ export default {
 
 <style scoped>
 /* Your styles here */
-</style>
+</style> -->
+
+<template>
+    <div>
+      <h1>Dashboard</h1>
+      <p>Net Profit: {{ dashboardStore.dashboardReport.netProfit }}</p>
+      <p>This Month Profit: {{ dashboardStore.dashboardReport.thisMonthProfit }}</p>
+      <p>Total Patients: {{ dashboardStore.dashboardReport.totalPatients }}</p>
+  
+      <!-- Example Table -->
+      <table>
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Total Expense</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="expense in dashboardStore.dashboardReport.monthlyExpenses" :key="expense.expense_category_id">
+            <td>{{ expense.expense_category_id }}</td>
+            <td>{{ expense.totalExpense }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </template>
+  
+  <script setup>
+  import { onMounted } from "vue";
+  import { useDashboardRepository } from "../store/DashboardRepository";
+  
+  const dashboardStore = useDashboardRepository();
+  
+  onMounted(async () => {
+    await dashboardStore.fetchDashboardData();
+  });
+  </script>
+  

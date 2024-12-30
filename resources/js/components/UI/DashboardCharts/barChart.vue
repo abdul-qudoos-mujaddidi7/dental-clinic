@@ -5,7 +5,7 @@ import { useDashboardRepository } from "@/store/DashboardRepository";
 let DashboardRepository = useDashboardRepository();
 DashboardRepository.fetchDashboardData();
 watch(
-    () => DashboardRepository.dashboards.earningMonths,
+    () => DashboardRepository.monthExpenses,
     () => {
         updateChart();
     },
@@ -100,7 +100,7 @@ async function updateChart() {
                 focus: "series",
             },
             color: "#112F5326",
-            data: DashboardRepository.dashboards.earningMonths,
+            data: DashboardRepository.monthExpenses,
         },
         {
             name: "مصارف",
@@ -111,7 +111,7 @@ async function updateChart() {
                 focus: "series",
             },
             color: "#112F53",
-            data: DashboardRepository.dashboards.expenseMonths,
+            data: DashboardRepository.monthExpenses,
         },
         
     ],

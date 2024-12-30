@@ -3,85 +3,108 @@ import { ref, reactive } from "vue";
 import { axios } from "../axios";
 
 export let useDashboardRepository = defineStore("DashboardRepository", {
-    state() {
-        return {
-            dashboards: reactive([]),
-            totalExpenses: 0,
-            expenses: reactive([]),
+  state: () => ({
+    // Dashboard data
+    dashboards: reactive([]),
+    totalExpenses: 0,
+    expenses: reactive([]),
 
-            dailog: false,
-            isLoading: false,
-            error: null,
-            loading: true,
-            itemsPerPage: 10,
-            page: 1,
-            showSelect: true,
-            totalItems: 0,
-            itemKey: "id",
-            visaId: reactive([]),
-            symbol: ref(null),
+    // UI state
+    dialog: false,
+    isLoading: false,
+    error: null,
+    loading: true,
+    itemsPerPage: 10,
+    page: 1,
+    showSelect: true,
+    totalItems: 0,
+    itemKey: "id",
+    visaId: reactive([]),
+    symbol: ref(null),
 
-            search: "",
+    // Search
+    search: "",
 
-            earnings: 0,
-            expenses: 0,
-            todayExpenses: [],
-            thisMonthExpenses: [],
-            thisYearExpenses: [],
-            expensesList: [],
-            dashboardReport: {
-                totalTodayExpense: [],
-                thisMonthProfit:[],
-                thisMonthExpenses: [],
-                thisYearExpenses: [],
-            },
-            totalExpenses: 0,
-            expensesList: [],
-        };
+    // API-specific data
+    earnings: 0,
+    todayExpenses: [],
+    thisMonthExpenses: [],
+    thisYearExpenses: [],
+    expensesList: [],
+    dashboardReport: reactive({
+      thisMonthProfit: 0,
+      lastMonthProfit: 0,
+      todayEarning: 0,
+      totalTodayExpense: 0,
+      newPatients: 0,
+      totalPatients: 0,
+      totalAllEarnings: 0,
+      totalAllExpenses: 0,
+      netProfit: 0,
+      dailyExpenses: [],
+      monthlyExpenses: [],
+      yearlyExpenses: [],
+      upcomingAppointments: [],
+      monthExpenses: [],
+      monthIncomes: [],
+    }),
+    monthExpenses: reactive([]),
+    monthIncomes: reactive([]),
+  }),
+
+  actions: {
+    // Fetch data from the API
+    async fetchDashboardData() {
+      this.isLoading = true;
+      try {
+        const response = await axios.get("dashboardReport");
+        const data = response.data;
+
+        console.log("Fetched dashboard data:", data);
+
+        // Update the state with fetched data
+        this.$patch({
+          dashboardReport: data,
+          dashboards: data,
+          totalExpenses: data.totalAllExpenses || 0,
+          todayExpenses: data.dailyExpenses || [],
+          thisMonthExpenses: data.monthlyExpenses || [],
+          thisYearExpenses: data.yearlyExpenses || [],
+          monthExpenses: data.monthExpenses || [],
+          monthIncomes: data.monthIncomes || [],
+          earnings: data.totalAllEarnings || 0,
+          expensesList: this.processExpenses(data.monthlyExpenses, "green"),
+        });
+
+        this.isLoading = false;
+      } catch (error) {
+        console.error("Failed to fetch dashboard data:", error);
+        this.error = "Failed to load dashboard data.";
+        this.isLoading = false;
+      }
     },
-    actions: {
-        // Original method for fetching dashboard data
-        async fetchDashboardData() {
-            try {
-                const response = await axios.get("dashboardReport");
-                const data = response.data;
 
-                console.log("Fetched dashboard data:", data);
-
-                this.$patch({
-                    dashboardReport: data,
-                    totalExpenses: data.todayExpenses.reduce(
-                        (acc, expense) => acc + (expense.expAmount || 0),
-                        0
-                    ),
-                    expensesList: this.processExpenses(
-                        data.todayExpenses,
-                        "green"
-                    ),
-                });
-            } catch (error) {
-                console.error("Failed to fetch dashboard data:", error);
-            }
-        },
-        updateExpenses(expenses, color) {
-            console.log("Updating expenses with:", expenses, color);
-            if (!Array.isArray(expenses)) {
-                console.warn("Expenses parameter is not an array");
-                return;
-            }
-            this.totalExpenses = expenses.reduce(
-                (acc, expense) => acc + (expense.expAmount || 0),
-                0
-            );
-            this.expensesList = this.processExpenses(expenses, color);
-        },
-        processExpenses(expenses, color) {
-            // Example processing logic
-            return expenses.map((exp) => ({
-                ...exp,
-                percentage: ((exp.expAmount || 0) / this.totalExpenses) * 100,
-                color,
-            }));
-        },
+    // Update expenses dynamically
+    updateExpenses(expenses, color) {
+      console.log("Updating expenses with:", expenses, color);
+      if (!Array.isArray(expenses)) {
+        console.warn("Expenses parameter is not an array");
+        return;
+      }
+      this.totalExpenses = expenses.reduce(
+        (acc, expense) => acc + (expense.expAmount || 0),
+        0
+      );
+      this.expensesList = this.processExpenses(expenses, color);
     },
+
+    // Process expenses to add percentage and color
+    processExpenses(expenses, color) {
+      return expenses.map((exp) => ({
+        ...exp,
+        percentage: ((exp.expAmount || 0) / this.totalExpenses) * 100,
+        color,
+      }));
+    },
+  },
 });
