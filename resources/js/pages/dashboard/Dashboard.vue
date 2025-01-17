@@ -124,55 +124,8 @@
                 <DataBar />
             </v-col>
         </v-row>
-        <v-row dir="rtl">
-            <v-col>
-                <v-card
-                    class="bg-white rounded-xl mr-3 mt-0 h-100"
-                    variant="flat"
-                >
-                    <h2 class="pr-4 py-2">پنج مشتری برتر</h2>
-                    <v-table>
-                        <template v-slot:default>
-                            <thead class="bg-white" style="border: none">
-                                <tr
-                                    style="
-                                        border: none;
-                                        background-color: white;
-                                    "
-                                >
-                                    <th class="text-left">آی‌دی</th>
-                                    <th class="text-left">نمایه</th>
-                                    <th class="text-left">شماره تماس</th>
-                                    <th class="text-left">مجموعه مصرف</th>
-                                    <th class="text-left">پرداختی‌ها</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr
-                                    style="border: none"
-                                    v-for="item in DashboardRepository
-                                        .dashboards.topFiveCustomers"
-                                    :key="item.id"
-                                >
-                                    <td>{{ item.customerId }}</td>
-                                    <td class="d-flex align-center">
-                                        <v-avatar class="mr-2" size="36px">
-                                            <img
-                                                :src="item.photo"
-                                                alt="Avatar"
-                                            />
-                                        </v-avatar>
-                                        {{ item.customerName }}
-                                    </td>
-                                    <td>{{ item.customerPhone }}</td>
-                                    <td>{{ item.totalSpentKW }}</td>
-                                    <td>{{ item.paid }}</td>
-                                </tr>
-                            </tbody>
-                        </template>
-                    </v-table>
-                </v-card>
-            </v-col>
+        <v-row >
+            
 
             <v-col>
                 <v-card class="pt-4 bg-white rounded-xl pr-4" variant="flat">
@@ -284,6 +237,53 @@
                             ></v-progress-linear>
                         </div>
                     </div>
+                </v-card>
+            </v-col>
+            <v-col>
+                <v-card
+                    class="bg-white rounded-xl mr-3 mt-0 h-100"
+                    variant="flat"
+                >
+                    <h2 class="pl-4 py-4">Upcoming Appointment</h2>
+                    <v-table>
+                        <template v-slot:default>
+                            <thead class="bg-white" style="border: none">
+                                <tr
+                                    style="
+                                        border: none;
+                                        background-color: white;
+                                    "
+                                >
+                           
+                                    <th class="text-left">Customer</th>
+                                    <th class="text-left">Time</th>
+                                    <th class="text-left">Phone </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr
+                                    style="border: none"
+                                    v-for="item in DashboardRepository
+                                        .dashboardReport.upcomingAppointments"
+                                    :key="item.id"
+                                >
+                                    <td>{{ item.customerId }}</td>
+                                    <td class="d-flex align-center">
+                                        <v-avatar class="mr-2" size="36px">
+                                            <img
+                                                :src="item.photo"
+                                                alt="Avatar"
+                                            />
+                                        </v-avatar>
+                                        {{ item.customerName }}
+                                    </td>
+                                    <td>{{ item.customerPhone }}</td>
+                                    <td>{{ item.totalSpentKW }}</td>
+                                    <td>{{ item.paid }}</td>
+                                </tr>
+                            </tbody>
+                        </template>
+                    </v-table>
                 </v-card>
             </v-col>
         </v-row>

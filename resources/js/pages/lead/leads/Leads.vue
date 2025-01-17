@@ -2,7 +2,7 @@
     <CreateLeads v-if="LeadRepository.createDialog" />
     <div class="all-expense rounded-xl">
         <div class="card rounded-xl">
-            <AppBar mainTitle="Owner Pickups" sub-title="people" />
+            <AppBar mainTitle="leads" sub-title="Lead" />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"

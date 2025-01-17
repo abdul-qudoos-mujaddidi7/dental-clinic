@@ -35,9 +35,9 @@ async function updateChart() {
             },
         },
         title: {
-            text: `مفاد: ${lastMonthEarnings}`, // Display the value dynamically
-            left: "right", // Center the title
-            top: "10%", // Position it above the chart
+            text: `Earnings: ${lastMonthEarnings}`, // Display the value dynamically
+            left: "right",
+            top: "10%",
             textStyle: {
                 fontSize: 16,
                 fontWeight: "bold",
@@ -59,31 +59,31 @@ async function updateChart() {
                 type: "category",
                 axisTick: { show: true },
                 data: [
-                    "حمل", // Hamal
-                    "ثور", // Sawr
-                    "جوزا", // Jawza
-                    "سرطان", // Saratan
-                    "اسد", // Asad
-                    "سنبله", // Sonbola
-                    "میزان", // Mizan
-                    "عقرب", // Aqrab
-                    "قوس", // Qaws
-                    "جدی", // Jadi
-                    "دلو", // Dalwa
-                    "حوت", // Hoot
+                    "January",
+                    "February",
+                    "March",
+                    "April",
+                    "May",
+                    "June",
+                    "July",
+                    "August",
+                    "September",
+                    "October",
+                    "November",
+                    "December",
                 ],
             },
         ],
         yAxis: [
             {
                 type: "value",
-                show: true, // Hide y-axis values
-                splitLine: { show: true }, // Remove horizontal grid lines
+                show: true,
+                splitLine: { show: true },
             },
         ],
         series: [
             {
-                name: "مفاد",
+                name: "Earnings",
                 type: "line",
                 stack: "Total",
                 smooth: true,
