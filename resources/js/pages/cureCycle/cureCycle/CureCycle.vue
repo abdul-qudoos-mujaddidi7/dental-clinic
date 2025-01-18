@@ -127,6 +127,21 @@
                                                         >
                                                         Create Payment
                                                     </v-list-item-title>
+                                                    <v-list-item-title
+                                                        class="cursor-pointer d-flex gap-3 justify-left pb-3"
+                                                        @click="
+                                                            ViewPaymentDialog(
+                                                                item.id
+                                                            )
+                                                        "
+                                                    >
+                                                        <v-icon
+                                                            color="tealColor"
+                                                            >mdi
+                                                            mdi-cash-sync</v-icon
+                                                        >
+                                                        Show Payment
+                                                    </v-list-item-title>
                                                     <router-link
                                                         :to="
                                                             '/updateCure/' +
@@ -210,6 +225,22 @@ const CreateDialogShow = (id) => {
     CureRepository.curePayment = {};
     CureRepository.setEditMode(false);
     CureRepository.createDialog = true;
+};
+
+const ViewPaymentDialog = (item) => {
+    console.log(item.id, "payment id");
+    const expenseId = item.id;
+    ExpenseRepository.paymentId = item.id;
+    // ExpenseRepository.billExpensesPayments = {};
+    // if (Object.keys(ExpenseRepository.billExpensesPayments).length === 0) {
+    ExpenseRepository.FetchBillExpensesPayments(expenseId)
+        .then(() => {
+            ExpenseRepository.ShowExpensePayment = true;
+        })
+        .catch((error) => {
+            console.error("Error fetching data: ", error);
+        });
+    // }
 };
 // change the color 
 function getPaymentStatusClass(status) {
