@@ -138,7 +138,7 @@
                                     {{ DashboardRepository.dashboardReport.totalAllExpenses || 0 }}
                                 </p>
                                 <p class="text-subtitle-2">
-                                    تمام مصارفات بر اساس مقدار و فیصدی
+                                 Expenses based on amount and percentage
                                 </p>
                             </span>
                             <span class="flex flex-col gap-1">
@@ -163,7 +163,7 @@
                                         )
                                     "
                                 >
-                                    {{ "امسال" }}
+                                    {{ "this year" }}
                                 </v-btn>
                                 <v-btn
                                     size="x-small"
@@ -185,7 +185,7 @@
                                         )
                                     "
                                 >
-                                    {{ "این ماه" }}
+                                    {{ "this month" }}
                                 </v-btn>
                                 <v-btn
                                     size="x-small"
@@ -207,7 +207,7 @@
                                         )
                                     "
                                 >
-                                    {{ "امروز" }}
+                                    {{ "today" }}
                                 </v-btn>
                             </span>
                         </div>
