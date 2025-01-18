@@ -1,4 +1,5 @@
 <template>
+    <CurePyament v-if="CureRepository.createDialog"/>
     <div class="all-expense rounded-xl">
         <div class="card rounded-xl">
             <AppBar mainTitle="Cure Cycle" sub-title="cure Cycle" />
@@ -111,6 +112,21 @@
                                             </template>
                                             <v-list>
                                                 <v-list-item>
+                                                    <v-list-item-title
+                                                        class="cursor-pointer d-flex gap-3 justify-left pb-3"
+                                                        @click="
+                                                            CreateDialogShow(
+                                                                item.id
+                                                            )
+                                                        "
+                                                    >
+                                                        <v-icon
+                                                            color="tealColor"
+                                                            >mdi
+                                                            mdi-cash-edit</v-icon
+                                                        >
+                                                        Create Payment
+                                                    </v-list-item-title>
                                                     <router-link
                                                         :to="
                                                             '/updateCure/' +
@@ -165,6 +181,7 @@
 <script setup>
 import { ref } from "vue";
 import AppBar from "../../../components/AppBar.vue";
+import CurePyament from "../cure payment/CurePyament.vue";
 
 import { useCureRepository } from "@/store/CureRepository";
 const CureRepository = useCureRepository();
@@ -185,6 +202,14 @@ const sendSelectedIds = () => {
 };
 const deleteItem = async (item) => {
     await CureRepository.DeleteCure(item.id);
+};
+// create payment
+const CreateDialogShow = (id) => {
+    CureRepository.cureId = id;
+
+    CureRepository.curePayment = {};
+    CureRepository.setEditMode(false);
+    CureRepository.createDialog = true;
 };
 // change the color 
 function getPaymentStatusClass(status) {

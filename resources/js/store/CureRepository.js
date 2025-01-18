@@ -17,6 +17,7 @@ export let useCureRepository = defineStore("CureRepository", {
             selectedItems: ref([]),
             itemsPerPage: ref(5),
             createDialog: ref(false),
+            cureId:ref(0),
 
             // lead
             cures: reactive([]),
