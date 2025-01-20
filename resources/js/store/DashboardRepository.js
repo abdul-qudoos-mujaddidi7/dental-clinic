@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { ref, reactive } from "vue";
 import { axios } from "../axios";
 
-export let useDashboardRepository = defineStore("DashboardRepository", {
+export const useDashboardRepository = defineStore("DashboardRepository", {
   state: () => ({
     // Dashboard data
     dashboards: reactive([]),
@@ -62,17 +62,17 @@ export let useDashboardRepository = defineStore("DashboardRepository", {
 
         console.log("Fetched dashboard data:", data);
 
-        // Update the state with fetched data
+        // Ensure numeric values are converted to numbers
         this.$patch({
           dashboardReport: data,
           dashboards: data,
-          totalExpenses: data.totalAllExpenses || 0,
+          totalExpenses: parseFloat(data.totalAllExpenses) || 0,
           todayExpenses: data.dailyExpenses || [],
           thisMonthExpenses: data.monthlyExpenses || [],
           thisYearExpenses: data.yearlyExpenses || [],
           monthExpenses: data.monthExpenses || [],
           monthIncomes: data.monthIncomes || [],
-          earnings: data.totalAllEarnings || 0,
+          earnings: parseFloat(data.totalAllEarnings) || 0,
           expensesList: this.processExpenses(data.monthlyExpenses, "green"),
         });
 
@@ -92,7 +92,7 @@ export let useDashboardRepository = defineStore("DashboardRepository", {
         return;
       }
       this.totalExpenses = expenses.reduce(
-        (acc, expense) => acc + (expense.expAmount || 0),
+        (acc, expense) => acc + (parseFloat(expense.totalExpense) || 0),
         0
       );
       this.expensesList = this.processExpenses(expenses, color);
@@ -102,7 +102,7 @@ export let useDashboardRepository = defineStore("DashboardRepository", {
     processExpenses(expenses, color) {
       return expenses.map((exp) => ({
         ...exp,
-        percentage: ((exp.expAmount || 0) / this.totalExpenses) * 100,
+        percentage: ((parseFloat(exp.totalExpense) || 0) / this.totalExpenses) * 100,
         color,
       }));
     },

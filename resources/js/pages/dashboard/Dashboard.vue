@@ -34,7 +34,7 @@
                     </v-card-text>
                 </v-card></v-col
             >
-           
+
             <v-col>
                 <v-card variant="flat" dir="rtl" rounded="lg">
                     <template v-slot:title>
@@ -52,8 +52,6 @@
                                     class="w-8"
                                 />
                             </v-avatar>
-
-                           
                         </div>
                     </template>
                     <v-card-text
@@ -68,7 +66,10 @@
                     <template v-slot:title>
                         <div class="d-flex align-center justify-end">
                             <div class="font-weight-black">
-                                {{ DashboardRepository.dashboardReport.totalAllEarnings }}
+                                {{
+                                    DashboardRepository.dashboardReport
+                                        .totalAllEarnings
+                                }}
                             </div>
                             <v-avatar size="40" class="mr-4">
                                 <!-- <v-icon size="36">mdi-account-details</v-icon> -->
@@ -77,13 +78,12 @@
                                     class="w-6"
                                 />
                             </v-avatar>
-                           
                         </div>
                     </template>
                     <v-card-text
                         class="text-h6 d-flex justify-end calibri_font ml-14"
                     >
-                    Sales
+                        Sales
                     </v-card-text>
                 </v-card></v-col
             >
@@ -105,7 +105,6 @@
                                     class="w-4"
                                 />
                             </v-avatar>
-                           
                         </div>
                     </template>
                     <v-card-text
@@ -124,9 +123,7 @@
                 <DataBar />
             </v-col>
         </v-row>
-        <v-row >
-            
-
+        <v-row>
             <v-col>
                 <v-card class="pt-4 bg-white rounded-xl pr-4" variant="flat">
                     <div class="pa-3 px-4 py-5 mr-4 ml-6">
@@ -135,10 +132,13 @@
                             <span>
                                 <p class="text-lg font-bold">
                                     AFG
-                                    {{ DashboardRepository.dashboardReport.totalAllExpenses || 0 }}
+                                    {{
+                                        DashboardRepository.dashboardReport
+                                            .totalAllExpenses || 0
+                                    }}
                                 </p>
                                 <p class="text-subtitle-2">
-                                 Expenses based on amount and percentage
+                                    Expenses based on amount and percentage
                                 </p>
                             </span>
                             <span class="flex flex-col gap-1">
@@ -219,13 +219,13 @@
                             class="mb-4"
                         >
                             <div class="d-flex justify-space-between" dir="rtl">
-                                <span class="text-sm font-bold text-gray-700">
-                                    {{ expense.name }} (AFG
-                                    {{ expense.expAmount || 0 }})
-                                </span>
                                 <span class="text-sm font-bold"
-                                    >{{ expense.percentage.toFixed(2) }}%</span
+                                    >{{ expense.percentage }}%</span
                                 >
+                                <span class="text-sm font-bold text-gray-700">
+                                    {{ expense.categoryName }}(AFG
+                                    {{ expense.totalExpense || 0 }})
+                                </span>
                             </div>
 
                             <v-progress-linear
@@ -254,10 +254,9 @@
                                         background-color: white;
                                     "
                                 >
-                           
                                     <th class="text-left">Customer</th>
                                     <th class="text-left">Time</th>
-                                    <th class="text-left">Phone </th>
+                                    <th class="text-left">Phone</th>
                                 </tr>
                             </thead>
                             <tbody>

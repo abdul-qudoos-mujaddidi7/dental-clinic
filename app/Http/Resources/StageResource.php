@@ -18,7 +18,7 @@ class StageResource extends JsonResource
 
             "id"=> $this->id??null,
             "name"=> $this->name??null,
-            "leadsCount"=> $this->leads_count,
+            "leads"=> $this->leads->count(),
         ];
     }
 }

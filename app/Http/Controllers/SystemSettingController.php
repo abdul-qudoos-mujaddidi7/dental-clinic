@@ -39,6 +39,9 @@ class SystemSettingController extends Controller
 
     public function updateSetting(SystemSettingRequest $request, SystemSetting $systemSetting)
     {
+        if(!$request['logo']){
+            return 'logo not provided';
+        }
         $validated = $request->validated();
         $validated['logo'] = $request->hasFile('logo') ? $this->updateImage($request, $systemSetting, 'company') : null;        
 

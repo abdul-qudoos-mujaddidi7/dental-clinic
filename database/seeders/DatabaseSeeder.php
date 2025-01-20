@@ -11,6 +11,7 @@ use App\Models\ExpenseCategory;
 use App\Models\Lead;
 use App\Models\Patient;
 use App\Models\Product;
+use App\Models\Service;
 use App\Models\Stage;
 use App\Models\Supplier;
 use App\Models\User;
@@ -45,6 +46,7 @@ class DatabaseSeeder extends Seeder
         // $this->call(SystemSettingSeeder::class);
         Patient::factory(3)->create();
         Dentist::factory(3)->create();
+        Service::factory(2)->create();
         // Cure::factory(2)->create();
     }
 }
