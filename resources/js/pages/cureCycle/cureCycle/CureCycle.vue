@@ -235,7 +235,7 @@ const ViewPaymentDialog = (item) => {
     CureRepository.paymentId = item.id;
     // CureRepository.billExpensesPayments = {};
     // if (Object.keys(CureRepository.billExpensesPayments).length === 0) {
-    CureRepository.FetchCurePayment(cureID)
+    CureRepository.FetchCurePayments(cureID)
         .then(() => {
             CureRepository.ShowCurePaymentDialog = true;
         })
