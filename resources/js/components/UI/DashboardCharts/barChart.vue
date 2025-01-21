@@ -24,8 +24,8 @@ async function updateChart() {
     var option = {
         title: [
             {
-                text: "Income and Expenses of This Year",
-                right: "right",
+                text: "This Year Income vs Expense",
+                left: "left",
                 textStyle: {
                     fontSize: 16,
                     fontWeight: "bold",
@@ -41,7 +41,7 @@ async function updateChart() {
             },
         },
         legend: {
-            left: "left",
+            right: "left",
             data: ["Income", "Expenses"],
             textStyle: {
                 fontSize: 16,

@@ -1,5 +1,6 @@
 <template>
     <CurePyament v-if="CureRepository.createDialog"/>
+    <ShowCurePayment v-if="CureRepository.ShowCurePaymentDialog"/>
     <div class="all-expense rounded-xl">
         <div class="card rounded-xl">
             <AppBar mainTitle="Cure Cycle" sub-title="cure Cycle" />
@@ -131,7 +132,7 @@
                                                         class="cursor-pointer d-flex gap-3 justify-left pb-3"
                                                         @click="
                                                             ViewPaymentDialog(
-                                                                item.id
+                                                                item
                                                             )
                                                         "
                                                     >
@@ -197,6 +198,7 @@
 import { ref } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 import CurePyament from "../cure payment/CurePyament.vue";
+import ShowCurePayment from "../cure payment/ShowCurePayment.vue";
 
 import { useCureRepository } from "@/store/CureRepository";
 const CureRepository = useCureRepository();
@@ -229,13 +231,13 @@ const CreateDialogShow = (id) => {
 
 const ViewPaymentDialog = (item) => {
     console.log(item.id, "payment id");
-    const expenseId = item.id;
-    ExpenseRepository.paymentId = item.id;
-    // ExpenseRepository.billExpensesPayments = {};
-    // if (Object.keys(ExpenseRepository.billExpensesPayments).length === 0) {
-    ExpenseRepository.FetchBillExpensesPayments(expenseId)
+    const cureID = item.id;
+    CureRepository.paymentId = item.id;
+    // CureRepository.billExpensesPayments = {};
+    // if (Object.keys(CureRepository.billExpensesPayments).length === 0) {
+    CureRepository.FetchCurePayment(cureID)
         .then(() => {
-            ExpenseRepository.ShowExpensePayment = true;
+            CureRepository.ShowCurePaymentDialog = true;
         })
         .catch((error) => {
             console.error("Error fetching data: ", error);

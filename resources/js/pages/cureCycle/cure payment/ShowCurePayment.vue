@@ -4,7 +4,7 @@
         <v-dialog
             transition="dialog-top-transition"
             width="55rem"
-            v-model="CureRepository.ShowCurePayment"
+            v-model="CureRepository.ShowCurePaymentDialog"
             class="rtl-dialog"
         >
             <template v-slot:default="{ isActive }">
