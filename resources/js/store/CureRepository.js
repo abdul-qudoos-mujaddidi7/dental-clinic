@@ -18,7 +18,7 @@ export let useCureRepository = defineStore("CureRepository", {
             itemsPerPage: ref(5),
             createDialog: ref(false),
             ShowCurePaymentDialog:ref(false),
-            cureId:ref(0),
+            cureId:ref(''),
             paymentId:ref(''),
 
             // lead
@@ -226,6 +226,10 @@ export let useCureRepository = defineStore("CureRepository", {
                 // this.router.push("/billExpense");
 
                 this.FetchCurePayments({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+                this.FetchCures({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });

@@ -15,7 +15,7 @@
                             <div class="font-weight-black">
                                 {{
                                     DashboardRepository.dashboardReport
-                                        .netProfit
+                                        .totalAllEarnings
                                 }}
                             </div>
                             <v-avatar size="40" class="mr-4">
@@ -68,7 +68,7 @@
                             <div class="font-weight-black">
                                 {{
                                     DashboardRepository.dashboardReport
-                                        .totalAllEarnings
+                                        .netProfit
                                 }}
                             </div>
                             <v-avatar size="40" class="mr-4">

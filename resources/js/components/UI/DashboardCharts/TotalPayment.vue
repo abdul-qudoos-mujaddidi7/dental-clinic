@@ -7,7 +7,7 @@ let DashboardRepository = useDashboardRepository();
 DashboardRepository.fetchDashboardData();
 
 watch(
-    () => DashboardRepository.dashboards.earningMonths,
+    () => DashboardRepository.dashboardReport.netProfit,
     () => {
         updateChart();
     },
@@ -21,7 +21,7 @@ async function updateChart() {
     });
 
     // Get the last month's earnings value for the title
-    const lastMonthEarnings = DashboardRepository.dashboards.lastMonthEarnings;
+    const lastMonthEarnings = DashboardRepository.dashboardReport.netProfit;
 
     var option = {
         color: ["#80FFA5", "#00DDFF", "#37A2FF"],
@@ -35,12 +35,12 @@ async function updateChart() {
             },
         },
         title: {
-            text: `Earnings: ${lastMonthEarnings}`, // Display the value dynamically
-            left: "right",
-            top: "10%",
+            text: `Profit: ${lastMonthEarnings}`, // Display the value dynamically
+            left: "left",
+            top: "1%",
             textStyle: {
                 fontSize: 16,
-                fontWeight: "bold",
+                fontWeight: "bolder",
                 color: "#333",
                 fontFamily: "Calibri, sans-serif",
             },
@@ -49,9 +49,10 @@ async function updateChart() {
             show: false, // Hide the legend
         },
         grid: {
-            left: "4%",
-            right: "5%",
-            bottom: "4%",
+            top:"20%",
+            left: "2%",
+            right: "2%",
+            bottom: "0%",
             containLabel: true,
         },
         xAxis: [
@@ -107,7 +108,7 @@ async function updateChart() {
                 emphasis: {
                     focus: "series",
                 },
-                data: DashboardRepository.dashboards.earningMonths,
+                data: DashboardRepository.monthIncomes,
             },
         ],
     };
