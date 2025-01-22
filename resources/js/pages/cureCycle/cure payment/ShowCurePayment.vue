@@ -26,7 +26,7 @@
                                 <tr>
                                     <th class="text-start">Date</th>
                                     <th class="text-start">Amount</th>
-                                    <th class="text-start">Account</th>
+                                  
                                     <th class="text-end pl-6">Actions</th>
                                 </tr>
                             </thead>
@@ -51,9 +51,7 @@
 
                                         {{ payment.people?.currency }}
                                     </td>
-                                    <td dir="ltr">
-                                        {{ payment.user?.name }}
-                                    </td>
+                                 
                                     <!-- <td dir="ltr">
                                         {{ payment.note }}
                                     </td> -->
@@ -114,7 +112,7 @@ const CureRepository = useCureRepository();
 // import UpdateExpensePayment from "./UpdateExpensePayment.vue";
 
 const deleteItem = async (payment) => {
-    await CureRepository.DeleteBillExpensePayment(payment.id);
+    await CureRepository.DeleteCurePayment(payment.id);
 };
 // CureRepository.FetchBillExpensePayment();
 const editItem = async (payment) => {
@@ -123,7 +121,7 @@ const editItem = async (payment) => {
     if (Object.keys(CureRepository.FetchCurePayment).length === 0) {
         CureRepository.FetchCurePayment(payment.id)
             .then(() => {
-                CureRepository.updateDialog = true;
+                CureRepository.createDialog = true;
             })
             .catch((error) => {
                 console.error("Error fetching data: ", error);
@@ -132,18 +130,5 @@ const editItem = async (payment) => {
     // console.log(CureRepository.meterCyclePaymentId, id);
     // await CureRepository.fetchMeterCyclePaymentForUpdate(id);
 };
-
-const headers = [
-    { title: "عمل", key: "action", align: "center", sortable: false },
-    {
-        title: "شخص ",
-        key: "account.name",
-        align: "center",
-        sortable: false,
-    },
-    { title: "مقدار ", key: "amount", align: "center", sortable: false },
-
-    { title: "تاریخ", key: "date", align: "center", sortable: false },
-];
 </script>
 
