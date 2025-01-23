@@ -81,6 +81,7 @@ const save = async () => {
         } else {
             await LeadRepository.CreateCategory(formData);
         }
+        LeadRepository.isEditMode=false
     }
 };
 

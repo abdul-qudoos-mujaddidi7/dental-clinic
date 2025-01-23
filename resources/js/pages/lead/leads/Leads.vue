@@ -179,20 +179,23 @@ const getStageName = (itemId) => {
 // Function to get button color based on stage name
 const getStageColor = (itemId) => {
     const item = LeadRepository.leads.find((lead) => lead.id === itemId);
+    console.log(item);
     if (!item || !item.stage) return "#112F53"; // Default color
-
-    switch (item.stage.name.toLowerCase()) {
-        case "new":
-            return "#00893F";
-        case "on going":
-            return "#0080FF";
-        case "completed":
-            return "#3C3C54";
-        default:
-            return "#112F53";
+    if (item.stage.name) {
+        switch (item.stage.name.toLowerCase()) {
+            case "new":
+                return "#00893F";
+            case "on going":
+                return "#0080FF";
+            case "completed":
+                return "#3C3C54";
+            default:
+                return "#112F53";
+        }
+    } else {
+        return "#112F53";
     }
 };
-
 
 // Method to change the stage for a specific item and update the backend
 const changeStage = async (itemId, currentStageId) => {
@@ -228,7 +231,6 @@ const changeStage = async (itemId, currentStageId) => {
     }
 };
 
-
 // bulk delete
 const selectedIds = ref([]);
 const sendSelectedIds = () => {
@@ -248,13 +250,17 @@ const sendSelectedIds = () => {
 // delete and update Create
 const CreateDialogShow = () => {
     LeadRepository.lead = {};
-    LeadRepository.setEditMode(false);
+    // LeadRepository.setEditMode(false);
+    LeadRepository.isEditMode = false;
+
     LeadRepository.createDialog = true;
 };
 
 const edit = (item) => {
     console.log(item, "me");
-    LeadRepository.setEditMode(true);
+    // LeadRepository.setEditMode(true);
+    LeadRepository.isEditMode = true;
+
     LeadRepository.lead = {};
     if (Object.keys(LeadRepository.lead).length === 0) {
         LeadRepository.FetchLead(item.id)

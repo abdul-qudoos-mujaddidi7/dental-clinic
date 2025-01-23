@@ -76,7 +76,7 @@ class CurePaymentController extends Controller
             $cure = Cure::findOrFail($validated['cure_id']);
     
             // Update the paid amount
-            $paid = $cure->paid + $validated['amount'];
+            $paid =$cure->paid + $validated['amount'];
             $cure->update(['paid' => $paid]);
     
             // Update the CurePayment entry
@@ -93,10 +93,18 @@ class CurePaymentController extends Controller
      */
     public function destroy(CurePayment $curePayment)
     {
-
+        // Retrieve the associated Cure
+        $cure = $curePayment->cure; 
+        if ($cure) {
+            // Update the 'paid' column of the Cure
+            $cure->paid -= $curePayment->amount;
+            $cure->save();
+        }
+    
         // Delete the CurePayment
         $curePayment->delete();
-
+    
         return new CurePaymentResource($curePayment);
     }
+    
 }

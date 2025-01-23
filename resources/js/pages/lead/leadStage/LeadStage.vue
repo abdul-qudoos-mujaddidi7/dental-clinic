@@ -122,13 +122,15 @@ const LeadRepository = useLeadRepository();
 // delete and update Create
 const CreateDialogShow = () => {
     LeadRepository.stage = {};
-    LeadRepository.setEditMode(false);
+    // LeadRepository.setEditMode(false);
+    LeadRepository.isEditMode=false;
     LeadRepository.createDialog = true;
 };
 
 const edit = (item) => {
     console.log(item, "me");
-    LeadRepository.setEditMode(true);
+    // LeadRepository.setEditMode(true);
+    LeadRepository.isEditMode = true;
     LeadRepository.stage = {};
     if (Object.keys(LeadRepository.stage).length === 0) {
         LeadRepository.FetchStage(item.id)

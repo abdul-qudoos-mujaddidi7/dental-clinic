@@ -54,7 +54,7 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UserRequest $request, User $user)
+    public function updateUser(UserRequest $request, User $user)
     {
         $validated = $request->validated();
         $validated['image'] = $request->hasFile('image') ? $this->updateImage($request, $user, 'user') : null;
