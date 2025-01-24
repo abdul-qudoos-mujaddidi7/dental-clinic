@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->boolean('status');
             $table->string('email')->unique();
-            $table->string('image')->nullable();
+            // $table->string('image')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

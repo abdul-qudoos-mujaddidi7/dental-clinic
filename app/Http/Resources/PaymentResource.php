@@ -16,10 +16,10 @@ class PaymentResource extends JsonResource
     {
         return[
             
-            "id"=> $this->id,
+            "id"=> $this?->id,
             "date"=> $this->date,
             "amount"=> $this->amount,
-            "billExpense"=>$this->billExpense->id,
+            "billExpense"=>$this?->billExpense->id??null,
             "user"=>[
                 "id"=> $this->user->id,
                 "name"=> $this->user->name,

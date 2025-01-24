@@ -19,8 +19,8 @@ class SupplierFactory extends Factory
         return [
             'name'=>$this->faker->word(),
             'phone'=>$this->faker->phoneNumber(),
-            'address'=>$this->faker->address(),
-            'email'=>$this->faker->email()
+            // 'address'=>$this->faker->address(),
+            // 'email'=>$this->faker->email()
 
         ];
     }

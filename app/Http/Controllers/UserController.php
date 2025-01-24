@@ -54,10 +54,11 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function updateUser(UserRequest $request, User $user)
+    public function update(UserRequest $request, User $user)
     {
+       
         $validated = $request->validated();
-        $validated['image'] = $request->hasFile('image') ? $this->updateImage($request, $user, 'user') : null;
+        // $validated['image'] = $request->hasFile('image') ? $this->updateImage($request, $user, 'user') : null;
         $validated['password']=Hash::make($validated['password']);
         $role = Role::findOrFail($validated['role_id']);
         $user->update($validated);

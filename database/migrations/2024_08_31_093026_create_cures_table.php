@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('cures', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Patient::class)->constrained();
-            $table->foreignIdFor(Dentist::class)->constrained();
+            $table->foreignIdFor(Patient::class);
+            $table->foreignIdFor(Dentist::class);
             $table->date('start_date');
             $table->decimal('grand_total',10,2);
             $table->decimal('paid',10,2)->default(0);
