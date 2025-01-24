@@ -566,7 +566,7 @@ export let usePeopleRepository =defineStore("PeopleRepository",{
             try {
                 const config = {
                     method: "PUT",
-                    url: `users/${id}`,
+                    url: `users/updateUsers/${id}`,
 
                     data: data,
                 };

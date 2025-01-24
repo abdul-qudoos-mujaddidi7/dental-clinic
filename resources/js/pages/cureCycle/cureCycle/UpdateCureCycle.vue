@@ -244,18 +244,46 @@ const formData = reactive({
     status: null,
 });
 
+// Fetch the data and populate `formData`
 CureRepository.FetchCure(routeParams.params.id).then((res) => {
-    formData.id = CureRepository.cure.id;
-    formData.services = CureRepository.cure.services;
-    formData.dentistId = CureRepository.cure.dentist?.id;
-    formData.grandTotal = CureRepository.cure.grand_total;
-    formData.patientId = CureRepository.cure.patient?.id;
-    formData.startDate = CureRepository.cure.start_date;
-    formData.description = CureRepository.cure.description;
-    formData.paid = CureRepository.cure.paid;
-    formData.status = CureRepository.cure.status;
-    console.log( typeof(CureRepository.cure.grand_total), 'the grand total')
+    const cure = CureRepository.cure; // Assuming the data is stored here
+    formData.id = cure.id;
+    formData.services = cure.services || [];
+    formData.dentistId = cure.dentist?.id;
+    formData.grandTotal = parseInt(cure.grand_total || 0, 10); // Convert grand_total to integer
+    formData.patientId = cure.patient?.id;
+    formData.startDate = cure.start_date;
+    formData.description = cure.description;
+    formData.paid = cure.paid;
+    formData.status = cure.status;
+
+    console.log(formData.grandTotal, "Initial grand total");
 });
+
+
+const multiple = (pro) => {
+    console.log(pro);
+    const add = pro.quantity * pro.cost;
+    console.log(add);
+    return add || 0;
+};
+
+// Computed property to calculate the total
+const totalSum = computed(() => {
+    // Sum up the services in `formData.services`
+    const servicesTotal = formData.services.reduce((acc, item) => {
+        return acc + multiple(item); // Replace `multiple` with your logic for calculating each item
+    }, 0);
+
+    // Add the fetched grandTotal
+    return servicesTotal + (formData.grandTotal || 0);
+});
+
+// Watch the computed property if needed
+watch(totalSum, (newVal) => {
+    console.log(newVal, "Updated grand total");
+});
+
 
 // Combine services from both repositories
 const combinedServices = computed(() => {
@@ -267,13 +295,6 @@ const rules = {
     required: (value) => !!value || "This field is required.",
     name: (value) =>
         /^[a-zA-Z\u0600-\u06FF\s]*$/.test(value) || "Invalid name.",
-};
-
-const multiple = (pro) => {
-    console.log(pro);
-    const add = pro.quantity * pro.cost;
-    console.log(add);
-    return add || 0;
 };
 
 watch(
@@ -288,15 +309,16 @@ watch(
     { deep: true }
 );
 
-const totalSum = computed(() => {
-    const grandTotal = parseInt(CureRepository.cure.grand_total || 0, 10); // Convert to integer, default to 0 if undefined
-    const total = CureRepository.services.reduce(
-        (acc, item) => acc + multiple(item),
-        0
-    );
-    formData.grandTotal = total + grandTotal;
-    return formData.grandTotal;
-});
+// const totalSum = computed(() => {
+//     const grandTotal = parseInt(formData.grandTotal|| 0, 10); // Convert to integer, default to 0 if undefined
+//     const total = CureRepository.services.reduce(
+//         (acc, item) => acc + multiple(item),
+//         0
+//     );
+//     formData.grandTotal = total + grandTotal;
+//     return formData.grandTotal;
+// });
+
 
 // Computed Duo (remaining balance)
 const Duo = computed(() => {
