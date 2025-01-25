@@ -21,10 +21,11 @@ class UserResource extends JsonResource
             'lastName' => $this->last_name,
             'phone' => $this->phone,
             'role'=> $role ?[
+                'id'=>$role->id,
                 'name'=> $role->name
             ] : null,
             'email' => $this->email,
-            'status' => (bool) $this->status,
+            'status' => (int) $this->status,
             // "photoUrl" => $this->image ? asset("storage/" . $this->image) : null,
         ];
     }
