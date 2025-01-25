@@ -238,7 +238,7 @@ const clearSearch = () => {
 
 const removeProduct = async (index, serviceId) => {
     try {
-        // Send the serviceId to the backend
+        
         const response = await CureRepository.DeleteCure(serviceId);
 
         // Only remove from the table if the backend deletion is successful
@@ -299,21 +299,10 @@ const multiple = (pro) => {
     return add || 0;
 };
 
-// Computed property to calculate the total
-const totalSum = computed(() => {
-    // Sum up the services in `formData.services`
-    const servicesTotal = formData.services.reduce((acc, item) => {
-        return acc + multiple(item); // Replace `multiple` with your logic for calculating each item
-    }, 0);
-
-    // Add the fetched grandTotal
-    return servicesTotal + (formData.grandTotal || 0);
-});
-
 // Watch the computed property if needed
-watch(totalSum, (newVal) => {
-    console.log(newVal, "Updated grand total");
-});
+// watch(totalSum, (newVal) => {
+//     console.log(newVal, "Updated grand total");
+// });
 
 // Combine services from both repositories
 const combinedServices = computed(() => {
@@ -339,15 +328,15 @@ watch(
     { deep: true }
 );
 
-// const totalSum = computed(() => {
-//     const grandTotal = parseInt(formData.grandTotal|| 0, 10); // Convert to integer, default to 0 if undefined
-//     const total = CureRepository.services.reduce(
-//         (acc, item) => acc + multiple(item),
-//         0
-//     );
-//     formData.grandTotal = total + grandTotal;
-//     return formData.grandTotal;
-// });
+const totalSum = computed(() => {
+    const grandTotal = parseInt(formData.grandTotal|| 0, 10); // Convert to integer, default to 0 if undefined
+    const total = CureRepository.services.reduce(
+        (acc, item) => acc + multiple(item),
+        0
+    );
+    formData.grandTotal = total + grandTotal;
+    return formData.grandTotal;
+});
 
 // Computed Duo (remaining balance)
 const Duo = computed(() => {
