@@ -39,6 +39,7 @@ export let usePeopleRepository =defineStore("PeopleRepository",{
             users:reactive([]),
             user:reactive([]),
             userSearch:ref(""),
+            roleForUser:reactive([]),
 
 
         }
@@ -54,6 +55,16 @@ export let usePeopleRepository =defineStore("PeopleRepository",{
             const month = String(today.getMonth() + 1).padStart(2, "0");
             const day = String(today.getDate()).padStart(2, "0");
             return `${year}-${month}-${day}`;
+        },
+        async fetchRoleForUser() {
+            this.loading = true;
+
+            const response = await axios.get(
+                `role_permissions`
+            );
+            this.roleForUser = response.data.data;
+
+            this.loading = false;
         },
         // patient
         async bulkDeletePatient(data) {
@@ -573,7 +584,7 @@ export let usePeopleRepository =defineStore("PeopleRepository",{
 
                 // Using Axios to make a post request with async/await and custom headers
                 const response = await axios(config);
-                this.updateDialog = false;
+                this.createDialog = false;
                 this.FetchUsers({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,

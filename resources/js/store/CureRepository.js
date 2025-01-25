@@ -61,23 +61,33 @@ export let useCureRepository = defineStore("CureRepository", {
             // this.searchFetch = "";
         },
         async fetchProduct(id, isUpdate = false) {
-       
             try {
+                // Fetch product data from the backend
                 const response = await axios.get(`services/${id}`);
                 const productData = response.data.data;
         
-                if (isUpdate) delete productData.id;
+                // If updating, remove the `id` field to avoid duplication issues
+                if (isUpdate) {
+                    delete productData.id;
+                }
         
-                // Only add if it doesn’t already exist
-                if (!this.services.some(item => item.id === productData.id)) {
+                // Check if the product already exists in the services array
+                const exists = this.services.some(item => item.id === productData.id);
+                if (!exists) {
+                    // Add the product to the services list and bill expense details
                     this.services.push(productData);
                     this.billExpense.expenseDetails.push(productData);
+                } else {
+                    console.warn(`Product with ID ${productData.id} already exists.`);
                 }
+        
+                // Clear the search results after processing
                 this.searchFetch = [];
-            } catch (err) {
-                // this.error = err.message;
+            } catch (error) {
+                console.error("Error fetching product:", error);
             }
         },
+         
         async Patients() {
             const response = await axios.get("patients");
             this.patientsFor = response.data.data;

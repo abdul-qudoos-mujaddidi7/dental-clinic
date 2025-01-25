@@ -68,7 +68,7 @@
                             <div class="flex w-100">
                                 <v-autocomplete
                                     v-model="formData.roleId"
-                                    :items="roles"
+                                    :items="PeopleRepository.roleForUser"
                                     item-value="id"
                                     item-title="name"
                                     variant="outlined"
@@ -130,11 +130,6 @@ import { usePeopleRepository } from "@/store/PeopleRepository";
 
 const PeopleRepository = usePeopleRepository();
 const formRef = ref(null);
-const roles = ref([
-  { id: 1, name: 'admin' },
-  { id: 2, name: 'user' },
-  { id: 3, name: 'supp' },
-]);
 const formData = reactive({
     id: PeopleRepository.user.id,
     firstName: PeopleRepository.user.firstName,
@@ -142,7 +137,7 @@ const formData = reactive({
     status: PeopleRepository.user.status,
     email: PeopleRepository.user.email,
     password: PeopleRepository.user.password,
-    role: PeopleRepository.user.roleId,
+    roleId: PeopleRepository.user.role?.name,
     lastName:"amn"
 });
 const rules = {
@@ -171,6 +166,7 @@ const save = async () => {
         }
     }
 };
+PeopleRepository.fetchRoleForUser()
 </script>
 <style  scoped>
 .borderStyle{
