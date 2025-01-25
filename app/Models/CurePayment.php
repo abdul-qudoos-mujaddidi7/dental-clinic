@@ -12,6 +12,8 @@ class CurePayment extends Model
 {
     use HasFactory, SoftDeletes;
     protected $fillable = ['cure_id', 'amount', 'date'];
+
+    
     public function cure()
     {
         return $this->belongsTo(Cure::class);

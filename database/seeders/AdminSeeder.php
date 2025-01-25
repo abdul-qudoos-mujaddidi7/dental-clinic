@@ -154,7 +154,7 @@ class AdminSeeder extends Seeder
             'last_name' => "Mujaddidi",   
             'phone' => "0784801901",    
             'email' => "jawad@gmail.com", 
-            'image' => "img.jpeg",       
+            // 'image' => "img.jpeg",       
             'status' => true,         
             'password' => bcrypt('12345678'),      
         ])->assignRole($adminRole); // Assign the Admin role to the user

@@ -61,7 +61,7 @@
                                 </v-autocomplete>
                                 <v-autocomplete
                                     v-model="formData.stageId"
-                                    :items="status"
+                                    :items="LeadRepository.leadStageFor"
                                     variant="outlined"
                                     density="compact"
                                     item-value="id"
@@ -130,7 +130,7 @@
                             </v-text-field>
 
                             <v-textarea
-                                v-model="formData.details"
+                                v-model="formData.note"
                                 variant="outlined"
                                 label="Details  "
                                 density="compact"
@@ -161,17 +161,15 @@ const formRef = ref(null);
 const selectGender = (gender) => {
     formData.gender = gender;
 };
-const status = [
-    { id: 1, name: "Completed" },
-    { id: 2, name: "New" },
-    { id: 3, name: "On Going" },
-];
+
 const formData = reactive({
     id: LeadRepository.lead.id,
     name: LeadRepository.lead.name,
     phone: LeadRepository.lead.phone,
     address: LeadRepository.lead.address,
     gender: LeadRepository.lead.gender,
+    note: LeadRepository.lead.note,
+    date: LeadRepository.lead.date,
     categoryId: LeadRepository.lead.category?.id,
     stageId: LeadRepository.lead.stage?.id,
 });
@@ -188,6 +186,7 @@ const rules = {
 
 const save = async () => {
     const isValid = await formRef.value.validate();
+    console.log(formData)
     if (isValid) {
         if (LeadRepository.isEditMode) {
             await LeadRepository.UpdateLead(formData.id, formData);

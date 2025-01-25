@@ -25,7 +25,7 @@ class UserResource extends JsonResource
             ] : null,
             'email' => $this->email,
             'status' => (bool) $this->status,
-            "photoUrl" => $this->image ? asset("storage/" . $this->image) : null,
+            // "photoUrl" => $this->image ? asset("storage/" . $this->image) : null,
         ];
     }
 }

@@ -30,7 +30,7 @@ class DentistRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string',
+            'first_name' => 'required|string',
             // 'last_name' => 'required|string',
             'phone' => 'required|string|max:15',
             // 'address' => 'required|string|max:255',

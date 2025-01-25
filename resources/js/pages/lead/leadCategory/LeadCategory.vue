@@ -62,7 +62,6 @@
                                 >
                                     <!-- Checkbox for selecting rows -->
 
-
                                     <template v-slot:item.action="{ item }">
                                         <v-menu>
                                             <template
@@ -103,7 +102,6 @@
                                         </v-menu>
                                     </template>
                                 </v-data-table-server>
-                              
                             </v-col>
                         </v-row>
                     </v-main>
@@ -122,13 +120,16 @@ const LeadRepository = useLeadRepository();
 // delete and update Create
 const CreateDialogShow = () => {
     LeadRepository.category = {};
-    LeadRepository.setEditMode(false);
+    // LeadRepository.setEditMode(false);
+    LeadRepository.isEditMode = false;
+
     LeadRepository.createDialog = true;
 };
 
 const edit = (item) => {
     console.log(item, "me");
-    LeadRepository.setEditMode(true);
+    // LeadRepository.setEditMode(true);
+    LeadRepository.isEditMode = true;
     LeadRepository.category = {};
     if (Object.keys(LeadRepository.category).length === 0) {
         LeadRepository.FetchCategory(item.id)
@@ -146,7 +147,6 @@ const deleteItem = async (item) => {
 };
 // header
 const headers = [
-
     { title: "Name", key: "name", align: "center", sortable: false },
     { title: "Date Created", key: "date", align: "center", sortable: false },
     { title: "Items", key: "items", align: "center", sortable: false },

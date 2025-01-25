@@ -197,14 +197,14 @@ export let useCureRepository = defineStore("CureRepository", {
         },
         // /leads/stage/{lead}
         // curePayments
-        async FetchCurePayments(expenseId) {
+        async FetchCurePayments(id) {
             this.loading = true;
 
             const response = await axios.get(
-                `curePayments?cure=${expenseId}`
+                `curePayments?cure=${id}`
             );
             this.curePayments = response.data.data;
-            console.log(this.billExpensesPayments, "this is the data i want ");
+            console.log(this.curePayments, "this is the data i want ");
 
             this.loading = false;
         },
@@ -219,6 +219,7 @@ export let useCureRepository = defineStore("CureRepository", {
                 // this.error = err.message;
             }
         },
+
         async CreateCurePayment(formData) {
             console.log(formData);
             try {
@@ -235,10 +236,7 @@ export let useCureRepository = defineStore("CureRepository", {
                 this.createDialog = false;
                 // this.router.push("/billExpense");
 
-                this.FetchCurePayments({
-                    page: this.page,
-                    itemsPerPage: this.itemsPerPage,
-                });
+                this.FetchCurePayments(this.cureId);
                 this.FetchCures({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
@@ -261,7 +259,9 @@ export let useCureRepository = defineStore("CureRepository", {
                 const response = await axios(config);
                 this.updateDialog = false;
 
-                this.FetchCurePayments({
+                console.log(this.cureId)
+                this.FetchCurePayments(this.cureId);
+                this.FetchCures({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });
@@ -270,11 +270,13 @@ export let useCureRepository = defineStore("CureRepository", {
                 this.error = err;
             }
         },
+
         async DeleteCurePayment(id) {
             this.isLoading = true;
-            this.Expenses = [];
+            // this.Expenses = [];
             this.error = null;
 
+            console.log(id, 'payment id')
             try {
                 const config = {
                     method: "DELETE",
@@ -283,7 +285,8 @@ export let useCureRepository = defineStore("CureRepository", {
 
                 const response = await axios(config);
 
-                this.FetchCurePayments({
+                this.FetchCurePayments(this.cureId);
+                this.FetchCures({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });

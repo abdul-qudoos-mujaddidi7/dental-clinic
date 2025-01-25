@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PaymentRequest;
+use App\Http\Resources\BillExpenseResource;
 use App\Http\Resources\PaymentResource;
+use App\Models\BillExpense;
 use App\Models\Payment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PaymentController extends Controller
 {
@@ -30,8 +33,19 @@ class PaymentController extends Controller
     {
         $validated= $request->validated();
         $validated['user_id'] = Auth()->id() ?? 1;
-        $payment=Payment::create($validated);
-        return new PaymentResource($payment);
+        $billPayment = DB::transaction(function () use ($validated) {
+            // Find the cure related to the payment
+            $billExpense = BillExpense::findOrFail($validated['bill_expense_id']);
+
+            $paid = $billExpense->paid + $validated['amount'];
+            $billExpense->update(['paid' => $paid]);
+    
+            // Create the new CurePayment entry
+            return Payment::create($validated); 
+        });
+
+        return new PaymentResource($billPayment);
+
 
     }
 
@@ -63,6 +77,12 @@ class PaymentController extends Controller
      */
     public function destroy(Payment $payment)
     {
+        $billExpense = $payment->billExpense; 
+        if ($billExpense) {
+            // Update the 'paid' column of the Cure
+            $billExpense->paid -= $payment->amount;
+            $billExpense->save();
+        }
         $payment->delete();
         return new PaymentResource($payment);
     }

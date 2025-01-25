@@ -18,8 +18,8 @@ class SupplierResource extends JsonResource
             "id"=>$this->id,
             'name'=>$this->name,
             'phone'=>$this->phone,
-            'address'=>$this->address,
-            'email'=>$this->email
+            // 'address'=>$this->address,
+            // 'email'=>$this->email
         ];
     }
 }

@@ -107,6 +107,12 @@ export let useLeadRepository = defineStore("LeadRepository", {
                 };
                 const response = await axios(config);
                 this.createDialog = false;
+                this.FetchLeads({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+                this.isEditMode = false;
+
             } catch (err) {
                 this.error = err;
             }
@@ -120,7 +126,7 @@ export let useLeadRepository = defineStore("LeadRepository", {
                 const response = await axios(config);
                 this.FetchLeads({
                     page: this.page,
-                    itemsPerPage: this.itemsPerPage,
+                    itemsPerPage: this.itemsPerPage
                 });
             } catch (err) {
                 this.error = err;
@@ -194,6 +200,7 @@ export let useLeadRepository = defineStore("LeadRepository", {
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });
+                this.isEditMode = false;
             } catch (err) {
                 this.error = err;
             }

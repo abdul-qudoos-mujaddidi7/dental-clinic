@@ -311,11 +311,11 @@ export let usePeopleRepository =defineStore("PeopleRepository",{
         async UpdateDoctor(id, data) {
             try {
                 const config = {
-                    method: "POST",
-                    url: "dentists/updateDentist/" + id,
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                    },
+                    method: "PUT",
+                    url: "dentists/" + id,
+                    // headers: {
+                    //     "Content-Type": "multipart/form-data",
+                    // },
                     data: data,
                 };
 
@@ -453,14 +453,13 @@ export let usePeopleRepository =defineStore("PeopleRepository",{
 
                 // Using Axios to make a post request with async/await and custom headers
                 const response = await axios(config);
-                this.updateDialog = false;
+                this.createDialog = false;
                 this.FetchSuppliers({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });
             } catch (err) {
-                // If there's an error, set the error in the store
-                this.error = err;
+                // If there's an error, set the error in the stor
             }
         },
         async DeleteSupplier(id) {
@@ -590,8 +589,7 @@ export let usePeopleRepository =defineStore("PeopleRepository",{
                     itemsPerPage: this.itemsPerPage,
                 });
             } catch (err) {
-                // If there's an error, set the error in the store
-                this.error = err;
+                // If there's an error, set the error in the stor
             }
         },
         async DeleteUser(id) {

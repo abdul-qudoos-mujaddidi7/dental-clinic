@@ -64,6 +64,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/owners', OwnerController::class);
     Route::post('/owners/updateOwners/{owner}',[OwnerController::class,'updateOwner']);
     Route::apiResource('/users', UserController::class);
+    // Route::post('/users/updateUsers/{user}',[UserController::class,'updateUser']);
     Route::put('/users/status/{user}', [UserController::class, 'updateStatus'])->name('users.updateStatus');
 
     Route::apiResource('/patients', PatientController::class);

@@ -22,7 +22,7 @@ return new class extends Migration
             $table->text('note')->nullable();
             $table->string('reference',20);
             $table->foreignIdFor(Supplier::class)->constrained();
-            $table->foreignIdFor(User::class)->constrained();
+            $table->foreignIdFor(User::class);
             $table->softDeletes();
             $table->timestamps();
         });

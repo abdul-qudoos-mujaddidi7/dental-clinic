@@ -38,7 +38,7 @@ export const useDashboardRepository = defineStore("DashboardRepository", {
       totalTodayExpense: 0,
       newPatients: 0,
       totalPatients: 0,
-      totalAllEarnings: 0,
+      totalEarnings: 0,
       totalAllExpenses: 0,
       netProfit: 0,
       dailyExpenses: [],
@@ -72,7 +72,7 @@ export const useDashboardRepository = defineStore("DashboardRepository", {
           thisYearExpenses: data.yearlyExpenses || [],
           monthExpenses: data.monthExpenses || [],
           monthIncomes: data.monthIncomes || [],
-          earnings: parseFloat(data.totalAllEarnings) || 0,
+          earnings: parseFloat(data.totalEarnings) || 0,
           expensesList: this.processExpenses(data.monthlyExpenses, "green"),
         });
 

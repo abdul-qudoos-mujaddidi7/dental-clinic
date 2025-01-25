@@ -181,7 +181,7 @@ class DashboardController extends Controller
             'totalTodayExpense' => $totalTodayExpense,
             'newPatients' => $newPatients,
             'totalPatients' => $totalPatients,
-            'totalAllEarnings' => $totalEarnings,
+            'totalEarnings' => $totalEarnings,
             'totalAllExpenses' => $totalAllExpenses,
             'netProfit' => $netProfit,
             'dailyExpenses' => $dailyExpenses,

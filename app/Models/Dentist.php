@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Dentist extends Model
 {
     use HasFactory;
-    protected $fillable = ['name','phone'];
+    protected $fillable = ['first_name','phone'];
     // ,'last_name',
 
     // 'address',
