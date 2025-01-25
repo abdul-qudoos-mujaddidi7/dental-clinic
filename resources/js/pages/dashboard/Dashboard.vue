@@ -10,26 +10,26 @@
         <v-row class="pt-6">
             <v-col>
                 <v-card variant="flat" rounded="lg" >
-                 <v-card-title class="flex justify-center align-items-start">
-                    <v-avatar size="40" class="mr-4">
+                 
+                    <template v-slot:title >
+                        <div class="d-flex ">
+                        <v-avatar size="40" class="mr-4">
                             <!-- <v-icon size="36">mdi-account-details</v-icon> -->
                             <img
                                 src="@/assets/images/dashboard/totalVisa.svg"
                                 class="w-6"
                             />
                         </v-avatar>
-                        <div class=" align-items-start">
-                            <div class="font-weight-black align-self-start">
+                        <div class="pt-1 ">
+                            <div class="font-weight-black ">
                                 {{
                                     DashboardRepository.dashboardReport
                                         .netProfit
                                 }}
                             </div>
                         </div>
-                 </v-card-title>
-                    <!-- <template v-slot:title > -->
-                        
-                    <!-- </template> -->
+                    </div>
+                    </template>
             
                     <v-card-text
                         class="text-h6 d-flex justify-start calibri_font ml-14"
