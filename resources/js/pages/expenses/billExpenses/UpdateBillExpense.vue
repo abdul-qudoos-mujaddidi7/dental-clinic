@@ -111,7 +111,7 @@
                             class="product-table"
                             v-for="(
                                 pro, index
-                            ) in ExpenseRepository.expenseProduct"
+                            ) in combinedServices"
                             :key="index"
                         >
                             <td class="pl-3 text-start">
@@ -222,11 +222,8 @@ let formData = reactive({
     paid: 0,
 });
 
-// Fetch data and initialize formData on component mount
-onMounted(async () => {
-    await ExpenseRepository.fetchBillExpense(routeParams.params.id);
 
-    // Update each property individually for reactivity
+ ExpenseRepository.fetchBillExpense(routeParams.params.id).then((res)=>{
     const billExpense = ExpenseRepository.billExpense;
     formData.id = billExpense.id;
     formData.expenseDetails = billExpense.expenseDetails || [];
@@ -236,12 +233,12 @@ onMounted(async () => {
     formData.billDate = billExpense.date;
     formData.note = billExpense.note;
     formData.paid = billExpense.paid;
+ })
 
-    // Deduplicate expenseProduct array without losing reactivity
-    ExpenseRepository.expenseProduct = ExpenseRepository.expenseProduct.filter(
-        (item, index, self) => index === self.findIndex((i) => i.id === item.id)
-    );
-});
+
+  
+
+
 
 const formRef = ref(null);
 const rules = {
@@ -261,6 +258,9 @@ const CalcFetchProduct = (selectedProduct) => {
     clearSearch();
 };
 
+const combinedServices = computed(() => {
+    return [...ExpenseRepository.expenseProduct, ...formData.expenseDetails];
+});
 // Clear search results
 const clearSearch = () => {
     ExpenseRepository.billExpenseSearch = "";

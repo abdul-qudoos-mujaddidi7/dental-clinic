@@ -787,7 +787,7 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
 
                 // Using Axios to make a post request with async/await and custom headers
                 const response = await axios(config);
-                this.updateDialog = false;
+                this.createDialog = false;
 
                 this.FetchBillExpensesPayments({
                     page: this.page,
