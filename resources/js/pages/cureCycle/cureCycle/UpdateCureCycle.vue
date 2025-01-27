@@ -127,9 +127,8 @@
                     </thead>
                     <tbody>
                         <tr
-                            class="product-table"
-                            v-for="(pro, index) in combinedServices"
-                            :key="index"
+                            v-for="(pro, index) in CureRepository.servicesDetails"
+                            :key="pro.id"
                         >
                             <td class="pl-3 text-start">{{ index + 1 }}</td>
                             <td class="pl-3 text-start">
@@ -220,7 +219,6 @@ import AppBar from "../../../components/AppBar.vue";
 import { reactive, computed, ref, watch, onMounted } from "vue";
 import { useRoute } from "vue-router";
 
-
 import { useCureRepository } from "@/store/CureRepository";
 
 const CureRepository = useCureRepository();
@@ -237,60 +235,37 @@ const clearSearch = () => {
 };
 
 const removeProduct = async (index, serviceId) => {
-    try {
-        
-        const response = await CureRepository.DeleteCure(serviceId);
-
-        // Only remove from the table if the backend deletion is successful
-        if (response && response.status === 200) {
-            this.services.splice(index, 1); // Remove from table reactively
-            console.log(`Removed product with serviceId: ${serviceId}`);
-        } else {
-            console.error(
-                `Failed to delete product with serviceId: ${serviceId}`
-            );
-        }
-    } catch (error) {
-        console.error(
-            `Error removing product with serviceId: ${serviceId}`,
-            error
-        );
-    }
-}
+    CureRepository.services.splice(index, 1);
+};
 
 const createExpenseProduct = () => {
     CureRepository.createDialog = true;
 };
 
 const routeParams = useRoute();
-const formData = reactive({
-    id: null,
-    deletedIds: [],
-    services: [],
-    dentistId: null,
-    grandTotal: null,
-    patientId: null,
-    startDate: null,
-    description: null,
-    paid: null,
-    status: null,
-});
-
-// Fetch the data and populate `formData`
+let formData = [];
 CureRepository.FetchCure(routeParams.params.id).then((res) => {
-    const cure = CureRepository.cure; // Assuming the data is stored here
-    formData.id = cure.id;
-    formData.services = cure.services || [];
-    formData.dentistId = cure.dentist?.id;
-    formData.grandTotal = parseInt(cure.grand_total || 0, 10); // Convert grand_total to integer
-    formData.patientId = cure.patient?.id;
-    formData.startDate = cure.start_date;
-    formData.description = cure.description;
-    formData.paid = cure.paid;
-    formData.status = cure.status;
-
-    console.log(formData.grandTotal, "Initial grand total");
+    formData = reactive({
+        id: CureRepository.cure.id,
+        deletedIds: [],
+        // Clone servicesDetails for reactivity
+        servicesDetails: CureRepository.cure.servicesDetails.map((service) => ({
+            id: service.id,
+            serviceName: service.serviceName,
+            quantity: service.quantity || 1,
+            cost: service.cost || 0,
+            status: service.status || "start",
+        })),
+        dentistId: CureRepository.cure.dentist.id,
+        grandTotal: parseInt(CureRepository.cure.grand_total || 0, 10),
+        patientId: CureRepository.cure.patient.id,
+        startDate: CureRepository.cure.start_date,
+        description: CureRepository.cure.description,
+        paid: CureRepository.cure.paid,
+        status: CureRepository.cure.status,
+    });
 });
+
 
 const multiple = (pro) => {
     console.log(pro);
@@ -317,19 +292,18 @@ const rules = {
 };
 
 watch(
-    () => CureRepository.services,
-    () => {
-        CureRepository.services.forEach((services) => {
-            // Update the 'subtotal' property for each service
-            services.total = multiple(services);
-            console.log(services, "watch");
+    () => CureRepository.servicesDetails,
+    (newServices) => {
+        newServices.forEach((service) => {
+            // Update the 'subtotal' property
+            service.total = multiple(service);
         });
     },
     { deep: true }
 );
 
 const totalSum = computed(() => {
-    const grandTotal = parseInt(formData.grandTotal|| 0, 10); // Convert to integer, default to 0 if undefined
+    const grandTotal = parseInt(formData.grandTotal || 0, 10); // Convert to integer, default to 0 if undefined
     const total = CureRepository.services.reduce(
         (acc, item) => acc + multiple(item),
         0
@@ -342,15 +316,14 @@ const totalSum = computed(() => {
 const Duo = computed(() => {
     return totalSum.value - formData.paid || 0;
 });
-
 // Update function
 const update = async () => {
-    if (Array.isArray(formData.services)) {
-        formData.services = formData.services.map((data) => {
-            if (data.services && data.services.id) {
+    if (Array.isArray(formData.servicesDetails)) {
+        formData.servicesDetails= formData.servicesDetails.map((data) => {
+            if (data.servicesDetails && data.servicesDetails.id) {
                 return {
                     ...data,
-                    product: { id: data.services.id },
+                    product: { id: data.servicesDetails.id },
                 };
             } else {
                 console.error(

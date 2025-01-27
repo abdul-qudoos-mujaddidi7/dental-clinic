@@ -3,6 +3,7 @@ import { reactive, ref } from "vue";
 import { axios } from "../axios";
 import { useRouter } from "vue-router";
 import Patients from "../pages/people/patients/Patients.vue";
+import { data } from "autoprefixer";
 
 export let useCureRepository = defineStore("CureRepository", {
     state() {
@@ -60,34 +61,80 @@ export let useCureRepository = defineStore("CureRepository", {
             this.loading = false;
             // this.searchFetch = "";
         },
+        // async fetchProduct(id, isUpdate = false) {
+
+        //     try {
+        //         // Fetch product data from the backend
+        //         const response = await axios.get(`services/${id}`);
+        //         const productData = response.data.data;
+        
+        //         // // If updating, remove the `id` field to avoid duplication issues
+        //         // if (isUpdate) {
+        //         //     delete productData.id;
+        //         // }
+        
+        //         // Check if the product already exists in the services array
+        //         const exists = this.services.some(item => item.id === productData.id);
+        //         if (!exists) {
+                  
+        //             this.services.push(productData);
+        //             this.cure.servicesDetails.push(productData);
+        //         } else {
+        //             console.warn(`Product with ID ${productData.id} already exists.`);
+        //         }
+        
+        //         // Clear the search results after processing
+        //         this.searchFetch = [];
+        //     } catch (error) {
+        //         console.error("Error fetching product:", error);
+        //     }
+        // },
+         
         async fetchProduct(id, isUpdate = false) {
             try {
-                // Fetch product data from the backend
                 const response = await axios.get(`services/${id}`);
                 const productData = response.data.data;
         
-                // If updating, remove the `id` field to avoid duplication issues
-                if (isUpdate) {
-                    delete productData.id;
-                }
+                // Check if the product already exists in `servicesDetails`
+                const existingIndex = this.servicesDetails.findIndex(
+                    (item) => item.id === productData.id
+                );
         
-                // Check if the product already exists in the services array
-                const exists = this.services.some(item => item.id === productData.id);
-                if (!exists) {
-                    // Add the product to the services list and bill expense details
-                    this.services.push(productData);
-                    this.billExpense.expenseDetails.push(productData);
+                if (existingIndex !== -1) {
+                    // If updating, replace the existing entry
+                    if (isUpdate) {
+                        this.servicesDetails.splice(existingIndex, 1, {
+                            ...this.servicesDetails[existingIndex],
+                            ...productData,
+                        });
+                    } else {
+                        console.warn(`Product with ID ${productData.id} already exists.`);
+                    }
                 } else {
-                    console.warn(`Product with ID ${productData.id} already exists.`);
+                    // If not found, push new data
+                    this.servicesDetails.push(productData);
                 }
         
-                // Clear the search results after processing
+                // Update `services` array as well
+                const serviceIndex = this.services.findIndex(
+                    (item) => item.id === productData.id
+                );
+                if (serviceIndex !== -1) {
+                    this.services.splice(serviceIndex, 1, {
+                        ...this.services[serviceIndex],
+                        ...productData,
+                    });
+                } else {
+                    this.services.push(productData);
+                }
+        
+                // Clear search results
                 this.searchFetch = [];
             } catch (error) {
                 console.error("Error fetching product:", error);
             }
         },
-         
+        
         async Patients() {
             const response = await axios.get("patients");
             this.patientsFor = response.data.data;
@@ -118,17 +165,42 @@ export let useCureRepository = defineStore("CureRepository", {
             this.totalItems = response.data.meta.total;
             this.loading = false;
         },
+        // async FetchCure(id) {
+        //     // this.loading = true;
+        //     console.log(id);
+        //     try {
+        //         const response = await axios.get(`cures/${id}`);
+        //         this.cure = response.data.data;
+        //         this.services.response.data.data.servicesDetails;
+        //         this.services = this.services.map((data)=>{
+        //             return{...data, name: data.services.name}
+        //         })
+        //         console.log(this.cure,'fetch cure ');
+        //         console.log(this.services,'services in the fetch cure  ');
+        //     } catch (err) {
+        //         this.error = err;
+        //     }
+        // },
+       
         async FetchCure(id) {
-            // this.loading = true;
-            console.log(id);
             try {
                 const response = await axios.get(`cures/${id}`);
                 this.cure = response.data.data;
-                console.log(this.cure,'fetch cure ');
+        
+                // Safely map `servicesDetails` and update the table
+                this.servicesDetails = this.cure.servicesDetails.map((data) => ({
+                    ...data,
+                    name: data.services?.name || "Unnamed Service", // Fallback for undefined names
+                }));
+        
+                console.log(this.cure, "fetch cure");
+                console.log(this.servicesDetails, "services in the fetch cure");
             } catch (err) {
-                this.error = err;
+                console.error("Error fetching cure:", err);
             }
-        },
+        }
+,        
+        
         async CreateCure(formData) {
             console.log(formData);
             try {
