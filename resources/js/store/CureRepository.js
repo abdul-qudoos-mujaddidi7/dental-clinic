@@ -29,7 +29,7 @@ export let useCureRepository = defineStore("CureRepository", {
             patientsFor: reactive([]),
             doctorFor:reactive([]),
             searchFetch: reactive([]),
-            services: reactive([]),
+            cureProduct: reactive([]),
             leadStageFor:reactive([]),
         };
     },
@@ -89,51 +89,35 @@ export let useCureRepository = defineStore("CureRepository", {
         //         console.error("Error fetching product:", error);
         //     }
         // },
-         
         async fetchProduct(id, isUpdate = false) {
             try {
                 const response = await axios.get(`services/${id}`);
                 const productData = response.data.data;
         
-                // Check if the product already exists in `servicesDetails`
-                const existingIndex = this.servicesDetails.findIndex(
-                    (item) => item.id === productData.id
-                );
-        
-                if (existingIndex !== -1) {
-                    // If updating, replace the existing entry
-                    if (isUpdate) {
-                        this.servicesDetails.splice(existingIndex, 1, {
-                            ...this.servicesDetails[existingIndex],
-                            ...productData,
-                        });
-                    } else {
-                        console.warn(`Product with ID ${productData.id} already exists.`);
-                    }
-                } else {
-                    // If not found, push new data
-                    this.servicesDetails.push(productData);
+                if (isUpdate) {
+                    delete productData.id;
                 }
         
-                // Update `services` array as well
-                const serviceIndex = this.services.findIndex(
-                    (item) => item.id === productData.id
-                );
-                if (serviceIndex !== -1) {
-                    this.services.splice(serviceIndex, 1, {
-                        ...this.services[serviceIndex],
-                        ...productData,
-                    });
-                } else {
-                    this.services.push(productData);
+                console.log(response.data.data, "fetchProduct");
+        
+                // Avoid duplication in `cureProduct`
+                if (!this.cureProduct.some((item) => item.id === productData.id)) {
+                    this.cureProduct.push(productData);
                 }
+        
+                // Avoid duplication in `servicesDetails`
+                if (!this.cure.servicesDetails.some((item) => item.id === productData.id)) {
+                    this.cure.servicesDetails.push(productData);
+                }
+                
         
                 // Clear search results
                 this.searchFetch = [];
             } catch (error) {
                 console.error("Error fetching product:", error);
             }
-        },
+        }
+,        
         
         async Patients() {
             const response = await axios.get("patients");
@@ -186,15 +170,13 @@ export let useCureRepository = defineStore("CureRepository", {
             try {
                 const response = await axios.get(`cures/${id}`);
                 this.cure = response.data.data;
-        
-                // Safely map `servicesDetails` and update the table
-                this.servicesDetails = this.cure.servicesDetails.map((data) => ({
-                    ...data,
-                    name: data.services?.name || "Unnamed Service", // Fallback for undefined names
-                }));
-        
+                this.cureProduct = response.data.data.servicesDetails
+                this.cureProduct = this.cureProduct.map((data)=>{
+                    return{...data, name:data.cureProduct.serviceName || data.cureProduct.name}
+                })
                 console.log(this.cure, "fetch cure");
                 console.log(this.servicesDetails, "services in the fetch cure");
+                console.log(this.cureProduct, "services in the fetchProduct");
             } catch (err) {
                 console.error("Error fetching cure:", err);
             }

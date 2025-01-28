@@ -127,7 +127,7 @@
                     </thead>
                     <tbody>
                         <tr
-                            v-for="(pro, index) in CureRepository.servicesDetails"
+                            v-for="(pro, index) in combinedServices"
                             :key="pro.id"
                         >
                             <td class="pl-3 text-start">{{ index + 1 }}</td>
@@ -228,14 +228,14 @@ const CalcFetchProduct = (index) => {
     clearSearch();
 };
 
-// ======================
 const clearSearch = () => {
     CureRepository.billExpenseSearch = "";
     CureRepository.searchFetch = [];
 };
 
+
 const removeProduct = async (index, serviceId) => {
-    CureRepository.services.splice(index, 1);
+    CureRepository.cureProduct.splice(index, 1);
 };
 
 const createExpenseProduct = () => {
@@ -243,26 +243,32 @@ const createExpenseProduct = () => {
 };
 
 const routeParams = useRoute();
-let formData = [];
-CureRepository.FetchCure(routeParams.params.id).then((res) => {
-    formData = reactive({
-        id: CureRepository.cure.id,
-        deletedIds: [],
-        // Clone servicesDetails for reactivity
-        servicesDetails: CureRepository.cure.servicesDetails.map((service) => ({
-            id: service.id,
-            serviceName: service.serviceName,
-            quantity: service.quantity || 1,
-            cost: service.cost || 0,
-            status: service.status || "start",
-        })),
-        dentistId: CureRepository.cure.dentist.id,
-        grandTotal: parseInt(CureRepository.cure.grand_total || 0, 10),
-        patientId: CureRepository.cure.patient.id,
-        startDate: CureRepository.cure.start_date,
-        description: CureRepository.cure.description,
-        paid: CureRepository.cure.paid,
-        status: CureRepository.cure.status,
+const formData = reactive({
+    id: "",
+    deletedIds: [],
+    cureProduct: [],
+    dentistId: null,
+    grandTotal: 0,
+    patientId: null,
+    startDate: "",
+    description: "",
+    paid: 0,
+    status: "",
+});
+
+onMounted(() => {
+    CureRepository.FetchCure(routeParams.params.id).then((res) => {
+        Object.assign(formData, {
+            id: CureRepository.cure.id,
+            cureProduct: CureRepository.cure.servicesDetails,
+            dentistId: CureRepository.cure.dentist.id,
+            grandTotal: parseInt(CureRepository.cure.grand_total || 0, 10),
+            patientId: CureRepository.cure.patient.id,
+            startDate: CureRepository.cure.start_date,
+            description: CureRepository.cure.description,
+            paid: CureRepository.cure.paid,
+            status: CureRepository.cure.status,
+        });
     });
 });
 
@@ -279,10 +285,19 @@ const multiple = (pro) => {
 //     console.log(newVal, "Updated grand total");
 // });
 
-// Combine services from both repositories
+// Combine cureProduct from both repositories
 const combinedServices = computed(() => {
-    return [...CureRepository.services, ...formData.services];
+    const uniqueServices = new Map();
+    (CureRepository.cureProduct || []).forEach((service) => {
+        uniqueServices.set(service.id, service);
+    });
+    (formData.services || []).forEach((service) => {
+        uniqueServices.set(service.id, service);
+    });
+    return Array.from(uniqueServices.values());
 });
+
+
 
 const formRef = ref(null);
 const rules = {
@@ -292,19 +307,18 @@ const rules = {
 };
 
 watch(
-    () => CureRepository.servicesDetails,
+    combinedServices,
     (newServices) => {
-        newServices.forEach((service) => {
-            // Update the 'subtotal' property
-            service.total = multiple(service);
-        });
+        formData.cureProduct = newServices;
     },
-    { deep: true }
+    { immediate: true, deep: true }
 );
+
+
 
 const totalSum = computed(() => {
     const grandTotal = parseInt(formData.grandTotal || 0, 10); // Convert to integer, default to 0 if undefined
-    const total = CureRepository.services.reduce(
+    const total = CureRepository.cureProduct.reduce(
         (acc, item) => acc + multiple(item),
         0
     );
@@ -318,22 +332,24 @@ const Duo = computed(() => {
 });
 // Update function
 const update = async () => {
-    if (Array.isArray(formData.servicesDetails)) {
-        formData.servicesDetails= formData.servicesDetails.map((data) => {
-            if (data.servicesDetails && data.servicesDetails.id) {
-                return {
-                    ...data,
-                    product: { id: data.servicesDetails.id },
-                };
-            } else {
-                console.error(
-                    "services is missing or invalid in services:",
-                    data
-                );
-                return data;
-            }
-        });
-    }
+    if (Array.isArray(formData.cureProduct)) {
+    formData.cureProduct = formData.cureProduct.map((data) => {
+        if (data.cureProduct && data.cureProduct.id) {
+            return {
+                ...data,
+                product: { id: data.cureProduct.id },
+            };
+        } else {
+            console.error(
+                "cureProduct is missing or invalid in cureProduct:",
+                data
+            );
+            return data;
+        }
+    });
+}
+
+
     const isValid = await formRef.value.validate();
     if (isValid) {
         await CureRepository.UpdateCure(formData.id, formData);
