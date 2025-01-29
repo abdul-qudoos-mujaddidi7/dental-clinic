@@ -47,8 +47,11 @@ class BillExpenseRequest extends FormRequest
             'grand_total' => 'required|numeric|between:0,99999999.99',
             'note' => 'nullable|string',
             'supplier_id' => 'required|exists:suppliers,id',
+
             'billable_details' => 'required|array',
-            'billable_details.*.id' => 'required',
+            'billable_details.*.id' => 'nullable',
+            'billable_details.*.expenseProduct' => 'nullable',
+            'billable_details.*.productId' => 'nullable',
             'billable_details.*.quantity' => 'required|integer|min:1',
             'billable_details.*.cost' => 'required|numeric|between:0,999999.99',
             'billable_details.*.total' => 'required|numeric|between:0,999999.99',

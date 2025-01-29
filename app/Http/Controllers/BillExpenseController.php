@@ -35,11 +35,12 @@ class BillExpenseController extends Controller
         $validated=$request->validated();
         $validated['user_id'] = Auth::id()?? 1;
         $billExpense = BillExpense::create($validated);
+    
         foreach($validated['billable_details'] as $detail){
 
                 BillExpenseDetail::create([
                     'bill_expense_id' => $billExpense->id,
-                    'product_id' => $detail['id'],
+                    'product_id' => $detail['expenseProduct'],
                     'quantity' => $detail['quantity'],
                     'cost' => $detail['cost'],
                     'total' => $detail['total'],
@@ -60,13 +61,7 @@ class BillExpenseController extends Controller
     
         return BillExpenseResource::make($billExpense);
     }
-    
-
-    
-
-    /**
-     * Update the specified resource in storage.
-     */
+ 
     public function update(BillExpenseRequest $request,BillExpense $billExpense)
     {
         
@@ -77,11 +72,12 @@ class BillExpenseController extends Controller
 
             BillExpenseDetail::updateOrCreate(
                 [
-                    'bill_expense_id' => $billExpense->id,
-                    'product_id' => $detail['id'],
+                    'id'=> $detail['id'] ?? null
                 ],
                 [
+                    'bill_expense_id' => $billExpense->id,
                     'quantity' => $detail['quantity'],
+                    'product_id' => $detail['productId'],
                     'cost' => $detail['cost'],
                     'total' => $detail['total'],
                 ]
