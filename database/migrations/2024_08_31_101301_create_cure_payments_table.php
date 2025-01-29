@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('cure_payments', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Cure::class)->constrained();
+            $table->foreignIdFor(Cure::class);
             $table->date('date');
             $table->decimal('amount',10,2);
             $table->softDeletes();

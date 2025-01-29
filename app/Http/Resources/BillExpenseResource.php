@@ -23,7 +23,7 @@ class BillExpenseResource extends JsonResource
                 'id' => $this->supplier->id,
                 'name' => $this->supplier->name,
             ],
-            'addedBy'=>$this->user->first_name,
+            'addedBy'=>$this->user?->first_name,
             'note' => $this->note,
             'date' => $this->bill_date, 
             'grandTotal' => $this->grand_total,

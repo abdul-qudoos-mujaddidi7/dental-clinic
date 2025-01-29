@@ -17,6 +17,9 @@ export let useCureRepository = defineStore("CureRepository", {
             selectedItems: ref([]),
             itemsPerPage: ref(5),
             createDialog: ref(false),
+            ShowCurePaymentDialog:ref(false),
+            cureId:ref(''),
+            paymentId:ref(''),
 
             // lead
             cures: reactive([]),
@@ -67,8 +70,9 @@ export let useCureRepository = defineStore("CureRepository", {
         
                 // Only add if it doesn’t already exist
                 if (!this.services.some(item => item.id === productData.id)) {
-                    this.services.push(productData);
-                    this.billExpense.expenseDetails.push(productData);
+                    // this.services.push(productData);
+                    this.cure.services.push(productData);
+                    // this.billExpense.expenseDetails.push(productData);
                 }
                 this.searchFetch = [];
             } catch (err) {
@@ -183,6 +187,105 @@ export let useCureRepository = defineStore("CureRepository", {
             }
         },
         // /leads/stage/{lead}
+        // curePayments
+        async FetchCurePayments(id) {
+            this.loading = true;
+
+            const response = await axios.get(
+                `curePayments?cure=${id}`
+            );
+            this.curePayments = response.data.data;
+            console.log(this.curePayments, "this is the data i want ");
+
+            this.loading = false;
+        },
+        async FetchCurePayment(id) {
+            // this.error = null;
+            try {
+                const response = await axios.get(`curePayments/${id}`);
+
+                this.curePayment = response.data.data;
+                console.log(curePayments, "this is the data i want ");
+            } catch (err) {
+                // this.error = err.message;
+            }
+        },
+
+        async CreateCurePayment(formData) {
+            console.log(formData);
+            try {
+                // Adding a custom header to the Axios request
+                const config = {
+                    method: "POST",
+                    url: "curePayments",
+
+                    data: formData,
+                };
+
+                // Using Axios to make a GET request with async/await and custom headers
+                const response = await axios(config);
+                this.createDialog = false;
+                // this.router.push("/billExpense");
+
+                this.FetchCurePayments(this.cureId);
+                this.FetchCures({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                // If there's an error, set the error in the stor
+            }
+        },
+        async UpdateCurePayment(id, data) {
+            console.log(data);
+            try {
+                const config = {
+                    method: "PUT",
+                    url: `curePayments/${id}`,
+
+                    data: data,
+                };
+
+                // Using Axios to make a post request with async/await and custom headers
+                const response = await axios(config);
+                this.updateDialog = false;
+
+                console.log(this.cureId)
+                this.FetchCurePayments(this.cureId);
+                this.FetchCures({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                // If there's an error, set the error in the store
+                this.error = err;
+            }
+        },
+
+        async DeleteCurePayment(id) {
+            this.isLoading = true;
+            // this.Expenses = [];
+            this.error = null;
+
+            console.log(id, 'payment id')
+            try {
+                const config = {
+                    method: "DELETE",
+                    url: "curePayments/" + id,
+                };
+
+                const response = await axios(config);
+
+                this.FetchCurePayments(this.cureId);
+                this.FetchCures({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                this.error = err;
+            }
+        },
+
 
     },
 });

@@ -8,6 +8,7 @@ use App\Models\Cure;
 use App\Models\CureService;
 use App\Models\Patient;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CureController extends Controller
 {
@@ -68,7 +69,6 @@ class CureController extends Controller
                     'service_id' => $service['serviceId'],
                     'cost' => $service['cost'],
                     'quantity'=>$service['quantity'],
-                    // 'discount' => $service['discount'],
                     'total' => $service['total'],
                     'status' => $service['status']
                 ]);
@@ -88,7 +88,43 @@ class CureController extends Controller
 
 
 
-    /**
+//     public function update(CureRequest $request, Cure $cure)
+// {
+//     $validated = $request->validated();
+//     $validated['user_id'] = Auth::id() ?? 1;
+//     dd($validated);
+//     $cure->update($validated);
+
+
+//     // Update or create cure services
+//     foreach ($validated['services'] as $service) {
+//         CureService::updateOrCreate(
+//             [
+//                 'id' => $service['id'] ?? null,  // Check if an ID is provided for the service
+//             ],
+//             [
+//                 'cure_id' => $cure->id,
+//                 'service_id' => $service['serviceId'],
+//                 'cost' => $service['cost'],
+//                 'quantity' => $service['quantity'],
+//                 'total' => $service['total'],
+//                 'status' => $service['status'],
+//             ]
+//         );
+//     }
+
+//     // Delete cure services if deletedIds are provided
+//     if ($request['deletedIds']) {
+//         foreach ($request['deletedIds'] as $id) {
+//             CureService::destroy($id);
+//         }
+//     }
+
+//     return response()->json(['message' => 'Record updated successfully.']);
+// }
+
+
+/**
      * Update the specified resource in storage.
      */
     public function update(CureRequest $request, Cure $cure)
@@ -109,19 +145,16 @@ class CureController extends Controller
         //     $patient->update($updateData);
         // }
 
-        $cure->update($validated);
+        $cure->cureServices()->delete();
 
         // Update services (if provided)
             if ($request->has('services')) {
-                $cure->cureServices()->delete();
-
-
                 $services = [];
                 foreach ($validated['services'] as $service) {
                     $services[] = [  #is appending a new associative array (representing a service)
                         #to the $services array in each iteration of the loop
+                        'service_id'=>$service['serviceId'],
                         'cure_id' => $cure->id,
-                        'service_id' => $service['serviceId'],
                         'cost' => $service['cost'],
                         'quantity'=>$service['quantity'],
                         'total' => $service['total'],
@@ -131,10 +164,12 @@ class CureController extends Controller
                 CureService::insert($services);
             }
         
+            $cure->update($validated);
 
         // Return the updated Cure with services
-        return new CureResource($cure->load('cureServices'));
+        return response()->json(['message'=>'updated successfully']);
     }
+
 
 
 

@@ -2,10 +2,12 @@
 import * as echarts from "echarts";
 import { onMounted, watch } from "vue";
 import { useDashboardRepository } from "@/store/DashboardRepository";
+
 let DashboardRepository = useDashboardRepository();
 DashboardRepository.fetchDashboardData();
+
 watch(
-    () => DashboardRepository.dashboards.earningMonths,
+    () => DashboardRepository.monthExpenses,
     () => {
         updateChart();
     },
@@ -18,107 +20,95 @@ async function updateChart() {
         width: 750,
         height: 300,
     });
-    var option;
+
     var option = {
-    title: [
-   
-        {
-            text: "               درآمد و مصارف امسال ",
-            right: "right",
+        title: [
+            {
+                text: "This Year Income vs Expense",
+                left: "left",
+                textStyle: {
+                    fontSize: 16,
+                    fontWeight: "bold",
+                    color: "#333",
+                    fontFamily: "Calibri, sans-serif",
+                },
+            },
+        ],
+        tooltip: {
+            trigger: "axis",
+            axisPointer: {
+                type: "shadow",
+            },
+        },
+        legend: {
+            right: "left",
+            data: ["Income", "Expenses"],
             textStyle: {
                 fontSize: 16,
                 fontWeight: "bold",
                 color: "#333",
                 fontFamily: "Calibri, sans-serif",
-             
             },
-           
         },
-    ],
-    tooltip: {
-        trigger: "axis",
-        axisPointer: {
-            type: "shadow",
-        },
-    },
-    legend: {
-       left:"left",
-        data: [ "درآمد        ","مصارف",],
-        textStyle: {
-                fontSize: 16,
-                fontWeight: "bold",
-                color: "#333",
-                fontFamily: "Calibri, sans-serif",
-                
-
-                
+        toolbox: {
+            show: false,
+            orient: "vertical",
+            left: "right",
+            top: "center",
+            feature: {
+                mark: { show: true },
+                magicType: { show: true, type: ["line", "bar", "stack"] },
+                saveAsImage: { show: true },
             },
-    },
-    toolbox: {
-        show: false,
-        orient: "vertical",
-        left: "right",
-        top: "center",
-        feature: {
-            mark: { show: true },
-            magicType: { show: true, type: ["line", "bar", "stack"] },
-            saveAsImage: { show: true },
         },
-    },
-    xAxis: [
-        {
-            type: "category",
-            axisTick: { show: true },
-            data: [
-                "حمل", // Hamal
-                "ثور", // Sawr
-                "جوزا", // Jawza
-                "سرطان", // Saratan
-                "اسد", // Asad
-                "سنبله", // Sonbola
-                "میزان", // Mizan
-                "عقرب", // Aqrab
-                "قوس", // Qaws
-                "جدی", // Jadi
-                "دلو", // Dalwa
-                "حوت", // Hoot
-            ],
-        },
-    ],
-    yAxis: [
-        {
-            type: "value",
-        },
-    ],
-    series: [
-   
-        {
-            name: "درآمد        ",
-            type: "bar",
-            barGap: 0,
-            emphasis: {
-                focus: "series",
+        xAxis: [
+            {
+                type: "category",
+                axisTick: { show: true },
+                data: [
+                    "January",
+                    "February",
+                    "March",
+                    "April",
+                    "May",
+                    "June",
+                    "July",
+                    "August",
+                    "September",
+                    "October",
+                    "November",
+                    "December",
+                ],
             },
-            color: "#112F5326",
-            data: DashboardRepository.dashboards.earningMonths,
-        },
-        {
-            name: "مصارف",
-            type: "bar",
-            barGap:0,
-
-            emphasis: {
-                focus: "series",
+        ],
+        yAxis: [
+            {
+                type: "value",
             },
-            color: "#112F53",
-            data: DashboardRepository.dashboards.expenseMonths,
-        },
-        
-    ],
-};
-
-option && myChart.setOption(option);
-
+        ],
+        series: [
+            {
+                name: "Income",
+                type: "bar",
+                barGap: 0,
+                emphasis: {
+                    focus: "series",
+                },
+                color: "#112F5326",
+                data: DashboardRepository.monthExpenses,
+            },
+            {
+                name: "Expenses",
+                type: "bar",
+                barGap: 0,
+                emphasis: {
+                    focus: "series",
+                },
+                color: "#112F53",
+                data: DashboardRepository.monthExpenses,
+            },
+        ],
+    };
 
     option && myChart.setOption(option);
 }
@@ -128,6 +118,5 @@ onMounted(updateChart);
 <template>
     <div class="shadow-md pt-8 bg-white rounded-xl d-flex justify-center">
         <canvas id="bar" style="width: 36rem"></canvas>
-        
     </div>
 </template>

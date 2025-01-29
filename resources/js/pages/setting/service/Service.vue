@@ -114,13 +114,15 @@ const SettingRepository = useSettingRepository();
 // delete and update Create
 const CreateDialogShow = () => {
     SettingRepository.service = {};
-    SettingRepository.setEditMode(false);
+    // SettingRepository.setEditMode(false);
+    SettingRepository.isEditMode=false;
     SettingRepository.createDialog = true;
 };
 
 const edit = (item) => {
     console.log(item, "me");
-    SettingRepository.setEditMode(true);
+    // SettingRepository.setEditMode(true);
+    SettingRepository.isEditMode=true
     SettingRepository.service = {};
     if (Object.keys(SettingRepository.service).length === 0) {
         SettingRepository.fetchService(item.id)

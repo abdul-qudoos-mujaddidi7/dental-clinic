@@ -649,7 +649,7 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
                 // this.expenseDetails = response.data.data.expenseDetails;
                 this.expenseProduct = Array.from(
                     new Map(
-                        this.expenseDetails.map((item) => [item.id, item])
+                        this.billExpense.expenseDetails.map((item) => [item.id, item])
                     ).values()
                 );
             

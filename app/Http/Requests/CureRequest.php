@@ -44,12 +44,13 @@ class CureRequest extends FormRequest
         'diseases_history' => 'nullable|array', // Validate disease_history as JSON
         'particular_to_female' => 'nullable|array', // Validate disease_history as JSON
         'services' => 'nullable|array',        // Validate services array
+        'services.*.id' => 'nullable', // Validate each service name
         'services.*.serviceId' => 'required', // Validate each service name
         'services.*.cost' => 'required|numeric',//te service details
         'services.*.quantity'=>'required|numeric',//ce details
-        // 'services.*.discount' => 'nullable|numeric', // Validate service details
         'services.*.total' => 'nullable|numeric', // Validate service details
         'services.*.status' => 'required|string' // Validate service details
+        // 'services.*.discount' => 'nullable|numeric', // Validate service details
     ];
 }
 

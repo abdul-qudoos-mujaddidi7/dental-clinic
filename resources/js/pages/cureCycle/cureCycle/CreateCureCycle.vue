@@ -146,6 +146,7 @@
                                 <v-text-field
                                     v-model="pro.quantity"
                                     variant="outlined"
+                                    type="number"
                                     density="compact"
                                     class="w-75"
                                 >
@@ -220,7 +221,7 @@
 
             <div class="pt-16">
                 <v-textarea
-                    v-model="formData.note"
+                    v-model="formData.description"
                     class="textArea"
                     label="Details"
                     variant="outlined"
@@ -262,7 +263,7 @@ const createExpenseProduct = () => {
 };
 
 const formData = reactive({
-    services: CureRepository.services,
+    services: CureRepository.services ||[],
     grandTotal: "",
     patientId: "",
     startDate: "",
@@ -314,6 +315,19 @@ const createEarning = async () => {
     if (isValid) {
         formData.services.map((data) => (data.serviceId = data.id));
         await CureRepository.CreateCure(formData);
+        formData.services = [];
+        CureRepository.services = [];
+
+        // Reset other formData fields
+        formData.grandTotal = "";
+        formData.patientId = "";
+        formData.startDate = CureRepository.getTodaysDate(); // Reset to today's date
+        formData.description = "";
+        formData.paid = "";
+        formData.status = "";
+
+
+        console.log("Form submitted and cleared successfully!");
     }
 };
 

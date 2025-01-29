@@ -256,7 +256,10 @@ const CalcFetchProduct = (selectedProduct) => {
         (product) => product.id === selectedProduct.id
     );
     if (!exists) {
+        console.log(selectedProduct)
+        selectedProduct = {...selectedProduct, productId: selectedProduct.id}
         ExpenseRepository.expenseProduct.push(selectedProduct);
+        formData.expenseDetails=ExpenseRepository.expenseProduct;
     }
     clearSearch();
 };
@@ -269,8 +272,15 @@ const clearSearch = () => {
 
 // Remove product by index
 const removeProduct = (index) => {
+    const product = ExpenseRepository.expenseProduct[index];
+
+    if (product.id) {
+        formData.deletedIds.push(product.id); // Store the deleted product's ID
+    }
+
     ExpenseRepository.expenseProduct.splice(index, 1);
 };
+
 
 // Calculate total for each product
 const multiple = (pro) => (pro.quantity * pro.cost) || 0;
@@ -301,6 +311,7 @@ const update = async () => {
             ? { ...data, product: { id: data.expenseProduct.id } }
             : data;
     });
+
     
     const isValid = await formRef.value.validate();
     if (isValid) {

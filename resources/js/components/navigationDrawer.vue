@@ -330,12 +330,7 @@ const cureItems = [
         icon: "mdi mdi-circle-medium",
         value: "cure cycle ",
     },
-    {
-        to: "/createCure",
-        title: "create Cure Cycle",
-        icon: "mdi mdi-circle-medium",
-        value: "idk",
-    },
+ 
 ];
 const settingItems = [
 {

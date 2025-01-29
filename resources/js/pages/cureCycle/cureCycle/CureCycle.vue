@@ -1,4 +1,6 @@
 <template>
+    <CurePyament v-if="CureRepository.createDialog"/>
+    <ShowCurePayment v-if="CureRepository.ShowCurePaymentDialog"/>
     <div class="all-expense rounded-xl">
         <div class="card rounded-xl">
             <AppBar mainTitle="Cure Cycle" sub-title="cure Cycle" />
@@ -111,6 +113,36 @@
                                             </template>
                                             <v-list>
                                                 <v-list-item>
+                                                    <v-list-item-title
+                                                        class="cursor-pointer d-flex gap-3 justify-left pb-3"
+                                                        @click="
+                                                            CreateDialogShow(
+                                                                item.id
+                                                            )
+                                                        "
+                                                    >
+                                                        <v-icon
+                                                            color="tealColor"
+                                                            >mdi
+                                                            mdi-cash-edit</v-icon
+                                                        >
+                                                        Create Payment
+                                                    </v-list-item-title>
+                                                    <v-list-item-title
+                                                        class="cursor-pointer d-flex gap-3 justify-left pb-3"
+                                                        @click="
+                                                            ViewPaymentDialog(
+                                                                item
+                                                            )
+                                                        "
+                                                    >
+                                                        <v-icon
+                                                            color="tealColor"
+                                                            >mdi
+                                                            mdi-cash-sync</v-icon
+                                                        >
+                                                        Show Payment
+                                                    </v-list-item-title>
                                                     <router-link
                                                         :to="
                                                             '/updateCure/' +
@@ -165,6 +197,8 @@
 <script setup>
 import { ref } from "vue";
 import AppBar from "../../../components/AppBar.vue";
+import CurePyament from "../cure payment/CurePyament.vue";
+import ShowCurePayment from "../cure payment/ShowCurePayment.vue";
 
 import { useCureRepository } from "@/store/CureRepository";
 const CureRepository = useCureRepository();
@@ -184,7 +218,31 @@ const sendSelectedIds = () => {
     }
 };
 const deleteItem = async (item) => {
-    await CureRepository.DeleteBillExpense(item.id);
+    await CureRepository.DeleteCure(item.id);
+};
+// create payment
+const CreateDialogShow = (id) => {
+    CureRepository.cureId = id;
+
+    CureRepository.curePayment = {};
+    CureRepository.setEditMode(false);
+    CureRepository.createDialog = true;
+};
+
+const ViewPaymentDialog = (item) => {
+    console.log(item.id, "payment id");
+    const cureID = item.id;
+    CureRepository.paymentId = item.id;
+    // CureRepository.billExpensesPayments = {};
+    // if (Object.keys(CureRepository.billExpensesPayments).length === 0) {
+    CureRepository.FetchCurePayments(cureID)
+        .then(() => {
+            CureRepository.ShowCurePaymentDialog = true;
+        })
+        .catch((error) => {
+            console.error("Error fetching data: ", error);
+        });
+    // }
 };
 // change the color 
 function getPaymentStatusClass(status) {
