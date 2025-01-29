@@ -223,12 +223,13 @@ const clearSearch = () => {
     CureRepository.searchFetch = [];
 };
 const removeProduct = (index) => {
-    CureRepository.services.splice(index, 1);
-    console.log(CureRepository.services);
+    CureRepository.cure.services.splice(index, 1);
 };
-const createExpenseProduct = () => {
+
+const createService = () => {
     CureRepository.createDialog = true;
 };
+
 
 const routeParams = useRoute();
 const formData = reactive({
@@ -250,7 +251,7 @@ CureRepository.FetchCure(routeParams.params.id).then((res) => {
     formData.id = cure.id;
     formData.services = cure.services || [];
     formData.dentistId = cure.dentist?.id;
-    formData.grandTotal = parseInt(cure.grand_total || 0, 10); // Convert grand_total to integer
+    formData.grandTotal = 0; // Convert grand_total to integer
     formData.patientId = cure.patient?.id;
     formData.startDate = cure.start_date;
     formData.description = cure.description;
@@ -276,7 +277,7 @@ const totalSum = computed(() => {
     }, 0);
 
     // Add the fetched grandTotal
-    return servicesTotal + (formData.grandTotal || 0);
+    return servicesTotal ;
 });
 
 // Watch the computed property if needed
@@ -287,7 +288,7 @@ watch(totalSum, (newVal) => {
 
 // Combine services from both repositories
 const combinedServices = computed(() => {
-    return [...CureRepository.services, ...formData.services];
+    return [...formData.services];
 });
 
 const formRef = ref(null);
@@ -327,6 +328,7 @@ const Duo = computed(() => {
 
 // Update function
 const update = async () => {
+    formData.grandTotal=totalSum.value
     if (Array.isArray(formData.services)) {
         formData.services = formData.services.map((data) => {
             if (data.services && data.services.id) {
