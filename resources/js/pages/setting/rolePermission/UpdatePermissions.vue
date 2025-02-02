@@ -104,15 +104,18 @@ const formData = reactive({
 });
 const routeParams = useRoute();
 SettingRepository.fetchRolePermission(routeParams.params.id).then((res) => {
-    // Update the properties of formData inside the then callback
-console.log(SettingRepository.permission)
+    console.log(SettingRepository.permission.permissions, 'permissions');
 
     formData.id = SettingRepository.permission.id;
-    formData.role = SettingRepository.permission.name;
-    formData.description = SettingRepository.permission.description;
-    formData.permissions = SettingRepository.permission.permissions;
     formData.name = SettingRepository.permission.name;
+    formData.description = SettingRepository.permission.description;
+
+    // Extract permission names from backend response
+    formData.permissions = SettingRepository.permission.permissions.map(
+        (perm) => perm.name
+    );
 });
+
 const permissions = reactive([
     // {
     //     items: [{ title: "Dashboard", value: "Dashboard", onlyView: true }],
@@ -144,7 +147,7 @@ const createRole = async () => {
     if (formRef.value) {
         const isValid = await formRef.value.validate();
         if (isValid) {
-            await SettingRepository.UpdateRolePermission(formData);
+            await SettingRepository.UpdateRolePermission(formData.id, formData);
             console.log("Role created successfully:", formData);
         } else {
             console.error("Form validation failed.");
