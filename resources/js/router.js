@@ -31,6 +31,7 @@ import PatientsReport from "./pages/reports/patients report/PatientsReport.vue";
 import ExpenseCatReport from "./pages/reports/Expense category report/ExpenseCatReport.vue";
 import ExpenseProductReport from "./pages/reports/Expense Product report/ExpenseProductReport.vue";
 import PickupReport from "./pages/reports/pickup report/PickupReport.vue";
+import Services from "./pages/reports/services/Services.vue";
 //dashboard
 import Dashboard from "./pages/dashboard/Dashboard.vue";
 // cure cycle
@@ -88,6 +89,7 @@ const router = createRouter({
                 { path: "/categoryReport", component: ExpenseCatReport },
                 { path: "/productReport", component: ExpenseProductReport },
                 { path: "/pickupReport", component: PickupReport },
+                { path: "/serviceReport", component: Services },
                 // Dashboard
                 // CureCycle
                 { path: "/cure", component: CureCycle },

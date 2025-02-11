@@ -118,12 +118,13 @@ const deleteItem = async (payment) => {
 };
 // ExpenseRepository.FetchBillExpensePayment();
 const editItem = async (payment) => {
+    ExpenseRepository.isEditMode=true
     // ExpenseRepository.meterCyclePaymentId = id;
     ExpenseRepository.billExpensePayment = {};
     if (Object.keys(ExpenseRepository.FetchBillExpensePayment).length === 0) {
         ExpenseRepository.FetchBillExpensePayment(payment.id)
             .then(() => {
-                ExpenseRepository.updateDialog = true;
+                ExpenseRepository.createDialog = true;
             })
             .catch((error) => {
                 console.error("Error fetching data: ", error);

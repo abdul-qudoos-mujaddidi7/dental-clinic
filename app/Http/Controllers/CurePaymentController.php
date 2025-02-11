@@ -76,7 +76,7 @@ class CurePaymentController extends Controller
             $cure = Cure::findOrFail($validated['cure_id']);
     
             // Update the paid amount
-            $paid =$cure->paid + $validated['amount'];
+            $paid =$cure->paid + $validated['amount'] - $curePayment->amount;
             $cure->update(['paid' => $paid]);
     
             // Update the CurePayment entry

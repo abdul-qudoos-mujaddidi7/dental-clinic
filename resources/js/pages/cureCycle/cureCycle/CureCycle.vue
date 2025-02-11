@@ -233,6 +233,8 @@ const ViewPaymentDialog = (item) => {
     console.log(item.id, "payment id");
     const cureID = item.id;
     CureRepository.paymentId = item.id;
+    CureRepository.cureId = item.id;
+
     // CureRepository.billExpensesPayments = {};
     // if (Object.keys(CureRepository.billExpensesPayments).length === 0) {
     CureRepository.FetchCurePayments(cureID)

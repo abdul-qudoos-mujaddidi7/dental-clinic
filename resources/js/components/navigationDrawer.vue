@@ -369,29 +369,35 @@ const reportItems = [
     },
     {
         to: "/patientsReport",
-        title: "Patient Reports",
+        title: "Patient",
         icon: "mdi mdi-circle-medium",
         value: "patients report ",
     },
     
     {
         to: "/categoryReport",
-        title: "Expense Category report",
+        title: "Expense Category",
         icon: "mdi mdi-circle-medium",
         value: "cat report  ",
     },
     
     {
         to: "/productReport",
-        title: "Expense Product report",
+        title: "Expense Product",
         icon: "mdi mdi-circle-medium",
         value: "expense pro report    ",
     },
     {
         to: "/pickupReport",
-        title: "Pickup report",
+        title: "Pickup",
         icon: "mdi mdi-circle-medium",
         value: "pickup report    ",
+    },
+    {
+        to: "/serviceReport",
+        title: "Service",
+        icon: "mdi mdi-circle-medium",
+        value: "patients report",
     },
 ]
 

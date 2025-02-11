@@ -12,10 +12,9 @@
                 <v-card variant="flat" dir="rtl" rounded="lg">
                     <template v-slot:title>
                         <div class="d-flex align-center justify-end">
-                            <div class="font-weight-black">
+                            <div class="font-weight-black" dir="ltr">
                                 {{
-                                    DashboardRepository.dashboardReport
-                                        .netProfit
+                                    DashboardRepository.dashboardReport.netProfit
                                 }}
                             </div>
                             <v-avatar size="40" class="mr-4">
