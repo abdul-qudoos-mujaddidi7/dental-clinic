@@ -354,7 +354,7 @@ const settingItems = [
     },
     
     {
-        to: "/service",Re
+        to: "/service",
         title: "Service",
         icon: "mdi mdi-circle-medium",
         value: "service   ",
