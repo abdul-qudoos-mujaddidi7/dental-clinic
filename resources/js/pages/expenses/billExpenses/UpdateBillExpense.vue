@@ -306,6 +306,7 @@ const totalSum = computed(() => {
 
 // Update function to transform and submit formData
 const update = async () => {
+    formData.grandTotal=totalSum.value
     formData.expenseDetails = formData.expenseDetails.map(data => {
         return data.expenseProduct && data.expenseProduct.id
             ? { ...data, product: { id: data.expenseProduct.id } }
