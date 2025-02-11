@@ -94,7 +94,6 @@ export let useCureRepository = defineStore("CureRepository", {
                 const response = await axios.get(`services/${id}`);
                 const productData = response.data.data;
         
-<<<<<<< HEAD
                 if (isUpdate) delete productData.id;
         
                 // Only add if it doesn’t already exist
@@ -102,10 +101,6 @@ export let useCureRepository = defineStore("CureRepository", {
                     // this.services.push(productData);
                     this.cure.services.push(productData);
                     // this.billExpense.expenseDetails.push(productData);
-=======
-                if (isUpdate) {
-                    delete productData.id;
->>>>>>> 14d329c893e068fa67c5eea30cfe45d7c0bddda9
                 }
         
                 console.log(response.data.data, "fetchProduct");

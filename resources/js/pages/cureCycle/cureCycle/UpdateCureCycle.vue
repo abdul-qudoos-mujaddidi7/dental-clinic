@@ -232,21 +232,11 @@ const clearSearch = () => {
     CureRepository.billExpenseSearch = "";
     CureRepository.searchFetch = [];
 };
-<<<<<<< HEAD
 const removeProduct = (index) => {
     CureRepository.cure.services.splice(index, 1);
 };
 
 const createService = () => {
-=======
-
-
-const removeProduct = async (index, serviceId) => {
-    CureRepository.cureProduct.splice(index, 1);
-};
-
-const createExpenseProduct = () => {
->>>>>>> 14d329c893e068fa67c5eea30cfe45d7c0bddda9
     CureRepository.createDialog = true;
 };
 
@@ -265,7 +255,6 @@ const formData = reactive({
     status: "",
 });
 
-<<<<<<< HEAD
 // Fetch the data and populate `formData`
 CureRepository.FetchCure(routeParams.params.id).then((res) => {
     const cure = CureRepository.cure; // Assuming the data is stored here
@@ -280,22 +269,6 @@ CureRepository.FetchCure(routeParams.params.id).then((res) => {
     formData.status = cure.status;
 
     console.log(formData.grandTotal, "Initial grand total");
-=======
-onMounted(() => {
-    CureRepository.FetchCure(routeParams.params.id).then((res) => {
-        Object.assign(formData, {
-            id: CureRepository.cure.id,
-            cureProduct: CureRepository.cure.servicesDetails,
-            dentistId: CureRepository.cure.dentist.id,
-            grandTotal: parseInt(CureRepository.cure.grand_total || 0, 10),
-            patientId: CureRepository.cure.patient.id,
-            startDate: CureRepository.cure.start_date,
-            description: CureRepository.cure.description,
-            paid: CureRepository.cure.paid,
-            status: CureRepository.cure.status,
-        });
-    });
->>>>>>> 14d329c893e068fa67c5eea30cfe45d7c0bddda9
 });
 
 
@@ -306,20 +279,17 @@ const multiple = (pro) => {
     return add || 0;
 };
 
-<<<<<<< HEAD
-// Computed property to calculate the total
-const totalSum = computed(() => {
-    // Sum up the services in `formData.services`
-    const servicesTotal = formData.services.reduce((acc, item) => {
-        return acc + multiple(item); // Replace `multiple` with your logic for calculating each item
-    }, 0);
+// // Computed property to calculate the total
+// const totalSum = computed(() => {
+//     // Sum up the services in `formData.services`
+//     const servicesTotal = formData.services.reduce((acc, item) => {
+//         return acc + multiple(item); // Replace `multiple` with your logic for calculating each item
+//     }, 0);
 
-    // Add the fetched grandTotal
-    return servicesTotal ;
-});
+//     // Add the fetched grandTotal
+//     return servicesTotal ;
+// });
 
-=======
->>>>>>> 14d329c893e068fa67c5eea30cfe45d7c0bddda9
 // Watch the computed property if needed
 // watch(totalSum, (newVal) => {
 //     console.log(newVal, "Updated grand total");
@@ -327,18 +297,7 @@ const totalSum = computed(() => {
 
 // Combine cureProduct from both repositories
 const combinedServices = computed(() => {
-<<<<<<< HEAD
     return [...formData.services];
-=======
-    const uniqueServices = new Map();
-    (CureRepository.cureProduct || []).forEach((service) => {
-        uniqueServices.set(service.id, service);
-    });
-    (formData.services || []).forEach((service) => {
-        uniqueServices.set(service.id, service);
-    });
-    return Array.from(uniqueServices.values());
->>>>>>> 14d329c893e068fa67c5eea30cfe45d7c0bddda9
 });
 
 
@@ -376,7 +335,6 @@ const Duo = computed(() => {
 });
 // Update function
 const update = async () => {
-<<<<<<< HEAD
     formData.grandTotal=totalSum.value
     if (Array.isArray(formData.services)) {
         formData.services = formData.services.map((data) => {
@@ -391,26 +349,6 @@ const update = async () => {
             }
         });
     }
-=======
-    if (Array.isArray(formData.cureProduct)) {
-    formData.cureProduct = formData.cureProduct.map((data) => {
-        if (data.cureProduct && data.cureProduct.id) {
-            return {
-                ...data,
-                product: { id: data.cureProduct.id },
-            };
-        } else {
-            console.error(
-                "cureProduct is missing or invalid in cureProduct:",
-                data
-            );
-            return data;
-        }
-    });
-}
-
-
->>>>>>> 14d329c893e068fa67c5eea30cfe45d7c0bddda9
     const isValid = await formRef.value.validate();
     if (isValid) {
         await CureRepository.UpdateCure(formData.id, formData);
