@@ -21,7 +21,7 @@
                 ></v-text-field>
 
                 <v-autocomplete
-                v-model="formData.patientId"
+                    v-model="formData.patientId"
                     :items="CureRepository.patientsFor"
                     :return-object="false"
                     variant="outlined"
@@ -33,9 +33,9 @@
                     density="compact"
                     :rules="[rules.required]"
                 ></v-autocomplete>
-                
+
                 <v-autocomplete
-                v-model="formData.dentistId"
+                    v-model="formData.dentistId"
                     :items="CureRepository.doctorFor"
                     :return-object="false"
                     variant="outlined"
@@ -48,7 +48,7 @@
                     :rules="[rules.required]"
                 ></v-autocomplete>
                 <v-autocomplete
-                v-model="formData.status"
+                    v-model="formData.status"
                     :items="CureRepository.leadStageFor"
                     :return-object="false"
                     variant="outlined"
@@ -60,7 +60,6 @@
                     density="compact"
                     :rules="[rules.required]"
                 ></v-autocomplete>
-            
             </v-form>
             <v-divider></v-divider>
             <v-row no-gutters class="justify-space-between mt-16">
@@ -99,68 +98,80 @@
                     </div>
                 </v-col>
                 <table
-    class="text-sm text-center"
-    density="compact"
-    style="width: 150rem"
->
-    <thead class="text-xs text-gray-700 uppercase thead">
-        <tr>
-            <th scope="col" class="px-3 py-3 text-start">#</th>
-            <th scope="col" class="px-3 py-3 text-start">Service</th>
-            <th scope="col" class="px-3 py-3 text-start">Qty</th>
-            <th scope="col" class="px-3 py-3 text-start">Cost</th>
-            <th scope="col" class="px-3 py-3 text-start">Status</th>
-            <th scope="col" class="px-3 py-3 text-center">Sub Total</th>
-            <th scope="col" class="px-3 py-3 text-end">Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr
-            class="product-table"
-            v-for="(pro, index) in combinedServices"
-            :key="index"
-        >
-            <td class="pl-3 text-start">{{ index + 1 }}</td>
-            <td class="pl-3 text-start">{{ pro.serviceName || pro.name }}</td>
-            <td class="pt-2 text-center pb-0 w-[14rem]">
-                <v-text-field
-                    v-model="pro.quantity"
-                    variant="outlined"
+                    class="text-sm text-center"
                     density="compact"
-                    class="w-75"
-                ></v-text-field>
-            </td>
-            <td class="pt-2 pb-0 text-center w-[14rem]">
-                <v-text-field
-                    v-model="pro.cost"
-                    variant="outlined"
-                    density="compact"
-                    class="w-75"
-                ></v-text-field>
-            </td>
-            <td class="pt-2 text-center pb-0 w-[14rem]">
-                <v-autocomplete
-                    :items="['complete', 'start']"
-                    v-model="pro.status"
-                    variant="outlined"
-                    density="compact"
-                    class="w-75"
-                ></v-autocomplete>
-            </td>
-            <td class="text-center">
-                <span>{{ multiple(pro) }}</span>
-            </td>
-            <td class="px-3 text-end">
-                <v-icon
-                    color="red"
-                    @click="removeProduct(index)"
-                    class="mdi mdi-trash-can-outline"
-                ></v-icon>
-            </td>
-        </tr>
-    </tbody>
-</table>
-
+                    style="width: 150rem"
+                >
+                    <thead class="text-xs text-gray-700 uppercase thead">
+                        <tr>
+                            <th scope="col" class="px-3 py-3 text-start">#</th>
+                            <th scope="col" class="px-3 py-3 text-start">
+                                Service
+                            </th>
+                            <th scope="col" class="px-3 py-3 text-start">
+                                Qty
+                            </th>
+                            <th scope="col" class="px-3 py-3 text-start">
+                                Cost
+                            </th>
+                            <th scope="col" class="px-3 py-3 text-start">
+                                Status
+                            </th>
+                            <th scope="col" class="px-3 py-3 text-center">
+                                Sub Total
+                            </th>
+                            <th scope="col" class="px-3 py-3 text-end">
+                                Action
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr
+                            v-for="(pro, index) in combinedServices"
+                            :key="pro.id"
+                        >
+                            <td class="pl-3 text-start">{{ index + 1 }}</td>
+                            <td class="pl-3 text-start">
+                                {{ pro.serviceName || pro.name }}
+                            </td>
+                            <td class="pt-2 text-center pb-0 w-[14rem]">
+                                <v-text-field
+                                    v-model="pro.quantity"
+                                    variant="outlined"
+                                    density="compact"
+                                    class="w-75"
+                                ></v-text-field>
+                            </td>
+                            <td class="pt-2 pb-0 text-center w-[14rem]">
+                                <v-text-field
+                                    v-model="pro.cost"
+                                    variant="outlined"
+                                    density="compact"
+                                    class="w-75"
+                                ></v-text-field>
+                            </td>
+                            <td class="pt-2 text-center pb-0 w-[14rem]">
+                                <v-autocomplete
+                                    :items="['complete', 'start']"
+                                    v-model="pro.status"
+                                    variant="outlined"
+                                    density="compact"
+                                    class="w-75"
+                                ></v-autocomplete>
+                            </td>
+                            <td class="text-center">
+                                <span>{{ multiple(pro) }}</span>
+                            </td>
+                            <td class="px-3 text-end">
+                                <v-icon
+                                    color="red"
+                                    @click="removeProduct(pro)"
+                                    class="mdi mdi-trash-can-outline"
+                                ></v-icon>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </v-row>
 
             <div
@@ -206,7 +217,7 @@
 <script setup>
 import AppBar from "../../../components/AppBar.vue";
 import { reactive, computed, ref, watch, onMounted } from "vue";
-import {useRoute} from "vue-router"
+import { useRoute } from "vue-router";
 
 import { useCureRepository } from "@/store/CureRepository";
 
@@ -217,34 +228,44 @@ const CalcFetchProduct = (index) => {
     clearSearch();
 };
 
-// ======================
 const clearSearch = () => {
-    CureRepository.billExpenseSearch = ""; 
+    CureRepository.billExpenseSearch = "";
     CureRepository.searchFetch = [];
 };
+<<<<<<< HEAD
 const removeProduct = (index) => {
     CureRepository.cure.services.splice(index, 1);
 };
 
 const createService = () => {
+=======
+
+
+const removeProduct = async (index, serviceId) => {
+    CureRepository.cureProduct.splice(index, 1);
+};
+
+const createExpenseProduct = () => {
+>>>>>>> 14d329c893e068fa67c5eea30cfe45d7c0bddda9
     CureRepository.createDialog = true;
 };
 
 
 const routeParams = useRoute();
 const formData = reactive({
-    id: null,
+    id: "",
     deletedIds: [],
-    services: [],
+    cureProduct: [],
     dentistId: null,
-    grandTotal: null,
+    grandTotal: 0,
     patientId: null,
-    startDate: null,
-    description: null,
-    paid: null,
-    status: null,
+    startDate: "",
+    description: "",
+    paid: 0,
+    status: "",
 });
 
+<<<<<<< HEAD
 // Fetch the data and populate `formData`
 CureRepository.FetchCure(routeParams.params.id).then((res) => {
     const cure = CureRepository.cure; // Assuming the data is stored here
@@ -259,6 +280,22 @@ CureRepository.FetchCure(routeParams.params.id).then((res) => {
     formData.status = cure.status;
 
     console.log(formData.grandTotal, "Initial grand total");
+=======
+onMounted(() => {
+    CureRepository.FetchCure(routeParams.params.id).then((res) => {
+        Object.assign(formData, {
+            id: CureRepository.cure.id,
+            cureProduct: CureRepository.cure.servicesDetails,
+            dentistId: CureRepository.cure.dentist.id,
+            grandTotal: parseInt(CureRepository.cure.grand_total || 0, 10),
+            patientId: CureRepository.cure.patient.id,
+            startDate: CureRepository.cure.start_date,
+            description: CureRepository.cure.description,
+            paid: CureRepository.cure.paid,
+            status: CureRepository.cure.status,
+        });
+    });
+>>>>>>> 14d329c893e068fa67c5eea30cfe45d7c0bddda9
 });
 
 
@@ -269,6 +306,7 @@ const multiple = (pro) => {
     return add || 0;
 };
 
+<<<<<<< HEAD
 // Computed property to calculate the total
 const totalSum = computed(() => {
     // Sum up the services in `formData.services`
@@ -280,16 +318,30 @@ const totalSum = computed(() => {
     return servicesTotal ;
 });
 
+=======
+>>>>>>> 14d329c893e068fa67c5eea30cfe45d7c0bddda9
 // Watch the computed property if needed
-watch(totalSum, (newVal) => {
-    console.log(newVal, "Updated grand total");
-});
+// watch(totalSum, (newVal) => {
+//     console.log(newVal, "Updated grand total");
+// });
 
-
-// Combine services from both repositories
+// Combine cureProduct from both repositories
 const combinedServices = computed(() => {
+<<<<<<< HEAD
     return [...formData.services];
+=======
+    const uniqueServices = new Map();
+    (CureRepository.cureProduct || []).forEach((service) => {
+        uniqueServices.set(service.id, service);
+    });
+    (formData.services || []).forEach((service) => {
+        uniqueServices.set(service.id, service);
+    });
+    return Array.from(uniqueServices.values());
+>>>>>>> 14d329c893e068fa67c5eea30cfe45d7c0bddda9
 });
+
+
 
 const formRef = ref(null);
 const rules = {
@@ -299,35 +351,32 @@ const rules = {
 };
 
 watch(
-    () => CureRepository.services,
-    () => {
-        CureRepository.services.forEach((services) => {
-            // Update the 'subtotal' property for each service
-            services.total = multiple(services);
-            console.log(services,'watch');
-        });
+    combinedServices,
+    (newServices) => {
+        formData.cureProduct = newServices;
     },
-    { deep: true }
+    { immediate: true, deep: true }
 );
 
-// const totalSum = computed(() => {
-//     const grandTotal = parseInt(formData.grandTotal|| 0, 10); // Convert to integer, default to 0 if undefined
-//     const total = CureRepository.services.reduce(
-//         (acc, item) => acc + multiple(item),
-//         0
-//     );
-//     formData.grandTotal = total + grandTotal;
-//     return formData.grandTotal;
-// });
 
+
+const totalSum = computed(() => {
+    const grandTotal = parseInt(formData.grandTotal || 0, 10); // Convert to integer, default to 0 if undefined
+    const total = CureRepository.cureProduct.reduce(
+        (acc, item) => acc + multiple(item),
+        0
+    );
+    formData.grandTotal = total + grandTotal;
+    return formData.grandTotal;
+});
 
 // Computed Duo (remaining balance)
 const Duo = computed(() => {
     return totalSum.value - formData.paid || 0;
 });
-
 // Update function
 const update = async () => {
+<<<<<<< HEAD
     formData.grandTotal=totalSum.value
     if (Array.isArray(formData.services)) {
         formData.services = formData.services.map((data) => {
@@ -342,6 +391,26 @@ const update = async () => {
             }
         });
     }
+=======
+    if (Array.isArray(formData.cureProduct)) {
+    formData.cureProduct = formData.cureProduct.map((data) => {
+        if (data.cureProduct && data.cureProduct.id) {
+            return {
+                ...data,
+                product: { id: data.cureProduct.id },
+            };
+        } else {
+            console.error(
+                "cureProduct is missing or invalid in cureProduct:",
+                data
+            );
+            return data;
+        }
+    });
+}
+
+
+>>>>>>> 14d329c893e068fa67c5eea30cfe45d7c0bddda9
     const isValid = await formRef.value.validate();
     if (isValid) {
         await CureRepository.UpdateCure(formData.id, formData);

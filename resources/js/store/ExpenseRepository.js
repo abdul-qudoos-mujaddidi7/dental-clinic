@@ -767,10 +767,14 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
                 this.createDialog = false;
                 // this.router.push("/billExpense");
 
-                this.FetchBillExpensesPayment({
+                this.FetchBillExpensesPayments({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });
+                this.fetchBillExpenses({
+                    page: this.page,
+                    itemsPerPage:this.itemsPerPage,
+                })
             } catch (err) {
                 // If there's an error, set the error in the stor
             }
@@ -787,7 +791,7 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
 
                 // Using Axios to make a post request with async/await and custom headers
                 const response = await axios(config);
-                this.updateDialog = false;
+                this.createDialog = false;
 
                 this.FetchBillExpensesPayments({
                     page: this.page,
