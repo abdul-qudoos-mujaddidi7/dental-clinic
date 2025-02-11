@@ -2,7 +2,7 @@
     <CreatePatients v-if="ReportRepository.createDialog" />
     <div class="all-expense rounded-xl">
         <div class="card rounded-xl">
-            <AppBar mainTitle="Owner Pickups" sub-title="people" />
+            <AppBar mainTitle="Service Report" sub-title="report" />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
@@ -19,10 +19,9 @@
                         label="Search ..."
                         append-inner-icon="mdi-magnify"
                         hide-details
-                        v-model="ReportRepository.patientReportSearch"
+                        v-model="ReportRepository.serviceReportSearch"
                     ></v-text-field>
                 </div>
-           
             </div>
             <!-- v-table server  -->
             <div class="overflow-x-hidden">
@@ -37,15 +36,15 @@
                                     "
                                     :headers="headers"
                                     :items-length="ReportRepository.totalItems"
-                                    :items="ReportRepository.patientReports"
+                                    :items="ReportRepository.serviceReport"
                                     :loading="ReportRepository.loading"
                                     :search="
-                                        ReportRepository.patientReportSearch
+                                        ReportRepository.serviceReportSearch
                                     "
                                     @update:options="
-                                        ReportRepository.fetchPatientsReports
+                                        ReportRepository.fetchServiceReports
                                     "
-                                    :item-key="ReportRepository.patientReports"
+                                    :item-key="ReportRepository.serviceReport"
                                     hover
                                     class="w-100 mx-auto"
                                 >
@@ -67,9 +66,9 @@ const ReportRepository = useReportRepository();
 
 // header
 const headers = [
-    { title: "Patients", key: "ServiceName", align: "start", sortable: false },
-    { title: "Phone", key: "Used", align: "start", sortable: false },
-    { title: "Address", key: "Amount", align: "start", sortable: false },
-    
+    { title: "Service Name", key: "name", align: "start", sortable: false },
+    { title: "Used", key: "totalApplied", align: "start", sortable: false },
+    // { title: "Amount", key: "Amount", align: "start", sortable: false },
+    // { title: "Amount", key: "idk", align: "start", sortable: false },
 ];
 </script>

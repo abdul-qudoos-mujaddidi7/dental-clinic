@@ -32,6 +32,9 @@ export let useReportRepository = defineStore("ReportRepository", {
             // pickup report 
             pickUpReportSearch:ref(""),
             pickupReport:reactive([]),
+            // serviceReport
+            serviceReportSearch:ref(""),
+            serviceReport:reactive([]),
         };
     },
     actions: {
@@ -92,5 +95,16 @@ export let useReportRepository = defineStore("ReportRepository", {
                 this.totalItems = response.data.total;
                 this.loading = false;
             },
+                // service  Category report =============================
+                async fetchServiceReports({ page, itemsPerPage }) {
+                    this.loading = true;
+                    const response = await axios.get(
+                        `serviceReport?page=${page}&perPage=${itemsPerPage}&search=${this.serviceReportSearch}`
+                    );
+                    this.serviceReport = response.data;
+                    console.log(this.serviceReport, "pickup report");
+                    this.totalItems = response.data.total;
+                    this.loading = false;
+                },
     },
 });
