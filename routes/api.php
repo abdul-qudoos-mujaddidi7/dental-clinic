@@ -27,10 +27,12 @@ use App\Http\Controllers\ProfitLossReportController;
 use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\ServiceGroupController;
+use App\Http\Controllers\ServiceReportController;
 use App\Http\Controllers\StageController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\SystemSettingController;
 use App\Http\Controllers\UserController;
+use App\Models\Service;
 
 // Authentication routes
 Route::post('/login', [AuthController::class, 'login']);
@@ -98,5 +100,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('expenseProductReport', ExpenseProductReportController::class);
     Route::get('expenseCategoryReport', ExpenseCategoryReportController::class);
     Route::get('patientPaymentReport', PatientPaymentReportController::class);
+    Route::get('serviceReport', ServiceReportController::class);
     
 });
