@@ -1,5 +1,5 @@
 <template>
-    <UpdateExpensePayment v-if="ExpenseRepository.updateDialog" />
+    <UpdateExpensePayment v-if="ExpenseRepository.createDialog" />
     <div dir="rtl">
         <v-dialog
             transition="dialog-top-transition"
@@ -27,6 +27,7 @@
                                     <th class="text-start">Date</th>
                                     <th class="text-start">Amount</th>
                                     <th class="text-start">Account</th>
+                                    <th class="text-start">Details</th>
                                     <th class="text-end pl-6">Actions</th>
                                 </tr>
                             </thead>
@@ -54,9 +55,9 @@
                                     <td dir="ltr">
                                         {{ payment.user?.name }}
                                     </td>
-                                    <!-- <td dir="ltr">
+                                    <td dir="ltr">
                                         {{ payment.note }}
-                                    </td> -->
+                                    </td>
                                     <td class="text-end">
                                         <v-menu>
                                             <template
@@ -120,6 +121,7 @@ const deleteItem = async (payment) => {
 const editItem = async (payment) => {
     ExpenseRepository.isEditMode=true
     // ExpenseRepository.meterCyclePaymentId = id;
+    ExpenseRepository.setEditMode(true);
     ExpenseRepository.billExpensePayment = {};
     if (Object.keys(ExpenseRepository.FetchBillExpensePayment).length === 0) {
         ExpenseRepository.FetchBillExpensePayment(payment.id)

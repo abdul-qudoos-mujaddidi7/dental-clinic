@@ -22,6 +22,7 @@ import LeadStage from "./pages/lead/leadStage/LeadStage.vue";
 // system setting
 import SystemSetting from "./pages/setting/system Setting/SystemSetting.vue";
 import RolePermission from "./pages/setting/rolePermission/RolePermission.vue";
+import UpdatePermissions from "./pages/setting/rolePermission/UpdatePermissions.vue";
 import CreatePermissions from "./pages/setting/rolePermission/CreatePermissions.vue";
 import ServiceGroup from "./pages/setting/service Group/ServiceGroup.vue";
 import Service from "./pages/setting/service/Service.vue";
@@ -81,6 +82,7 @@ const router = createRouter({
                 { path: "/systemSetting", component: SystemSetting },
                 { path: "/rolePermissions", component: RolePermission },
                 { path: "/createPermissions", component: CreatePermissions },
+                { path: "/updatePermissions/:id", props: true, component: UpdatePermissions },
                 { path: "/serviceGroup", component: ServiceGroup },
                 { path: "/service", component: Service },
                 // reports

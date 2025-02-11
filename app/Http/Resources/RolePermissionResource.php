@@ -18,6 +18,7 @@ class RolePermissionResource extends JsonResource
             "id"=> $this->id,
             "name"=> $this->name,
             "description"=> $this->description,
+          "permissions"=> $this->permissions,
         ];
     }
 }

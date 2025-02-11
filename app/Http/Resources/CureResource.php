@@ -36,7 +36,7 @@ class CureResource extends JsonResource
             'paymentStatus' => $this->getPaymentStatus(),
             'status' => $this->status,
             'description' => $this->description,
-            'services' => CureServiceResource::collection($this->whenLoaded('cureServices')),
+            'servicesDetails' => CureServiceResource::collection($this->whenLoaded('cureServices')),
 
         ]
         ;

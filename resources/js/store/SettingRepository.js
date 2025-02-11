@@ -167,7 +167,7 @@ export let useSettingRepository = defineStore("SettingRepository", {
 
                 // Using Axios to make a post request with async/await and custom headers
                 const response = await axios(config);
-                this.createDialog = false;
+                this.router.push('/rolePermissions')
                 this.fetchRolePermissions({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
