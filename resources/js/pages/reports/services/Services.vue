@@ -67,9 +67,9 @@ const ReportRepository = useReportRepository();
 
 // header
 const headers = [
-    { title: "Patients", key: "name", align: "start", sortable: false },
-    { title: "Phone", key: "phone", align: "start", sortable: false },
-    { title: "Address", key: "address", align: "start", sortable: false },
-    { title: "Due", key: "due", align: "center", sortable: false },
+    { title: "Patients", key: "ServiceName", align: "start", sortable: false },
+    { title: "Phone", key: "Used", align: "start", sortable: false },
+    { title: "Address", key: "Amount", align: "start", sortable: false },
+    
 ];
 </script>
