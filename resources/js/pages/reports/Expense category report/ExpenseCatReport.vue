@@ -22,6 +22,9 @@
                         v-model="ReportRepository.expenseCatReportSearch"
                     ></v-text-field>
                 </div>
+                <div>
+                    <v-btn >Filter</v-btn>
+                </div>
             </div>
             <!-- v-table server  -->
             <div class="overflow-x-hidden">

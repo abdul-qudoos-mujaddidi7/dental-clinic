@@ -395,7 +395,7 @@ const reportItems = [
     },
     {
         to: "/serviceReport",
-        title: "Service",
+        title: "Service Report ",
         icon: "mdi mdi-circle-medium",
         value: "patients report",
     },
