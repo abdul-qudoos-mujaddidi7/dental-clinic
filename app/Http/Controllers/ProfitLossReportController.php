@@ -7,32 +7,55 @@ use App\Models\CurePayment;
 use App\Models\Expense;
 use App\Models\OwnerPickup;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class ProfitLossReportController extends Controller
 {
-   
     public function __invoke(Request $request)
     {
-        // Calculate total earnings from CurePayments
-        $totalEarnings = CurePayment::whereNull('deleted_at')->sum('amount');
+        // Check if date range is provided
+        if ($request->has(['from_date', 'to_date']) && !empty($request->from_date) && !empty($request->to_date)) {
+            $fromDate = $request->from_date;
+            $toDate = $request->to_date;
 
-        // Calculate total expenses and total billable expenses
+            // Filtered calculations (Custom Data)
+            $totalEarnings = CurePayment::whereNull('deleted_at')
+                ->whereBetween('created_at', [$fromDate, $toDate])
+                ->sum('amount');
+
+            $totalExpenses = Expense::whereNull('deleted_at')
+                ->whereBetween('created_at', [$fromDate, $toDate])
+                ->sum('amount');
+
+            $totalBillableExpenses = BillExpense::whereNull('deleted_at')
+                ->whereBetween('created_at', [$fromDate, $toDate])
+                ->sum('grand_total');
+
+            $totalAllExpense = $totalExpenses + $totalBillableExpenses;
+            $totalAllProfit = $totalEarnings - $totalAllExpense;
+
+            $totalPickups = OwnerPickup::whereNull('deleted_at')
+                ->whereBetween('created_at', [$fromDate, $toDate])
+                ->sum('amount');
+
+            return response()->json([
+                'totalAllExpense' => $totalAllExpense,
+                'totalAllProfit'  => $totalAllProfit,
+                'totalAllPickup'  => $totalPickups
+            ]);
+        }
+
+        // Default calculations (All Records)
+        $totalEarnings = CurePayment::whereNull('deleted_at')->sum('amount');
         $totalExpenses = Expense::whereNull('deleted_at')->sum('amount');
         $totalBillableExpenses = BillExpense::whereNull('deleted_at')->sum('grand_total');
         $totalAllExpense = $totalExpenses + $totalBillableExpenses;
-
-        // Calculate total profit
         $totalAllProfit = $totalEarnings - $totalAllExpense;
-
-        // Calculate total pickups by owners
         $totalPickups = OwnerPickup::whereNull('deleted_at')->sum('amount');
 
-        // Return calculated data as an array
-        return [
+        return response()->json([
             'totalAllExpense' => $totalAllExpense,
-            'totalAllProfit'   => $totalAllProfit,
-            'totalAllPickup'   => $totalPickups
-        ];
+            'totalAllProfit'  => $totalAllProfit,
+            'totalAllPickup'  => $totalPickups
+        ]);
     }
 }
