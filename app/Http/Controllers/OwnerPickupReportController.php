@@ -12,25 +12,18 @@ class OwnerPickupReportController extends Controller
      */
     public function __invoke(Request $request)
     {
-        // Check if date filters are provided
-        if ($request->has(['from_date', 'to_date']) && !empty($request->from_date) && !empty($request->to_date)) {
-            // Fetch filtered owner pickup records
-            $customOwnerPickup = DB::table('owner_pickups')
-                ->selectRaw('owners.name, SUM(amount) as totalAmount')
-                ->leftJoin('owners', 'owner_pickups.owner_id', '=', 'owners.id')
-                ->whereBetween('owner_pickups.created_at', [$request->from_date, $request->to_date])
-                ->groupBy('owner_pickups.owner_id', 'owners.name')
-                ->get();
+        // Get the date filters from the request
+        $fromDate = $request->fromDate;
+        $toDate = $request->toDate;
 
-            return response()->json([
-                'customOwnerPickup' => $customOwnerPickup
-            ]);
-        }
-
-        // Default: Fetch all owner pickup records (paginated)
+        // Fetch owner pickup records with optional date range filter
         $ownerPickup = DB::table('owner_pickups')
             ->selectRaw('owners.name, SUM(amount) as totalAmount')
             ->leftJoin('owners', 'owner_pickups.owner_id', '=', 'owners.id')
+            ->when($fromDate && $toDate, function ($query) use ($fromDate, $toDate) {
+                // Apply date filter if provided
+                $query->whereBetween('owner_pickups.created_at', [$fromDate, $toDate]);
+            })
             ->groupBy('owner_pickups.owner_id', 'owners.name')
             ->paginate(5);
 

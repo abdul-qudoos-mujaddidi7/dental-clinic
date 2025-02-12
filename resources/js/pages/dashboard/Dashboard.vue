@@ -9,12 +9,6 @@
 
         <v-row class="pt-6">
             <v-col>
-<<<<<<< HEAD
-                <v-card variant="flat" dir="rtl" rounded="lg">
-                    <template v-slot:title>
-                        <div class="d-flex align-center justify-end">
-                            <div class="font-weight-black" dir="ltr">
-=======
                 <v-card variant="flat" rounded="lg" >
                  
                     <template v-slot:title >
@@ -28,7 +22,6 @@
                         </v-avatar>
                         <div class="pt-1 ">
                             <div class="font-weight-black ">
->>>>>>> 5639af55826080487abd85033eb33a66a760de31
                                 {{
                                     DashboardRepository.dashboardReport.netProfit
                                 }}

@@ -109,9 +109,7 @@
                     <tbody>
                         <tr
                             class="product-table"
-                            v-for="(
-                                pro, index
-                            ) in combinedServices"
+                            v-for="(pro, index) in combinedServices"
                             :key="index"
                         >
                             <td class="pl-3 text-start">
@@ -222,8 +220,7 @@ let formData = reactive({
     paid: 0,
 });
 
-
- ExpenseRepository.fetchBillExpense(routeParams.params.id).then((res)=>{
+ExpenseRepository.fetchBillExpense(routeParams.params.id).then((res) => {
     const billExpense = ExpenseRepository.billExpense;
     formData.id = billExpense.id;
     formData.expenseDetails = billExpense.expenseDetails || [];
@@ -233,12 +230,7 @@ let formData = reactive({
     formData.billDate = billExpense.date;
     formData.note = billExpense.note;
     formData.paid = billExpense.paid;
- })
-
-
-  
-
-
+});
 
 const formRef = ref(null);
 const rules = {
@@ -253,16 +245,21 @@ const CalcFetchProduct = (selectedProduct) => {
         (product) => product.id === selectedProduct.id
     );
     if (!exists) {
-        console.log(selectedProduct)
-        selectedProduct = {...selectedProduct, productId: selectedProduct.id}
+        console.log(selectedProduct);
+        selectedProduct = { ...selectedProduct, productId: selectedProduct.id };
         ExpenseRepository.expenseProduct.push(selectedProduct);
-        formData.expenseDetails=ExpenseRepository.expenseProduct;
+        formData.expenseDetails = ExpenseRepository.expenseProduct;
     }
     clearSearch();
 };
 
 const combinedServices = computed(() => {
-    return [...ExpenseRepository.expenseProduct, ...formData.expenseDetails];
+    console.log(
+        "khan saib i love you",
+        formData.expenseDetails,
+        ...formData.expenseDetails
+    );
+    return [...formData.expenseDetails];
 });
 // Clear search results
 const clearSearch = () => {
@@ -281,9 +278,8 @@ const removeProduct = (index) => {
     ExpenseRepository.expenseProduct.splice(index, 1);
 };
 
-
 // Calculate total for each product
-const multiple = (pro) => (pro.quantity * pro.cost) || 0;
+const multiple = (pro) => pro.quantity * pro.cost || 0;
 
 // Watch for changes in expenseProduct to recalculate subtotals
 watch(
@@ -306,14 +302,13 @@ const totalSum = computed(() => {
 
 // Update function to transform and submit formData
 const update = async () => {
-    formData.grandTotal=totalSum.value
-    formData.expenseDetails = formData.expenseDetails.map(data => {
+    formData.grandTotal = totalSum.value;
+    formData.expenseDetails = formData.expenseDetails.map((data) => {
         return data.expenseProduct && data.expenseProduct.id
             ? { ...data, product: { id: data.expenseProduct.id } }
             : data;
     });
 
-    
     const isValid = await formRef.value.validate();
     if (isValid) {
         await ExpenseRepository.UpdateBillExpense(formData.id, formData);

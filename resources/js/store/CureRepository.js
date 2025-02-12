@@ -21,7 +21,8 @@ export let useCureRepository = defineStore("CureRepository", {
             ShowCurePaymentDialog:ref(false),
             cureId:ref(''),
             paymentId:ref(''),
-
+            services: [],
+            
             // lead
             cures: reactive([]),
             cure: reactive([]),
@@ -99,7 +100,7 @@ export let useCureRepository = defineStore("CureRepository", {
                 // Only add if it doesn’t already exist
                 if (!this.services.some(item => item.id === productData.id)) {
                     this.services.push(productData);
-                    this.cure.services.push(productData);
+                    // this.cure.services.push(productData);
                     // this.billExpense.expenseDetails.push(productData);
                 }
         

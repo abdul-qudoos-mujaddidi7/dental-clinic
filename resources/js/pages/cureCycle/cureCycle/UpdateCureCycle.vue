@@ -253,13 +253,14 @@ const formData = reactive({
     description: "",
     paid: 0,
     status: "",
+    services: []
 });
 
 // Fetch the data and populate `formData`
 CureRepository.FetchCure(routeParams.params.id).then((res) => {
     const cure = CureRepository.cure; // Assuming the data is stored here
     formData.id = cure.id;
-    formData.services = cure.services || [];
+    formData.services = cure.servicesDetails || [];
     formData.dentistId = cure.dentist?.id;
     formData.grandTotal = 0; // Convert grand_total to integer
     formData.patientId = cure.patient?.id;
@@ -320,13 +321,16 @@ watch(
 
 
 const totalSum = computed(() => {
-    const grandTotal = parseInt(formData.grandTotal || 0, 10); // Convert to integer, default to 0 if undefined
-    const total = CureRepository.cureProduct.reduce(
-        (acc, item) => acc + multiple(item),
-        0
-    );
-    formData.grandTotal = total + grandTotal;
-    return formData.grandTotal;
+    let total = 0;
+
+    if (Array.isArray(CureRepository.cure.servicesDetails)) {
+        for (const item of CureRepository.cure.servicesDetails) {
+            total += multiple(item);
+        }
+    }
+
+    formData.grandTotal = total;
+    return total;
 });
 
 // Computed Duo (remaining balance)
