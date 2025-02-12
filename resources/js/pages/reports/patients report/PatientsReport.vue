@@ -22,6 +22,25 @@
                         v-model="ReportRepository.patientReportSearch"
                     ></v-text-field>
                 </div>
+                <div class="d-flex">
+                    <v-text-field
+                        v-model="formData.fromDate"
+                        class="pl-2"
+                        type="date"
+                        density="compact"
+                        variant="outlined"
+                        label="from date "
+                    ></v-text-field>
+                    <v-text-field
+                        v-model="formData.toDate"
+                        class="px-2"
+                        type="date"
+                        density="compact"
+                        variant="outlined"
+                        label="from date "
+                    ></v-text-field>
+                    <v-btn color="primaryOld" class="px-8" @click="send"> Filter</v-btn>
+                </div>
            
             </div>
             <!-- v-table server  -->
@@ -60,11 +79,21 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted,reactive } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 import { useReportRepository } from "@/store/ReportRepository";
 const ReportRepository = useReportRepository();
 
+const formData = reactive({
+    fromDate:"",
+    toDate:"",
+})
+
+const send =()=>{
+    ReportRepository.fetchServiceReports(formData.fromDate,formData.toDate)
+    console.log(formData,'this is what jawad agha need ')
+
+}
 // header
 const headers = [
     { title: "Patients", key: "name", align: "start", sortable: false },

@@ -29,10 +29,14 @@
 <script setup>
 import { useReportRepository } from "@/store/ReportRepository";
 // ignore
+
 import AppBar from "../../../components/AppBar.vue";
 
 const ReportRepository = useReportRepository();
 ReportRepository.fetchTotalReportsOfEarnings();
+
+
+
 </script>
 
 <style scoped>
