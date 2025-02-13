@@ -2,7 +2,7 @@
     <CreatePatients v-if="ReportRepository.createDialog" />
     <div class="all-expense rounded-xl">
         <div class="card rounded-xl">
-            <AppBar mainTitle="Owner Pickups" sub-title="people" />
+            <AppBar mainTitle="Service Report" sub-title="report" />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
@@ -19,37 +19,16 @@
                         label="Search ..."
                         append-inner-icon="mdi-magnify"
                         hide-details
-                        v-model="ReportRepository.pickUpReportSearch"
+                        v-model="ReportRepository.serviceReportSearch"
                     ></v-text-field>
                 </div>
                 <div class="d-flex">
-<<<<<<< HEAD
-                    <v-text-field
-                        v-model="formData.fromDate"
-                        class="pl-2"
-                        type="date"
-                        density="compact"
-                        variant="outlined"
-                        label="from date "
-                    ></v-text-field>
-                    <v-text-field
-                        v-model="formData.toDate"
-                        class="px-2"
-                        type="date"
-                        density="compact"
-                        variant="outlined"
-                        label="from date "
-                    ></v-text-field>
-                    <v-btn color="primaryOld" class="px-8" @click="send"> Filter</v-btn>
-=======
                     <date-picker
                         v-model:value="ReportRepository.productDateRange"
                         @change="onDateChange"
                         range
                     ></date-picker>
->>>>>>> 0f71dde860ac474288aa3805c11247124473617d
                 </div>
-                
             </div>
             <!-- v-table server  -->
             <div class="overflow-x-hidden">
@@ -64,17 +43,15 @@
                                     "
                                     :headers="headers"
                                     :items-length="ReportRepository.totalItems"
-                                    :items="ReportRepository.pickupReport"
+                                    :items="ReportRepository.serviceReport"
                                     :loading="ReportRepository.loading"
                                     :search="
-                                        ReportRepository.pickUpReportSearch
+                                        ReportRepository.serviceReportSearch
                                     "
                                     @update:options="
-                                        ReportRepository.fetchPickupReports
+                                        ReportRepository.fetchServiceReports
                                     "
-                                    :item-key="
-                                        ReportRepository.pickupReport
-                                    "
+                                    :item-key="ReportRepository.serviceReport"
                                     hover
                                     class="w-100 mx-auto"
                                 >
@@ -89,23 +66,7 @@
 </template>
 
 <script setup>
-<<<<<<< HEAD
-import { ref, onMounted,reactive } from "vue";
-import AppBar from "../../../components/AppBar.vue";
-import { useReportRepository } from "@/store/ReportRepository";
-const ReportRepository = useReportRepository();
-const formData = reactive({
-    fromDate:"",
-    toDate:"",
-})
-
-const send =()=>{
-    ReportRepository.fetchServiceReports(formData.fromDate,formData.toDate)
-    console.log(formData,'this is what jawad agha need ')
-
-}
-=======
-import { ref, onMounted,reactive, watch } from "vue";
+import { ref, onMounted, reactive, watch } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 import { useReportRepository } from "@/store/ReportRepository";
 const ReportRepository = useReportRepository();
@@ -117,7 +78,7 @@ const productDateRange = ref([new Date(), new Date()]);
 const onDateChange = () => {
     const [startDate, endDate] = ReportRepository.productDateRange;
     if (startDate && endDate) {
-        ReportRepository.fetchPickupReports(startDate, endDate);
+        ReportRepository.fetchServiceReports(startDate, endDate);
     }
 };
 
@@ -126,29 +87,24 @@ watch(
     (newSearchTerm) => {
         const [startDate, endDate] = ReportRepository.productDateRange;
         if (startDate && endDate) {
-            ReportRepository.fetchPickupReports(startDate, endDate);
+            ReportRepository.fetchServiceReports(startDate, endDate);
         }
     }
 );
 
 onMounted(() => {
     ReportRepository.productDateRange = productDateRange.value;
-    ReportRepository.fetchPickupReports(
+    ReportRepository.fetchServiceReports(
         productDateRange.value[0],
         productDateRange.value[1]
     );
     console.log(productDateRange.value[0], productDateRange.value[1], "service report");
 });
->>>>>>> 0f71dde860ac474288aa3805c11247124473617d
-
 // header
 const headers = [
-    { title: "Category Name", key: "name", align: "start", sortable: false },
-    {
-        title: "Total Amount",
-        key: "totalAmount",
-        align: "start",
-        sortable: false,
-    },
+    { title: "Service Name", key: "name", align: "start", sortable: false },
+    { title: "Used", key: "totalApplied", align: "start", sortable: false },
+    // { title: "Amount", key: "Amount", align: "start", sortable: false },
+    // { title: "Amount", key: "idk", align: "start", sortable: false },
 ];
 </script>
