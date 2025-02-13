@@ -9,7 +9,8 @@ class ServiceReportController extends Controller
 {
     public function __invoke(Request $request)
     {
-        
+        $perPage = $request->input('per_page', 10); // Default to 10 items per page if not provided
+
         // Check if date range is provided
         if ($request->has(['from_date', 'to_date']) && !empty($request->from_date) && !empty($request->to_date)) {
             $fromDate = $request->from_date;
@@ -19,12 +20,12 @@ class ServiceReportController extends Controller
             $filteredData = DB::table('services')
                 ->selectRaw('services.name, COUNT(cure_services.id) as totalApplied')
                 ->join('cure_services', 'cure_services.service_id', '=', 'services.id')
-                // ->join('cures', 'cures.id', '=', 'cure_details.cure_id')
+                ->join('cures', 'cures.id', '=', 'cure_services.cure_id')
                 ->whereBetween('cures.created_at', [$fromDate, $toDate])
                 ->groupBy('services.id', 'services.name')
-                ->get();
+                ->paginate($perPage);
 
-            // Return filtered data
+            // Return filtered data with pagination
             return response()->json($filteredData);
         }
 
@@ -34,9 +35,9 @@ class ServiceReportController extends Controller
             ->join('cure_services', 'cure_services.service_id', '=', 'services.id')
             ->join('cures', 'cures.id', '=', 'cure_services.cure_id')
             ->groupBy('services.id', 'services.name')
-            ->get();
+            ->paginate($perPage);
 
-        // Return all data
+        // Return all data with pagination
         return response()->json($allData);
     }
 }
