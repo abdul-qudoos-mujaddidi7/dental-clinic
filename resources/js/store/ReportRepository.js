@@ -29,12 +29,12 @@ export let useReportRepository = defineStore("ReportRepository", {
             // expense cat report
             expenseProductReport: reactive([]),
             expenseProductReportSearch: ref(""),
-            // pickup report 
-            pickUpReportSearch:ref(""),
-            pickupReport:reactive([]),
+            // pickup report
+            pickUpReportSearch: ref(""),
+            pickupReport: reactive([]),
             // serviceReport
-            serviceReportSearch:ref(""),
-            serviceReport:reactive([]),
+            serviceReportSearch: ref(""),
+            serviceReport: reactive([]),
         };
     },
     actions: {
@@ -83,28 +83,28 @@ export let useReportRepository = defineStore("ReportRepository", {
             this.totalItems = response.data.total;
             this.loading = false;
         },
-        
-             // expense Category report =============================
-             async fetchPickupReports({ page, itemsPerPage }) {
-                this.loading = true;
-                const response = await axios.get(
-                    `pickupReport?page=${page}&perPage=${itemsPerPage}&search=${this.pickUpReportSearch}`
-                );
-                this.pickupReport = response.data.data;
-                console.log(this.pickupReport, "pickup report");
-                this.totalItems = response.data.total;
-                this.loading = false;
-            },
-                // service  Category report =============================
-                async fetchServiceReports({ page, itemsPerPage }) {
-                    this.loading = true;
-                    const response = await axios.get(
-                        `serviceReport?page=${page}&perPage=${itemsPerPage}&search=${this.serviceReportSearch}`
-                    );
-                    this.serviceReport = response.data;
-                    console.log(this.serviceReport, "pickup report");
-                    this.totalItems = response.data.total;
-                    this.loading = false;
-                },
+
+        // expense Category report =============================
+        async fetchPickupReports({ page, itemsPerPage }) {
+            this.loading = true;
+            const response = await axios.get(
+                `pickupReport?page=${page}&perPage=${itemsPerPage}&search=${this.pickUpReportSearch}`
+            );
+            this.pickupReport = response.data.data;
+            console.log(this.pickupReport, "pickup report");
+            this.totalItems = response.data.total;
+            this.loading = false;
+        },
+        // service  Category report =============================
+        async fetchServiceReports({ page, itemsPerPage }) {
+            this.loading = true;
+            const response = await axios.get(
+                `serviceReport?page=${page}&perPage=${itemsPerPage}&search=${this.serviceReportSearch}`
+            );
+            this.serviceReport = response.data.data;
+            console.log(this.serviceReport, "pickup report");
+            this.totalItems = response.data.total;
+            this.loading = false;
+        },
     },
 });
