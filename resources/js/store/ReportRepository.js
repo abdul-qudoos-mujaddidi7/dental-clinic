@@ -109,9 +109,9 @@ export let useReportRepository = defineStore("ReportRepository", {
                     const response = await axios.get(
                         `serviceReport?page=${page}&perPage=${itemsPerPage}&search=${this.serviceReportSearch}&start_date=${startDate}&end_date=${endDate}`
                     );
-                    this.serviceReport = response.data;
+                    this.serviceReport = response.data.data;
                     console.log(this.serviceReport, "pickup report");
-                    this.totalItems = response.total;
+                    this.totalItems = response.data.total;
                     this.loading = false;
                 },
     },
