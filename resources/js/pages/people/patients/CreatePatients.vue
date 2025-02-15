@@ -86,7 +86,8 @@ const formData = reactive({
     name: PeopleRepository.patient.name,
     phone: PeopleRepository.patient.phone,
     address: PeopleRepository.patient.address,
-    last_name:"nadeem"
+    last_name:"nadeem",
+    type:"patient"
   
 });
 const rules = {

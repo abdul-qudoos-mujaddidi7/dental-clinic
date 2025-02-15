@@ -28,7 +28,7 @@
                         <v-form ref="formRef" class="pt-4">
                        
                                 <v-text-field
-                                    v-model="formData.firstName"
+                                    v-model="formData.name"
                                     variant="outlined"
                                     label="Name *"
                                     class="pb-4"
@@ -77,8 +77,9 @@ const formRef = ref(null);
 
 const formData = reactive({
     id: PeopleRepository.doctor.id,
-    firstName: PeopleRepository.doctor.firstName,
+    name: PeopleRepository.doctor.name,
     phone: PeopleRepository.doctor.phone,
+    type:'dentist'
   
 });
 const rules = {

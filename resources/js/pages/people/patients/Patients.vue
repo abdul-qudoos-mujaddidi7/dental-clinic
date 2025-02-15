@@ -152,7 +152,7 @@ const sendSelectedIds = () => {
 
 // delete and update Create
 const CreateDialogShow = () => {
-    PeopleRepository.setEditMode(false);
+    PeopleRepository.isEditMode=false;
     PeopleRepository.createDialog = true;
 };
 

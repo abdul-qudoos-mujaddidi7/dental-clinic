@@ -26,18 +26,15 @@
 
                     <v-card-text>
                         <v-form ref="formRef" class="pt-4">
-                       
-                                <v-text-field
-                                    v-model="formData.name"
-                                    variant="outlined"
-                                    label="Name *"
-                                    class="pb-4"
-                                    density="compact"
-                                    :rules="[rules.required]"
-                                  
-                                ></v-text-field>
-                     
-                            
+                            <v-text-field
+                                v-model="formData.name"
+                                variant="outlined"
+                                label="Name *"
+                                class="pb-4"
+                                density="compact"
+                                :rules="[rules.required]"
+                            ></v-text-field>
+
                             <v-text-field
                                 v-model="formData.phone"
                                 variant="outlined"
@@ -48,8 +45,6 @@
                                 class="pb-4"
                                 :rules="[rules.required]"
                             ></v-text-field>
-
-                       
                         </v-form>
                     </v-card-text>
 
@@ -79,7 +74,7 @@ const formData = reactive({
     id: PeopleRepository.supplier.id,
     name: PeopleRepository.supplier.name,
     phone: PeopleRepository.supplier.phone,
-  
+    type: "supplier",
 });
 const rules = {
     required: (value) => !!value || "This field is required.",
@@ -99,5 +94,4 @@ const save = async () => {
         }
     }
 };
-
 </script>

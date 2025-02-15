@@ -79,6 +79,7 @@ const formData = reactive({
     id: PeopleRepository.owner.id,
     name: PeopleRepository.owner.name,
     phone: PeopleRepository.owner.phone,
+    type: "owner"
   
 });
 const rules = {
