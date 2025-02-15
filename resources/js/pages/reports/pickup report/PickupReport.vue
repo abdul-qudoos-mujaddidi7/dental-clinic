@@ -101,7 +101,7 @@ onMounted(() => {
         productDateRange.value[0],
         productDateRange.value[1]
     );
-    console.log(productDateRange.value[0], productDateRange.value[1], "service report");
+    console.log(productDateRange.value[0], productDateRange.value[1], "pick up report");
 });
 
 // header

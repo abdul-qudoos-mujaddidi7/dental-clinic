@@ -66,15 +66,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted, reactive, watch } from "vue";
+import { ref, onMounted, watch } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 import { useReportRepository } from "@/store/ReportRepository";
 const ReportRepository = useReportRepository();
 import DatePicker from "vue-datepicker-next";
 import "vue-datepicker-next/index.css";
 const productDateRange = ref([new Date(), new Date()]);
-
-
 const onDateChange = () => {
     const [startDate, endDate] = ReportRepository.productDateRange;
     if (startDate && endDate) {
@@ -98,7 +96,12 @@ onMounted(() => {
         productDateRange.value[0],
         productDateRange.value[1]
     );
-    console.log(productDateRange.value[0], productDateRange.value[1], "service report");
+    console.log(
+        productDateRange.value[0],
+        productDateRange.value[1],
+        "service report"
+
+    );
 });
 // header
 const headers = [
