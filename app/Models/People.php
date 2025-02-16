@@ -39,6 +39,11 @@ class People extends Model
 
         return $query;
     }
+
+    public function cures()
+    {
+        return $this->hasMany(Cure::class,'patient_id');
+    }
     
     // Relationships
     public function appointments()
