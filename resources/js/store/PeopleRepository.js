@@ -1,14 +1,13 @@
 import { defineStore } from "pinia";
-import { reactive,ref } from "vue";
+import { reactive, ref } from "vue";
 import { axios } from "../axios";
 import { useRouter } from "vue-router";
 
-
-export let usePeopleRepository =defineStore("PeopleRepository",{
-    state(){
-        return{
+export let usePeopleRepository = defineStore("PeopleRepository", {
+    state() {
+        return {
             isEditMode: ref(false),
-            
+
             router: useRouter(),
 
             search: ref(""),
@@ -20,31 +19,29 @@ export let usePeopleRepository =defineStore("PeopleRepository",{
             itemsPerPage: ref(5),
             createDialog: ref(false),
             // patents
-            patients:reactive([]),
-            patient:reactive([]),
-            patientSearch:ref(""),
-            // owners 
-            owners:reactive([]),
-            owner:reactive([]),
-            ownerSearch:ref(""),
+            patients: reactive([]),
+            patient: reactive([]),
+            patientSearch: ref(""),
+            // owners
+            owners: reactive([]),
+            owner: reactive([]),
+            ownerSearch: ref(""),
             // doctors
-            doctors:reactive([]),
-            doctor:reactive([]),
-            doctorSearch:ref(""),
-            // supplier 
-            suppliers:reactive([]),
-            supplier:reactive([]),
-            supplierSearch:ref(""),
+            doctors: reactive([]),
+            doctor: reactive([]),
+            doctorSearch: ref(""),
+            // supplier
+            suppliers: reactive([]),
+            supplier: reactive([]),
+            supplierSearch: ref(""),
             // users
-            users:reactive([]),
-            user:reactive([]),
-            userSearch:ref(""),
-            roleForUser:reactive([]),
-
-
-        }
+            users: reactive([]),
+            user: reactive([]),
+            userSearch: ref(""),
+            roleForUser: reactive([]),
+        };
     },
-    actions:{
+    actions: {
         setEditMode(editMode) {
             console.log(editMode, "wee");
             this.isEditMode = editMode; // set the value directly
@@ -59,9 +56,7 @@ export let usePeopleRepository =defineStore("PeopleRepository",{
         async fetchRoleForUser() {
             this.loading = true;
 
-            const response = await axios.get(
-                `role_permissions`
-            );
+            const response = await axios.get(`role_permissions`);
             this.roleForUser = response.data.data;
 
             this.loading = false;
@@ -91,7 +86,7 @@ export let usePeopleRepository =defineStore("PeopleRepository",{
             this.loading = true;
 
             const response = await axios.get(
-                `patients?page=${page}&perPage=${itemsPerPage}&search=${this.patientSearch}`
+                `peoples?page=${page}&perPage=${itemsPerPage}&search=${this.patientSearch}&type=patient`
             );
             this.patients = response.data.data;
             this.totalItems = response.data.meta.total;
@@ -100,7 +95,7 @@ export let usePeopleRepository =defineStore("PeopleRepository",{
         async fetchPatient(id) {
             // this.error = null;
             try {
-                const response = await axios.get(`patients/${id}`);
+                const response = await axios.get(`peoples/${id}`);
 
                 this.patient = response.data.data;
                 console.log(this.Expense);
@@ -112,7 +107,7 @@ export let usePeopleRepository =defineStore("PeopleRepository",{
             try {
                 const config = {
                     method: "PUT",
-                    url: "patients/" + id,
+                    url: "peoples/" + id,
 
                     data: data,
                 };
@@ -135,7 +130,7 @@ export let usePeopleRepository =defineStore("PeopleRepository",{
                 // Adding a custom header to the Axios request
                 const config = {
                     method: "POST",
-                    url: "patients",
+                    url: "peoples",
 
                     data: formData,
                 };
@@ -159,7 +154,7 @@ export let usePeopleRepository =defineStore("PeopleRepository",{
             try {
                 const config = {
                     method: "DELETE",
-                    url: "patients/" + id,
+                    url: "peoples/" + id,
                 };
 
                 const response = await axios(config);
@@ -173,12 +168,12 @@ export let usePeopleRepository =defineStore("PeopleRepository",{
                 this.error = err;
             }
         },
-        // fetch owners 
+        // fetch owners
         async fetchOwners({ page, itemsPerPage }) {
             this.loading = true;
 
             const response = await axios.get(
-                `owners?page=${page}&perPage=${itemsPerPage}&search=${this.ownerSearch}`
+                `peoples?page=${page}&perPage=${itemsPerPage}&search=${this.ownerSearch}&type=owner`
             );
             this.owners = response.data.data;
             this.totalItems = response.data.meta.total;
@@ -187,8 +182,7 @@ export let usePeopleRepository =defineStore("PeopleRepository",{
         async fetchOwner(id) {
             // this.error = null;
             try {
-                const response = await axios.get(`owners/${id}`);
-                
+                const response = await axios.get(`peoples/${id}`);
 
                 this.owner = response.data.data;
                 console.log(this.Expense);
@@ -199,11 +193,11 @@ export let usePeopleRepository =defineStore("PeopleRepository",{
         async UpdateOwner(id, data) {
             try {
                 const config = {
-                    method: "POST",
-                    url: "owners/updateOwners/" + id,
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                    },
+                    method: "PUT",
+                    url: "peoples/" + id,
+                    // headers: {
+                    //     "Content-Type": "multipart/form-data",
+                    // },
 
                     data: data,
                 };
@@ -226,7 +220,7 @@ export let usePeopleRepository =defineStore("PeopleRepository",{
                 // Adding a custom header to the Axios request
                 const config = {
                     method: "POST",
-                    url: "owners",
+                    url: "peoples",
                     headers: {
                         "Content-Type": "multipart/form-data",
                     },
@@ -252,7 +246,7 @@ export let usePeopleRepository =defineStore("PeopleRepository",{
             try {
                 const config = {
                     method: "DELETE",
-                    url: "owners/" + id,
+                    url: "peoples/" + id,
                 };
 
                 const response = await axios(config);
@@ -291,7 +285,7 @@ export let usePeopleRepository =defineStore("PeopleRepository",{
             this.loading = true;
 
             const response = await axios.get(
-                `dentists?page=${page}&perPage=${itemsPerPage}&search=${this.doctorSearch}`
+                `peoples?page=${page}&perPage=${itemsPerPage}&search=${this.doctorSearch}&type=dentist`
             );
             this.doctors = response.data.data;
             this.totalItems = response.data.meta.total;
@@ -300,7 +294,7 @@ export let usePeopleRepository =defineStore("PeopleRepository",{
         async fetchDoctor(id) {
             // this.error = null;
             try {
-                const response = await axios.get(`dentists/${id}`);
+                const response = await axios.get(`peoples/${id}`);
 
                 this.doctor = response.data.data;
                 console.log(this.Expense);
@@ -312,7 +306,7 @@ export let usePeopleRepository =defineStore("PeopleRepository",{
             try {
                 const config = {
                     method: "PUT",
-                    url: "dentists/" + id,
+                    url: "peoples/" + id,
                     // headers: {
                     //     "Content-Type": "multipart/form-data",
                     // },
@@ -337,7 +331,7 @@ export let usePeopleRepository =defineStore("PeopleRepository",{
                 // Adding a custom header to the Axios request
                 const config = {
                     method: "POST",
-                    url: "dentists",
+                    url: "peoples",
                     headers: {
                         "Content-Type": "multipart/form-data",
                     },
@@ -363,7 +357,7 @@ export let usePeopleRepository =defineStore("PeopleRepository",{
             try {
                 const config = {
                     method: "DELETE",
-                    url: "dentists/" + id,
+                    url: "peoples/" + id,
                 };
 
                 const response = await axios(config);
@@ -402,7 +396,7 @@ export let usePeopleRepository =defineStore("PeopleRepository",{
             this.loading = true;
 
             const response = await axios.get(
-                `suppliers?page=${page}&perPage=${itemsPerPage}&search=${this.supplierSearch}`
+                `peoples?page=${page}&perPage=${itemsPerPage}&search=${this.supplierSearch}&type=supplier`
             );
             this.suppliers = response.data.data;
             this.totalItems = response.data.meta.total;
@@ -411,7 +405,7 @@ export let usePeopleRepository =defineStore("PeopleRepository",{
         async FetchSupplier(id) {
             // this.error = null;
             try {
-                const response = await axios.get(`suppliers/${id}`);
+                const response = await axios.get(`peoples/${id}`);
 
                 this.supplier = response.data.data;
                 console.log(this.supplier);
@@ -425,7 +419,7 @@ export let usePeopleRepository =defineStore("PeopleRepository",{
                 // Adding a custom header to the Axios request
                 const config = {
                     method: "POST",
-                    url: "suppliers",
+                    url: "peoples",
 
                     data: formData,
                 };
@@ -446,7 +440,7 @@ export let usePeopleRepository =defineStore("PeopleRepository",{
             try {
                 const config = {
                     method: "PUT",
-                    url: `suppliers/${id}`,
+                    url: `peoples/${id}`,
 
                     data: data,
                 };
@@ -470,7 +464,7 @@ export let usePeopleRepository =defineStore("PeopleRepository",{
             try {
                 const config = {
                     method: "DELETE",
-                    url: "suppliers/" + id,
+                    url: "peoples/" + id,
                 };
 
                 const response = await axios(config);
@@ -484,7 +478,7 @@ export let usePeopleRepository =defineStore("PeopleRepository",{
                 this.error = err;
             }
         },
-        // user 
+        // user
         async CreateForSwitch(status, id) {
             console.log(status, "man", id);
             try {
@@ -503,7 +497,6 @@ export let usePeopleRepository =defineStore("PeopleRepository",{
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });
-
             } catch (err) {
                 // If there's an error, set the error in the stor
             }
@@ -614,7 +607,5 @@ export let usePeopleRepository =defineStore("PeopleRepository",{
                 this.error = err;
             }
         },
-    }
-
-
-})
+    },
+});

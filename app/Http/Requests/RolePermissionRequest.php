@@ -22,12 +22,14 @@ class RolePermissionRequest extends FormRequest
      */
     public function rules(): array
     {
+    
+        
         return [
             "name" => [
                 "required",
                 "string",
-                Rule::unique("roles", "name")->ignore($this->route("role")), // Ignore current role's ID
-            ],
+                Rule::unique('roles')->ignore($this->route('role_permission')), ],
+
             "description" => "nullable|string",
             "permissions" => "required|array",
             "permissions.*" => "string",

@@ -29,11 +29,11 @@ class Cure extends Model
 
     public function patient()
     {
-        return $this->belongsTo(Patient::class);
+        return $this->belongsTo(People::class,'patient_id');
     }
     public function dentist()
 {
-    return $this->belongsTo(Dentist::class);
+    return $this->belongsTo(People::class,'dentist_id');
 }
 
     public function cureCycles()

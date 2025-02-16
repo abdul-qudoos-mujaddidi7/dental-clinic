@@ -119,7 +119,7 @@ export let useReportRepository = defineStore("ReportRepository", {
                     );
                     this.serviceReport = response.data.data;
                     console.log(this.serviceReport, "pickup report");
-                    this.totalItems = response.total;
+                    this.totalItems = response.data.total;
                     this.loading = false;
                 },
     },

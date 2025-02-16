@@ -21,7 +21,8 @@ export let useCureRepository = defineStore("CureRepository", {
             ShowCurePaymentDialog:ref(false),
             cureId:ref(''),
             paymentId:ref(''),
-
+            services: [],
+            
             // lead
             cures: reactive([]),
             cure: reactive([]),
@@ -99,7 +100,7 @@ export let useCureRepository = defineStore("CureRepository", {
                 // Only add if it doesn’t already exist
                 if (!this.services.some(item => item.id === productData.id)) {
                     this.services.push(productData);
-                    this.cure.services.push(productData);
+                    // this.cure.services.push(productData);
                     // this.billExpense.expenseDetails.push(productData);
                 }
         
@@ -125,11 +126,11 @@ export let useCureRepository = defineStore("CureRepository", {
 ,        
         
         async Patients() {
-            const response = await axios.get("patients");
+            const response = await axios.get("peoples?type=patient");
             this.patientsFor = response.data.data;
         },
         async Doctor() {
-            const response = await axios.get("dentists");
+            const response = await axios.get("peoples?type=dentist");
             this.doctorFor = response.data.data;
         },
         async bulkDeleteLead(data) {

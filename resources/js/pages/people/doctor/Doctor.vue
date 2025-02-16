@@ -166,7 +166,7 @@ const deleteItem = async (item) => {
 // header
 const headers = [
     { title: "", key: "checkbox", align: "start", sortable: false },
-    { title: "Name", key: "firstName", align: "start", sortable: false },
+    { title: "Name", key: "name", align: "start", sortable: false },
     { title: "Phone", key: "phone", align: "start", sortable: false },
 
     { title: "Action", key: "action", align: "center", sortable: false },
