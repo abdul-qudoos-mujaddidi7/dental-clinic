@@ -15,11 +15,12 @@ import Owner from "./pages/people/owner/Owner.vue";
 import Doctor from "./pages/people/doctor/Doctor.vue";
 import Supplier from "./pages/people/supplier/Supplier.vue";
 import User from "./pages/people/user/User.vue";
-import Employee from "./pages/people/employee/Employee.vue"
+import Employee from "./pages/people/employee/Employee.vue";
 // leads
 import Leads from "./pages/lead/leads/Leads.vue";
 import LeadCategory from "./pages/lead/leadCategory/LeadCategory.vue";
 import LeadStage from "./pages/lead/leadStage/LeadStage.vue";
+import Appointments from "./pages/lead/appointment/Appointment.vue";
 // system setting
 import SystemSetting from "./pages/setting/system Setting/SystemSetting.vue";
 import RolePermission from "./pages/setting/rolePermission/RolePermission.vue";
@@ -47,13 +48,17 @@ import Home from "./Home.vue";
 const router = createRouter({
     history: createWebHistory(),
     routes: [
-        { path: "/", component: Login ,meta:''},
+        { path: "/", component: Login, meta: "" },
         {
             path: "/home",
             component: Home,
             meta: { authentication: true },
             children: [
-                { path: "/dashboard", alias: "/dashboard", component: Dashboard },
+                {
+                    path: "/dashboard",
+                    alias: "/dashboard",
+                    component: Dashboard,
+                },
 
                 // try
                 { path: "/exp", component: exp },
@@ -81,11 +86,16 @@ const router = createRouter({
                 { path: "/lead", component: Leads },
                 { path: "/leadCategory", component: LeadCategory },
                 { path: "/leadStage", component: LeadStage },
+                { path: "/appointments", component: Appointments },
                 // system setting
                 { path: "/systemSetting", component: SystemSetting },
                 { path: "/rolePermissions", component: RolePermission },
                 { path: "/createPermissions", component: CreatePermissions },
-                { path: "/updatePermissions/:id", props: true, component: UpdatePermissions },
+                {
+                    path: "/updatePermissions/:id",
+                    props: true,
+                    component: UpdatePermissions,
+                },
                 { path: "/serviceGroup", component: ServiceGroup },
                 { path: "/service", component: Service },
                 // reports

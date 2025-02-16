@@ -23,6 +23,10 @@ export let useLeadRepository = defineStore("LeadRepository", {
             leadSearch: ref(""),
             leadCategoriesFor: reactive([]),
             leadStageFor:reactive([]),
+            // appointments
+            appointmentSearch:ref(""),
+            appointments:reactive([]),
+            appointment:reactive([]),
         };
     },
     actions: {
@@ -292,5 +296,77 @@ export let useLeadRepository = defineStore("LeadRepository", {
                 this.error = err;
             }
         },
+               // stages 
+               async FetchAppointments({ page, itemsPerPage }) {
+                this.loading = true;
+                const response = await axios.get(
+                    `appointments?page=${page}&perPage=${itemsPerPage}&${this.appointmentSearch}`
+                );
+                this.appointments = response.data.data;
+                this.totalItems = response.data.meta.total;
+                this.loading = false;
+            },
+            async FetchAppointment(id) {
+                // this.loading = true;
+                console.log(id);
+                try {
+                    const response = await axios.get(`appointments/${id}`);
+                    this.appointment = response.data.data;
+                    console.log(this.lead);
+                } catch (err) {
+                    this.error = err;
+                }
+            },
+            async CreateAppointment(formData) {
+                console.log(formData);
+                try {
+                    const config = {
+                        method: "POST",
+                        url: "appointments",
+                        data: formData,
+                    };
+                    const response = await axios(config);
+                    this.createDialog = false;
+                    this.FetchAppointments({
+                        page: this.page,
+                        itemsPerPage: this.itemsPerPage,
+                    });
+                } catch (err) {
+                    this.error = err;
+                }
+            },
+            async UpdateAppointment(id, formData) {
+                console.log(formData, id, "Update ");
+                try {
+                    const config = {
+                        method: "PUT",
+                        url: `appointments/${id}`,
+                        data: formData,
+                    };
+                    const response = await axios(config);
+                    this.createDialog = false;
+                    this.FetchAppointments({
+                        page: this.page,
+                        itemsPerPage: this.itemsPerPage,
+                    });
+                } catch (err) {
+                    this.error = err;
+                }
+            },
+            async DeleteAppointment(id) {
+                try {
+                    const config = {
+                        method: "DELETE",
+                        url: `appointments/${id}`,
+                    };
+                    const response = await axios(config);
+                    this.FetchAppointments({
+                        page: this.page,
+                        itemsPerPage: this.itemsPerPage,
+                    });
+                } catch (err) {
+                    this.error = err;
+                }
+            },
     },
 });

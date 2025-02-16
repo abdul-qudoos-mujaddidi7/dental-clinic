@@ -1,5 +1,5 @@
 <template>
-    <CreateOwner v-if="PeopleRepository.createDialog" />
+    <CreateOwner v-if="LeadRepository.createDialog" />
     <div class="all-expense rounded-xl">
         <div class="card rounded-xl">
             <AppBar mainTitle="Appointment" sub-title="lead" />
@@ -19,7 +19,7 @@
                         label="Search ..."
                         append-inner-icon="mdi-magnify"
                         hide-details
-                        v-model="PeopleRepository.employeeSearch"
+                        v-model="LeadRepository.appointmentSearch"
                     ></v-text-field>
                 </div>
                 <div class="btn">
@@ -46,17 +46,17 @@
                                 <v-data-table-server
                                     theme="cursor-pointer"
                                     v-model:items-per-page="
-                                        PeopleRepository.itemsPerPage
+                                        LeadRepository.itemsPerPage
                                     "
                                     :headers="headers"
-                                    :items-length="PeopleRepository.totalItems"
-                                    :items="PeopleRepository.employees"
-                                    :loading="PeopleRepository.loading"
-                                    :search="PeopleRepository.employeeSearch"
+                                    :items-length="LeadRepository.totalItems"
+                                    :items="LeadRepository.appointments"
+                                    :loading="LeadRepository.loading"
+                                    :search="LeadRepository.appointmentSearch"
                                     @update:options="
-                                        PeopleRepository.FetchEmployees
+                                        LeadRepository.FetchAppointments
                                     "
-                                    :item-key="PeopleRepository.employees"
+                                    :item-key="LeadRepository.appointments"
                                     hover
                                     class="w-100 mx-auto"
                                 >
@@ -113,25 +113,25 @@
 import { ref, onMounted } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 // import CreateOwner from "./CreateOwner.vue";
-import { usePeopleRepository } from "@/store/PeopleRepository";
-const PeopleRepository = usePeopleRepository();
+import { useLeadRepository } from "@/store/LeadRepository";
+const LeadRepository = useLeadRepository();
 // bulk delete
 
 // delete and update Create
 const CreateDialogShow = () => {
-    PeopleRepository.owner = {},
-    PeopleRepository.setEditMode(false);
-    PeopleRepository.createDialog = true;
+    LeadRepository.owner = {},
+    LeadRepository.setEditMode(false);
+    LeadRepository.createDialog = true;
 };
 
 const edit = (item) => {
     console.log(item, "me");
-    PeopleRepository.setEditMode(true);
-    PeopleRepository.owner = {};
-    if (Object.keys(PeopleRepository.owner).length === 0) {
-        PeopleRepository.fetchOwner(item.id)
+    LeadRepository.setEditMode(true);
+    LeadRepository.owner = {};
+    if (Object.keys(LeadRepository.owner).length === 0) {
+        LeadRepository.fetchOwner(item.id)
             .then(() => {
-                PeopleRepository.createDialog = true;
+                LeadRepository.createDialog = true;
             })
             .catch((error) => {
                 console.error("Error fetching data:", error);
@@ -140,7 +140,7 @@ const edit = (item) => {
 };
 
 const deleteItem = async (item) => {
-    await PeopleRepository.DeleteOwner(item.id);
+    await LeadRepository.DeleteOwner(item.id);
 };
 // header
 const headers = [

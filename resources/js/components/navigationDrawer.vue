@@ -329,6 +329,13 @@ const leadItems = [
         icon: "mdi mdi-circle-medium",
         value: "stage",
     },
+    {
+        to: "/appointments",
+        title: "Appointments",
+        icon: "mdi mdi-circle-medium",
+        value: "appointments",
+    },
+    
 
 ];
 const cureItems = [
