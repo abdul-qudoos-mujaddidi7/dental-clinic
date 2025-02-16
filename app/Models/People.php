@@ -42,12 +42,17 @@ class People extends Model
 
     public function cures()
     {
-        return $this->hasMany(Cure::class,'patient_id');
+        return $this->hasMany(Cure::class, 'patient_id');
     }
-    
+
     // Relationships
-    public function appointments()
+    public function patientAppointments()
     {
         return $this->hasMany(Appointment::class, 'patient_id');
+    }
+
+    public function dentistAppointments()
+    {
+        return $this->hasMany(Appointment::class, 'dentist_id');
     }
 }
