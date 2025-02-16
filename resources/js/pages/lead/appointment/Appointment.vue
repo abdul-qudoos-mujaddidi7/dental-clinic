@@ -2,7 +2,7 @@
     <CreateOwner v-if="PeopleRepository.createDialog" />
     <div class="all-expense rounded-xl">
         <div class="card rounded-xl">
-            <AppBar mainTitle="Employee" sub-title="people" />
+            <AppBar mainTitle="Appointment" sub-title="lead" />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"

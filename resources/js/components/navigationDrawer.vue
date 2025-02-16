@@ -263,7 +263,14 @@ const navItems = [
   
 ];
 const peopleItems = [
+{
+        to: "/employee",
+        title: "Employee",
+        icon: "mdi mdi-circle-medium",
+        value: "employee",
+    },
     {
+
         to: "/patients",
         title: "Patient",
         icon: "mdi mdi-circle-medium",
@@ -275,6 +282,7 @@ const peopleItems = [
         icon: "mdi mdi-circle-medium",
         value: "user",
     },
+
 
     {
         to: "/owners",

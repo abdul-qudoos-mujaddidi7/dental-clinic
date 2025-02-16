@@ -79,9 +79,12 @@ const productDateRange = ref([new Date(), new Date()]);
 
 
 const onDateChange = () => {
-    const [startDate, endDate] = ReportRepository.productDateRange;
+    console.log('called');
+
+const startDate = ReportRepository.productDateRange[0];
+const endDate = ReportRepository.productDateRange[1];
     if (startDate && endDate) {
-        ReportRepository.fetchPickupReports(startDate, endDate);
+        ReportRepository.fetchPickupReports({ page: 1, itemsPerPage: 10 },startDate, endDate);
     }
 };
 
@@ -98,6 +101,8 @@ watch(
 onMounted(() => {
     ReportRepository.productDateRange = productDateRange.value;
     ReportRepository.fetchPickupReports(
+        { page: 1, itemsPerPage: 10 },
+
         productDateRange.value[0],
         productDateRange.value[1]
     );

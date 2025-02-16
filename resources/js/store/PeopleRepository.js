@@ -39,6 +39,10 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             user: reactive([]),
             userSearch: ref(""),
             roleForUser: reactive([]),
+            // employee 
+            employeeSearch:ref(""),
+            employees:reactive([]),
+            employee:reactive([]),
         };
     },
     actions: {
@@ -612,7 +616,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             this.loading = true;
 
             const response = await axios.get(
-                `users?page=${page}&perPage=${itemsPerPage}&search=${this.userSearch}`
+                `peoples?page=${page}&perPage=${itemsPerPage}&search=${this.employeeSearch}`
             );
             this.employees = response.data.data;
             this.totalItems = response.data.meta.total;
@@ -621,7 +625,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
         async FetchEmployee(id) {
             // this.error = null;
             try {
-                const response = await axios.get(`users/${id}`);
+                const response = await axios.get(`peoples/${id}`);
 
                 this.employee = response.data.data;
                 console.log(this.supplier);
@@ -629,13 +633,13 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
                 // this.error = err.message;
             }
         },
-        async CreateUser(formData) {
+        async CreateEmployee(formData) {
             console.log(formData);
             try {
                 // Adding a custom header to the Axios request
                 const config = {
                     method: "POST",
-                    url: "users",
+                    url: "peoples",
 
                     data: formData,
                 };
@@ -643,7 +647,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
                 // Using Axios to make a GET request with async/await and custom headers
                 const response = await axios(config);
                 this.createDialog = false;
-                this.FetchUsers({
+                this.FetchEmployees({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });
@@ -651,12 +655,12 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
                 // If there's an error, set the error in the stor
             }
         },
-        async UpdateUser(id, data) {
+        async UpdateEmployee(id, data) {
             console.log(data);
             try {
                 const config = {
                     method: "PUT",
-                    url: `users/${id}`,
+                    url: `peoples/${id}`,
 
                     data: data,
                 };
@@ -664,7 +668,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
                 // Using Axios to make a post request with async/await and custom headers
                 const response = await axios(config);
                 this.createDialog = false;
-                this.FetchUsers({
+                this.FetchEmployees({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });
@@ -672,7 +676,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
                 // If there's an error, set the error in the stor
             }
         },
-        async DeleteUser(id) {
+        async DeleteEmployee(id) {
             this.isLoading = true;
             this.Expenses = [];
             this.error = null;
@@ -680,13 +684,13 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             try {
                 const config = {
                     method: "DELETE",
-                    url: "users/" + id,
+                    url: "peoples/" + id,
                 };
 
                 const response = await axios(config);
 
                 // this.supplier = response.data.data;
-                this.FetchUsers({
+                this.FetchEmployees({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });
