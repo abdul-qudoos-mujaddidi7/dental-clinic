@@ -116,7 +116,8 @@ const deleteItem = async (payment) => {
 };
 // CureRepository.FetchBillExpensePayment();
 const editItem = async (payment) => {
-    // CureRepository.meterCyclePaymentId = id;
+    CureRepository.isEditMode=true;
+    // CureRepository.cureId = payment.id;
     CureRepository.curePayment = {};
     if (Object.keys(CureRepository.FetchCurePayment).length === 0) {
         CureRepository.FetchCurePayment(payment.id)

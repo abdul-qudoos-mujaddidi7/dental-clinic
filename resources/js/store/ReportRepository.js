@@ -32,6 +32,9 @@ export let useReportRepository = defineStore("ReportRepository", {
             // pickup report 
             pickUpReportSearch:ref(""),
             pickupReport:reactive([]),
+            // serviceReport
+            serviceReportSearch:ref(""),
+            serviceReport:reactive([]),
         };
     },
     actions: {
@@ -48,10 +51,12 @@ export let useReportRepository = defineStore("ReportRepository", {
             this.loading = false;
         },
         // patients payment ================================
-        async fetchPatientsReports({ page, itemsPerPage }) {
+        async fetchPatientsReports({ page, itemsPerPage }, startDate, endDate) {
+            console.log(startDate, endDate, 'in the repository for patients report ')
+
             this.loading = true;
             const response = await axios.get(
-                `patientPaymentReport?page=${page}&perPage=${itemsPerPage}&search=${this.patientReportSearch}`
+                `patientPaymentReport?page=${page}&perPage=${itemsPerPage}&search=${this.patientReportSearch}&start_date=${startDate}&end_date=${endDate}`
             );
             this.patientReports = response.data.data;
             console.log(this.patientReports, "payment report");
@@ -59,10 +64,12 @@ export let useReportRepository = defineStore("ReportRepository", {
             this.loading = false;
         },
         // expense Category report =============================
-        async fetchExpenseCategoryReports({ page, itemsPerPage }) {
+        async fetchExpenseCategoryReports({ page, itemsPerPage }, startDate, endDate) {
+            console.log(startDate, endDate, 'in the repository for expense cat reports ')
+
             this.loading = true;
             const response = await axios.get(
-                `expenseCategoryReport?page=${page}&perPage=${itemsPerPage}&search=${this.expenseCatReportSearch}`
+                `expenseCategoryReport?page=${page}&perPage=${itemsPerPage}&search=${this.expenseCatReportSearch}&start_date=${startDate}&end_date=${endDate}`
             );
             this.expenseCatReport = response.data.data;
             console.log(this.expenseCatReport, "expense category report");
@@ -70,10 +77,12 @@ export let useReportRepository = defineStore("ReportRepository", {
             this.loading = false;
         },
         // expense Category report =============================
-        async fetchExpenseProductReports({ page, itemsPerPage }) {
+        async fetchExpenseProductReports({ page, itemsPerPage }, startDate, endDate) {
             this.loading = true;
+            console.log(startDate, endDate, 'in the repository for expense product report ')
+
             const response = await axios.get(
-                `expenseProductReport?page=${page}&perPage=${itemsPerPage}&search=${this.expenseProductReportSearch}`
+                `expenseProductReport?page=${page}&perPage=${itemsPerPage}&search=${this.expenseProductReportSearch}&start_date=${startDate}&end_date=${endDate}`
             );
             this.expenseProductReport = response.data.data;
             console.log(this.expenseProductReport, "expense product report");
@@ -82,15 +91,29 @@ export let useReportRepository = defineStore("ReportRepository", {
         },
         
              // expense Category report =============================
-             async fetchPickupReports({ page, itemsPerPage }) {
+             async fetchPickupReports({ page, itemsPerPage }, startDate, endDate) {
+                console.log(startDate, endDate, 'in the repository for pickup')
                 this.loading = true;
                 const response = await axios.get(
-                    `pickupReport?page=${page}&perPage=${itemsPerPage}&search=${this.pickUpReportSearch}`
+                    `pickupReport?page=${page}&perPage=${itemsPerPage}&search=${this.pickUpReportSearch}&start_date=${startDate}&end_date=${endDate}`
                 );
                 this.pickupReport = response.data.data;
                 console.log(this.pickupReport, "pickup report");
                 this.totalItems = response.data.total;
                 this.loading = false;
             },
+                // service  Category report =============================
+                async fetchServiceReports({ page, itemsPerPage }, startDate, endDate) {
+                    console.log(startDate, endDate, 'in the repository')
+                    this.loading = true;
+                    const response = await axios.get(
+                        `serviceReport?page=${page}&perPage=${itemsPerPage}&search=${this.serviceReportSearch}&start_date=${startDate}&end_date=${endDate}`
+                    );
+                    this.serviceReport = response.data.data;
+                    console.log(this.serviceReport, "pickup report");
+                    this.totalItems = response.data.total;
+                    this.loading = false;
+                },
     },
 });
+// const url = /api/patientPaymentReport?page=${page}&perPage=${itemsPerPage}&search=${this.patientReportSearch}&start_date=${startDate}&end_date=${endDate};

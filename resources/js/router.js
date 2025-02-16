@@ -22,6 +22,7 @@ import LeadStage from "./pages/lead/leadStage/LeadStage.vue";
 // system setting
 import SystemSetting from "./pages/setting/system Setting/SystemSetting.vue";
 import RolePermission from "./pages/setting/rolePermission/RolePermission.vue";
+import UpdatePermissions from "./pages/setting/rolePermission/UpdatePermissions.vue";
 import CreatePermissions from "./pages/setting/rolePermission/CreatePermissions.vue";
 import ServiceGroup from "./pages/setting/service Group/ServiceGroup.vue";
 import Service from "./pages/setting/service/Service.vue";
@@ -31,6 +32,7 @@ import PatientsReport from "./pages/reports/patients report/PatientsReport.vue";
 import ExpenseCatReport from "./pages/reports/Expense category report/ExpenseCatReport.vue";
 import ExpenseProductReport from "./pages/reports/Expense Product report/ExpenseProductReport.vue";
 import PickupReport from "./pages/reports/pickup report/PickupReport.vue";
+import Services from "./pages/reports/services/Services.vue";
 //dashboard
 import Dashboard from "./pages/dashboard/Dashboard.vue";
 // cure cycle
@@ -80,6 +82,7 @@ const router = createRouter({
                 { path: "/systemSetting", component: SystemSetting },
                 { path: "/rolePermissions", component: RolePermission },
                 { path: "/createPermissions", component: CreatePermissions },
+                { path: "/updatePermissions/:id", props: true, component: UpdatePermissions },
                 { path: "/serviceGroup", component: ServiceGroup },
                 { path: "/service", component: Service },
                 // reports
@@ -88,6 +91,7 @@ const router = createRouter({
                 { path: "/categoryReport", component: ExpenseCatReport },
                 { path: "/productReport", component: ExpenseProductReport },
                 { path: "/pickupReport", component: PickupReport },
+                { path: "/serviceReport", component: Services },
                 // Dashboard
                 // CureCycle
                 { path: "/cure", component: CureCycle },

@@ -44,6 +44,8 @@ class PaymentController extends Controller
             return Payment::create($validated); 
         });
 
+        
+
         return new PaymentResource($billPayment);
 
 
@@ -66,7 +68,9 @@ class PaymentController extends Controller
     {
         $validated= $request->validated();
         $validated['user_id'] = Auth()->id() ?? 1;
-
+        $billExpense = $payment->billExpense; 
+        $paid =$billExpense->paid + $validated['amount'] - $payment->amount;
+        $billExpense->update(['paid' => $paid]);
         $payment->update($validated);
         return new PaymentResource($payment);
 

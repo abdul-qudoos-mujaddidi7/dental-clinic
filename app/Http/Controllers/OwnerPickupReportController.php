@@ -12,11 +12,23 @@ class OwnerPickupReportController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $ownerPickup= DB::table('owner_pickups')->selectRaw('owners.name, Sum(amount) as totalAmount')
-                    ->leftJoin('owners','owner_pickups.owner_id', '=', 'owners.id')
-                    ->groupBy('owner_pickups.owner_id','owners.name')->paginate(5);
+        // Get the date filters from the request
+        $fromDate = $request->fromDate;
+        $toDate = $request->toDate;
 
+        // Fetch owner pickup records with optional date range filter
+        $ownerPickup = DB::table('owner_pickups')
+            ->selectRaw('owners.name, SUM(amount) as totalAmount')
+            ->leftJoin('owners', 'owner_pickups.owner_id', '=', 'owners.id')
+            ->when($fromDate && $toDate, function ($query) use ($fromDate, $toDate) {
+                // Apply date filter if provided
+                $query->whereBetween('owner_pickups.created_at', [$fromDate, $toDate]);
+            })
+            ->groupBy('owner_pickups.owner_id', 'owners.name')
+            ->paginate(5);
 
-        return $ownerPickup;
+        return response()->json([
+            'ownerPickup' => $ownerPickup
+        ]);
     }
 }

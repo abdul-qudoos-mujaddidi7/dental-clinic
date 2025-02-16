@@ -109,9 +109,7 @@
                     <tbody>
                         <tr
                             class="product-table"
-                            v-for="(
-                                pro, index
-                            ) in ExpenseRepository.expenseProduct"
+                            v-for="(pro, index) in combinedServices"
                             :key="index"
                         >
                             <td class="pl-3 text-start">
@@ -222,11 +220,7 @@ let formData = reactive({
     paid: 0,
 });
 
-// Fetch data and initialize formData on component mount
-onMounted(async () => {
-    await ExpenseRepository.fetchBillExpense(routeParams.params.id);
-
-    // Update each property individually for reactivity
+ExpenseRepository.fetchBillExpense(routeParams.params.id).then((res) => {
     const billExpense = ExpenseRepository.billExpense;
     formData.id = billExpense.id;
     formData.expenseDetails = billExpense.expenseDetails || [];
@@ -236,11 +230,6 @@ onMounted(async () => {
     formData.billDate = billExpense.date;
     formData.note = billExpense.note;
     formData.paid = billExpense.paid;
-
-    // Deduplicate expenseProduct array without losing reactivity
-    ExpenseRepository.expenseProduct = ExpenseRepository.expenseProduct.filter(
-        (item, index, self) => index === self.findIndex((i) => i.id === item.id)
-    );
 });
 
 const formRef = ref(null);
@@ -256,14 +245,22 @@ const CalcFetchProduct = (selectedProduct) => {
         (product) => product.id === selectedProduct.id
     );
     if (!exists) {
-        console.log(selectedProduct)
-        selectedProduct = {...selectedProduct, productId: selectedProduct.id}
+        console.log(selectedProduct);
+        selectedProduct = { ...selectedProduct, productId: selectedProduct.id };
         ExpenseRepository.expenseProduct.push(selectedProduct);
-        formData.expenseDetails=ExpenseRepository.expenseProduct;
+        formData.expenseDetails = ExpenseRepository.expenseProduct;
     }
     clearSearch();
 };
 
+const combinedServices = computed(() => {
+    console.log(
+        "khan saib i love you",
+        formData.expenseDetails,
+        ...formData.expenseDetails
+    );
+    return [...formData.expenseDetails];
+});
 // Clear search results
 const clearSearch = () => {
     ExpenseRepository.billExpenseSearch = "";
@@ -281,9 +278,8 @@ const removeProduct = (index) => {
     ExpenseRepository.expenseProduct.splice(index, 1);
 };
 
-
 // Calculate total for each product
-const multiple = (pro) => (pro.quantity * pro.cost) || 0;
+const multiple = (pro) => pro.quantity * pro.cost || 0;
 
 // Watch for changes in expenseProduct to recalculate subtotals
 watch(
@@ -306,13 +302,13 @@ const totalSum = computed(() => {
 
 // Update function to transform and submit formData
 const update = async () => {
-    formData.expenseDetails = formData.expenseDetails.map(data => {
+    formData.grandTotal = totalSum.value;
+    formData.expenseDetails = formData.expenseDetails.map((data) => {
         return data.expenseProduct && data.expenseProduct.id
             ? { ...data, product: { id: data.expenseProduct.id } }
             : data;
     });
 
-    
     const isValid = await formRef.value.validate();
     if (isValid) {
         await ExpenseRepository.UpdateBillExpense(formData.id, formData);

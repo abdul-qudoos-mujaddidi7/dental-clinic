@@ -22,6 +22,13 @@
                         v-model="ReportRepository.expenseProductReportSearch"
                     ></v-text-field>
                 </div>
+                <div class="d-flex">
+                    <date-picker
+                        v-model:value="ReportRepository.productDateRange"
+                        @change="onDateChange"
+                        range
+                    ></date-picker>
+                </div>
             </div>
             <!-- v-table server  -->
             <div class="overflow-x-hidden">
@@ -61,11 +68,40 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted,reactive, watch } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 import { useReportRepository } from "@/store/ReportRepository";
 const ReportRepository = useReportRepository();
+import DatePicker from "vue-datepicker-next";
+import "vue-datepicker-next/index.css";
+const productDateRange = ref([new Date(), new Date()]);
 
+
+const onDateChange = () => {
+    const [startDate, endDate] = ReportRepository.productDateRange;
+    if (startDate && endDate) {
+        ReportRepository.fetchExpenseProductReports(startDate, endDate);
+    }
+};
+
+watch(
+    () => ReportRepository.ProductReportSearch,
+    (newSearchTerm) => {
+        const [startDate, endDate] = ReportRepository.productDateRange;
+        if (startDate && endDate) {
+            ReportRepository.fetchExpenseProductReports(startDate, endDate);
+        }
+    }
+);
+
+onMounted(() => {
+    ReportRepository.productDateRange = productDateRange.value;
+    ReportRepository.fetchExpenseProductReports(
+        productDateRange.value[0],
+        productDateRange.value[1]
+    );
+    console.log(productDateRange.value[0], productDateRange.value[1], "service report");
+});
 // header
 const headers = [
     { title: "Category Name", key: "name", align: "start", sortable: false },

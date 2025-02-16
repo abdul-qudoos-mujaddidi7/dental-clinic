@@ -41,8 +41,7 @@ class UserRequest extends FormRequest
             'email' => [
                 'required',
                 'email',
-                Rule::unique('users')->ignore($this->route('user') ? $this->route('user')->id : null), // Ignore current user's email
-            ],
+                Rule::unique("roles", "name")->ignore($this->route("role") ? $this->route("role")->id : null),            ],
             'role_id' => 'required|numeric|exists:roles,id',
         ];
     }

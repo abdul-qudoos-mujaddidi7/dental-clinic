@@ -2,7 +2,7 @@
     <CreatePatients v-if="ReportRepository.createDialog" />
     <div class="all-expense rounded-xl">
         <div class="card rounded-xl">
-            <AppBar mainTitle="Owner Pickups" sub-title="people" />
+            <AppBar mainTitle="patient report " sub-title="report" />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
@@ -21,6 +21,13 @@
                         hide-details
                         v-model="ReportRepository.patientReportSearch"
                     ></v-text-field>
+                </div>
+                <div class="d-flex">
+                    <date-picker
+                        v-model:value="ReportRepository.productDateRange"
+                        @change="onDateChange"
+                        range
+                    ></date-picker>
                 </div>
            
             </div>
@@ -60,11 +67,41 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted,reactive, watch } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 import { useReportRepository } from "@/store/ReportRepository";
 const ReportRepository = useReportRepository();
 
+import DatePicker from "vue-datepicker-next";
+import "vue-datepicker-next/index.css";
+const productDateRange = ref([new Date(), new Date()]);
+
+
+const onDateChange = () => {
+    const [startDate, endDate] = ReportRepository.productDateRange;
+    if (startDate && endDate) {
+        ReportRepository.fetchPatientsReports(startDate, endDate);
+    }
+};
+
+watch(
+    () => ReportRepository.ProductReportSearch,
+    (newSearchTerm) => {
+        const [startDate, endDate] = ReportRepository.productDateRange;
+        if (startDate && endDate) {
+            ReportRepository.fetchPatientsReports(startDate, endDate);
+        }
+    }
+);
+
+onMounted(() => {
+    ReportRepository.productDateRange = productDateRange.value;
+    ReportRepository.fetchPatientsReports(
+        productDateRange.value[0],
+        productDateRange.value[1]
+    );
+    console.log(productDateRange.value[0], productDateRange.value[1], "service report");
+});
 // header
 const headers = [
     { title: "Patients", key: "name", align: "start", sortable: false },

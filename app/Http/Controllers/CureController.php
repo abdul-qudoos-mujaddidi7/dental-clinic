@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CureRequest;
 use App\Http\Resources\CureResource;
 use App\Models\Cure;
+use App\Models\CurePayment;
 use App\Models\CureService;
 use App\Models\Patient;
 use Illuminate\Http\Request;
@@ -73,6 +74,14 @@ class CureController extends Controller
                     'status' => $service['status']
                 ]);
             }
+        }
+
+        if ($request->has('paid')) {
+            CurePayment::create([
+                'cure_id' => $cure->id,
+                'amount' => $validated['paid'],
+                'date' => $validated['start_date']
+            ]);
         }
         return new CureResource($cure->load('cureServices'));
     }
@@ -165,6 +174,11 @@ class CureController extends Controller
             }
         
             $cure->update($validated);
+            CurePayment::updateOrCreate(
+                ['cure_id' => $cure->id], // Search condition
+                ['amount' => $validated['paid'], 'date' => $validated['start_date']] // Data to update or insert
+            );
+            
 
         // Return the updated Cure with services
         return response()->json(['message'=>'updated successfully']);

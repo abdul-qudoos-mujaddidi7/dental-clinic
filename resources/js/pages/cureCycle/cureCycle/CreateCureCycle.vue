@@ -43,7 +43,7 @@
                     class="pr-2 pl-2"
                     style="width: 45%"
                     item-value="id"
-                    item-title="firstName"
+                    item-title="name"
                     density="compact"
                     :rules="[rules.required]"
                 ></v-autocomplete>
@@ -297,14 +297,27 @@ watch(
     { deep: true }
 );
 
+// const totalSum = computed(() => {
+//     const total = CureRepository.services.reduce(
+//         (acc, item) => acc + multiple(item),
+//         0
+//     );
+//     formData.grandTotal = total;
+//     return total;
+// });
 const totalSum = computed(() => {
-    const total = CureRepository.services.reduce(
-        (acc, item) => acc + multiple(item),
-        0
-    );
+    let total = 0;
+
+    if (Array.isArray(CureRepository.services)) {
+        for (const item of CureRepository.services) {
+            total += multiple(item);
+        }
+    }
+
     formData.grandTotal = total;
     return total;
 });
+
 // Computed Duo (remaining balance)
 const Duo = computed(() => {
     return totalSum.value - formData.paid || 0;

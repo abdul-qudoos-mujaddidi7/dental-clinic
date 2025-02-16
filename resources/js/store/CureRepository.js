@@ -3,6 +3,7 @@ import { reactive, ref } from "vue";
 import { axios } from "../axios";
 import { useRouter } from "vue-router";
 import Patients from "../pages/people/patients/Patients.vue";
+import { data } from "autoprefixer";
 
 export let useCureRepository = defineStore("CureRepository", {
     state() {
@@ -20,7 +21,8 @@ export let useCureRepository = defineStore("CureRepository", {
             ShowCurePaymentDialog:ref(false),
             cureId:ref(''),
             paymentId:ref(''),
-
+            services: [],
+            
             // lead
             cures: reactive([]),
             cure: reactive([]),
@@ -28,7 +30,7 @@ export let useCureRepository = defineStore("CureRepository", {
             patientsFor: reactive([]),
             doctorFor:reactive([]),
             searchFetch: reactive([]),
-            services: reactive([]),
+            cureProduct: reactive([]),
             leadStageFor:reactive([]),
         };
     },
@@ -60,8 +62,35 @@ export let useCureRepository = defineStore("CureRepository", {
             this.loading = false;
             // this.searchFetch = "";
         },
+        // async fetchProduct(id, isUpdate = false) {
+
+        //     try {
+        //         // Fetch product data from the backend
+        //         const response = await axios.get(`services/${id}`);
+        //         const productData = response.data.data;
+        
+        //         // // If updating, remove the `id` field to avoid duplication issues
+        //         // if (isUpdate) {
+        //         //     delete productData.id;
+        //         // }
+        
+        //         // Check if the product already exists in the services array
+        //         const exists = this.services.some(item => item.id === productData.id);
+        //         if (!exists) {
+                  
+        //             this.services.push(productData);
+        //             this.cure.servicesDetails.push(productData);
+        //         } else {
+        //             console.warn(`Product with ID ${productData.id} already exists.`);
+        //         }
+        
+        //         // Clear the search results after processing
+        //         this.searchFetch = [];
+        //     } catch (error) {
+        //         console.error("Error fetching product:", error);
+        //     }
+        // },
         async fetchProduct(id, isUpdate = false) {
-       
             try {
                 const response = await axios.get(`services/${id}`);
                 const productData = response.data.data;
@@ -70,21 +99,38 @@ export let useCureRepository = defineStore("CureRepository", {
         
                 // Only add if it doesn’t already exist
                 if (!this.services.some(item => item.id === productData.id)) {
-                    // this.services.push(productData);
-                    this.cure.services.push(productData);
+                    this.services.push(productData);
+                    // this.cure.services.push(productData);
                     // this.billExpense.expenseDetails.push(productData);
                 }
+        
+                console.log(response.data.data, "fetchProduct");
+        
+                // Avoid duplication in `cureProduct`
+                if (!this.cureProduct.some((item) => item.id === productData.id)) {
+                    this.cureProduct.push(productData);
+                }
+        
+                // Avoid duplication in `servicesDetails`
+                if (!this.cure.servicesDetails.some((item) => item.id === productData.id)) {
+                    this.cure.servicesDetails.push(productData);
+                }
+                
+        
+                // Clear search results
                 this.searchFetch = [];
-            } catch (err) {
-                // this.error = err.message;
+            } catch (error) {
+                console.error("Error fetching product:", error);
             }
-        },
+        }
+,        
+        
         async Patients() {
-            const response = await axios.get("patients");
+            const response = await axios.get("peoples?type=patient");
             this.patientsFor = response.data.data;
         },
         async Doctor() {
-            const response = await axios.get("dentists");
+            const response = await axios.get("peoples?type=dentist");
             this.doctorFor = response.data.data;
         },
         async bulkDeleteLead(data) {
@@ -109,17 +155,40 @@ export let useCureRepository = defineStore("CureRepository", {
             this.totalItems = response.data.meta.total;
             this.loading = false;
         },
+        // async FetchCure(id) {
+        //     // this.loading = true;
+        //     console.log(id);
+        //     try {
+        //         const response = await axios.get(`cures/${id}`);
+        //         this.cure = response.data.data;
+        //         this.services.response.data.data.servicesDetails;
+        //         this.services = this.services.map((data)=>{
+        //             return{...data, name: data.services.name}
+        //         })
+        //         console.log(this.cure,'fetch cure ');
+        //         console.log(this.services,'services in the fetch cure  ');
+        //     } catch (err) {
+        //         this.error = err;
+        //     }
+        // },
+       
         async FetchCure(id) {
-            // this.loading = true;
-            console.log(id);
             try {
                 const response = await axios.get(`cures/${id}`);
                 this.cure = response.data.data;
-                console.log(this.cure,'fetch cure ');
+                this.cureProduct = response.data.data.servicesDetails
+                this.cureProduct = this.cureProduct.map((data)=>{
+                    return{...data, name:data.cureProduct.serviceName || data.cureProduct.name}
+                })
+                console.log(this.cure, "fetch cure");
+                console.log(this.servicesDetails, "services in the fetch cure");
+                console.log(this.cureProduct, "services in the fetchProduct");
             } catch (err) {
-                this.error = err;
+                console.error("Error fetching cure:", err);
             }
-        },
+        }
+,        
+        
         async CreateCure(formData) {
             console.log(formData);
             try {

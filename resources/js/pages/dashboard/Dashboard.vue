@@ -9,26 +9,29 @@
 
         <v-row class="pt-6">
             <v-col>
-                <v-card variant="flat" dir="rtl" rounded="lg">
-                    <template v-slot:title>
-                        <div class="d-flex align-center justify-end">
-                            <div class="font-weight-black">
+                <v-card variant="flat" rounded="lg" >
+                 
+                    <template v-slot:title >
+                        <div class="d-flex ">
+                        <v-avatar size="40" class="mr-4">
+                            <!-- <v-icon size="36">mdi-account-details</v-icon> -->
+                            <img
+                                src="@/assets/images/dashboard/totalVisa.svg"
+                                class="w-6"
+                            />
+                        </v-avatar>
+                        <div class="pt-1 ">
+                            <div class="font-weight-black ">
                                 {{
-                                    DashboardRepository.dashboardReport
-                                        .netProfit
+                                    DashboardRepository.dashboardReport.netProfit
                                 }}
                             </div>
-                            <v-avatar size="40" class="mr-4">
-                                <!-- <v-icon size="36">mdi-account-details</v-icon> -->
-                                <img
-                                    src="@/assets/images/dashboard/totalVisa.svg"
-                                    class="w-6"
-                                />
-                            </v-avatar>
                         </div>
+                    </div>
                     </template>
+            
                     <v-card-text
-                        class="text-h6 d-flex justify-end calibri_font ml-14"
+                        class="text-h6 d-flex justify-start calibri_font ml-14"
                     >
                         Profit
                     </v-card-text>
@@ -36,15 +39,9 @@
             >
 
             <v-col>
-                <v-card variant="flat" dir="rtl" rounded="lg">
+                <v-card variant="flat"  rounded="lg">
                     <template v-slot:title>
-                        <div class="d-flex align-center justify-end">
-                            <div class="font-weight-black">
-                                {{
-                                    DashboardRepository.dashboardReport
-                                        .totalAllExpenses
-                                }}
-                            </div>
+                        <div class="d-flex align-center justify-start">
                             <v-avatar size="40" class="mr-4">
                                 <!-- <v-icon size="36">mdi-account-details</v-icon> -->
                                 <img
@@ -52,25 +49,26 @@
                                     class="w-8"
                                 />
                             </v-avatar>
+                            <div class="font-weight-black">
+                                {{
+                                    DashboardRepository.dashboardReport
+                                        .totalAllExpenses
+                                }}
+                            </div>
+                          
                         </div>
                     </template>
                     <v-card-text
-                        class="text-h6 d-flex justify-end calibri_font ml-14"
+                        class="text-h6 d-flex justify-start calibri_font ml-14"
                     >
                         Expense
                     </v-card-text>
                 </v-card></v-col
             >
             <v-col>
-                <v-card variant="flat" dir="rtl" rounded="lg">
+                <v-card variant="flat"  rounded="lg">
                     <template v-slot:title>
-                        <div class="d-flex align-center justify-end">
-                            <div class="font-weight-black">
-                                {{
-                                    DashboardRepository.dashboardReport
-                                        .totalEarnings
-                                }}
-                            </div>
+                        <div class="d-flex align-center justify-start">
                             <v-avatar size="40" class="mr-4">
                                 <!-- <v-icon size="36">mdi-account-details</v-icon> -->
                                 <img
@@ -78,10 +76,17 @@
                                     class="w-6"
                                 />
                             </v-avatar>
+                            <div class="font-weight-black">
+                                {{
+                                    DashboardRepository.dashboardReport
+                                        .totalEarnings
+                                }}
+                            </div>
+                            
                         </div>
                     </template>
                     <v-card-text
-                        class="text-h6 d-flex justify-end calibri_font ml-14"
+                        class="text-h6 d-flex justify-start calibri_font ml-14"
                     >
                         Sales
                     </v-card-text>
@@ -89,15 +94,9 @@
             >
 
             <v-col>
-                <v-card variant="flat" dir="rtl" rounded="lg">
+                <v-card variant="flat"  rounded="lg">
                     <template v-slot:title>
-                        <div class="d-flex align-center justify-end">
-                            <div class="font-weight-black">
-                                {{
-                                    DashboardRepository.dashboardReport
-                                        .totalPatients
-                                }}
-                            </div>
+                        <div class="d-flex align-center justify-start">
                             <v-avatar size="40" class="mr-4">
                                 <!-- <v-icon size="36">mdi-account-details</v-icon> -->
                                 <img
@@ -105,10 +104,17 @@
                                     class="w-4"
                                 />
                             </v-avatar>
+                            <div class="font-weight-black">
+                                {{
+                                    DashboardRepository.dashboardReport
+                                        .totalPatients
+                                }}
+                            </div>
+                           
                         </div>
                     </template>
                     <v-card-text
-                        class="text-h6 d-flex justify-end calibri_font ml-14"
+                        class="text-h6 d-flex justify-start calibri_font ml-14"
                     >
                         Patients
                     </v-card-text>
