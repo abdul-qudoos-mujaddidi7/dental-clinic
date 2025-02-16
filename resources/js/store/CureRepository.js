@@ -126,11 +126,11 @@ export let useCureRepository = defineStore("CureRepository", {
 ,        
         
         async Patients() {
-            const response = await axios.get("patients");
+            const response = await axios.get("peoples?type=patient");
             this.patientsFor = response.data.data;
         },
         async Doctor() {
-            const response = await axios.get("dentists");
+            const response = await axios.get("peoples?type=dentist");
             this.doctorFor = response.data.data;
         },
         async bulkDeleteLead(data) {
