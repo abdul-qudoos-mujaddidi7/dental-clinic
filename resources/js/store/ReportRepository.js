@@ -107,7 +107,7 @@ export let useReportRepository = defineStore("ReportRepository", {
                     const formatDate = (date) => {
                         if (!date) return null;
                         const d = new Date(date);
-                        return `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
+                        return `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()}/`;
                     };
                 
                     const formattedStartDate = formatDate(startDate);
