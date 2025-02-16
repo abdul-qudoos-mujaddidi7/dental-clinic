@@ -103,13 +103,21 @@ export let useReportRepository = defineStore("ReportRepository", {
                 this.loading = false;
             },
                 // service  Category report =============================
-                async fetchServiceReports({ page, itemsPerPage }, startDate, endDate) {
+                async fetchServiceReports(startDate = null, endDate = null) {
+                    const params = {};
+                    if (startDate) {
+                        params.startDate = startDate ? startDate.toJSON().slice(0, 10) : null;
+                    }
+                    if (endDate) {
+                        params.endDate = endDate? endDate.toJSON().slice(0, 10) : null;
+                    }
+        
                     console.log(startDate, endDate, 'in the repository')
                     this.loading = true;
                     const response = await axios.get(
                         `serviceReport?page=${page}&perPage=${itemsPerPage}&search=${this.serviceReportSearch}&start_date=${startDate}&end_date=${endDate}`
                     );
-                    this.serviceReport = response.data;
+                    this.serviceReport = response.data.data;
                     console.log(this.serviceReport, "pickup report");
                     this.totalItems = response.total;
                     this.loading = false;
