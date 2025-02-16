@@ -1,5 +1,5 @@
 <template>
-    <CreateOwner v-if="LeadRepository.createDialog" />
+    <CreateAppointment v-if="LeadRepository.createDialog" />
     <div class="all-expense rounded-xl">
         <div class="card rounded-xl">
             <AppBar mainTitle="Appointment" sub-title="lead" />
@@ -113,13 +113,14 @@
 import { ref, onMounted } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 // import CreateOwner from "./CreateOwner.vue";
+import CreateAppointment from "./CreateAppointment.vue";
 import { useLeadRepository } from "@/store/LeadRepository";
 const LeadRepository = useLeadRepository();
 // bulk delete
 
 // delete and update Create
 const CreateDialogShow = () => {
-    LeadRepository.owner = {},
+    LeadRepository.appointment = {},
     LeadRepository.setEditMode(false);
     LeadRepository.createDialog = true;
 };
@@ -127,9 +128,9 @@ const CreateDialogShow = () => {
 const edit = (item) => {
     console.log(item, "me");
     LeadRepository.setEditMode(true);
-    LeadRepository.owner = {};
-    if (Object.keys(LeadRepository.owner).length === 0) {
-        LeadRepository.fetchOwner(item.id)
+    LeadRepository.appointment = {};
+    if (Object.keys(LeadRepository.appointment).length === 0) {
+        LeadRepository.fetchAppointment(item.id)
             .then(() => {
                 LeadRepository.createDialog = true;
             })
@@ -144,10 +145,12 @@ const deleteItem = async (item) => {
 };
 // header
 const headers = [
-    { title: "Name", key: "name", align: "start", sortable: false },
-    { title: "Pickup", key: "totalAmount", align: "center", sortable: false },
-    { title: "Phone", key: "phone", align: "center", sortable: false },
-
-    { title: "Action", key: "action", align: "end", sortable: false },
+    { title: "Date", key: "date", align: "start", sortable: false },
+    { title: "Time", key: "time", align: "center", sortable: false },
+    { title: "Status", key: "status", align: "center", sortable: false },
+    { title: "Doctor Name", key: "dentistName", align: "end", sortable: false },
+    { title: "User Name", key: "userName", align: "end", sortable: false },
+    { title: "Patient Name", key: "patientName", align: "end", sortable: false },
+    { title: "Action ", key: "action", align: "end", sortable: false },
 ];
 </script>
