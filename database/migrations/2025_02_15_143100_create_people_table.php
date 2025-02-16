@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('phone');
             $table->string('email')->nullable()->unique();
             $table->string('address')->nullable();
-            $table->enum('type', ['patient', 'dentist', 'supplier', 'owner']);
+            $table->enum('type', ['patient', 'dentist', 'supplier', 'owner','employee']);
             
             // Fields specific to patients
             $table->date('date_of_birth')->nullable();

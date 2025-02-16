@@ -12,8 +12,8 @@ class ServiceReportController extends Controller
         $perPage = $request->input('per_page', 10); // Default to 10 items per page if not provided
 
         // Check if date range is provided
-        $fromDate = $request->fromDate;
-        $toDate = $request->toDate;
+        $fromDate = $request->start_date;
+        $toDate = $request->end_date;
         // if ($request->has(['from_date', 'to_date']) && !empty($request->from_date) && !empty($request->to_date)) {
 
         //     // Filtered calculations (Custom Data)

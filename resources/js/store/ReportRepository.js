@@ -103,7 +103,7 @@ export let useReportRepository = defineStore("ReportRepository", {
                 this.loading = false;
             },
                 // service  Category report =============================
-                async fetchServiceReports({ page, itemsPerPage,} ,startDate = null, endDate = null) { 
+                async fetchServiceReports({ page=1, itemsPerPage=10,} ,startDate = null, endDate = null) { 
                     const formatDate = (date) => {
                         if (!date) return null;
                         const d = new Date(date);
