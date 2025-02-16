@@ -607,5 +607,92 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
                 this.error = err;
             }
         },
+        // employee 
+        async FetchEmployees({ page, itemsPerPage }) {
+            this.loading = true;
+
+            const response = await axios.get(
+                `users?page=${page}&perPage=${itemsPerPage}&search=${this.userSearch}`
+            );
+            this.employees = response.data.data;
+            this.totalItems = response.data.meta.total;
+            this.loading = false;
+        },
+        async FetchEmployee(id) {
+            // this.error = null;
+            try {
+                const response = await axios.get(`users/${id}`);
+
+                this.employee = response.data.data;
+                console.log(this.supplier);
+            } catch (err) {
+                // this.error = err.message;
+            }
+        },
+        async CreateUser(formData) {
+            console.log(formData);
+            try {
+                // Adding a custom header to the Axios request
+                const config = {
+                    method: "POST",
+                    url: "users",
+
+                    data: formData,
+                };
+
+                // Using Axios to make a GET request with async/await and custom headers
+                const response = await axios(config);
+                this.createDialog = false;
+                this.FetchUsers({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                // If there's an error, set the error in the stor
+            }
+        },
+        async UpdateUser(id, data) {
+            console.log(data);
+            try {
+                const config = {
+                    method: "PUT",
+                    url: `users/${id}`,
+
+                    data: data,
+                };
+
+                // Using Axios to make a post request with async/await and custom headers
+                const response = await axios(config);
+                this.createDialog = false;
+                this.FetchUsers({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                // If there's an error, set the error in the stor
+            }
+        },
+        async DeleteUser(id) {
+            this.isLoading = true;
+            this.Expenses = [];
+            this.error = null;
+
+            try {
+                const config = {
+                    method: "DELETE",
+                    url: "users/" + id,
+                };
+
+                const response = await axios(config);
+
+                // this.supplier = response.data.data;
+                this.FetchUsers({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                this.error = err;
+            }
+        },
     },
 });

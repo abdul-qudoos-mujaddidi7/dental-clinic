@@ -103,25 +103,41 @@ export let useReportRepository = defineStore("ReportRepository", {
                 this.loading = false;
             },
                 // service  Category report =============================
-                async fetchServiceReports(startDate = null, endDate = null) {
-                    const params = {};
-                    if (startDate) {
-                        params.startDate = startDate ? startDate.toJSON().slice(0, 10) : null;
-                    }
-                    if (endDate) {
-                        params.endDate = endDate? endDate.toJSON().slice(0, 10) : null;
-                    }
-        
-                    console.log(startDate, endDate, 'in the repository')
+                async fetchServiceReports({ page, itemsPerPage,} ,startDate = null, endDate = null) { 
+                    const formatDate = (date) => {
+                        if (!date) return null;
+                        const d = new Date(date);
+                        return `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
+                    };
+                
+                    const formattedStartDate = formatDate(startDate);
+                    const formattedEndDate = formatDate(endDate);
+                
+                    console.log(`Start Date: ${formattedStartDate}, End Date: ${formattedEndDate}`);
+                
                     this.loading = true;
-                    const response = await axios.get(
-                        `serviceReport?page=${page}&perPage=${itemsPerPage}&search=${this.serviceReportSearch}&start_date=${startDate}&end_date=${endDate}`
-                    );
-                    this.serviceReport = response.data.data;
-                    console.log(this.serviceReport, "pickup report");
-                    this.totalItems = response.data.total;
-                    this.loading = false;
-                },
+                    try {
+                        const response = await axios.get(`serviceReport`, {
+                            params: {
+                                page,
+                                perPage: itemsPerPage,
+                                search: this.serviceReportSearch,
+                                start_date: formattedStartDate,
+                                end_date: formattedEndDate,
+                            }
+                        });
+                
+                        this.serviceReport = response.data.data;
+                        console.log(this.serviceReport, "pickup report");
+                        this.totalItems = response.data.total;
+                    } catch (error) {
+                        console.error("Error fetching service reports:", error);
+                    } finally {
+                        this.loading = false;
+                    }
+                }
+                
+                
+                
     },
 });
-// const url = /api/patientPaymentReport?page=${page}&perPage=${itemsPerPage}&search=${this.patientReportSearch}&start_date=${startDate}&end_date=${endDate};
