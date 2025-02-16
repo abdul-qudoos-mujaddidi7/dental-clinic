@@ -22,7 +22,15 @@ export let useLeadRepository = defineStore("LeadRepository", {
             lead: reactive([]),
             leadSearch: ref(""),
             leadCategoriesFor: reactive([]),
-            leadStageFor:reactive([]),
+            leadStageFor: reactive([]),
+            // appointments
+            appointmentSearch: ref(""),
+            appointments: reactive([]),
+            appointment: reactive([]),
+            patientsForApp:reactive([]),
+            doctorsForApp:reactive([]),
+            userForApp:reactive([]),
+            
         };
     },
     actions: {
@@ -42,7 +50,7 @@ export let useLeadRepository = defineStore("LeadRepository", {
             const response = await axios.get("categories");
             this.leadCategoriesFor = response.data.data;
         },
-        async leadStages(item,id) {
+        async leadStages(item, id) {
             const response = await axios.get("stages");
             this.leadStageFor = response.data.data;
         },
@@ -112,7 +120,6 @@ export let useLeadRepository = defineStore("LeadRepository", {
                     itemsPerPage: this.itemsPerPage,
                 });
                 this.isEditMode = false;
-
             } catch (err) {
                 this.error = err;
             }
@@ -126,7 +133,7 @@ export let useLeadRepository = defineStore("LeadRepository", {
                 const response = await axios(config);
                 this.FetchLeads({
                     page: this.page,
-                    itemsPerPage: this.itemsPerPage
+                    itemsPerPage: this.itemsPerPage,
                 });
             } catch (err) {
                 this.error = err;
@@ -141,13 +148,13 @@ export let useLeadRepository = defineStore("LeadRepository", {
                     data: formData,
                 };
                 const response = await axios(config);
-             
             } catch (err) {
                 this.error = err;
             }
         },
         // /leads/stage/{lead}
         // category
+
         async FetchCategories({ page, itemsPerPage }) {
             this.loading = true;
             const response = await axios.get(
@@ -220,7 +227,7 @@ export let useLeadRepository = defineStore("LeadRepository", {
                 this.error = err;
             }
         },
-        // stages 
+        // stages
         async FetchStages({ page, itemsPerPage }) {
             this.loading = true;
             const response = await axios.get(
@@ -285,6 +292,104 @@ export let useLeadRepository = defineStore("LeadRepository", {
                 };
                 const response = await axios(config);
                 this.FetchStages({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                this.error = err;
+            }
+        },
+        // stages
+        async fetchPatients() {
+            this.loading = true;
+
+            const response = await axios.get(`peoples?type=patient`);
+            this.patientsForApp = response.data.data;
+            this.loading = false;
+        },
+        async fetchDoctors() {
+            this.loading = true;
+
+            const response = await axios.get(
+                `peoples?type=dentist`
+            );
+            this.doctorsForApp = response.data.data;
+            this.loading = false;
+        },
+        async fetchUsers() {
+            this.loading = true;
+
+            const response = await axios.get(
+                `users`
+            );
+            this.userForApp = response.data.data;
+            this.loading = false;
+        },
+        //
+        async FetchAppointments({ page, itemsPerPage }) {
+            this.loading = true;
+            const response = await axios.get(
+                `appointments?page=${page}&perPage=${itemsPerPage}&${this.appointmentSearch}`
+            );
+            this.appointments = response.data.data;
+            this.totalItems = response.data.meta.total;
+            this.loading = false;
+        },
+        async FetchAppointment(id) {
+            // this.loading = true;
+            console.log(id);
+            try {
+                const response = await axios.get(`appointments/${id}`);
+                this.appointment = response.data.data;
+                console.log(this.lead);
+            } catch (err) {
+                this.error = err;
+            }
+        },
+        async CreateAppointment(formData) {
+            console.log(formData);
+            try {
+                const config = {
+                    method: "POST",
+                    url: "appointments",
+                    data: formData,
+                };
+                const response = await axios(config);
+                this.createDialog = false;
+                this.FetchAppointments({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                this.error = err;
+            }
+        },
+        async UpdateAppointment(id, formData) {
+            console.log(formData, id, "Update ");
+            try {
+                const config = {
+                    method: "PUT",
+                    url: `appointments/${id}`,
+                    data: formData,
+                };
+                const response = await axios(config);
+                this.createDialog = false;
+                this.FetchAppointments({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                this.error = err;
+            }
+        },
+        async DeleteAppointment(id) {
+            try {
+                const config = {
+                    method: "DELETE",
+                    url: `appointments/${id}`,
+                };
+                const response = await axios(config);
+                this.FetchAppointments({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });

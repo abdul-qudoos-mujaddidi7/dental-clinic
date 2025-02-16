@@ -29,7 +29,6 @@
                         range
                     ></date-picker>
                 </div>
-           
             </div>
             <!-- v-table server  -->
             <div class="overflow-x-hidden">
@@ -67,7 +66,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted,reactive, watch } from "vue";
+import { ref, onMounted, reactive, watch } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 import { useReportRepository } from "@/store/ReportRepository";
 const ReportRepository = useReportRepository();
@@ -76,11 +75,13 @@ import DatePicker from "vue-datepicker-next";
 import "vue-datepicker-next/index.css";
 const productDateRange = ref([new Date(), new Date()]);
 
-
 const onDateChange = () => {
-    const [startDate, endDate] = ReportRepository.productDateRange;
+    console.log("called");
+
+    const startDate = ReportRepository.productDateRange[0];
+    const endDate = ReportRepository.productDateRange[1];
     if (startDate && endDate) {
-        ReportRepository.fetchPatientsReports(startDate, endDate);
+        ReportRepository.fetchPatientsReports({ page: 1, itemsPerPage: 10 },startDate, endDate);
     }
 };
 
@@ -97,10 +98,16 @@ watch(
 onMounted(() => {
     ReportRepository.productDateRange = productDateRange.value;
     ReportRepository.fetchPatientsReports(
+        { page: 1, itemsPerPage: 10 },
+
         productDateRange.value[0],
         productDateRange.value[1]
     );
-    console.log(productDateRange.value[0], productDateRange.value[1], "service report");
+    console.log(
+        productDateRange.value[0],
+        productDateRange.value[1],
+        "service report"
+    );
 });
 // header
 const headers = [

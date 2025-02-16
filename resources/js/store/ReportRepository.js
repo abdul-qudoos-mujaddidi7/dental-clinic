@@ -29,12 +29,12 @@ export let useReportRepository = defineStore("ReportRepository", {
             // expense cat report
             expenseProductReport: reactive([]),
             expenseProductReportSearch: ref(""),
-            // pickup report 
-            pickUpReportSearch:ref(""),
-            pickupReport:reactive([]),
+            // pickup report
+            pickUpReportSearch: ref(""),
+            pickupReport: reactive([]),
             // serviceReport
-            serviceReportSearch:ref(""),
-            serviceReport:reactive([]),
+            serviceReportSearch: ref(""),
+            serviceReport: reactive([]),
         };
     },
     actions: {
@@ -51,93 +51,212 @@ export let useReportRepository = defineStore("ReportRepository", {
             this.loading = false;
         },
         // patients payment ================================
-        async fetchPatientsReports({ page, itemsPerPage }, startDate, endDate) {
-            console.log(startDate, endDate, 'in the repository for patients report ')
+        async fetchPatientsReports(
+            { page, itemsPerPage },
+            startDate = null,
+            endDate = null
+        ) {
+            const formatDate = (date) => {
+                if (!date) return null;
+                const d = new Date(date);
+                return `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
+            };
+
+            const formattedStartDate = formatDate(startDate);
+            const formattedEndDate = formatDate(endDate);
+
+            console.log(
+                `Start Date: ${formattedStartDate}, End Date: ${formattedEndDate} in the repository for patients report`
+            );
 
             this.loading = true;
-            const response = await axios.get(
-                `patientPaymentReport?page=${page}&perPage=${itemsPerPage}&search=${this.patientReportSearch}&start_date=${startDate}&end_date=${endDate}`
-            );
-            this.patientReports = response.data.data;
-            console.log(this.patientReports, "payment report");
-            this.totalItems = response.data.total;
-            this.loading = false;
+            try {
+                const response = await axios.get(`patientPaymentReport`, {
+                    params: {
+                        page,
+                        perPage: itemsPerPage,
+                        search: this.patientReportSearch,
+                        start_date: formattedStartDate,
+                        end_date: formattedEndDate,
+                    },
+                });
+
+                this.patientReports = response.data.data;
+                console.log(this.patientReports, "payment report");
+                this.totalItems = response.data.total;
+            } catch (error) {
+                console.error("Error fetching patients reports:", error);
+            } finally {
+                this.loading = false;
+            }
         },
+
         // expense Category report =============================
-        async fetchExpenseCategoryReports({ page, itemsPerPage }, startDate, endDate) {
-            console.log(startDate, endDate, 'in the repository for expense cat reports ')
+        async fetchExpenseCategoryReports(
+            { page, itemsPerPage },
+            startDate = null,
+            endDate = null
+        ) {
+            const formatDate = (date) => {
+                if (!date) return null;
+                const d = new Date(date);
+                return `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
+            };
+
+            const formattedStartDate = formatDate(startDate);
+            const formattedEndDate = formatDate(endDate);
+
+            console.log(
+                `Start Date: ${formattedStartDate}, End Date: ${formattedEndDate} in the repository for expense cat reports`
+            );
 
             this.loading = true;
-            const response = await axios.get(
-                `expenseCategoryReport?page=${page}&perPage=${itemsPerPage}&search=${this.expenseCatReportSearch}&start_date=${startDate}&end_date=${endDate}`
-            );
-            this.expenseCatReport = response.data.data;
-            console.log(this.expenseCatReport, "expense category report");
-            this.totalItems = response.data.total;
-            this.loading = false;
-        },
-        // expense Category report =============================
-        async fetchExpenseProductReports({ page, itemsPerPage }, startDate, endDate) {
-            this.loading = true;
-            console.log(startDate, endDate, 'in the repository for expense product report ')
+            try {
+                const response = await axios.get(`expenseCategoryReport`, {
+                    params: {
+                        page,
+                        perPage: itemsPerPage,
+                        search: this.expenseCatReportSearch,
+                        start_date: formattedStartDate,
+                        end_date: formattedEndDate,
+                    },
+                });
 
-            const response = await axios.get(
-                `expenseProductReport?page=${page}&perPage=${itemsPerPage}&search=${this.expenseProductReportSearch}&start_date=${startDate}&end_date=${endDate}`
-            );
-            this.expenseProductReport = response.data.data;
-            console.log(this.expenseProductReport, "expense product report");
-            this.totalItems = response.data.total;
-            this.loading = false;
-        },
-        
-             // expense Category report =============================
-             async fetchPickupReports({ page, itemsPerPage }, startDate, endDate) {
-                console.log(startDate, endDate, 'in the repository for pickup')
-                this.loading = true;
-                const response = await axios.get(
-                    `pickupReport?page=${page}&perPage=${itemsPerPage}&search=${this.pickUpReportSearch}&start_date=${startDate}&end_date=${endDate}`
+                this.expenseCatReport = response.data.data;
+                console.log(this.expenseCatReport, "expense category report");
+                this.totalItems = response.data.total;
+            } catch (error) {
+                console.error(
+                    "Error fetching expense category reports:",
+                    error
                 );
+            } finally {
+                this.loading = false;
+            }
+        },
+
+        // expense Category report =============================
+        async fetchExpenseProductReports(
+            { page, itemsPerPage },
+            startDate = null,
+            endDate = null
+        ) {
+            const formatDate = (date) => {
+                if (!date) return null;
+                const d = new Date(date);
+                return `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
+            };
+
+            const formattedStartDate = formatDate(startDate);
+            const formattedEndDate = formatDate(endDate);
+
+            console.log(
+                `Start Date: ${formattedStartDate}, End Date: ${formattedEndDate} in the repository for expense product report`
+            );
+
+            this.loading = true;
+            try {
+                const response = await axios.get(`expenseProductReport`, {
+                    params: {
+                        page,
+                        perPage: itemsPerPage,
+                        search: this.expenseProductReportSearch,
+                        start_date: formattedStartDate,
+                        end_date: formattedEndDate,
+                    },
+                });
+
+                this.expenseProductReport = response.data.data;
+                console.log(
+                    this.expenseProductReport,
+                    "expense product report"
+                );
+                this.totalItems = response.data.total;
+            } catch (error) {
+                console.error("Error fetching expense product reports:", error);
+            } finally {
+                this.loading = false;
+            }
+        },
+        // expense Category report =============================
+        async fetchPickupReports(
+            { page, itemsPerPage },
+            startDate = null,
+            endDate = null
+        ) {
+            const formatDate = (date) => {
+                if (!date) return null;
+                const d = new Date(date);
+                return `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
+            };
+
+            const formattedStartDate = formatDate(startDate);
+            const formattedEndDate = formatDate(endDate);
+
+            console.log(
+                `Start Date: ${formattedStartDate}, End Date: ${formattedEndDate} in the repository for pickup`
+            );
+
+            this.loading = true;
+            try {
+                const response = await axios.get(`pickupReport`, {
+                    params: {
+                        page,
+                        perPage: itemsPerPage,
+                        search: this.pickUpReportSearch,
+                        start_date: formattedStartDate,
+                        end_date: formattedEndDate,
+                    },
+                });
+
                 this.pickupReport = response.data.data;
                 console.log(this.pickupReport, "pickup report");
                 this.totalItems = response.data.total;
+            } catch (error) {
+                console.error("Error fetching pickup reports:", error);
+            } finally {
                 this.loading = false;
-            },
-                // service  Category report =============================
-                async fetchServiceReports({ page=1, itemsPerPage=10,} ,startDate = null, endDate = null) { 
-                    const formatDate = (date) => {
-                        if (!date) return null;
-                        const d = new Date(date);
-                        return `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()}/`;
-                    };
-                
-                    const formattedStartDate = formatDate(startDate);
-                    const formattedEndDate = formatDate(endDate);
-                
-                    console.log(`Start Date: ${formattedStartDate}, End Date: ${formattedEndDate}`);
-                
-                    this.loading = true;
-                    try {
-                        const response = await axios.get(`serviceReport`, {
-                            params: {
-                                page,
-                                perPage: itemsPerPage,
-                                search: this.serviceReportSearch,
-                                start_date: formattedStartDate,
-                                end_date: formattedEndDate,
-                            }
-                        });
-                
-                        this.serviceReport = response.data.data;
-                        console.log(this.serviceReport, "pickup report");
-                        this.totalItems = response.data.total;
-                    } catch (error) {
-                        console.error("Error fetching service reports:", error);
-                    } finally {
-                        this.loading = false;
-                    }
-                }
-                
-                
-                
+            }
+        },
+        // service  Category report =============================
+        async fetchServiceReports(
+            { page, itemsPerPage },
+            startDate = null,
+            endDate = null
+        ) {
+            const formatDate = (date) => {
+                if (!date) return null;
+                const d = new Date(date);
+                return `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
+            };
+
+            const formattedStartDate = formatDate(startDate);
+            const formattedEndDate = formatDate(endDate);
+
+            console.log(
+                `Start Date: ${formattedStartDate}, End Date: ${formattedEndDate}`
+            );
+
+            this.loading = true;
+            try {
+                const response = await axios.get(`serviceReport`, {
+                    params: {
+                        page,
+                        perPage: itemsPerPage,
+                        search: this.serviceReportSearch,
+                        start_date: formattedStartDate,
+                        end_date: formattedEndDate,
+                    },
+                });
+
+                this.serviceReport = response.data.data;
+                console.log(this.serviceReport, "pickup report");
+                this.totalItems = response.data.total;
+            } catch (error) {
+                console.error("Error fetching service reports:", error);
+            } finally {
+                this.loading = false;
+            }
+        },
     },
 });
