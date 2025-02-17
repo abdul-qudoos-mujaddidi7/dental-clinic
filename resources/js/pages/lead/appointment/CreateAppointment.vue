@@ -29,22 +29,23 @@
                                     v-model="formData.date"
                                     variant="outlined"
                                     label="Date  *"
-                                    class="w-50 pr-2 pb-4"
+                                    class="w-100  pb-4"
                                     type="date"
                                     density="compact"
                                     :rules="[rules.required]"
                                 ></v-text-field>
+                              
+                            </div>
+                            <div class="flex">
                                 <v-text-field
                                     v-model="formData.time"
                                     variant="outlined"
                                     label="time  *"
-                                    class="w-50 pl-2 pb-4"
+                                    class="w-50 pr-2 pb-4"
                                     type="time"
                                     density="compact"
                                     :rules="[rules.required]"
                                 ></v-text-field>
-                            </div>
-                            <div class="flex">
                                 <v-autocomplete
                                     v-model="formData.patientId"
                                     :items="LeadRepository.patientsForApp"
@@ -55,22 +56,10 @@
                                     item-title="name"
                                     density="compact"
                                     :rules="[rules.required]"
-                                    class="w-50 pr-2 pb-4"
-                                >
-                                </v-autocomplete>
-                                <v-autocomplete
-                                    v-model="formData.userId"
-                                    :items="LeadRepository.usersForApp"
-                                    :return-object="false"
-                                    variant="outlined"
-                                    label="Patient *"
-                                    item-value="id"
-                                    item-title="name"
-                                    density="compact"
-                                    :rules="[rules.required]"
                                     class="w-50 pl-2 pb-4"
                                 >
                                 </v-autocomplete>
+                           
                             </div>
                             <div class="flex">
                                 <v-text-field
@@ -83,7 +72,7 @@
                                 ></v-text-field>
                                 <v-autocomplete
                                     v-model="formData.dentistId"
-                                    :items="LeadRepository.dentistsForApp"
+                                    :items="LeadRepository.doctorsForApp"
                                     :return-object="false"
                                     variant="outlined"
                                     label="Doctors *"
