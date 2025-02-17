@@ -242,59 +242,49 @@
                 </v-card>
             </v-col>
             <v-col>
-                <v-card
-                    class="bg-white rounded-xl mr-3 px-2 mt-0 h-100"
-                    variant="flat"
-                >
+                <v-card class="bg-white rounded-xl mr-3 px-4 mt-0 h-100">
                     <h2 class="pl-2 py-4">Upcoming Appointment</h2>
-                    <v-table class="rounded">
-                        <template v-slot:default>
-                            <thead class="bg-gray-100">
-                                <!-- Tailwind class for gray background -->
-                                <tr>
-                                    <th
-                                        class="text-left font-medium text-gray-700"
+                    <div class="flex justify-center">
+                        <v-table class="rounded w-100">
+                            <!-- Adjust width as needed -->
+                            <template v-slot:default>
+                                <thead class="bg-gray-100">
+                                    <tr>
+                                        <th
+                                            class="text-left font-medium text-gray-700"
+                                        >
+                                            Patient
+                                        </th>
+                                        <th
+                                            class="text-center font-medium text-gray-700"
+                                        >
+                                            Time
+                                        </th>
+                                        <th
+                                            class="text-center font-medium text-gray-700"
+                                        >
+                                            Phone
+                                        </th>
+                                      
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr
+                                        v-for="item in DashboardRepository
+                                            .dashboardReport
+                                            .upcomingAppointments"
+                                        :key="item.id"
+                                        class="border-b border-gray-200"
                                     >
-                                        Customer
-                                    </th>
-                                    <th
-                                        class="text-left font-medium text-gray-700"
-                                    >
-                                        Time
-                                    </th>
-                                    <th
-                                        class="text-left font-medium text-gray-700"
-                                    >
-                                        Phone
-                                    </th>
-                                    <th
-                                        class="text-left font-medium text-gray-700"
-                                    >
-                                        Total Spent (KW)
-                                    </th>
-                                    <th
-                                        class="text-left font-medium text-gray-700"
-                                    >
-                                        Paid
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr
-                                    v-for="item in DashboardRepository
-                                        .dashboardReport.upcomingAppointments"
-                                    :key="item.id"
-                                    class="border-b border-gray-200"
-                                >
-                                    <td>{{ item.name }}</td>
-                                    <td>{{ item.time }}</td>
-                                    <td>{{ item.phone }}</td>
-                                    <td>{{ item.totalSpentKW }}</td>
-                                    <td>{{ item.paid }}</td>
-                                </tr>
-                            </tbody>
-                        </template>
-                    </v-table>
+                                        <td class="text-left">{{ item.name }}</td>
+                                        <td class="text-center">{{ item.time }}</td>
+                                        <td class="text-center">{{ item.phone }}</td>
+                                       
+                                    </tr>
+                                </tbody>
+                            </template>
+                        </v-table>
+                    </div>
                 </v-card>
             </v-col>
         </v-row>
