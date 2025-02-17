@@ -61,6 +61,18 @@
                                     class="w-50 pr-2 pb-4"
                                 >
                                 </v-autocomplete>
+                           
+                            </div>
+                            <div class="flex">
+                                <v-text-field
+                                    v-model="formData.status"
+                                    variant="outlined"
+                                    label="Status  *"
+                                    class="w-50 pr-2 pb-4"
+                                    density="compact"
+                                    :rules="[rules.required]"
+                                ></v-text-field>
+
                                 <v-autocomplete
                                     v-model="formData.dentistId"
                                     :items="LeadRepository.doctorsForApp"
@@ -133,7 +145,7 @@ const formData = reactive({
     time: LeadRepository.appointment.time,
     status: LeadRepository.appointment.status,
     patientId: LeadRepository.appointment.patients?.id,
-    dentistId: LeadRepository.appointment.dentist?.id,
+    dentistId: LeadRepository.appointment.dentists?.id,
     userId: LeadRepository.appointment.user?.id,
 });
 const rules = {

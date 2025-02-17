@@ -14,6 +14,14 @@ class AppointmentRequest extends FormRequest
         return true;
     }
 
+    public function prePareForValidation()
+    {
+        return $this->merge([
+            "patient_id" => $this->input("patientId"),
+            "dentist_id" => $this->input("dentistId"),
+        ]);
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -25,8 +33,8 @@ class AppointmentRequest extends FormRequest
             'date' => 'required|date',
             'time' => 'required|date_format:H:i', // Adjust format as needed
             'status' => 'required|string',
-            'dentist_id' => 'required|exists:dentists,id', // Ensure dentist exists
-            'patient_id' => 'required|exists:patients,id', // Ensure patient exists
+            'dentist_id' => 'required', // Ensure dentist exists
+            'patient_id' => 'required', // Ensure patient exists
         ];
     }
 }

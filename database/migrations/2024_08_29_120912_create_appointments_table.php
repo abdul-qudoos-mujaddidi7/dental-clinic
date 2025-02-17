@@ -2,6 +2,7 @@
 
 use App\Models\Dentist;
 use App\Models\Patient;
+use App\Models\People;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -19,9 +20,9 @@ return new class extends Migration
             $table->date('date');
             $table->time('time');
             $table->string('status');
-            $table->foreignIdFor(Dentist::class);
+            $table->foreignIdFor(People::class,'dentist_id');
             $table->foreignIdFor(User::class);
-            $table->foreignIdFor(Patient::class);
+            $table->foreignIdFor(People::class,'patient_id');
             $table->timestamps();
         });
     }

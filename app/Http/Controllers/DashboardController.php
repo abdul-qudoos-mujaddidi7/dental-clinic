@@ -139,8 +139,8 @@ class DashboardController extends Controller
 
         // Upcoming Appointments
         $upcomingAppointments = DB::table('appointments')
-            ->join('patients', 'appointments.patient_id', '=', 'patients.id') // Join with the patients table
-            ->select('patients.name', 'patients.phone', 'appointments.time') // Select the patient's name and appointment time
+            ->join('people', 'appointments.patient_id', '=', 'people.id') // Join with the patients table
+            ->select('people.name', 'people.phone', 'appointments.time') // Select the patient's name and appointment time
             ->whereDate('appointments.created_at', $today) // Filter by today's date
             ->orderBy('appointments.time', 'asc') // Order by appointment time
             ->limit(5) // Limit to 5 appointments

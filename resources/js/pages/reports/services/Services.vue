@@ -81,7 +81,7 @@ const onDateChange = () => {
 
     if (startDate && endDate) {
         ReportRepository.fetchServiceReports({ page: 1, itemsPerPage: 10 }, startDate, endDate);
-    }
+    }
 };
 
 watch(
@@ -95,17 +95,7 @@ watch(
 );
 
 onMounted(() => {
-    ReportRepository.productDateRange = productDateRange.value;
-    ReportRepository.fetchServiceReports(
-        { page: 1, itemsPerPage: 10 },
-        productDateRange.value[0],
-        productDateRange.value[1]
-    );
-    console.log(
-        productDateRange.value[0],
-        productDateRange.value[1],
-        "service report"
-    );
+    ReportRepository.fetchServiceReports();
 });
 // header
 const headers = [

@@ -121,13 +121,13 @@ const LeadRepository = useLeadRepository();
 // delete and update Create
 const CreateDialogShow = () => {
     LeadRepository.appointment = {},
-    LeadRepository.setEditMode(false);
+    LeadRepository.isEditMode=false;
     LeadRepository.createDialog = true;
 };
 
 const edit = (item) => {
     console.log(item, "me");
-    LeadRepository.setEditMode(true);
+    LeadRepository.isEditMode=true;
     LeadRepository.appointment = {};
     if (Object.keys(LeadRepository.appointment).length === 0) {
         LeadRepository.fetchAppointment(item.id)
@@ -141,14 +141,14 @@ const edit = (item) => {
 };
 
 const deleteItem = async (item) => {
-    await LeadRepository.DeleteOwner(item.id);
+    await LeadRepository.DeleteAppointment(item.id);
 };
 // header
 const headers = [
-    { title: "Patient Name", key: "patientName", align: "start", sortable: false },
-    { title: "Doctor Name", key: "dentistName", align: "start", sortable: false },
+    { title: "Patient", key: "patients.name", align: "start", sortable: false },
+    { title: "Doctor", key: "dentists.name", align: "start", sortable: false },
     { title: "Date", key: "date", align: "start", sortable: false },
-    { title: "User Name", key: "userName", align: "start", sortable: false },
+    { title: "Added By", key: "userName", align: "start", sortable: false },
     { title: "Time", key: "time", align: "start", sortable: false },
     { title: "Status", key: "status", align: "start", sortable: false },
     { title: "Action ", key: "action", align: "end", sortable: false },

@@ -239,7 +239,7 @@
                                 height="6"
                                 :color="randomColor()"
                                 class="rounded-lg"
-                                reverse
+                                
                             ></v-progress-linear>
                         </div>
                     </div>
@@ -260,7 +260,7 @@
                                         background-color: white;
                                     "
                                 >
-                                    <th class="text-left">Customer</th>
+                                    <th class="text-left">Patient</th>
                                     <th class="text-left">Time</th>
                                     <th class="text-left">Phone</th>
                                 </tr>
@@ -272,17 +272,18 @@
                                         .dashboardReport.upcomingAppointments"
                                     :key="item.id"
                                 >
-                                    <td>{{ item.customerId }}</td>
-                                    <td class="d-flex align-center">
-                                        <v-avatar class="mr-2" size="36px">
+                                    <td>{{ item.name }}</td>
+                                    <!-- <td class="d-flex align-center"> -->
+                                        <td>{{ item.time }}</td>
+                                        <!-- <v-avatar class="mr-2" size="36px">
                                             <img
                                                 :src="item.photo"
                                                 alt="Avatar"
                                             />
-                                        </v-avatar>
+                                        </v-avatar> -->
                                         {{ item.customerName }}
-                                    </td>
-                                    <td>{{ item.customerPhone }}</td>
+                                    <!-- </td> -->
+                                    <td>{{ item.phone }}</td>
                                     <td>{{ item.totalSpentKW }}</td>
                                     <td>{{ item.paid }}</td>
                                 </tr>
