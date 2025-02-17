@@ -26,7 +26,7 @@ class PeopleRequest extends FormRequest
             'phone' => 'required|string|max:20',
             'email' => 'nullable|email|unique:people,email,' . $this->id,
             'address' => 'nullable|string|max:500',
-            'type' => 'required|in:patient,dentist,supplier,owner',
+            'type' => 'required|in:patient,dentist,supplier,owner,employee',
             'date_of_birth' => 'nullable|date',
             'gender' => 'nullable|in:Male,Female',
             'diseases_history' => 'nullable|json',

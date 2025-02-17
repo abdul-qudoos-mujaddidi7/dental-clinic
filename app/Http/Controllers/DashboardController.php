@@ -6,6 +6,7 @@ use App\Models\BillExpense;
 use App\Models\CurePayment;
 use App\Models\Expense;
 use App\Models\Patient;
+use App\Models\People;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -102,10 +103,9 @@ class DashboardController extends Controller
 
 
         // Count new patients added today
-        $newPatients = Patient::whereDay('created_at', $today)->count();
-
+        $newPatients = People::where('type', 'patient')->whereDay('created_at', $today)->count();
         // Total number of patients
-        $totalPatients = Patient::count();
+        $totalPatients = People::where('type','patient')->count();
 
         $dailyExpenses = DB::table('expenses')
             ->join('expense_categories', 'expenses.expense_category_id', '=', 'expense_categories.id')
