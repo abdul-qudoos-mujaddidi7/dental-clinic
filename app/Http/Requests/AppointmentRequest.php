@@ -33,8 +33,8 @@ class AppointmentRequest extends FormRequest
             'date' => 'required|date',
             'time' => 'required|date_format:H:i', // Adjust format as needed
             'status' => 'required|string',
-            'dentist_id' => 'required|exists:peoples,id', // Ensure dentist exists
-            'patient_id' => 'required|exists:peoples,id', // Ensure patient exists
+            'dentist_id' => 'required', // Ensure dentist exists
+            'patient_id' => 'required', // Ensure patient exists
         ];
     }
 }

@@ -19,9 +19,17 @@ class AppointmentResource extends JsonResource
     'date' => $this->date,
     'time' => $this->time,
     'status' => $this->status,
-    'dentistName' => $this->dentist->first_name, 
+    // 'dentistName' => $this->dentist->name, 
     'userName' => $this->user->first_name,       
-    'patientName' => $this->patient->name,
+    // 'patientName' => $this->patient->name,
+    'dentists' => [
+        'id' => $this->dentist?->id,
+        'name' => $this->dentist?->name,
+    ],
+    'patients' => [
+        'id' => $this->patient?->id,
+        'name' => $this->patient?->name,
+    ]
 ];
 
     }

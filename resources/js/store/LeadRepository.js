@@ -335,7 +335,7 @@ export let useLeadRepository = defineStore("LeadRepository", {
             this.totalItems = response.data.meta.total;
             this.loading = false;
         },
-        async FetchAppointment(id) {
+        async fetchAppointment(id) {
             // this.loading = true;
             console.log(id);
             try {
@@ -378,6 +378,9 @@ export let useLeadRepository = defineStore("LeadRepository", {
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });
+
+                this.isEditMode = false;
+                
             } catch (err) {
                 this.error = err;
             }

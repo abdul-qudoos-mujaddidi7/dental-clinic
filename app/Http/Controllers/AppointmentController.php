@@ -48,7 +48,7 @@ class AppointmentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Appointment $appointment)
+    public function update(AppointmentRequest $request, Appointment $appointment)
     {
         $validated= $request->validated();
         $validated['user_id'] = Auth::id()?? 1;
