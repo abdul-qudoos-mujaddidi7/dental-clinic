@@ -239,7 +239,7 @@
                                 height="6"
                                 :color="randomColor()"
                                 class="rounded-lg"
-                                reverse
+                                
                             ></v-progress-linear>
                         </div>
                     </div>
@@ -260,7 +260,7 @@
                                         background-color: white;
                                     "
                                 >
-                                    <th class="text-left">Customer</th>
+                                    <th class="text-left">Patient</th>
                                     <th class="text-left">Time</th>
                                     <th class="text-left">Phone</th>
                                 </tr>
