@@ -29,23 +29,25 @@
                                     v-model="formData.date"
                                     variant="outlined"
                                     label="Date  *"
-                                    class="w-100  pb-4"
+                                    class="w-50 pr-2  pb-4"
                                     type="date"
+                                    density="compact"
+                                    :rules="[rules.required]"
+                                    
+                                ></v-text-field>
+                                <v-text-field
+                                    v-model="formData.time"
+                                    variant="outlined"
+                                    label="time  *"
+                                    class="w-50 pl-2 pb-4"
+                                    type="time"
                                     density="compact"
                                     :rules="[rules.required]"
                                 ></v-text-field>
                               
                             </div>
                             <div class="flex">
-                                <v-text-field
-                                    v-model="formData.time"
-                                    variant="outlined"
-                                    label="time  *"
-                                    class="w-50 pr-2 pb-4"
-                                    type="time"
-                                    density="compact"
-                                    :rules="[rules.required]"
-                                ></v-text-field>
+                            
                                 <v-autocomplete
                                     v-model="formData.patientId"
                                     :items="LeadRepository.patientsForApp"
@@ -56,20 +58,9 @@
                                     item-title="name"
                                     density="compact"
                                     :rules="[rules.required]"
-                                    class="w-50 pl-2 pb-4"
+                                    class="w-50 pr-2 pb-4"
                                 >
                                 </v-autocomplete>
-                           
-                            </div>
-                            <div class="flex">
-                                <v-text-field
-                                    v-model="formData.status"
-                                    variant="outlined"
-                                    label="Status  *"
-                                    class="w-50 pr-2 pb-4"
-                                    density="compact"
-                                    :rules="[rules.required]"
-                                ></v-text-field>
                                 <v-autocomplete
                                     v-model="formData.dentistId"
                                     :items="LeadRepository.doctorsForApp"
@@ -83,6 +74,36 @@
                                     class="w-50 pl-2 pb-4"
                                 >
                                 </v-autocomplete>
+                           
+                            </div>
+                            <div class="flex">
+                                <div class="w-100 ">
+                                <div class="w-100 h-100 pb-[1.1rem] d-flex">
+                                    <div
+                                        class="w-100 rounded flex justify-start pl-4 borderStyle"
+                                    >
+                                        <v-switch
+                                            v-model="formData.status"
+                                            :true-value="1"
+                                            :false-value="0"
+                                            class="pr-2"
+                                            :color="
+                                                formData.status == 1
+                                                    ? '#ED4B9E'
+                                                    : 'grey'
+                                            "
+                                            :label="
+                                                formData.status == 1
+                                                    ? 'Active'
+                                                    : 'Unactive'
+                                            "
+                                            hide-details
+                                            density="compact"
+                                        ></v-switch>
+                                    </div>
+                                </div>
+                            </div>
+                              
                             </div>
                         </v-form>
                     </v-card-text>
@@ -143,3 +164,9 @@ LeadRepository.fetchUsers();
 
 formData.date = LeadRepository.getTodaysDate();
 </script>
+
+<style scoped>
+.borderStyle {
+    border: 1px solid #999;
+}
+</style>
