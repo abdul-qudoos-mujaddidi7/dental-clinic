@@ -9,27 +9,27 @@
 
         <v-row class="pt-6">
             <v-col>
-                <v-card variant="flat" rounded="lg" >
-                 
-                    <template v-slot:title >
-                        <div class="d-flex ">
-                        <v-avatar size="40" class="mr-4">
-                            <!-- <v-icon size="36">mdi-account-details</v-icon> -->
-                            <img
-                                src="@/assets/images/dashboard/totalVisa.svg"
-                                class="w-6"
-                            />
-                        </v-avatar>
-                        <div class="pt-1 ">
-                            <div class="font-weight-black ">
-                                {{
-                                    DashboardRepository.dashboardReport.netProfit
-                                }}
+                <v-card variant="flat" rounded="lg">
+                    <template v-slot:title>
+                        <div class="d-flex">
+                            <v-avatar size="40" class="mr-4">
+                                <!-- <v-icon size="36">mdi-account-details</v-icon> -->
+                                <img
+                                    src="@/assets/images/dashboard/totalVisa.svg"
+                                    class="w-6"
+                                />
+                            </v-avatar>
+                            <div class="pt-1">
+                                <div class="font-weight-black">
+                                    {{
+                                        DashboardRepository.dashboardReport
+                                            .netProfit
+                                    }}
+                                </div>
                             </div>
                         </div>
-                    </div>
                     </template>
-            
+
                     <v-card-text
                         class="text-h6 d-flex justify-start calibri_font ml-14"
                     >
@@ -39,7 +39,7 @@
             >
 
             <v-col>
-                <v-card variant="flat"  rounded="lg">
+                <v-card variant="flat" rounded="lg">
                     <template v-slot:title>
                         <div class="d-flex align-center justify-start">
                             <v-avatar size="40" class="mr-4">
@@ -55,7 +55,6 @@
                                         .totalAllExpenses
                                 }}
                             </div>
-                          
                         </div>
                     </template>
                     <v-card-text
@@ -66,7 +65,7 @@
                 </v-card></v-col
             >
             <v-col>
-                <v-card variant="flat"  rounded="lg">
+                <v-card variant="flat" rounded="lg">
                     <template v-slot:title>
                         <div class="d-flex align-center justify-start">
                             <v-avatar size="40" class="mr-4">
@@ -82,7 +81,6 @@
                                         .totalEarnings
                                 }}
                             </div>
-                            
                         </div>
                     </template>
                     <v-card-text
@@ -94,7 +92,7 @@
             >
 
             <v-col>
-                <v-card variant="flat"  rounded="lg">
+                <v-card variant="flat" rounded="lg">
                     <template v-slot:title>
                         <div class="d-flex align-center justify-start">
                             <v-avatar size="40" class="mr-4">
@@ -110,7 +108,6 @@
                                         .totalPatients
                                 }}
                             </div>
-                           
                         </div>
                     </template>
                     <v-card-text
@@ -239,7 +236,6 @@
                                 height="6"
                                 :color="randomColor()"
                                 class="rounded-lg"
-                                
                             ></v-progress-linear>
                         </div>
                     </div>
@@ -247,42 +243,51 @@
             </v-col>
             <v-col>
                 <v-card
-                    class="bg-white rounded-xl mr-3 mt-0 h-100"
+                    class="bg-white rounded-xl mr-3 px-2 mt-0 h-100"
                     variant="flat"
                 >
-                    <h2 class="pl-4 py-4">Upcoming Appointment</h2>
-                    <v-table>
+                    <h2 class="pl-2 py-4">Upcoming Appointment</h2>
+                    <v-table class="rounded">
                         <template v-slot:default>
-                            <thead class="bg-white" style="border: none">
-                                <tr
-                                    style="
-                                        border: none;
-                                        background-color: white;
-                                    "
-                                >
-                                    <th class="text-left">Patient</th>
-                                    <th class="text-left">Time</th>
-                                    <th class="text-left">Phone</th>
+                            <thead class="bg-gray-100">
+                                <!-- Tailwind class for gray background -->
+                                <tr>
+                                    <th
+                                        class="text-left font-medium text-gray-700"
+                                    >
+                                        Customer
+                                    </th>
+                                    <th
+                                        class="text-left font-medium text-gray-700"
+                                    >
+                                        Time
+                                    </th>
+                                    <th
+                                        class="text-left font-medium text-gray-700"
+                                    >
+                                        Phone
+                                    </th>
+                                    <th
+                                        class="text-left font-medium text-gray-700"
+                                    >
+                                        Total Spent (KW)
+                                    </th>
+                                    <th
+                                        class="text-left font-medium text-gray-700"
+                                    >
+                                        Paid
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr
-                                    style="border: none"
                                     v-for="item in DashboardRepository
                                         .dashboardReport.upcomingAppointments"
                                     :key="item.id"
+                                    class="border-b border-gray-200"
                                 >
                                     <td>{{ item.name }}</td>
-                                    <!-- <td class="d-flex align-center"> -->
-                                        <td>{{ item.time }}</td>
-                                        <!-- <v-avatar class="mr-2" size="36px">
-                                            <img
-                                                :src="item.photo"
-                                                alt="Avatar"
-                                            />
-                                        </v-avatar> -->
-                                        {{ item.customerName }}
-                                    <!-- </td> -->
+                                    <td>{{ item.time }}</td>
                                     <td>{{ item.phone }}</td>
                                     <td>{{ item.totalSpentKW }}</td>
                                     <td>{{ item.paid }}</td>

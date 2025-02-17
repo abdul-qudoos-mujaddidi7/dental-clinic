@@ -616,7 +616,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             this.loading = true;
 
             const response = await axios.get(
-                `peoples?page=${page}&perPage=${itemsPerPage}&search=${this.employeeSearch}`
+                `peoples?page=${page}&perPage=${itemsPerPage}&search=${this.employeeSearch}&type=employee`
             );
             this.employees = response.data.data;
             this.totalItems = response.data.meta.total;

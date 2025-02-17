@@ -1,5 +1,5 @@
 <template>
-    <CreateOwner v-if="PeopleRepository.createDialog" />
+    <CreateEmployee v-if="PeopleRepository.createDialog" />
     <div class="all-expense rounded-xl">
         <div class="card rounded-xl">
             <AppBar mainTitle="Employee" sub-title="people" />
@@ -112,14 +112,14 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import AppBar from "../../../components/AppBar.vue";
-// import CreateOwner from "./CreateOwner.vue";
+import CreateEmployee from "./CreateEmployee.vue";
 import { usePeopleRepository } from "@/store/PeopleRepository";
 const PeopleRepository = usePeopleRepository();
 // bulk delete
 
 // delete and update Create
 const CreateDialogShow = () => {
-    PeopleRepository.owner = {},
+    PeopleRepository.employee = {},
     PeopleRepository.setEditMode(false);
     PeopleRepository.createDialog = true;
 };
@@ -127,9 +127,9 @@ const CreateDialogShow = () => {
 const edit = (item) => {
     console.log(item, "me");
     PeopleRepository.setEditMode(true);
-    PeopleRepository.owner = {};
-    if (Object.keys(PeopleRepository.owner).length === 0) {
-        PeopleRepository.fetchOwner(item.id)
+    PeopleRepository.employee = {};
+    if (Object.keys(PeopleRepository.employee).length === 0) {
+        PeopleRepository.FetchEmployee(item.id)
             .then(() => {
                 PeopleRepository.createDialog = true;
             })
@@ -140,13 +140,15 @@ const edit = (item) => {
 };
 
 const deleteItem = async (item) => {
-    await PeopleRepository.DeleteOwner(item.id);
+    await PeopleRepository.DeleteEmployee(item.id);
 };
 // header
 const headers = [
     { title: "Name", key: "name", align: "start", sortable: false },
-    { title: "Pickup", key: "totalAmount", align: "center", sortable: false },
     { title: "Phone", key: "phone", align: "center", sortable: false },
+    { title: "Salary", key: "salary", align: "center", sortable: false },
+    { title: "Email", key: "email", align: "center", sortable: false },
+    { title: "Address", key: "address", align: "center", sortable: false },
 
     { title: "Action", key: "action", align: "end", sortable: false },
 ];
