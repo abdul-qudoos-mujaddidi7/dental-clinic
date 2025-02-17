@@ -145,12 +145,12 @@ const deleteItem = async (item) => {
 };
 // header
 const headers = [
+    { title: "Patient Name", key: "patientName", align: "start", sortable: false },
+    { title: "Doctor Name", key: "dentistName", align: "start", sortable: false },
     { title: "Date", key: "date", align: "start", sortable: false },
-    { title: "Time", key: "time", align: "center", sortable: false },
-    { title: "Status", key: "status", align: "center", sortable: false },
-    { title: "Doctor Name", key: "dentistName", align: "end", sortable: false },
-    { title: "User Name", key: "userName", align: "end", sortable: false },
-    { title: "Patient Name", key: "patientName", align: "end", sortable: false },
+    { title: "User Name", key: "userName", align: "start", sortable: false },
+    { title: "Time", key: "time", align: "start", sortable: false },
+    { title: "Status", key: "status", align: "start", sortable: false },
     { title: "Action ", key: "action", align: "end", sortable: false },
 ];
 </script>
