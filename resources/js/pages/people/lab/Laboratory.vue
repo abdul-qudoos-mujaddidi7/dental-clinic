@@ -112,7 +112,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import AppBar from "../../../components/AppBar.vue";
-import CreateEmployee from "./CreateEmployee.vue";
+
 import { usePeopleRepository } from "@/store/PeopleRepository";
 const PeopleRepository = usePeopleRepository();
 // bulk delete
@@ -144,13 +144,11 @@ const deleteItem = async (item) => {
 };
 // header
 const headers = [
-    { title: "Date ", key: "name", align: "start", sortable: false },
-    { title: "Date giving", key: "phone", align: "center", sortable: false },
-    { title: "Cost ", key: "salary", align: "center", sortable: false },
-    { title: "Return Date", key: "email", align: "center", sortable: false },
-    { title: "Grand Total", key: "address", align: "center", sortable: false },
-    { title: "Type ", key: "salary", align: "center", sortable: false },
-
+    { title: "Name", key: "name", align: "start", sortable: false },
+    { title: "Phone", key: "phone", align: "center", sortable: false },
+    { title: "Salary", key: "salary", align: "center", sortable: false },
+    { title: "Email", key: "email", align: "center", sortable: false },
+    { title: "Address", key: "address", align: "center", sortable: false },
 
     { title: "Action", key: "action", align: "end", sortable: false },
 ];

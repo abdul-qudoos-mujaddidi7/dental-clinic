@@ -1,11 +1,14 @@
 <template>
-    <v-list class="flex flex-col min-h-screen"   @update:model="handleDrawerState">
+    <v-list
+        class="flex flex-col min-h-screen"
+        @update:model="handleDrawerState"
+    >
         <router-link to="/dashboard">
             <div class="flex items-center justify-center py-4">
                 <img
                     src="https://i.pinimg.com/736x/a7/7a/a5/a77aa5d8c889c3beee52aa1a7c7dcf23.jpg"
                     alt="Logo"
-                    class="w-[5rem] h-[5rem] rounded-lg  object-cover"
+                    class="w-[5rem] h-[5rem] rounded-lg object-cover"
                 />
             </div>
         </router-link>
@@ -76,7 +79,7 @@
                     </router-link>
                 </v-list>
             </transition>
-             <!-- cure -->
+            <!-- cure -->
             <v-list-item
                 active-class="bg-primaryOld text-white"
                 prepend-icon="mdi mdi-cash-marker"
@@ -208,10 +211,9 @@ const isPeopleVisible = ref(false);
 const isLeadVisible = ref(false);
 const isCureVisible = ref(false);
 const isSettingVisible = ref(false);
-const isReportVisible = ref(false)
+const isReportVisible = ref(false);
 
-
-// 
+//
 // Toggle for list items
 const toggleList = () => {
     isListVisible.value = !isListVisible.value;
@@ -219,19 +221,18 @@ const toggleList = () => {
 const togglePeople = () => {
     isPeopleVisible.value = !isPeopleVisible.value;
 };
-const toggleLead =() =>{
+const toggleLead = () => {
     isLeadVisible.value = !isLeadVisible.value;
-}
-const toggleCure =() =>{
+};
+const toggleCure = () => {
     isCureVisible.value = !isCureVisible.value;
-}
-const toggleSetting =()=>{
+};
+const toggleSetting = () => {
     isSettingVisible.value = !isSettingVisible.value;
-}
-const toggleReports =()=>{
+};
+const toggleReports = () => {
     isReportVisible.value = !isReportVisible.value;
-
-}
+};
 
 // Define navigation items in a structured list for cleaner handling
 const navItems = [
@@ -260,17 +261,15 @@ const navItems = [
         icon: "mdi mdi-circle-medium",
         value: "categories",
     },
-  
 ];
 const peopleItems = [
-{
+    {
         to: "/employee",
         title: "Employee",
         icon: "mdi mdi-circle-medium",
         value: "employee",
     },
     {
-
         to: "/patients",
         title: "Patient",
         icon: "mdi mdi-circle-medium",
@@ -283,14 +282,13 @@ const peopleItems = [
         value: "user",
     },
 
-
     {
         to: "/owners",
         title: "Owner",
         icon: "mdi mdi-circle-medium",
         value: "owner",
     },
-    
+
     {
         to: "/supplier",
         title: "Supplier",
@@ -308,6 +306,12 @@ const peopleItems = [
         title: "Owner Pickup",
         icon: "mdi mdi-circle-medium",
         value: "ownerPickup",
+    },
+    {
+        to: "/laboratory",
+        title: "Laboratory",
+        icon: "mdi mdi-circle-medium",
+        value: "lab",
     },
 ];
 const leadItems = [
@@ -335,8 +339,6 @@ const leadItems = [
         icon: "mdi mdi-circle-medium",
         value: "appointments",
     },
-    
-
 ];
 const cureItems = [
     {
@@ -345,10 +347,9 @@ const cureItems = [
         icon: "mdi mdi-circle-medium",
         value: "cure cycle ",
     },
- 
 ];
 const settingItems = [
-{
+    {
         to: "/systemSetting",
         title: "System Setting",
         icon: "mdi mdi-circle-medium",
@@ -360,23 +361,23 @@ const settingItems = [
         icon: "mdi mdi-circle-medium",
         value: "roles  ",
     },
-    
+
     {
         to: "/serviceGroup",
         title: "Service Group",
         icon: "mdi mdi-circle-medium",
         value: "service group  ",
     },
-    
+
     {
         to: "/service",
         title: "Service",
         icon: "mdi mdi-circle-medium",
         value: "service   ",
     },
-]
+];
 const reportItems = [
-{
+    {
         to: "/profitLoss",
         title: "Profit & Loss",
         icon: "mdi mdi-circle-medium",
@@ -388,14 +389,14 @@ const reportItems = [
         icon: "mdi mdi-circle-medium",
         value: "patients report ",
     },
-    
+
     {
         to: "/categoryReport",
         title: "Expense Category",
         icon: "mdi mdi-circle-medium",
         value: "cat report  ",
     },
-    
+
     {
         to: "/productReport",
         title: "Expense Product",
@@ -414,14 +415,14 @@ const reportItems = [
         icon: "mdi mdi-circle-medium",
         value: "patients report",
     },
-]
+];
 
 function handleDrawerState(isOpen) {
-  if (isOpen) {
-    document.body.style.overflow = 'hidden';
-  } else {
-    document.body.style.overflow = '';
-  }
+    if (isOpen) {
+        document.body.style.overflow = "hidden";
+    } else {
+        document.body.style.overflow = "";
+    }
 }
 </script>
 
@@ -479,7 +480,6 @@ function handleDrawerState(isOpen) {
 }
 .child:hover {
     color: #333;
- 
 }
 .borderRadius {
     border-top-right-radius: 8px !important;
