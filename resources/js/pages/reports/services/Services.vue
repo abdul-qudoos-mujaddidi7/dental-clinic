@@ -79,6 +79,7 @@ const onDateChange = () => {
     const startDate = ReportRepository.productDateRange[0];
     const endDate = ReportRepository.productDateRange[1];
 
+    console.log(startDate);
     if (startDate && endDate) {
         ReportRepository.fetchServiceReports({ page: 1, itemsPerPage: 10 }, startDate, endDate);
     }

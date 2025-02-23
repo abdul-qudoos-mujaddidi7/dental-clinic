@@ -375,7 +375,13 @@ const settingItems = [
         icon: "mdi mdi-circle-medium",
         value: "service   ",
     },
-];
+    {
+        to: "/dental-types",
+        title: "Dental Types",
+        icon: "mdi mdi-circle-medium",
+        value: "Dental   ",
+    },
+]
 const reportItems = [
     {
         to: "/profitLoss",

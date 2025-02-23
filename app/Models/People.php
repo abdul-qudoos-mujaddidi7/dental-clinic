@@ -21,6 +21,7 @@ class People extends Model
         'gender',
         'medical_record',
         'dental_record',
+        'salary'
         // 'status',
         // 'image',
         // 'share'
