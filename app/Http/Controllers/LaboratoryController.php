@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 
 class LaboratoryController extends Controller
 {
-    
+
     protected $model;
     protected $request;
     protected $resource;
@@ -27,10 +27,7 @@ class LaboratoryController extends Controller
         $perPage = $request->input("perPage", 10);
         $search = $request->input("search");
 
-        $laboratories = $this->model::with("patient")
-                            ->search($search)
-                            ->latest()
-                            ->paginate($perPage);
+        $laboratories = $this->model::search($search)->latest()->paginate($perPage);
 
         return $this->resource::collection($laboratories);
     }
@@ -77,7 +74,7 @@ class LaboratoryController extends Controller
     public function update(Request $request, Laboratory $laboratory)
     {
         $validated = app($this->request)->validated();
-        
+
         // Delete old services
         $laboratory->details()->delete();
 
@@ -107,7 +104,7 @@ class LaboratoryController extends Controller
         // );
 
         return response()->json(['message' => 'Record Updated successfully!'], 204);
-        }
+    }
 
     public function destroy(Laboratory $laboratory)
     {
