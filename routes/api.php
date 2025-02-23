@@ -73,7 +73,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/users/status/{user}', [UserController::class, 'updateStatus'])->name('users.updateStatus');
 
     Route::apiResource('/patients', PatientController::class);
-    Route::apiResource('/laboratories', Laboratory::class);
+    Route::apiResource('/laboratories',LaboratoryController::class);
     Route::apiResource('/dentals', ToothController::class);
     Route::apiResource('/peoples', PeopleController::class);
     Route::delete('/patientBulkDelete', [PatientController::class,'bulkDelete']);

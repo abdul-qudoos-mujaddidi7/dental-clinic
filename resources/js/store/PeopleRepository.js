@@ -39,10 +39,14 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             user: reactive([]),
             userSearch: ref(""),
             roleForUser: reactive([]),
-            // employee 
-            employeeSearch:ref(""),
-            employees:reactive([]),
-            employee:reactive([]),
+            // employee
+            employeeSearch: ref(""),
+            employees: reactive([]),
+            employee: reactive([]),
+            // laboratory
+            laboratorySearch: ref(""),
+            laboratories: reactive([]),
+            laboratory: reactive([]),
         };
     },
     actions: {
@@ -611,7 +615,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
                 this.error = err;
             }
         },
-        // employee 
+        // employee
         async FetchEmployees({ page, itemsPerPage }) {
             this.loading = true;
 
@@ -691,6 +695,93 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
 
                 // this.supplier = response.data.data;
                 this.FetchEmployees({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                this.error = err;
+            }
+        },
+        // laboratories
+        async FetchLaboratories({ page, itemsPerPage }) {
+            this.loading = true;
+
+            const response = await axios.get(
+                `laboratories?page=${page}&perPage=${itemsPerPage}&search=${this.laboratorySearch}`
+            );
+            this.laboratories = response.data.data;
+            this.totalItems = response.data.meta.total;
+            this.loading = false;
+        },
+        async FetchLaboratory(id) {
+            // this.error = null;
+            try {
+                const response = await axios.get(`laboratories/${id}`);
+
+                this.laboratory = response.data.data;
+                console.log(this.supplier);
+            } catch (err) {
+                // this.error = err.message;
+            }
+        },
+        async CreateLaboratory(formData) {
+            console.log(formData);
+            try {
+                // Adding a custom header to the Axios request
+                const config = {
+                    method: "POST",
+                    url: "laboratories",
+
+                    data: formData,
+                };
+
+                // Using Axios to make a GET request with async/await and custom headers
+                const response = await axios(config);
+                this.createDialog = false;
+                this.FetchLaboratories({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                // If there's an error, set the error in the stor
+            }
+        },
+        async UpdateLaboratory(id, data) {
+            console.log(data);
+            try {
+                const config = {
+                    method: "PUT",
+                    url: `laboratories/${id}`,
+
+                    data: data,
+                };
+
+                // Using Axios to make a post request with async/await and custom headers
+                const response = await axios(config);
+                this.createDialog = false;
+                this.FetchLaboratories({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                // If there's an error, set the error in the stor
+            }
+        },
+        async DeleteLaboratory(id) {
+            this.isLoading = true;
+            this.Expenses = [];
+            this.error = null;
+
+            try {
+                const config = {
+                    method: "DELETE",
+                    url: "laboratories/" + id,
+                };
+
+                const response = await axios(config);
+
+                // this.supplier = response.data.data;
+                this.FetchLaboratory({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });

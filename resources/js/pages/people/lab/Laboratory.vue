@@ -19,7 +19,7 @@
                         label="Search ..."
                         append-inner-icon="mdi-magnify"
                         hide-details
-                        v-model="PeopleRepository.employeeSearch"
+                        v-model="PeopleRepository.laboratorySearch"
                     ></v-text-field>
                 </div>
                 <div class="btn">
@@ -50,13 +50,13 @@
                                     "
                                     :headers="headers"
                                     :items-length="PeopleRepository.totalItems"
-                                    :items="PeopleRepository.employees"
+                                    :items="PeopleRepository.laboratories"
                                     :loading="PeopleRepository.loading"
-                                    :search="PeopleRepository.employeeSearch"
+                                    :search="PeopleRepository.laboratorySearch"
                                     @update:options="
-                                        PeopleRepository.FetchEmployees
+                                        PeopleRepository.FetchLaboratories
                                     "
-                                    :item-key="PeopleRepository.employees"
+                                    :item-key="PeopleRepository.laboratories"
                                     hover
                                     class="w-100 mx-auto"
                                 >
@@ -119,7 +119,7 @@ const PeopleRepository = usePeopleRepository();
 
 // delete and update Create
 const CreateDialogShow = () => {
-    PeopleRepository.employee = {},
+    PeopleRepository.laboratory = {},
     PeopleRepository.setEditMode(false);
     PeopleRepository.createDialog = true;
 };
@@ -127,9 +127,9 @@ const CreateDialogShow = () => {
 const edit = (item) => {
     console.log(item, "me");
     PeopleRepository.setEditMode(true);
-    PeopleRepository.employee = {};
-    if (Object.keys(PeopleRepository.employee).length === 0) {
-        PeopleRepository.FetchEmployee(item.id)
+    PeopleRepository.laboratory = {};
+    if (Object.keys(PeopleRepository.laboratory).length === 0) {
+        PeopleRepository.FetchLaboratory(item.id)
             .then(() => {
                 PeopleRepository.createDialog = true;
             })
@@ -140,7 +140,7 @@ const edit = (item) => {
 };
 
 const deleteItem = async (item) => {
-    await PeopleRepository.DeleteEmployee(item.id);
+    await PeopleRepository.DeleteLaboratory(item.id);
 };
 // header
 const headers = [
@@ -149,7 +149,6 @@ const headers = [
     { title: "Salary", key: "salary", align: "center", sortable: false },
     { title: "Email", key: "email", align: "center", sortable: false },
     { title: "Address", key: "address", align: "center", sortable: false },
-
     { title: "Action", key: "action", align: "end", sortable: false },
 ];
 </script>
