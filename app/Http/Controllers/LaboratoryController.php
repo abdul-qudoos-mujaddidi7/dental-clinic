@@ -24,6 +24,7 @@ class LaboratoryController extends Controller
 
     public function index(Request $request)
     {
+
         $perPage = $request->input("perPage", 10);
         $search = $request->input("search");
 
