@@ -31,6 +31,10 @@ export let useSettingRepository = defineStore("SettingRepository", {
             serviceSearch:ref(""),
             services:reactive([]),
             service:reactive([]),
+            // Dental
+            dentalSearch:ref(""),
+            dentals:reactive([]),
+            dental:reactive([]),
         };
     },
     actions: {
@@ -391,7 +395,95 @@ export let useSettingRepository = defineStore("SettingRepository", {
                 this.error = err;
             }
         },
+        async FetchDentals({ page, itemsPerPage }) {
+            this.loading = true;
+
+            const response = await axios.get(
+                `dentals?page=${page}&perPage=${itemsPerPage}&search=${this.dentalSearch}`
+            );
+            this.dentals = response.data.data;
+            this.totalItems = response.data.meta.total;
+            this.loading = false;
+        },
+        async fetchDental(id) {
+            // this.error = null;
+            try {
+                const response = await axios.get(`dentals/${id}`);
+
+                this.dental = response.data.data;
+                console.log(this.dental);
+            } catch (err) {
+                // this.error = err.message;
+            }
+        },
+        async Dental(id, data) {
+            try {
+                const config = {
+                    method: "PUT",
+                    url: "dentals/" + id,
+
+                    data: data,
+                };
+
+                // Using Axios to make a post request with async/await and custom headers
+                const response = await axios(config);
+                this.createDialog = false;
+                this.FetchDentals({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+              
+                this.error = err;
+            }
+        },
+        async CreateDental(formData) {
+            console.log(formData);
+            try {
+            
+                const config = {
+                    method: "POST",
+                    url: "dentals",
+
+                    data: formData,
+                };
+                const response = await axios(config);
+                this.createDialog = false;
+
+                this.FetchDentals({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                // If there's an error, set the error in the stor
+            }
+        },
+        async DeleteDental(id) {
+            this.isLoading = true;
+            this.setting = [];
+            this.error = null;
+
+            try {
+                const config = {
+                    method: "DELETE",
+                    url: "dentals/" + id,
+                };
+
+                const response = await axios(config);
+
+                // this.setting = response.data.data;
+                this.FetchDentals({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                this.error = err;
+            }
+        },
+
+    },
+       
 
 
     },
-});
+);

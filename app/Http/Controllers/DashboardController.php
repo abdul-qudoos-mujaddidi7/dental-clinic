@@ -111,7 +111,7 @@ class DashboardController extends Controller
             ->join('expense_categories', 'expenses.expense_category_id', '=', 'expense_categories.id')
             ->selectRaw('expense_categories.name as categoryName, SUM(expenses.amount) as totalExpense, 
          (SUM(expenses.amount) / (SELECT SUM(amount) FROM expenses WHERE DATE(created_at) = ?)) * 100 as percentage', [$today])
-            ->whereDate('expenses.created_at', $today)
+            ->whereDate('expenses.date', $today)
             ->groupBy('expense_categories.name')
             ->orderBy('totalExpense', 'desc')
             ->get();
@@ -122,7 +122,7 @@ class DashboardController extends Controller
             ->selectRaw('expense_categories.name as categoryName, SUM(expenses.amount) as totalExpense, 
          (SUM(expenses.amount) / (SELECT SUM(amount) FROM expenses WHERE YEAR(created_at) = ? AND created_at BETWEEN ? AND ?)) * 100 as percentage', [now()->year, $startOfMonth, $endOfMonth])
             ->whereYear('expenses.created_at', now()->year)
-            ->whereBetween('expenses.created_at', [$startOfMonth, $endOfMonth])
+            ->whereBetween('expenses.date', [$startOfMonth, $endOfMonth])
             ->groupBy('expense_categories.name')
             ->orderBy('totalExpense', 'desc')
             ->get();
@@ -132,7 +132,7 @@ class DashboardController extends Controller
             ->join('expense_categories', 'expenses.expense_category_id', '=', 'expense_categories.id')
             ->selectRaw('expense_categories.name as categoryName, SUM(expenses.amount) as totalExpense, 
          (SUM(expenses.amount) / (SELECT SUM(amount) FROM expenses WHERE YEAR(created_at) = ?)) * 100 as percentage', [$currentYear])
-            ->whereYear('expenses.created_at', $currentYear)
+            ->whereYear('expenses.date', $currentYear)
             ->groupBy('expense_categories.name')
             ->orderBy('totalExpense', 'desc')
             ->get();

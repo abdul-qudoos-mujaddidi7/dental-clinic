@@ -1,0 +1,41 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class LaboratoryDetail extends Model
+{
+    use HasFactory;
+
+    public const COLUMN_ID = 'id';
+    public const COLUMN_LABORATORY_ID = 'laboratory_id';
+    public const COLUMN_TOOTHTYPE_ID = 'tooths_id';
+    public const COLUMN_COST = 'cost';
+    public const COLUMN_QUANTITY = 'quantity';
+    public const COLUMN_TOTAL = 'total';
+    public const COLUMN_STATUS = 'status';
+
+    protected $table = 'laboratory_details';
+
+    protected $fillable = [
+        self::COLUMN_LABORATORY_ID,
+        self::COLUMN_TOOTHTYPE_ID,
+        self::COLUMN_COST,
+        self::COLUMN_QUANTITY,
+        self::COLUMN_TOTAL,
+        self::COLUMN_STATUS,
+    ];
+
+
+
+    public function laboratory()
+    {
+        return $this->belongsTo(Laboratory::class);
+    }
+    public function toothType()
+    {
+        return $this->belongsTo(Tooth::class);
+    }
+}

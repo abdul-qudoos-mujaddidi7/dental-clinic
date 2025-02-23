@@ -36,6 +36,7 @@ class PeopleRequest extends FormRequest
             'hire_date' => 'nullable|date',
             'image' => 'nullable|string',
             'share' => 'nullable|numeric|min:0|max:100',
+            'salary' => 'nullable|numeric|min:0',
         ];
     }
 }

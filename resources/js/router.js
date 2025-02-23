@@ -28,6 +28,7 @@ import UpdatePermissions from "./pages/setting/rolePermission/UpdatePermissions.
 import CreatePermissions from "./pages/setting/rolePermission/CreatePermissions.vue";
 import ServiceGroup from "./pages/setting/service Group/ServiceGroup.vue";
 import Service from "./pages/setting/service/Service.vue";
+import DentalType from "./pages/setting/DentalTypes/DentalTypes.vue";
 // reports
 import ProfitLoss from "./pages/reports/profit and loss/Profit&Loss.vue";
 import PatientsReport from "./pages/reports/patients report/PatientsReport.vue";
@@ -98,6 +99,7 @@ const router = createRouter({
                 },
                 { path: "/serviceGroup", component: ServiceGroup },
                 { path: "/service", component: Service },
+                { path: "/dental-types", component: DentalType },
                 // reports
                 { path: "/profitLoss", component: ProfitLoss },
                 { path: "/patientsReport", component: PatientsReport },

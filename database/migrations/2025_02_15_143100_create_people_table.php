@@ -17,20 +17,25 @@ return new class extends Migration
             $table->string('phone');
             $table->string('email')->nullable()->unique();
             $table->string('address')->nullable();
-            $table->enum('type', ['patient', 'dentist', 'supplier', 'owner','employee']);
-            
+            $table->enum('type', ['patient', 'dentist', 'supplier', 'owner', 'employee']);
+
             // Fields specific to patients
             $table->date('date_of_birth')->nullable();
             $table->enum('gender', ['Male', 'Female'])->nullable();
             $table->json('medical_record')->nullable();
             $table->json('dental_record')->nullable();
-            
+
             // Fields specific to dentists
             $table->boolean('status')->nullable();
             // $table->string('image')->nullable();
 
             // Fields specific to owners
             $table->decimal('share', 10, 2)->nullable();
+
+            // Fields specific to employees
+            $table->decimal('salary', 10, 2)->nullable();
+
+
 
             $table->timestamps();
         });

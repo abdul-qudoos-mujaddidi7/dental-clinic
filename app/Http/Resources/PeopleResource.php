@@ -24,6 +24,7 @@ class PeopleResource extends JsonResource
             'medicalRecord' => $this->medical_record,
             'dentalRecord' => $this->dental_record,
             'status' => $this->status,
+            'salary' => $this->salary,
             'image' => $this->image,
             'share' => $this->share,
         ];
