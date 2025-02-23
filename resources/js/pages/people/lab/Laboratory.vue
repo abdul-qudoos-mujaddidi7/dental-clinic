@@ -144,11 +144,14 @@ const deleteItem = async (item) => {
 };
 // header
 const headers = [
-    { title: "Name", key: "name", align: "start", sortable: false },
-    { title: "Phone", key: "phone", align: "center", sortable: false },
-    { title: "Salary", key: "salary", align: "center", sortable: false },
-    { title: "Email", key: "email", align: "center", sortable: false },
-    { title: "Address", key: "address", align: "center", sortable: false },
+{ title: "Issue At", key: "issue_at", align: "start", sortable: false },
+
+    { title: "Return Date", key: "return_date", align: "start", sortable: false },
+    { title: "Grand total", key: "grand_total", align: "start", sortable: false },
+    { title: "Paid", key: "paid", align: "start", sortable: false },
+    { title: "Status", key: "status", align: "start", sortable: false },
+    { title: "Details", key: "description", align: "start", sortable: false },
+    { title: "teeth Type", key: "teethType", align: "start", sortable: false },
     { title: "Action", key: "action", align: "end", sortable: false },
 ];
 </script>
