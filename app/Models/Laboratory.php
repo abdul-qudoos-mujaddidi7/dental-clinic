@@ -36,4 +36,13 @@ class Laboratory extends Model
     {
         return $this->hasMany(LaboratoryDetail::class);
     }
+    public function scopeSearch($query,$search){
+        if(!$search){
+            return $query;
+        }
+
+        return $query->where('name','LIKE','%'. $search .'%');
+
+
+    }
 }

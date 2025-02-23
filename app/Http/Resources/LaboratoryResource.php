@@ -14,6 +14,17 @@ class LaboratoryResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
-    }
+        return [
+            'id' => $this->id,
+            'return_date' => $this->start_date,
+            'grand_total' => $this->grand_total,
+            'paid' => $this->paid,
+            'due'=> $due,
+            // 'paymentStatus' => $this->getPaymentStatus(),
+            'status' => $this->status,
+            'description' => $this->description,
+            // 'servicesDetails' => CureServiceResource::collection($this->whenLoaded('cureServices')),
+        ];
+    
+}
 }
