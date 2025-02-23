@@ -35,6 +35,7 @@ class LaboratoryController extends Controller
 
     public function store(Request $request)
     {
+        
         $validated = app($this->request)->validated();
         $laboratory = $this->model::create($validated);
 

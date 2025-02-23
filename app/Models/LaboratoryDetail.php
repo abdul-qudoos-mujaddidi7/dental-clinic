@@ -11,7 +11,7 @@ class LaboratoryDetail extends Model
 
     public const COLUMN_ID = 'id';
     public const COLUMN_LABORATORY_ID = 'laboratory_id';
-    public const COLUMN_TOOTHTYPE_ID = 'tooths_id';
+    public const COLUMN_TOOTH_ID = 'tooth_id';
     public const COLUMN_COST = 'cost';
     public const COLUMN_QUANTITY = 'quantity';
     public const COLUMN_TOTAL = 'total';
@@ -21,7 +21,7 @@ class LaboratoryDetail extends Model
 
     protected $fillable = [
         self::COLUMN_LABORATORY_ID,
-        self::COLUMN_TOOTHTYPE_ID,
+        self::COLUMN_TOOTH_ID,
         self::COLUMN_COST,
         self::COLUMN_QUANTITY,
         self::COLUMN_TOTAL,
