@@ -34,6 +34,7 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\SystemSettingController;
 use App\Http\Controllers\ToothController;
 use App\Http\Controllers\UserController;
+use App\Models\Laboratory;
 use App\Models\Service;
 
 // Authentication routes
@@ -72,6 +73,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/users/status/{user}', [UserController::class, 'updateStatus'])->name('users.updateStatus');
 
     Route::apiResource('/patients', PatientController::class);
+    Route::apiResource('/laboratories', Laboratory::class);
     Route::apiResource('/dentals', ToothController::class);
     Route::apiResource('/peoples', PeopleController::class);
     Route::delete('/patientBulkDelete', [PatientController::class,'bulkDelete']);

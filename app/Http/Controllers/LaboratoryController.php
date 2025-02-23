@@ -57,13 +57,13 @@ class LaboratoryController extends Controller
         }
 
         // Handle payment if provided
-        if ($request->has('paid')) {
-            CurePayment::create([
-                'cure_id' => $cure->id,
-                'amount' => $validated['paid'],
-                'date' => $validated['start_date']
-            ]);
-        }
+        // if ($request->has('paid')) {
+        //     CurePayment::create([
+        //         'cure_id' => $cure->id,
+        //         'amount' => $validated['paid'],
+        //         'date' => $validated['start_date']
+        //     ]);
+        // }
 
         return new $this->resource($laboratory->load('details'));
     }
