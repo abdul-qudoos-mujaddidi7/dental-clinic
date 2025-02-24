@@ -47,6 +47,10 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             laboratorySearch: ref(""),
             laboratories: reactive([]),
             laboratory: reactive([]),
+            searchFetch: reactive([]),
+            cureProduct: reactive([]),
+            services: [],
+            leadStageFor:reactive([]),
         };
     },
     actions: {
@@ -703,6 +707,59 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             }
         },
         // laboratories
+        async leadStagesFor() {
+            const response = await axios.get("stages");
+            this.leadStageFor = response.data.data;
+        },
+        async SearchFetchData() {
+            console.log(this.labSearch);
+            this.loading = true;
+
+            const response = await axios.get(
+                `tooths?&search=${this.labSearch}`
+            );
+            this.searchFetch = response.data.data;
+            this.loading = false;
+            // this.searchFetch = "";
+        },
+        async fetchProduct(id, isUpdate = false) {
+            try {
+                const response = await axios.get(`tooths/${id}`);
+                const productData = response.data.data;
+
+                if (isUpdate) delete productData.id;
+
+                // Only add if it doesn’t already exist
+                if (!this.services.some((item) => item.id === productData.id)) {
+                    this.services.push(productData);
+                    // this.cure.services.push(productData);
+                    // this.billExpense.expenseDetails.push(productData);
+                }
+
+                console.log(response.data.data, "fetchProduct");
+
+                // Avoid duplication in `cureProduct`
+                if (
+                    !this.cureProduct.some((item) => item.id === productData.id)
+                ) {
+                    this.cureProduct.push(productData);
+                }
+
+                // Avoid duplication in `servicesDetails`
+                if (
+                    !this.laboratory.tooths.some(
+                        (item) => item.id === productData.id
+                    )
+                ) {
+                    this.laboratory.tooths.push(productData);
+                }
+
+                // Clear search results
+                this.searchFetch = [];
+            } catch (error) {
+                console.error("Error fetching product:", error);
+            }
+        },
         async FetchLaboratories({ page, itemsPerPage }) {
             this.loading = true;
 
@@ -724,6 +781,26 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
                 // this.error = err.message;
             }
         },
+        // async FetchCure(id) {
+        //     try {
+        //         const response = await axios.get(`cures/${id}`);
+        //         this.cure = response.data.data;
+        //         this.cureProduct = response.data.data.servicesDetails;
+        //         this.cureProduct = this.cureProduct.map((data) => {
+        //             return {
+        //                 ...data,
+        //                 name:
+        //                     data.cureProduct.serviceName ||
+        //                     data.cureProduct.name,
+        //             };
+        //         });
+        //         console.log(this.cure, "fetch cure");
+        //         console.log(this.servicesDetails, "services in the fetch cure");
+        //         console.log(this.cureProduct, "services in the fetchProduct");
+        //     } catch (err) {
+        //         console.error("Error fetching cure:", err);
+        //     }
+        // },
         async CreateLaboratory(formData) {
             console.log(formData);
             try {
@@ -737,7 +814,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
 
                 // Using Axios to make a GET request with async/await and custom headers
                 const response = await axios(config);
-                this.createDialog = false;
+                this.router.push("/laboratory");
                 this.FetchLaboratories({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,

@@ -1,5 +1,4 @@
 <template>
-    <CreateEmployee v-if="PeopleRepository.createDialog" />
     <div class="all-expense rounded-xl">
         <div class="card rounded-xl">
             <AppBar mainTitle="Employee" sub-title="people" />
@@ -27,14 +26,17 @@
                         Filter
                     </v-btn>
                     &nbsp;
-                    <v-btn
-                        @click="CreateDialogShow"
+                    <router-link to="createLab">
+
+                        <v-btn
+                       
                         color="primaryOld"
                         variant="flat"
                         text="Create"
                         class="px-6"
-                    >
+                        >
                     </v-btn>
+                </router-link>
                 </div>
             </div>
             <!-- v-table server  -->

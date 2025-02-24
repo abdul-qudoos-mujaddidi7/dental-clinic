@@ -75,7 +75,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::apiResource('/patients', PatientController::class);
     Route::apiResource('/laboratories', LaboratoryController::class);
-    Route::apiResource('/dentals', ToothController::class);
+    Route::apiResource('/tooths', ToothController::class);
     Route::apiResource('/peoples', PeopleController::class);
     Route::delete('/patientBulkDelete', [PatientController::class,'bulkDelete']);
     Route::apiResource('/appointments', AppointmentController::class);

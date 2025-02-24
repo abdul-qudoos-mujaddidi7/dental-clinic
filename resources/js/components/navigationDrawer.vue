@@ -434,10 +434,10 @@ function handleDrawerState(isOpen) {
 
 <style scoped>
 /* Hide scrollbar across all browsers */
-.child {
+/* .child {
     font-size: 14px;
     transition: color 0.3s;
-}
+} */
 .child > :nth-child(3) {
     /* background-color: red; */
     display: flex;
@@ -481,7 +481,7 @@ function handleDrawerState(isOpen) {
 
 /* Styling for child items */
 .child {
-    font-size: 0.875rem; /* text-sm */
+    font-size: 0.875rem; 
     transition: color 0.3s ease;
 }
 .child:hover {

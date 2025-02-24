@@ -1,8 +1,8 @@
 <template>
-    <CReateExpensePRoduct v-if="CureRepository.createDialog" />
+    <CReateExpensePRoduct v-if="PeopleRepository.createDialog" />
     <div class="all-expense rounded-xl m-4">
         <div class="card rounded-xl bg-white" rtl>
-            <AppBar mainTitle="Create Cure Cycle" subTitle="cure cycle" />
+            <AppBar mainTitle="Create Laboratory " subTitle="People" />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
@@ -11,45 +11,31 @@
             <v-form ref="formRef" class="d-flex pt-12">
                 <v-text-field
                     type="date"
-                    v-model="formData.startDate"
+                    v-model="formData.returnDate"
                     variant="outlined"
-                    label="Date *"
+                    label="Return Date *"
                     class="pr-2"
                     style="width: 45%"
                     color="#d3e2f8"
                     density="compact"
                 ></v-text-field>
 
-                <v-autocomplete
-                v-model="formData.patientId"
-                    :items="CureRepository.patientsFor"
-                    :return-object="false"
+     
+                <v-text-field
+                    type="date"
+                    v-model="formData.issueAt"
                     variant="outlined"
-                    label="Patient *"
-                    class="pr-2 pl-2"
+                    label="Issue At *"
+                    class="px-2"
                     style="width: 45%"
-                    item-value="id"
-                    item-title="name"
+                    color="#d3e2f8"
                     density="compact"
-                    :rules="[rules.required]"
-                ></v-autocomplete>
+                ></v-text-field>
                 
-                <v-autocomplete
-                v-model="formData.dentistId"
-                    :items="CureRepository.doctorFor"
-                    :return-object="false"
-                    variant="outlined"
-                    label="Doctor *"
-                    class="pr-2 pl-2"
-                    style="width: 45%"
-                    item-value="id"
-                    item-title="name"
-                    density="compact"
-                    :rules="[rules.required]"
-                ></v-autocomplete>
+          
                 <v-autocomplete
                 v-model="formData.status"
-                    :items="CureRepository.leadStageFor"
+                    :items="PeopleRepository.leadStageFor"
                     :return-object="false"
                     variant="outlined"
                     label="Status *"
@@ -67,9 +53,9 @@
                 <v-col cols="full" class="w-50" sm="12" md="12">
                     <div class="d-flex">
                         <v-text-field
-                            v-model="CureRepository.billExpenseSearch"
-                            @keyup.enter="CureRepository.SearchFetchData"
-                            @input="CureRepository.SearchFetchData"
+                            v-model="PeopleRepository.labSearch"
+                            @keyup.enter="PeopleRepository.SearchFetchData"
+                            @input="PeopleRepository.SearchFetchData"
                             @click:clear="clearSearch"
                             variant="outlined"
                             label="Search Services"
@@ -81,11 +67,11 @@
                     </div>
                     <div
                         class="rounded shadow-lg px-5 mb-12"
-                        v-if="CureRepository.searchFetch.length > 0"
+                        v-if="PeopleRepository.searchFetch.length > 0"
                     >
                         <div>
                             <div
-                                v-for="index in CureRepository.searchFetch"
+                                v-for="index in PeopleRepository.searchFetch"
                                 :key="index"
                             >
                                 <p
@@ -132,7 +118,7 @@
                             class="product-table"
                             v-for="(
                                 pro, index
-                            ) in CureRepository.services"
+                            ) in PeopleRepository.services"
                             :key="index"
                         >
                             <td class="pl-3 text-start">
@@ -240,33 +226,34 @@
 import AppBar from "../../../components/AppBar.vue";
 import { reactive, computed, ref, watch, onMounted } from "vue";
 
-import { useCureRepository } from "@/store/CureRepository";
+import { usePeopleRepository } from "@/store/PeopleRepository";
 
-const CureRepository = useCureRepository();
+const PeopleRepository = usePeopleRepository();
 const CalcFetchProduct = (index) => {
     console.log(index, "man of the match");
-    CureRepository.fetchProduct(index.id);
+    PeopleRepository.fetchProduct(index.id);
     clearSearch();
 };
 
 // ======================
 const clearSearch = () => {
-    CureRepository.billExpenseSearch = ""; // Clear repository's search
-    CureRepository.searchFetch = [];
+    PeopleRepository.billExpenseSearch = ""; //
+    PeopleRepository.searchFetch = [];
 };
 const removeProduct = (index) => {
-    CureRepository.services.splice(index, 1);
-    console.log(CureRepository.services);
+    PeopleRepository.services.splice(index, 1);
+    console.log(PeopleRepository.services);
 };
 const createExpenseProduct = () => {
-    CureRepository.createDialog = true;
+    PeopleRepository.createDialog = true;
 };
 
 const formData = reactive({
-    services: CureRepository.services ||[],
+    services: PeopleRepository.services ||[],
     grandTotal: "",
     patientId: "",
-    startDate: "",
+    returnDate: "",
+    issueAt: "",
     description: "",
     paid: "",
     status:"",
@@ -286,9 +273,9 @@ const multiple = (pro) => {
 };
 
 watch(
-    () => CureRepository.services,
+    () => PeopleRepository.services,
     () => {
-        CureRepository.services.forEach((services) => {
+        PeopleRepository.services.forEach((services) => {
             // Update the 'subtotal' property for each service
             services.total = multiple(services);
             console.log(services);
@@ -298,7 +285,7 @@ watch(
 );
 
 // const totalSum = computed(() => {
-//     const total = CureRepository.services.reduce(
+//     const total = PeopleRepository.services.reduce(
 //         (acc, item) => acc + multiple(item),
 //         0
 //     );
@@ -308,8 +295,8 @@ watch(
 const totalSum = computed(() => {
     let total = 0;
 
-    if (Array.isArray(CureRepository.services)) {
-        for (const item of CureRepository.services) {
+    if (Array.isArray(PeopleRepository.services)) {
+        for (const item of PeopleRepository.services) {
             total += multiple(item);
         }
     }
@@ -327,14 +314,15 @@ const createEarning = async () => {
     const isValid = await formRef.value.validate();
     if (isValid) {
         formData.services.map((data) => (data.serviceId = data.id));
-        await CureRepository.CreateCure(formData);
+        await PeopleRepository.CreateLaboratory(formData);
         formData.services = [];
-        CureRepository.services = [];
+        PeopleRepository.services = [];
 
         // Reset other formData fields
         formData.grandTotal = "";
         formData.patientId = "";
-        formData.startDate = CureRepository.getTodaysDate(); // Reset to today's date
+        formData.returnDate = PeopleRepository.getTodaysDate(); // Reset to today's date
+        formData.issueAt = PeopleRepository.getTodaysDate(); // Reset to today's date
         formData.description = "";
         formData.paid = "";
         formData.status = "";
@@ -345,17 +333,17 @@ const createEarning = async () => {
 };
 
 const saveData = async (id) => {
-    await CureRepository.fetchProduct(id);
+    await PeopleRepository.fetchProduct(id);
 };
 
 const deleteItem = async (item) => {
-    await CureRepository.deleteEarning(item.id);
+    await PeopleRepository.DeleteLaboratory(item.id);
 };
-formData.startDate = CureRepository.getTodaysDate();
+formData.startDate = PeopleRepository.getTodaysDate();
 
-CureRepository.Patients();
-CureRepository.Doctor();
-CureRepository.leadStagesFor();
+// PeopleRepository.Patients();
+// PeopleRepository.Doctor();
+PeopleRepository.leadStagesFor();
 // ====================
 // =====================================
 </script>
