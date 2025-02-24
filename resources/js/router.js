@@ -16,8 +16,9 @@ import Doctor from "./pages/people/doctor/Doctor.vue";
 import Supplier from "./pages/people/supplier/Supplier.vue";
 import User from "./pages/people/user/User.vue";
 import Employee from "./pages/people/employee/Employee.vue";
-import Laboratory from "./pages/people/lab/Laboratory.vue"
-import CreateLaboratory from "./pages/people/lab/CreateLab.vue"
+import Laboratory from "./pages/people/lab/Laboratory.vue";
+import CreateLaboratory from "./pages/people/lab/CreateLab.vue";
+import UpdateLaboratory from "./pages/people/lab/UpdateLab.vue";
 // leads
 import Leads from "./pages/lead/leads/Leads.vue";
 import LeadCategory from "./pages/lead/leadCategory/LeadCategory.vue";
@@ -86,7 +87,11 @@ const router = createRouter({
                 { path: "/employee", component: Employee },
                 { path: "/laboratory", component: Laboratory },
                 { path: "/createLab", component: CreateLaboratory },
-                
+                {
+                    path: "/updateLab/:id",
+                    props: true,
+                    component: UpdateLaboratory,
+                },
 
                 // leads
                 { path: "/lead", component: Leads },
