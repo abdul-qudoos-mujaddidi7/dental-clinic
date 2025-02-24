@@ -27,16 +27,14 @@
                     </v-btn>
                     &nbsp;
                     <router-link to="createLab">
-
                         <v-btn
-                       
-                        color="primaryOld"
-                        variant="flat"
-                        text="Create"
-                        class="px-6"
+                            color="primaryOld"
+                            variant="flat"
+                            text="Create"
+                            class="px-6"
                         >
-                    </v-btn>
-                </router-link>
+                        </v-btn>
+                    </router-link>
                 </div>
             </div>
             <!-- v-table server  -->
@@ -75,16 +73,23 @@
                                             </template>
                                             <v-list>
                                                 <v-list-item>
-                                                    <v-list-item-title
-                                                        @click="edit(item)"
-                                                        class="cursor-pointer d-flex gap-3 justify-left pb-3"
+                                                    <router-link
+                                                        :to="
+                                                            '/updateLab/' +
+                                                            item.id
+                                                        "
                                                     >
-                                                        <v-icon
-                                                            color="tealColor"
-                                                            >mdi-square-edit-outline</v-icon
+                                                        <v-list-item-title
+                                                      
+                                                            class="cursor-pointer d-flex gap-3 justify-left pb-3"
                                                         >
-                                                        Edit
-                                                    </v-list-item-title>
+                                                            <v-icon
+                                                                color="tealColor"
+                                                                >mdi-square-edit-outline</v-icon
+                                                            >
+                                                            Edit
+                                                        </v-list-item-title>
+                                                    </router-link>
 
                                                     <v-list-item-title
                                                         class="cursor-pointer d-flex gap-3"
@@ -121,35 +126,45 @@ const PeopleRepository = usePeopleRepository();
 
 // delete and update Create
 const CreateDialogShow = () => {
-    PeopleRepository.laboratory = {},
-    PeopleRepository.setEditMode(false);
+    (PeopleRepository.laboratory = {}), PeopleRepository.setEditMode(false);
     PeopleRepository.createDialog = true;
+    PeopleRepository.labId = id;
 };
 
-const edit = (item) => {
-    console.log(item, "me");
-    PeopleRepository.setEditMode(true);
-    PeopleRepository.laboratory = {};
-    if (Object.keys(PeopleRepository.laboratory).length === 0) {
-        PeopleRepository.FetchLaboratory(item.id)
-            .then(() => {
-                PeopleRepository.createDialog = true;
-            })
-            .catch((error) => {
-                console.error("Error fetching data:", error);
-            });
-    }
-};
+// const edit = (item) => {
+//     console.log(item, "me");
+//     PeopleRepository.setEditMode(true);
+//     PeopleRepository.laboratory = {};
+//     if (Object.keys(PeopleRepository.laboratory).length === 0) {
+//         PeopleRepository.FetchLaboratory(item.id)
+//             .then(() => {
+//                 PeopleRepository.createDialog = true;
+//             })
+//             .catch((error) => {
+//                 console.error("Error fetching data:", error);
+//             });
+//     }
+// };
 
 const deleteItem = async (item) => {
     await PeopleRepository.DeleteLaboratory(item.id);
 };
 // header
 const headers = [
-{ title: "Issue At", key: "issue_at", align: "start", sortable: false },
+    { title: "Issue At", key: "issue_at", align: "start", sortable: false },
 
-    { title: "Return Date", key: "return_date", align: "start", sortable: false },
-    { title: "Grand total", key: "grand_total", align: "start", sortable: false },
+    {
+        title: "Return Date",
+        key: "return_date",
+        align: "start",
+        sortable: false,
+    },
+    {
+        title: "Grand total",
+        key: "grand_total",
+        align: "start",
+        sortable: false,
+    },
     { title: "Paid", key: "paid", align: "start", sortable: false },
     { title: "Status", key: "status", align: "start", sortable: false },
     { title: "Details", key: "description", align: "start", sortable: false },

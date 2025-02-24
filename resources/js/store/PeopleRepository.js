@@ -51,6 +51,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             cureProduct: reactive([]),
             services: [],
             leadStageFor:reactive([]),
+            labId:ref("")
         };
     },
     actions: {

@@ -225,6 +225,7 @@
 <script setup>
 import AppBar from "../../../components/AppBar.vue";
 import { reactive, computed, ref, watch, onMounted } from "vue";
+import {useRoute} from "vue-router"
 
 import { usePeopleRepository } from "@/store/PeopleRepository";
 
@@ -258,6 +259,8 @@ const formData = reactive({
     paid: "",
     status:"",
 });
+const routeParams = useRoute();
+
 PeopleRepository.FetchLaboratory(routeParams.params.id).then((res) => {
     const laboratory = PeopleRepository.laboratory; // Assuming the data is stored here
     formData.id = laboratory.id;
