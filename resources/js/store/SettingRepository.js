@@ -399,7 +399,7 @@ export let useSettingRepository = defineStore("SettingRepository", {
             this.loading = true;
 
             const response = await axios.get(
-                `dentals?page=${page}&perPage=${itemsPerPage}&search=${this.dentalSearch}`
+                `tooths?page=${page}&perPage=${itemsPerPage}&search=${this.dentalSearch}`
             );
             this.dentals = response.data.data;
             this.totalItems = response.data.meta.total;
@@ -408,7 +408,7 @@ export let useSettingRepository = defineStore("SettingRepository", {
         async fetchDental(id) {
             // this.error = null;
             try {
-                const response = await axios.get(`dentals/${id}`);
+                const response = await axios.get(`tooths/${id}`);
 
                 this.dental = response.data.data;
                 console.log(this.dental);
@@ -420,7 +420,7 @@ export let useSettingRepository = defineStore("SettingRepository", {
             try {
                 const config = {
                     method: "PUT",
-                    url: "dentals/" + id,
+                    url: "tooths/" + id,
 
                     data: data,
                 };
@@ -443,7 +443,7 @@ export let useSettingRepository = defineStore("SettingRepository", {
             
                 const config = {
                     method: "POST",
-                    url: "dentals",
+                    url: "tooths",
 
                     data: formData,
                 };
@@ -466,7 +466,7 @@ export let useSettingRepository = defineStore("SettingRepository", {
             try {
                 const config = {
                     method: "DELETE",
-                    url: "dentals/" + id,
+                    url: "tooths/" + id,
                 };
 
                 const response = await axios(config);

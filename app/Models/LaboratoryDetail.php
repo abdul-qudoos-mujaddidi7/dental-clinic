@@ -34,7 +34,7 @@ class LaboratoryDetail extends Model
     {
         return $this->belongsTo(Laboratory::class);
     }
-    public function toothType()
+    public function tooth()
     {
         return $this->belongsTo(Tooth::class);
     }
