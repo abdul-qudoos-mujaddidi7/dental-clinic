@@ -250,7 +250,7 @@ const createExpenseProduct = () => {
 };
 
 const formData = reactive({
-    services: PeopleRepository.services ||[],
+    tooths: PeopleRepository.services ||[],
     grandTotal: "",
     patientId: "",
     returnDate: "",

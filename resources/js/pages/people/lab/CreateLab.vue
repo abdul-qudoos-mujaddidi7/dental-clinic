@@ -249,9 +249,9 @@ const createExpenseProduct = () => {
 };
 
 const formData = reactive({
-    services: PeopleRepository.services ||[],
+    tooths: PeopleRepository.services ||[],
     grandTotal: "",
-    patientId: "",
+    toothId: "",
     returnDate: "",
     issueAt: "",
     description: "",
@@ -313,15 +313,15 @@ const Duo = computed(() => {
 const createEarning = async () => {
     const isValid = await formRef.value.validate();
     if (isValid) {
-        formData.services.map((data) => (data.serviceId = data.id));
+        formData.tooths.map((data) => (data.serviceId = data.id));
         await PeopleRepository.CreateLaboratory(formData);
-        formData.services = [];
+        formData.tooths = [];
         PeopleRepository.services = [];
 
         // Reset other formData fields
         formData.grandTotal = "";
-        formData.patientId = "";
-        formData.returnDate = PeopleRepository.getTodaysDate(); // Reset to today's date
+        formData.toothId = "";
+        formData.returnDate = PeopleRepository.getTodaysDate(); // Reset to today's
         formData.issueAt = PeopleRepository.getTodaysDate(); // Reset to today's date
         formData.description = "";
         formData.paid = "";
@@ -339,7 +339,8 @@ const saveData = async (id) => {
 const deleteItem = async (item) => {
     await PeopleRepository.DeleteLaboratory(item.id);
 };
-formData.startDate = PeopleRepository.getTodaysDate();
+formData.returnDate = PeopleRepository.getTodaysDate();
+formData.issueAt = PeopleRepository.getTodaysDate();
 
 // PeopleRepository.Patients();
 // PeopleRepository.Doctor();
