@@ -17,9 +17,9 @@ class LaboratoryResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'return_date' => $this->return_date,
-            'issue_at' => $this->issue_at,
-            'grand_total' => $this->grand_total,
+            'returnDate' => $this->return_date,
+            'issueAt' => $this->issue_at,
+            'grandTotal' => $this->grand_total,
             'paid' => $this->paid,
             // 'due'=> $due,
             // 'paymentStatus' => $this->getPaymentStatus(),

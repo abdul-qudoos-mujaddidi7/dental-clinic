@@ -151,17 +151,17 @@ const deleteItem = async (item) => {
 };
 // header
 const headers = [
-    { title: "Issue At", key: "issue_at", align: "start", sortable: false },
+    { title: "Issue At", key: "issueAt", align: "start", sortable: false },
 
     {
         title: "Return Date",
-        key: "return_date",
+        key: "returnDate",
         align: "start",
         sortable: false,
     },
     {
         title: "Grand total",
-        key: "grand_total",
+        key: "grandTotal",
         align: "start",
         sortable: false,
     },

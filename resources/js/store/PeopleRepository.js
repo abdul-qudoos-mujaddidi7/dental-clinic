@@ -777,7 +777,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
                 const response = await axios.get(`laboratories/${id}`);
 
                 this.laboratory = response.data.data;
-                console.log(this.supplier);
+                console.log(this.laboratory);
             } catch (err) {
                 // this.error = err.message;
             }
