@@ -22,7 +22,6 @@ class LaboratoryDetailResource extends JsonResource
             'cost' => $this->cost,
             'total' => $this->total,
             'quantity'=>$this->quantity,
-            'status' => $this->status,
         ];
     }
 }

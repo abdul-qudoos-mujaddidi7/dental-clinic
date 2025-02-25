@@ -15,7 +15,6 @@ class LaboratoryDetail extends Model
     public const COLUMN_COST = 'cost';
     public const COLUMN_QUANTITY = 'quantity';
     public const COLUMN_TOTAL = 'total';
-    public const COLUMN_STATUS = 'status';
 
     protected $table = 'laboratory_details';
 
@@ -25,7 +24,6 @@ class LaboratoryDetail extends Model
         self::COLUMN_COST,
         self::COLUMN_QUANTITY,
         self::COLUMN_TOTAL,
-        self::COLUMN_STATUS,
     ];
 
 
