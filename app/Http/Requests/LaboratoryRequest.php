@@ -43,7 +43,6 @@ class LaboratoryRequest extends FormRequest
             'tooths.*.cost' => 'required|numeric', //te service details
             'tooths.*.quantity' => 'required|numeric', //ce details
             'tooths.*.total' => 'nullable|numeric', // Validate service details
-            'tooths.*.status' => 'required|string'
         ];
     }
 }

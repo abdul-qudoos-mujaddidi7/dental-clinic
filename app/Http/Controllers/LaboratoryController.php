@@ -48,7 +48,6 @@ class LaboratoryController extends Controller
                     'cost' => $tooth['cost'],
                     'quantity' => $tooth['quantity'],
                     'total' => $tooth['total'],
-                    'status' => $tooth['status'],
                     'created_at' => now(),
                     'updated_at' => now()
                 ]);
@@ -82,7 +81,7 @@ class LaboratoryController extends Controller
 
         // Update services (if provided)
         if ($request->has('tooths')) {
-            $services = [];
+            $details = [];
             foreach ($validated['tooths'] as $tooth) {
                 $details[] = [
                     'laboratory_id' => $laboratory->id,
@@ -90,7 +89,6 @@ class LaboratoryController extends Controller
                     'cost' => $tooth['cost'],
                     'quantity' => $tooth['quantity'],
                     'total' => $tooth['total'],
-                    'status' => $tooth['status'],
                     'updated_at' => now()
                 ];
             }
