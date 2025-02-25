@@ -102,9 +102,7 @@
                             <th scope="col" class="px-3 py-3 text-start">
                                 Cost
                             </th>
-                            <th scope="col" class="px-3 py-3 text-start">
-                                status
-                            </th>
+                           
                             <th scope="col" class="px-3 py-3 text-center">
                                 Sub Total
                             </th>
@@ -154,18 +152,7 @@
                                     </span>
                                 </v-text-field>
                             </td>
-                            <td class="pt-2 text-center pb-0 w-[14rem]">
-                                <v-autocomplete
-                                :items="['complete', 'start']"
-                                v-model="pro.status"
-                                variant="outlined"
-                                density="compact"
-                                    class="w-75"
-                                >
-
-                                </v-autocomplete>
-
-                            </td>
+                           
                             <td class="text-center">
                                 <span>{{ multiple(pro) }}</span>
                             </td>
@@ -321,8 +308,8 @@ const createEarning = async () => {
         // Reset other formData fields
         formData.grandTotal = "";
         formData.toothId = "";
-        formData.returnDate = PeopleRepository.getTodaysDate(); // Reset to today's
-        formData.issueAt = PeopleRepository.getTodaysDate(); // Reset to today's date
+        formData.returnDate = PeopleRepository.getTodaysDate(); 
+        formData.issueAt = PeopleRepository.getTodaysDate(); 
         formData.description = "";
         formData.paid = "";
         formData.status = "";
