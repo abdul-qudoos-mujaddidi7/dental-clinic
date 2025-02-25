@@ -836,7 +836,8 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
 
                 // Using Axios to make a post request with async/await and custom headers
                 const response = await axios(config);
-                this.createDialog = false;
+                this.router.push("/laboratory");
+
                 this.FetchLaboratories({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,

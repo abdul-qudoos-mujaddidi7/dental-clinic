@@ -20,7 +20,6 @@
                     density="compact"
                 ></v-text-field>
 
-     
                 <v-text-field
                     type="date"
                     v-model="formData.issueAt"
@@ -31,10 +30,9 @@
                     color="#d3e2f8"
                     density="compact"
                 ></v-text-field>
-                
-          
+
                 <v-autocomplete
-                v-model="formData.status"
+                    v-model="formData.status"
                     :items="PeopleRepository.leadStageFor"
                     :return-object="false"
                     variant="outlined"
@@ -46,7 +44,6 @@
                     density="compact"
                     :rules="[rules.required]"
                 ></v-autocomplete>
-            
             </v-form>
             <v-divider></v-divider>
             <v-row no-gutters class="justify-space-between mt-16">
@@ -102,9 +99,7 @@
                             <th scope="col" class="px-3 py-3 text-start">
                                 Cost
                             </th>
-                            <th scope="col" class="px-3 py-3 text-start">
-                                status
-                            </th>
+                        
                             <th scope="col" class="px-3 py-3 text-center">
                                 Sub Total
                             </th>
@@ -116,16 +111,14 @@
                     <tbody>
                         <tr
                             class="product-table"
-                            v-for="(
-                                pro, index
-                            ) in PeopleRepository.services"
+                            v-for="(pro, index) in formData.tooths"
                             :key="index"
                         >
                             <td class="pl-3 text-start">
                                 {{ index + 1 }}
                             </td>
                             <td class="pl-3 text-start">
-                                {{ pro.name }}
+                                {{ pro.name|| pro.toothName }}
                             </td>
 
                             <td class="pt-2 text-center pb-0 w-[14rem]">
@@ -136,10 +129,8 @@
                                     density="compact"
                                     class="w-75"
                                 >
-                                   
                                 </v-text-field>
                             </td>
-                            
 
                             <td class="pt-2 pb-0 text-center w-[14rem]">
                                 <v-text-field
@@ -154,18 +145,7 @@
                                     </span>
                                 </v-text-field>
                             </td>
-                            <td class="pt-2 text-center pb-0 w-[14rem]">
-                                <v-autocomplete
-                                :items="['complete', 'start']"
-                                v-model="pro.status"
-                                variant="outlined"
-                                density="compact"
-                                    class="w-75"
-                                >
-
-                                </v-autocomplete>
-
-                            </td>
+                          
                             <td class="text-center">
                                 <span>{{ multiple(pro) }}</span>
                             </td>
@@ -216,7 +196,7 @@
                 </v-textarea>
             </div>
             <div class="d-flex flex-row-reverse mt-6">
-                <v-btn color="#112F53" @click="createEarning"> Submit</v-btn>
+                <v-btn color="#112F53" @click="update"> Submit</v-btn>
             </div>
         </div>
     </div>
@@ -225,11 +205,12 @@
 <script setup>
 import AppBar from "../../../components/AppBar.vue";
 import { reactive, computed, ref, watch, onMounted } from "vue";
-import {useRoute} from "vue-router"
+import { useRoute } from "vue-router";
 
 import { usePeopleRepository } from "@/store/PeopleRepository";
 
 const PeopleRepository = usePeopleRepository();
+// PeopleRepository.services =  laboratory.details || [];
 const CalcFetchProduct = (index) => {
     console.log(index, "man of the match");
     PeopleRepository.fetchProduct(index.id);
@@ -250,21 +231,22 @@ const createExpenseProduct = () => {
 };
 
 const formData = reactive({
-    tooths: PeopleRepository.services ||[],
+    tooths: PeopleRepository.services || [],
     grandTotal: "",
     patientId: "",
     returnDate: "",
     issueAt: "",
     description: "",
     paid: "",
-    status:"",
+  
 });
 const routeParams = useRoute();
 
 PeopleRepository.FetchLaboratory(routeParams.params.id).then((res) => {
     const laboratory = PeopleRepository.laboratory; // Assuming the data is stored here
     formData.id = laboratory.id;
-    formData.services = laboratory.servicesDetails || [];
+    PeopleRepository.services = laboratory.details || [];
+
     formData.grandTotal = laboratory.grandTotal;
     formData.returnDate = laboratory.returnDate;
     formData.issueAt = laboratory.issueAt;
@@ -274,6 +256,18 @@ PeopleRepository.FetchLaboratory(routeParams.params.id).then((res) => {
 
     console.log(formData.grandTotal, "Initial grand total");
 });
+
+watch(() => PeopleRepository.laboratory, (newData) => {
+    if (newData) {
+        formData.tooths = newData.details || [];
+        formData.grandTotal = newData.grandTotal;
+        formData.returnDate = newData.returnDate;
+        formData.issueAt = newData.issueAt;
+        formData.description = newData.description;
+        formData.paid = newData.paid;
+        formData.status = newData.status;
+    }
+}, { deep: true });
 
 const formRef = ref(null);
 const rules = {
@@ -301,14 +295,6 @@ watch(
     { deep: true }
 );
 
-// const totalSum = computed(() => {
-//     const total = PeopleRepository.services.reduce(
-//         (acc, item) => acc + multiple(item),
-//         0
-//     );
-//     formData.grandTotal = total;
-//     return total;
-// });
 const totalSum = computed(() => {
     let total = 0;
 
@@ -322,32 +308,43 @@ const totalSum = computed(() => {
     return total;
 });
 
+// Update function
+const update = async () => {
+    formData.grandTotal = totalSum.value;
+
+    // Ensure formData.tooths exists before mapping
+    if (Array.isArray(formData.tooths)) {
+        formData.tooths = formData.tooths.map((data) => {
+            if (data.toothId) {
+                return {
+                    ...data,
+                    product: { id: data.toothId }, // Assuming `toothId` is the correct field
+                };
+            } else {
+                console.error("toothId is missing or invalid in:", data);
+                return data;
+            }
+        });
+    }
+
+    // Validate form
+    const isValid = await formRef.value.validate();
+    if (isValid.valid) {  // Vuetify 3 validation returns an object { valid: true/false }
+        try {
+            await PeopleRepository.UpdateLaboratory(formData.id, formData);
+            console.log("Updated successfully:", formData);
+        } catch (error) {
+            console.error("Error updating laboratory:", error);
+        }
+    } else {
+        console.error("Form validation failed");
+    }
+};
+
 // Computed Duo (remaining balance)
 const Duo = computed(() => {
     return totalSum.value - formData.paid || 0;
 });
-
-const createEarning = async () => {
-    const isValid = await formRef.value.validate();
-    if (isValid) {
-        formData.services.map((data) => (data.serviceId = data.id));
-        await PeopleRepository.CreateLaboratory(formData);
-        formData.services = [];
-        PeopleRepository.services = [];
-
-        // Reset other formData fields
-        formData.grandTotal = "";
-        formData.patientId = "";
-        formData.returnDate = PeopleRepository.getTodaysDate(); // Reset to today's date
-        formData.issueAt = PeopleRepository.getTodaysDate(); // Reset to today's date
-        formData.description = "";
-        formData.paid = "";
-        formData.status = "";
-
-
-        console.log("Form submitted and cleared successfully!");
-    }
-};
 
 const saveData = async (id) => {
     await PeopleRepository.fetchProduct(id);
