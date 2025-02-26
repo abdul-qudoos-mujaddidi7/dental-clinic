@@ -151,6 +151,8 @@ const deleteItem = async (item) => {
 };
 // header
 const headers = [
+{ title: "Teeth Type", key: "teethType", align: "start", sortable: false },
+
     { title: "Issue At", key: "issueAt", align: "start", sortable: false },
 
     {
@@ -168,7 +170,6 @@ const headers = [
     { title: "Paid", key: "paid", align: "start", sortable: false },
     { title: "Status", key: "status", align: "start", sortable: false },
     { title: "Details", key: "description", align: "start", sortable: false },
-    { title: "teeth Type", key: "teethType", align: "start", sortable: false },
     { title: "Action", key: "action", align: "end", sortable: false },
 ];
 </script>

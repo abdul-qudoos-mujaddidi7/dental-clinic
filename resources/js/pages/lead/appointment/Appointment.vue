@@ -2,7 +2,7 @@
     <CreateAppointment v-if="LeadRepository.createDialog" />
     <div class="all-expense rounded-xl">
         <div class="card rounded-xl">
-            <AppBar mainTitle="Appointment" sub-title="lead" />
+            <AppBar mainTitle="Appointment" sub-title="appointment" />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
