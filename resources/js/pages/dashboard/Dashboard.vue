@@ -250,7 +250,7 @@
                             <template v-slot:default>
                                 <thead class="bg-gray-100">
                                     <tr>
-                                        <th
+                                        <th 
                                             class="text-left font-medium text-gray-700"
                                         >
                                             Patient

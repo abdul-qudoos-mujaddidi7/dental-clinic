@@ -51,34 +51,29 @@
                     </router-link>
                 </v-list>
             </transition>
+            <!-- appointment -->
+            <router-link to="appointments">
+                <v-list-item
+                    active-class="bg-primaryOld text-white"
+                    prepend-icon="mdi mdi-calendar-clock"
+                    value="appointment"
+                    class="transition-all duration-300 cursor-pointer py-3 borderRadius"
+                >
+                    Appointment
+                </v-list-item>
+            </router-link>
             <!-- cure cycle  -->
-            <v-list-item
-                active-class="bg-primaryOld text-white"
-                prepend-icon="mdi mdi-cart-outline"
-                value="cure"
-                @click="toggleCure"
-                class="transition-all duration-300 cursor-pointer py-3 borderRadius"
-            >
-                Cure Cycle
-            </v-list-item>
+            <router-link to="cure">
+                <v-list-item
+                    active-class="bg-primaryOld text-white"
+                    prepend-icon="mdi-medical-bag"
+                    value="cure"
+                    class="transition-all duration-300 cursor-pointer py-3 borderRadius"
+                >
+                    Cure Cycle
+                </v-list-item>
+            </router-link>
 
-            <transition name="slide-fade">
-                <v-list v-if="isCureVisible" class="pl-4">
-                    <router-link
-                        v-for="item in cureItems"
-                        :key="item.to"
-                        :to="item.to"
-                    >
-                        <v-list-item
-                            :title="item.title"
-                            :prepend-icon="item.icon"
-                            :value="item.value"
-                            color="primaryOld"
-                            class="child rounded-lg"
-                        />
-                    </router-link>
-                </v-list>
-            </transition>
             <!-- cure -->
             <v-list-item
                 active-class="bg-primaryOld text-white"
@@ -333,21 +328,14 @@ const leadItems = [
         icon: "mdi mdi-circle-medium",
         value: "stage",
     },
-    {
-        to: "/appointments",
-        title: "Appointments",
-        icon: "mdi mdi-circle-medium",
-        value: "appointments",
-    },
+    // {
+    //     to: "/appointments",
+    //     title: "Appointments",
+    //     icon: "mdi mdi-circle-medium",
+    //     value: "appointments",
+    // },
 ];
-const cureItems = [
-    {
-        to: "/cure",
-        title: "Cure Cycle",
-        icon: "mdi mdi-circle-medium",
-        value: "cure cycle ",
-    },
-];
+
 const settingItems = [
     {
         to: "/systemSetting",
@@ -381,7 +369,7 @@ const settingItems = [
         icon: "mdi mdi-circle-medium",
         value: "Dental   ",
     },
-]
+];
 const reportItems = [
     {
         to: "/profitLoss",
@@ -481,7 +469,7 @@ function handleDrawerState(isOpen) {
 
 /* Styling for child items */
 .child {
-    font-size: 0.875rem; 
+    font-size: 0.875rem;
     transition: color 0.3s ease;
 }
 .child:hover {

@@ -11,30 +11,30 @@
             <v-form ref="formRef" class="d-flex pt-12">
                 <v-text-field
                     type="date"
+                    v-model="formData.issueAt"
+                    variant="outlined"
+                    label="Issue At *"
+                   class="pr-2"
+                    style="width: 45%"
+                    color="#d3e2f8"
+                    density="compact"
+                ></v-text-field>
+                <v-text-field
+                    type="date"
                     v-model="formData.returnDate"
                     variant="outlined"
                     label="Return Date *"
-                    class="pr-2"
+                   
+                      class="px-2"
                     style="width: 45%"
                     color="#d3e2f8"
                     density="compact"
                 ></v-text-field>
 
-     
-                <v-text-field
-                    type="date"
-                    v-model="formData.issueAt"
-                    variant="outlined"
-                    label="Issue At *"
-                    class="px-2"
-                    style="width: 45%"
-                    color="#d3e2f8"
-                    density="compact"
-                ></v-text-field>
                 
-          
+
                 <v-autocomplete
-                v-model="formData.status"
+                    v-model="formData.status"
                     :items="PeopleRepository.leadStageFor"
                     :return-object="false"
                     variant="outlined"
@@ -46,7 +46,6 @@
                     density="compact"
                     :rules="[rules.required]"
                 ></v-autocomplete>
-            
             </v-form>
             <v-divider></v-divider>
             <v-row no-gutters class="justify-space-between mt-16">
@@ -86,12 +85,12 @@
                 </v-col>
 
                 <table
-                    class="text-sm text-center"
+                    class="text-sm text-center custom"
                     density="compact"
                     style="width: 150rem"
                 >
                     <thead class="text-xs text-gray-700 uppercase thead">
-                        <tr>
+                        <tr class="border-gray-300">
                             <th scope="col" class="px-3 py-3 text-start">#</th>
                             <th scope="col" class="px-3 py-3 text-start">
                                 Service
@@ -102,7 +101,6 @@
                             <th scope="col" class="px-3 py-3 text-start">
                                 Cost
                             </th>
-                           
                             <th scope="col" class="px-3 py-3 text-center">
                                 Sub Total
                             </th>
@@ -111,53 +109,60 @@
                             </th>
                         </tr>
                     </thead>
-                    <tbody>
+
+                    <tbody class="space">
                         <tr
-                            class="product-table"
-                            v-for="(
-                                pro, index
-                            ) in PeopleRepository.services"
+                            class="product-table h-[3.4rem] text-xs"
+                            v-for="(pro, index) in PeopleRepository.services"
                             :key="index"
                         >
-                            <td class="pl-3 text-start">
-                                {{ index + 1 }}
-                            </td>
-                            <td class="pl-3 text-start">
-                                {{ pro.name }}
-                            </td>
+                            <td class="pl-3 text-start">{{ index + 1 }}</td>
+                            <td class="pl-3 text-start">{{ pro.name }}</td>
 
-                            <td class="pt-2 text-center pb-0 w-[14rem]">
+                            <td class="text-center w-[14rem]">
                                 <v-text-field
                                     v-model="pro.quantity"
                                     variant="outlined"
                                     type="number"
                                     density="compact"
                                     class="w-75"
-                                >
-                                   
-                                </v-text-field>
+                                    hide-details
+                                    single-line
+                                    :style="{
+                                        height: '1.75rem',
+                                        textAlign: 'center',
+                                    }"
+                                ></v-text-field>
                             </td>
-                            
 
-                            <td class="pt-2 pb-0 text-center w-[14rem]">
+                            <td class="pb-0 text-center w-[14rem]">
                                 <v-text-field
                                     v-if="formData.peopleId !== null"
                                     v-model="pro.cost"
                                     variant="outlined"
                                     density="compact"
                                     class="w-75"
+                                    hide-details
+                                    single-line
+                                    :style="{
+                                        height: '1.75rem',
+                                        padding: '0',
+                                        textAlign: 'center',
+                                    }"
                                 >
-                                    <span class="span">
-                                        {{ displayedCurrencySymbol }}
+                                    <span
+                                        class="span text-xs flex items-center justify-center pb-2"
+                                    >
+                                        AFG
                                     </span>
                                 </v-text-field>
                             </td>
-                           
-                            <td class="text-center">
+
+                            <td class="text-center align-middle">
                                 <span>{{ multiple(pro) }}</span>
                             </td>
 
-                            <td class="px-3 text-end">
+                            <td class="px-3 text-end align-middle">
                                 <v-icon
                                     color="red"
                                     @click="removeProduct(index)"
@@ -188,6 +193,7 @@
                         type="number"
                         density="compact"
                     >
+                    
                     </v-text-field>
                 </div>
             </div>
@@ -236,14 +242,14 @@ const createExpenseProduct = () => {
 };
 
 const formData = reactive({
-    tooths: PeopleRepository.services ||[],
+    tooths: PeopleRepository.services || [],
     grandTotal: "",
     toothId: "",
     returnDate: "",
     issueAt: "",
     description: "",
     paid: "",
-    status:"",
+    status: "",
 });
 const formRef = ref(null);
 const rules = {
@@ -308,12 +314,11 @@ const createEarning = async () => {
         // Reset other formData fields
         formData.grandTotal = "";
         formData.toothId = "";
-        formData.returnDate = PeopleRepository.getTodaysDate(); 
-        formData.issueAt = PeopleRepository.getTodaysDate(); 
+        formData.returnDate = PeopleRepository.getTodaysDate();
+        formData.issueAt = PeopleRepository.getTodaysDate();
         formData.description = "";
         formData.paid = "";
         formData.status = "";
-
 
         console.log("Form submitted and cleared successfully!");
     }
@@ -338,9 +343,15 @@ PeopleRepository.leadStagesFor();
 
 <style scoped>
 .thead {
-    border-left: 4px solid #fecd07;
+    /* border-left: 4px solid #fecd07;
     background-color: #ecf1f4;
-    max-width: 120rem;
+    max-width: 120rem; */
+    background-color: #ecf1f4;
+    border-left: 4px solid #f4d03f;
+    border-bottom: 4px solid #ffff;
+    border-width: 4px;
+    border-right: none;
+    border-top: none;
 }
 
 .discount {
@@ -348,5 +359,13 @@ PeopleRepository.leadStagesFor();
     width: 100%;
     justify-content: space-between;
     align-items: center;
+}
+
+.product-table {
+    border-bottom: 2px solid #ffff;
+    border-left: 4px solid #f4d03f;
+    border-width: 4px;
+    border-right: none;
+    border-top: none;
 }
 </style>
