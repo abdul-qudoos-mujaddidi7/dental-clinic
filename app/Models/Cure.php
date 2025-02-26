@@ -23,7 +23,7 @@ class Cure extends Model
         parent::boot();
 
         static::creating(function ($cure) {
-            $cure->reference = 'CURE' . (self::max('id') + 1);
+            $cure->reference = 'CURE_' . (self::max('id') + 1);
         });
     }
 

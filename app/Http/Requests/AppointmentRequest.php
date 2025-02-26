@@ -31,10 +31,10 @@ class AppointmentRequest extends FormRequest
     {
         return [
             'date' => 'required|date',
-            'time' => 'required|date_format:H:i', // Adjust format as needed
+            'time' => 'required|date_format:H:i',
             'status' => 'required|string',
-            'dentist_id' => 'required', // Ensure dentist exists
-            'patient_id' => 'required', // Ensure patient exists
+            'dentist_id' => 'required|exists:people,id', // Ensure dentist exists
+            'patient_id' => 'required|exists:people,id', // Ensure patient exists
         ];
     }
 }
