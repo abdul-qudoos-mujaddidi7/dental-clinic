@@ -858,15 +858,13 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
                 };
 
                 const response = await axios(config);
-
-                // this.supplier = response.data.data;
-                this.FetchLaboratory({
+                this.FetchLaboratories({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });
             } catch (err) {
-                this.error = err;
+                this.error = err
+                // If there's an error, set the error in the stor
             }
-        },
-    },
+        },}
 });
