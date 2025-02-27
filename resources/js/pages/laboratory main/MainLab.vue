@@ -1,5 +1,4 @@
 <template>
-    <CreateEmployee v-if="PeopleRepository.createDialog" />
     <div class="all-expense rounded-xl">
         <div class="card rounded-xl">
             <AppBar mainTitle="Employee" sub-title="people" />
@@ -19,7 +18,7 @@
                         label="Search ..."
                         append-inner-icon="mdi-magnify"
                         hide-details
-                        v-model="PeopleRepository.employeeSearch"
+                        v-model="LaboratoryRepository.laboratorySearch"
                     ></v-text-field>
                 </div>
                 <div class="btn">
@@ -27,14 +26,15 @@
                         Filter
                     </v-btn>
                     &nbsp;
-                    <v-btn
-                        @click="CreateDialogShow"
-                        color="primaryOld"
-                        variant="flat"
-                        text="Create"
-                        class="px-6"
-                    >
-                    </v-btn>
+                    <router-link to="createMainLab">
+                        <v-btn
+                            color="primaryOld"
+                            variant="flat"
+                            text="Create"
+                            class="px-6"
+                        >
+                        </v-btn>
+                    </router-link>
                 </div>
             </div>
             <!-- v-table server  -->
@@ -46,17 +46,17 @@
                                 <v-data-table-server
                                     theme="cursor-pointer"
                                     v-model:items-per-page="
-                                        PeopleRepository.itemsPerPage
+                                        LaboratoryRepository.itemsPerPage
                                     "
                                     :headers="headers"
-                                    :items-length="PeopleRepository.totalItems"
-                                    :items="PeopleRepository.employees"
-                                    :loading="PeopleRepository.loading"
-                                    :search="PeopleRepository.employeeSearch"
+                                    :items-length="LaboratoryRepository.totalItems"
+                                    :items="LaboratoryRepository.laboratories"
+                                    :loading="LaboratoryRepository.loading"
+                                    :search="LaboratoryRepository.laboratorySearch"
                                     @update:options="
-                                        PeopleRepository.FetchEmployees
+                                        LaboratoryRepository.FetchLaboratories
                                     "
-                                    :item-key="PeopleRepository.employees"
+                                    :item-key="LaboratoryRepository.laboratories"
                                     hover
                                     class="w-100 mx-auto"
                                 >
@@ -73,16 +73,23 @@
                                             </template>
                                             <v-list>
                                                 <v-list-item>
-                                                    <v-list-item-title
-                                                        @click="edit(item)"
-                                                        class="cursor-pointer d-flex gap-3 justify-left pb-3"
+                                                    <router-link
+                                                        :to="
+                                                            '/updateMainLab/' +
+                                                            item.id
+                                                        "
                                                     >
-                                                        <v-icon
-                                                            color="tealColor"
-                                                            >mdi-square-edit-outline</v-icon
+                                                        <v-list-item-title
+                                                      
+                                                            class="cursor-pointer d-flex gap-3 justify-left pb-3"
                                                         >
-                                                        Edit
-                                                    </v-list-item-title>
+                                                            <v-icon
+                                                                color="tealColor"
+                                                                >mdi-square-edit-outline</v-icon
+                                                            >
+                                                            Edit
+                                                        </v-list-item-title>
+                                                    </router-link>
 
                                                     <v-list-item-title
                                                         class="cursor-pointer d-flex gap-3"
@@ -111,44 +118,58 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import AppBar from "../../../components/AppBar.vue";
-import CreateEmployee from "./CreateEmployee.vue";
-import { usePeopleRepository } from "@/store/PeopleRepository";
-const PeopleRepository = usePeopleRepository();
+import AppBar from "../../components/AppBar.vue";
+
+import { useLaboratoryRepository } from "@/store/LaboratoryRepository";
+const LaboratoryRepository = useLaboratoryRepository();
 // bulk delete
 
 // delete and update Create
 const CreateDialogShow = () => {
-    PeopleRepository.employee = {},
-    PeopleRepository.setEditMode(false);
-    PeopleRepository.createDialog = true;
+    (LaboratoryRepository.laboratory = {}), LaboratoryRepository.setEditMode(false);
+    LaboratoryRepository.createDialog = true;
+    LaboratoryRepository.labId = id;
 };
 
-const edit = (item) => {
-    console.log(item, "me");
-    PeopleRepository.setEditMode(true);
-    PeopleRepository.employee = {};
-    if (Object.keys(PeopleRepository.employee).length === 0) {
-        PeopleRepository.FetchEmployee(item.id)
-            .then(() => {
-                PeopleRepository.createDialog = true;
-            })
-            .catch((error) => {
-                console.error("Error fetching data:", error);
-            });
-    }
-};
+// const edit = (item) => {
+//     console.log(item, "me");
+//     LaboratoryRepository.setEditMode(true);
+//     LaboratoryRepository.laboratory = {};
+//     if (Object.keys(LaboratoryRepository.laboratory).length === 0) {
+//         LaboratoryRepository.FetchLaboratory(item.id)
+//             .then(() => {
+//                 LaboratoryRepository.createDialog = true;
+//             })
+//             .catch((error) => {
+//                 console.error("Error fetching data:", error);
+//             });
+//     }
+// };
 
 const deleteItem = async (item) => {
-    await PeopleRepository.DeleteEmployee(item.id);
+    await LaboratoryRepository.DeleteLaboratory(item.id);
 };
 // header
 const headers = [
-    { title: "Name ", key: "name", align: "start", sortable: false },
-    { title: "phone", key: "phone", align: "center", sortable: false },
-    { title: "Salary ", key: "salary", align: "center", sortable: false },
-    { title: " Email", key: "email", align: "center", sortable: false },
-    { title: "Address", key: "address", align: "center", sortable: false },
+{ title: "Teeth Type", key: "teethType", align: "start", sortable: false },
+
+    { title: "Issue At", key: "issueAt", align: "start", sortable: false },
+
+    {
+        title: "Return Date",
+        key: "returnDate",
+        align: "start",
+        sortable: false,
+    },
+    {
+        title: "Grand total",
+        key: "grandTotal",
+        align: "start",
+        sortable: false,
+    },
+    { title: "Paid", key: "paid", align: "start", sortable: false },
+    { title: "Status", key: "status", align: "start", sortable: false },
+    { title: "Details", key: "description", align: "start", sortable: false },
     { title: "Action", key: "action", align: "end", sortable: false },
 ];
 </script>

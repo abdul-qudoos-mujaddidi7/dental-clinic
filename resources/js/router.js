@@ -45,6 +45,10 @@ import Dashboard from "./pages/dashboard/Dashboard.vue";
 import CureCycle from "./pages/cureCycle/cureCycle/CureCycle.vue";
 import CreateCureCycle from "./pages/cureCycle/cureCycle/CreateCureCycle.vue";
 import UpdateCureCycle from "./pages/cureCycle/cureCycle/UpdateCureCycle.vue";
+// laboratory 
+import MainLab from "./pages/laboratory main/MainLab.vue"
+import CreateMainLab from "./pages/laboratory main/CreateMainLab.vue"
+import UpdateMainLab from "./pages/laboratory main/UpdateMainLab.vue"
 // login
 import Login from "./pages/Auth/Login.vue";
 import Home from "./Home.vue";
@@ -118,6 +122,14 @@ const router = createRouter({
                 { path: "/pickupReport", component: PickupReport },
                 { path: "/serviceReport", component: Services },
                 // Dashboard
+                // main lab 
+                { path: "/mainLaboratory", component: MainLab },
+                { path: "/createMainLab", component: CreateMainLab },
+                {
+                    path: "/updateMainLab/:id",
+                    props: true,
+                    component: UpdateMainLab,
+                },
                 // CureCycle
                 { path: "/cure", component: CureCycle },
                 { path: "/createCure", component: CreateCureCycle },

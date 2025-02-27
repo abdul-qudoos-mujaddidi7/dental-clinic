@@ -1,8 +1,8 @@
 <template>
-    <CReateExpensePRoduct v-if="PeopleRepository.createDialog" />
+    <CReateExpensePRoduct v-if="LaboratoryRepository.createDialog" />
     <div class="all-expense rounded-xl m-4">
         <div class="card rounded-xl bg-white" rtl>
-            <AppBar mainTitle="Create Laboratory " subTitle="People" />
+            <AppBar mainTitle="Create Laboratory " subTitle="Laboratory" />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
@@ -14,7 +14,7 @@
                     v-model="formData.issueAt"
                     variant="outlined"
                     label="Issue At *"
-                    class="pr-2"
+                   class="pr-2"
                     style="width: 45%"
                     color="#d3e2f8"
                     density="compact"
@@ -24,19 +24,35 @@
                     v-model="formData.returnDate"
                     variant="outlined"
                     label="Return Date *"
-                    class="px-2"
+                   
+                      class="px-2"
                     style="width: 45%"
                     color="#d3e2f8"
                     density="compact"
                 ></v-text-field>
 
+                
+
                 <v-autocomplete
                     v-model="formData.status"
-                    :items="PeopleRepository.leadStageFor"
+                    :items="LaboratoryRepository.leadStageFor"
                     :return-object="false"
                     variant="outlined"
                     label="Status *"
                     class="pr-2 pl-2"
+                    style="width: 45%"
+                    item-value="name"
+                    item-title="name"
+                    density="compact"
+                    :rules="[rules.required]"
+                ></v-autocomplete>
+                <v-autocomplete
+                    v-model="formData.doctor"
+                    :items="LaboratoryRepository.doctorsFor"
+                    :return-object="false"
+                    variant="outlined"
+                    label="Doctor *"
+                    class="pl-2"
                     style="width: 45%"
                     item-value="name"
                     item-title="name"
@@ -49,12 +65,12 @@
                 <v-col cols="full" class="w-50" sm="12" md="12">
                     <div class="d-flex">
                         <v-text-field
-                            v-model="PeopleRepository.labSearch"
-                            @keyup.enter="PeopleRepository.SearchFetchData"
-                            @input="PeopleRepository.SearchFetchData"
+                            v-model="LaboratoryRepository.labSearch"
+                            @keyup.enter="LaboratoryRepository.SearchFetchData"
+                            @input="LaboratoryRepository.SearchFetchData"
                             @click:clear="clearSearch"
                             variant="outlined"
-                            label="Search Services"
+                            label="Search "
                             density="compact"
                             append-inner-icon="mdi-magnify"
                             clearable
@@ -63,11 +79,11 @@
                     </div>
                     <div
                         class="rounded shadow-lg px-5 mb-12"
-                        v-if="PeopleRepository.searchFetch.length > 0"
+                        v-if="LaboratoryRepository.searchFetch.length > 0"
                     >
                         <div>
                             <div
-                                v-for="index in PeopleRepository.searchFetch"
+                                v-for="index in LaboratoryRepository.searchFetch"
                                 :key="index"
                             >
                                 <p
@@ -110,7 +126,7 @@
                     <tbody class="space">
                         <tr
                             class="product-table h-[3.4rem] text-xs"
-                            v-for="(pro, index) in PeopleRepository.services"
+                            v-for="(pro, index) in LaboratoryRepository.services"
                             :key="index"
                         >
                             <td class="pl-3 text-start">{{ index + 1 }}</td>
@@ -190,6 +206,7 @@
                         type="number"
                         density="compact"
                     >
+                    
                     </v-text-field>
                 </div>
             </div>
@@ -212,33 +229,33 @@
 </template>
 
 <script setup>
-import AppBar from "../../../components/AppBar.vue";
+import AppBar from "../../components/AppBar.vue";
 import { reactive, computed, ref, watch, onMounted } from "vue";
 
-import { usePeopleRepository } from "@/store/PeopleRepository";
+import { useLaboratoryRepository } from "@/store/LaboratoryRepository";
 
-const PeopleRepository = usePeopleRepository();
+const LaboratoryRepository = useLaboratoryRepository();
 const CalcFetchProduct = (index) => {
     console.log(index, "man of the match");
-    PeopleRepository.fetchProduct(index.id);
+    LaboratoryRepository.fetchProduct(index.id);
     clearSearch();
 };
 
 // ======================
 const clearSearch = () => {
-    PeopleRepository.billExpenseSearch = ""; //
-    PeopleRepository.searchFetch = [];
+    LaboratoryRepository.billExpenseSearch = ""; //
+    LaboratoryRepository.searchFetch = [];
 };
 const removeProduct = (index) => {
-    PeopleRepository.services.splice(index, 1);
-    console.log(PeopleRepository.services);
+    LaboratoryRepository.services.splice(index, 1);
+    console.log(LaboratoryRepository.services);
 };
 const createExpenseProduct = () => {
-    PeopleRepository.createDialog = true;
+    LaboratoryRepository.createDialog = true;
 };
 
 const formData = reactive({
-    tooths: PeopleRepository.services || [],
+    tooths: LaboratoryRepository.services || [],
     grandTotal: "",
     toothId: "",
     returnDate: "",
@@ -246,7 +263,7 @@ const formData = reactive({
     description: "",
     paid: "",
     status: "",
-    type: "in",
+    doctor:"",
 });
 const formRef = ref(null);
 const rules = {
@@ -263,9 +280,9 @@ const multiple = (pro) => {
 };
 
 watch(
-    () => PeopleRepository.services,
+    () => LaboratoryRepository.services,
     () => {
-        PeopleRepository.services.forEach((services) => {
+        LaboratoryRepository.services.forEach((services) => {
             // Update the 'subtotal' property for each service
             services.total = multiple(services);
             console.log(services);
@@ -275,7 +292,7 @@ watch(
 );
 
 // const totalSum = computed(() => {
-//     const total = PeopleRepository.services.reduce(
+//     const total = LaboratoryRepository.services.reduce(
 //         (acc, item) => acc + multiple(item),
 //         0
 //     );
@@ -285,8 +302,8 @@ watch(
 const totalSum = computed(() => {
     let total = 0;
 
-    if (Array.isArray(PeopleRepository.services)) {
-        for (const item of PeopleRepository.services) {
+    if (Array.isArray(LaboratoryRepository.services)) {
+        for (const item of LaboratoryRepository.services) {
             total += multiple(item);
         }
     }
@@ -304,15 +321,15 @@ const createEarning = async () => {
     const isValid = await formRef.value.validate();
     if (isValid) {
         formData.tooths.map((data) => (data.serviceId = data.id));
-        await PeopleRepository.CreateLaboratory(formData);
+        await LaboratoryRepository.CreateLaboratory(formData);
         formData.tooths = [];
-        PeopleRepository.services = [];
+        LaboratoryRepository.services = [];
 
         // Reset other formData fields
         formData.grandTotal = "";
         formData.toothId = "";
-        formData.returnDate = PeopleRepository.getTodaysDate();
-        formData.issueAt = PeopleRepository.getTodaysDate();
+        formData.returnDate = LaboratoryRepository.getTodaysDate();
+        formData.issueAt = LaboratoryRepository.getTodaysDate();
         formData.description = "";
         formData.paid = "";
         formData.status = "";
@@ -322,18 +339,18 @@ const createEarning = async () => {
 };
 
 const saveData = async (id) => {
-    await PeopleRepository.fetchProduct(id);
+    await LaboratoryRepository.fetchProduct(id);
 };
 
 const deleteItem = async (item) => {
-    await PeopleRepository.DeleteLaboratory(item.id);
+    await LaboratoryRepository.DeleteLaboratory(item.id);
 };
-formData.returnDate = PeopleRepository.getTodaysDate();
-formData.issueAt = PeopleRepository.getTodaysDate();
+formData.returnDate = LaboratoryRepository.getTodaysDate();
+formData.issueAt = LaboratoryRepository.getTodaysDate();
 
-// PeopleRepository.Patients();
-// PeopleRepository.Doctor();
-PeopleRepository.leadStagesFor();
+// LaboratoryRepository.Patients();
+LaboratoryRepository.Doctors();
+LaboratoryRepository.leadStagesFor();
 // ====================
 // =====================================
 </script>
