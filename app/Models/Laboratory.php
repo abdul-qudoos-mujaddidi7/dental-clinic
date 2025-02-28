@@ -11,9 +11,11 @@ class Laboratory extends Model
 
     public const COLUMN_ID = 'id';
     public const COLUMN_PAID = 'paid';
+    public const COLUMN_DENTIST_ID = 'dentist_id';
     public const COLUMN_GRAND_TOTAL = 'grand_total';
     public const COLUMN_RETURN_DATE = 'return_date';
     public const COLUMN_ISSUED_AT = 'issue_at';
+    public const COLUMN_TYPE = 'type';
     public const COLUMN_DESCRIPTION = 'description';
 
 
@@ -24,6 +26,8 @@ class Laboratory extends Model
         self::COLUMN_DESCRIPTION,
         self::COLUMN_ISSUED_AT,
         self::COLUMN_PAID,
+        self::COLUMN_TYPE,
+        self::COLUMN_DENTIST_ID,
         self::COLUMN_RETURN_DATE
     ];
 
@@ -44,5 +48,10 @@ class Laboratory extends Model
         return $query->where('name','LIKE','%'. $search .'%');
 
 
+    }
+
+    public function dentist()
+    {
+        return $this->belongsTo(People::class, 'dentist_id');
     }
 }

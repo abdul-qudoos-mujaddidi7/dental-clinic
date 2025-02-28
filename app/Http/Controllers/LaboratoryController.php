@@ -27,8 +27,9 @@ class LaboratoryController extends Controller
 
         $perPage = $request->input("perPage", 10);
         $search = $request->input("search");
+        $type = $request->input("type");
 
-        $laboratories = $this->model::search($search)->latest()->paginate($perPage);
+        $laboratories = $this->model::with('details')->where('type',$type)->search($search)->latest()->paginate($perPage);
 
         return $this->resource::collection($laboratories);
     }

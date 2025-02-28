@@ -56,4 +56,9 @@ class People extends Model
     {
         return $this->hasMany(Appointment::class, 'dentist_id');
     }
+
+    public function laboratoryOrders()
+    {
+        return $this->hasMany(Laboratory::class, 'dentist_id');
+    }
 }

@@ -47,14 +47,14 @@
                     :rules="[rules.required]"
                 ></v-autocomplete>
                 <v-autocomplete
-                    v-model="formData.doctor"
+                    v-model="formData.dentistId"
                     :items="LaboratoryRepository.doctorsFor"
                     :return-object="false"
                     variant="outlined"
                     label="Doctor *"
                     class="pl-2"
                     style="width: 45%"
-                    item-value="name"
+                    item-value="id"
                     item-title="name"
                     density="compact"
                     :rules="[rules.required]"
@@ -263,7 +263,8 @@ const formData = reactive({
     description: "",
     paid: "",
     status: "",
-    doctor:"",
+    dentistId:"",
+    type:'in'
 });
 const formRef = ref(null);
 const rules = {

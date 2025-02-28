@@ -19,6 +19,7 @@ class LaboratoryRequest extends FormRequest
             "return_date" => $this->input("returnDate"),
             "grand_total" => $this->input("grandTotal"),
             "issue_at" => $this->input("issueAt"),
+            "dentist_id" => $this->input("dentistId"),
 
         ]);
     }
@@ -35,6 +36,8 @@ class LaboratoryRequest extends FormRequest
             'issue_at' => 'required|date',
             'grand_total' => 'required|numeric|min:0',
             'paid' => 'nullable|numeric|min:0',
+            'type'=>'required| in:in,out',
+            'dentist_id' => 'nullable|exists:people,id',
             'status' => 'required|string',
             'description' => 'nullable|string',
             'tooths' => 'nullable|array',        // Validate tooths array

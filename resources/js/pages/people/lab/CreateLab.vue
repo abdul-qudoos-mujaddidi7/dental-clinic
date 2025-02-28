@@ -246,7 +246,7 @@ const formData = reactive({
     description: "",
     paid: "",
     status: "",
-    type: "in",
+    type: "out",
 });
 const formRef = ref(null);
 const rules = {

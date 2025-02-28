@@ -1,7 +1,7 @@
 <template>
     <div class="all-expense rounded-xl">
         <div class="card rounded-xl">
-            <AppBar mainTitle="Employee" sub-title="people" />
+            <AppBar mainTitle="Laboratory" sub-title="laboratory" />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
@@ -37,6 +37,7 @@
                     </router-link>
                 </div>
             </div>
+
             <!-- v-table server  -->
             <div class="overflow-x-hidden">
                 <v-app>
@@ -45,26 +46,25 @@
                             <v-col>
                                 <v-data-table-server
                                     theme="cursor-pointer"
-                                    v-model:items-per-page="
-                                        LaboratoryRepository.itemsPerPage
-                                    "
+                                    v-model:items-per-page="LaboratoryRepository.itemsPerPage"
                                     :headers="headers"
                                     :items-length="LaboratoryRepository.totalItems"
-                                    :items="LaboratoryRepository.laboratories"
+                                    :items="processedData"
                                     :loading="LaboratoryRepository.loading"
                                     :search="LaboratoryRepository.laboratorySearch"
-                                    @update:options="
-                                        LaboratoryRepository.FetchLaboratories
-                                    "
+                                    @update:options="LaboratoryRepository.FetchLaboratories"
                                     :item-key="LaboratoryRepository.laboratories"
                                     hover
                                     class="w-100 mx-auto"
                                 >
+                                    <template v-slot:item.details="{ item }">
+                                        <span v-if="item.details && item.details.length">{{ item.details[0].toothName }}</span>
+                                        <span v-else>N/A</span>
+                                    </template>
+
                                     <template v-slot:item.action="{ item }">
                                         <v-menu>
-                                            <template
-                                                v-slot:activator="{ props }"
-                                            >
+                                            <template v-slot:activator="{ props }">
                                                 <v-btn
                                                     icon="mdi-dots-vertical"
                                                     v-bind="props"
@@ -73,33 +73,20 @@
                                             </template>
                                             <v-list>
                                                 <v-list-item>
-                                                    <router-link
-                                                        :to="
-                                                            '/updateMainLab/' +
-                                                            item.id
-                                                        "
-                                                    >
+                                                    <router-link :to="`/updateMainLab/${item.id}`">
                                                         <v-list-item-title
-                                                      
                                                             class="cursor-pointer d-flex gap-3 justify-left pb-3"
                                                         >
-                                                            <v-icon
-                                                                color="tealColor"
-                                                                >mdi-square-edit-outline</v-icon
-                                                            >
+                                                            <v-icon color="tealColor">mdi-square-edit-outline</v-icon>
                                                             Edit
                                                         </v-list-item-title>
                                                     </router-link>
 
                                                     <v-list-item-title
                                                         class="cursor-pointer d-flex gap-3"
-                                                        @click="
-                                                            deleteItem(item)
-                                                        "
+                                                        @click="deleteItem(item)"
                                                     >
-                                                        <v-icon color="error"
-                                                            >mdi-delete-outline</v-icon
-                                                        >
+                                                        <v-icon color="error">mdi-delete-outline</v-icon>
                                                         Delete
                                                     </v-list-item-title>
                                                 </v-list-item>
@@ -117,59 +104,43 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, computed, onMounted } from "vue";
 import AppBar from "../../components/AppBar.vue";
-
 import { useLaboratoryRepository } from "@/store/LaboratoryRepository";
 const LaboratoryRepository = useLaboratoryRepository();
-// bulk delete
 
-// delete and update Create
+// Bulk delete
+
+// Delete and update Create
 const CreateDialogShow = () => {
     (LaboratoryRepository.laboratory = {}), LaboratoryRepository.setEditMode(false);
     LaboratoryRepository.createDialog = true;
     LaboratoryRepository.labId = id;
 };
 
-// const edit = (item) => {
-//     console.log(item, "me");
-//     LaboratoryRepository.setEditMode(true);
-//     LaboratoryRepository.laboratory = {};
-//     if (Object.keys(LaboratoryRepository.laboratory).length === 0) {
-//         LaboratoryRepository.FetchLaboratory(item.id)
-//             .then(() => {
-//                 LaboratoryRepository.createDialog = true;
-//             })
-//             .catch((error) => {
-//                 console.error("Error fetching data:", error);
-//             });
-//     }
-// };
-
-const deleteItem = async (item) => {
-    await LaboratoryRepository.DeleteLaboratory(item.id);
-};
-// header
+// Header
 const headers = [
-{ title: "Teeth Type", key: "teethType", align: "start", sortable: false },
-
+    { title: "Teeth Type", key: "details", align: "start", sortable: false },
     { title: "Issue At", key: "issueAt", align: "start", sortable: false },
-
-    {
-        title: "Return Date",
-        key: "returnDate",
-        align: "start",
-        sortable: false,
-    },
-    {
-        title: "Grand total",
-        key: "grandTotal",
-        align: "start",
-        sortable: false,
-    },
+    { title: "Return Date", key: "returnDate", align: "start", sortable: false },
+    { title: "Grand total", key: "grandTotal", align: "start", sortable: false },
     { title: "Paid", key: "paid", align: "start", sortable: false },
     { title: "Status", key: "status", align: "start", sortable: false },
     { title: "Details", key: "description", align: "start", sortable: false },
     { title: "Action", key: "action", align: "end", sortable: false },
 ];
+
+// Preprocess the data to include toothName
+const processedData = computed(() => {
+    return LaboratoryRepository.laboratories.map(item => {
+        return {
+            ...item,
+            toothName: item.details && item.details.length ? item.details[0].toothName : "N/A"
+        };
+    });
+});
+
+const deleteItem = async (item) => {
+    await LaboratoryRepository.DeleteLaboratory(item.id);
+};
 </script>

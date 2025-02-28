@@ -60,6 +60,10 @@
                                     hover
                                     class="w-100 mx-auto"
                                 >
+                                <template v-slot:item.details="{ item }">
+                                        <span v-if="item.details && item.details.length">{{ item.details[0].toothName }}</span>
+                                        <span v-else>N/A</span>
+                                    </template>
                                     <template v-slot:item.action="{ item }">
                                         <v-menu>
                                             <template
@@ -151,7 +155,7 @@ const deleteItem = async (item) => {
 };
 // header
 const headers = [
-{ title: "Teeth Type", key: "teethType", align: "start", sortable: false },
+{ title: "Teeth Type", key: "details", align: "start", sortable: false },
 
     { title: "Issue At", key: "issueAt", align: "start", sortable: false },
 
