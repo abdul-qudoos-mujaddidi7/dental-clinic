@@ -4,11 +4,12 @@
         @update:model="handleDrawerState"
     >
         <router-link to="/dashboard">
-            <div class="flex items-center justify-center py-4">
+  
+            <div class="flex items-center justify-center py-4"  >
                 <img
                     src="https://i.pinimg.com/736x/a7/7a/a5/a77aa5d8c889c3beee52aa1a7c7dcf23.jpg"
                     alt="Logo"
-                    class="w-[5rem] h-[5rem] rounded-lg object-cover"
+                    class="w-[4rem] h-[4rem] rounded-full object-cover  transition-all duration-300"
                 />
             </div>
         </router-link>
@@ -66,7 +67,7 @@
             <router-link to="cure">
                 <v-list-item
                     active-class="bg-primaryOld text-white"
-                    prepend-icon="mdi-medical-bag"
+                    prepend-icon="mdi-tooth-outline"
                     value="cure"
                     class="transition-all duration-300 cursor-pointer py-3 borderRadius"
                 >
@@ -74,7 +75,20 @@
                 </v-list-item>
             </router-link>
 
-            <!-- cure -->
+            <!-- main lab -->
+             <router-link to="mainLaboratory">
+            <v-list-item
+                active-class="bg-primaryOld text-white"
+                prepend-icon="mdi-microscope"
+                value="lab"
+              
+                class="transition-all duration-300 cursor-pointer py-3 borderRadius"
+            >
+                Laboratory
+            </v-list-item>
+             </router-link>
+      
+
             <v-list-item
                 active-class="bg-primaryOld text-white"
                 prepend-icon="mdi mdi-cash-marker"

@@ -866,5 +866,6 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
                 this.error = err
                 // If there's an error, set the error in the stor
             }
-        },}
+        },
+    }
 });
