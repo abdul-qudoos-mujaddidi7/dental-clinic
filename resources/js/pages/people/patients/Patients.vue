@@ -2,7 +2,7 @@
     <CreatePatients v-if="PeopleRepository.createDialog" />
     <div class="all-expense rounded-xl">
         <div class="card rounded-xl">
-            <AppBar mainTitle="Owner Pickups" sub-title="people" />
+            <AppBar mainTitle="Patients" sub-title="people" />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
@@ -180,6 +180,8 @@ const headers = [
     { title: "Name", key: "name", align: "start", sortable: false },
     { title: "Phone", key: "phone", align: "start", sortable: false },
     { title: "Address", key: "address", align: "start", sortable: false },
+    { title: "Age", key: "age", align: "center", sortable: false },
+    { title: "Gender", key: "gender", align: "center", sortable: false },
     { title: "Action", key: "action", align: "center", sortable: false },
 ];
 </script>
