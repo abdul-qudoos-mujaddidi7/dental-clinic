@@ -75,32 +75,22 @@
                                 </v-autocomplete>
                             </div>
                             <div class="flex">
-                                <div class="w-100">
-                                    <div class="w-100 h-100 pb-[1.1rem] d-flex">
-                                        <div
-                                            class="w-100 rounded flex justify-start pl-4 borderStyle"
-                                        >
-                                            <v-switch
-                                                v-model="formData.status"
-                                                :true-value="1"
-                                                :false-value="0"
-                                                class="pr-2"
-                                                :color="
-                                                    formData.status == 1
-                                                        ? '#ED4B9E'
-                                                        : 'grey'
-                                                "
-                                                :label="
-                                                    formData.status == 1
-                                                        ? 'Active'
-                                                        : 'Unactive'
-                                                "
-                                                hide-details
-                                                density="compact"
-                                            ></v-switch>
-                                        </div>
-                                    </div>
-                                </div>
+                       
+                                   
+                                
+                                <v-autocomplete
+                                    v-model="formData.status"
+                                    :items="['Completed', 'Pending', 'Cancelled', 'In Progress','No Show' ]"
+                                    :return-object="false"
+                                    variant="outlined"
+                                    label="Status *"
+                                    item-value="id"
+                                    item-title="name"
+                                    density="compact"
+                                    :rules="[rules.required]"
+                                    class=" pb-4"
+                                >
+                                </v-autocomplete>
                             </div>
                         </v-form>
                     </v-card-text>

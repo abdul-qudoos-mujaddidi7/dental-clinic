@@ -59,11 +59,10 @@
                                     class="w-100 mx-auto"
                                 >
                                     <template v-slot:item.stage="{ item }">
-                                        <td class="px-4 py-2 font-semibold">
+                                        <td class="py-2 pl-4">
                                             <v-btn
                                                 flat
                                                 fluid
-                                                small
                                                 rounded
                                                 @click="
                                                     changeStage(
@@ -74,12 +73,14 @@
                                                 :style="{
                                                     backgroundColor:
                                                         getStageColor(item.id),
-                                                    color: 'white',
                                                 }"
+                                                class="text-white px-4 py-2"
                                             >
-                                                <p class="text-gray-200">
+                                                <span
+                                                    class="text-[10px] tracking-wide"
+                                                >
                                                     {{ item.stage.name }}
-                                                </p>
+                                                </span>
                                             </v-btn>
                                         </td>
                                     </template>
@@ -140,6 +141,7 @@
                                     @click="sendSelectedIds"
                                     color="#B71C1C"
                                     flat
+                                    inset
                                     text="delete"
                                 >
                                 </v-btn>
@@ -279,7 +281,7 @@ const deleteItem = async (item) => {
 // header
 const headers = [
     { title: "", key: "checkbox", align: "start", sortable: false },
-    { title: "Name", key: "name", align: "start", sortable: false },
+    { title: "Name", key: "name", align: "center", sortable: false },
     { title: "Phone", key: "phone", align: "start", sortable: false },
     {
         title: "Category",
@@ -287,7 +289,7 @@ const headers = [
         align: "start",
         sortable: false,
     },
-    { title: "Status", key: "stage", align: "start", sortable: false },
+    { title: "Status", key: "stage", align: "center", sortable: false },
     { title: "Address", key: "address", align: "start", sortable: false },
     { title: "Details", key: "note", align: "start", sortable: false },
     { title: "Action", key: "action", align: "center", sortable: false },

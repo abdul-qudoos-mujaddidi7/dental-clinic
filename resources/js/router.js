@@ -45,6 +45,7 @@ import Dashboard from "./pages/dashboard/Dashboard.vue";
 import CureCycle from "./pages/cureCycle/cureCycle/CureCycle.vue";
 import CreateCureCycle from "./pages/cureCycle/cureCycle/CreateCureCycle.vue";
 import UpdateCureCycle from "./pages/cureCycle/cureCycle/UpdateCureCycle.vue";
+import ViewCureCycle from "./pages/cureCycle/cureCycle/ViewCureCycle.vue"
 // laboratory 
 import MainLab from "./pages/laboratory main/MainLab.vue"
 import CreateMainLab from "./pages/laboratory main/CreateMainLab.vue"
@@ -137,6 +138,11 @@ const router = createRouter({
                     path: "/updateCure/:id",
                     props: true,
                     component: UpdateCureCycle,
+                },
+                {
+                    path: "/viewCureCycle/:id",
+                    props: true,
+                    component: ViewCureCycle,
                 },
                 // login
             ],

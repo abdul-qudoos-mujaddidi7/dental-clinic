@@ -26,7 +26,6 @@
 
                     <v-card-text>
                         <v-form ref="formRef" class="pt-4">
-                       
                             <div class="flex">
                                 <v-text-field
                                     v-model="formData.name"
@@ -35,69 +34,64 @@
                                     class="w-50 pb-4 pr-2"
                                     density="compact"
                                     :rules="[rules.required]"
-                                  
                                 ></v-text-field>
                                 <v-text-field
                                     v-model="formData.dateOfBirth"
                                     variant="outlined"
                                     label="Date of Birth *"
                                     type="date"
-                                    class=" w-50 pb-4 pl-2"
+                                    class="w-50 pb-4 pl-2"
                                     density="compact"
                                     :rules="[rules.required]"
-                                  
                                 ></v-text-field>
                             </div>
-                     
-                            
-                            
+
                             <div class="flex w-100">
                                 <v-text-field
-                                v-model="formData.phone"
-                                variant="outlined"
-                                label="Phone "
-                                density="compact"
-                                :counter="10"
-                                type="tel"
-                                class="w-50 pr-2 pb-4"
-                                :rules="[rules.required]"
-                            ></v-text-field>
-                                <div class="w-50">
-                                    <div class="rounded ml-2 styleBTN w-60">
+                                    v-model="formData.phone"
+                                    variant="outlined"
+                                    label="Phone "
+                                    density="compact"
+                                    :counter="10"
+                                    type="tel"
+                                    class="w-50 pr-2 pb-4"
+                                    :rules="[rules.required]"
+                                ></v-text-field>
+                                <div class="w-50 "> 
+                                  
+                                    <div class="rounded-sm ml-2 styleBTN w-60">
                                         <v-btn
                                             class="w-50"
-                                            variant="text"
+                                            variant="flat"
                                             rounded="0"
                                             @click="selectGender('Male')"
-                                            
-                                            :style="{
-                                                backgroundColor:
-                                                    formData.gender === 'Male'
-                                                        ? '#00893F'
-                                                        : '',
-                                                color:
-                                                    formData.gender === 'Male'
-                                                        ? '#FFFFFF'
-                                                        : '',
+                                            :color="
+                                                isMaleSelected
+                                                    ? '#00893f'
+                                                    : 'gray'
+                                            "
+                                            :class="{
+                                                'text-white': isMaleSelected,
                                             }"
-                                            >Male</v-btn
                                         >
+                                            Male
+                                        </v-btn>
+
                                         <v-btn
                                             class="w-50"
-                                            variant="text"
-                                            @click="selectGender('Female')"
+                                            variant="flat"
                                             rounded="0"
-                                            :style="{
-                                                backgroundColor:
-                                                    formData.gender === 'Female'
-                                                        ? '#00893F'
-                                                        : '',
-                                                color:
-                                                    formData.gender === 'Female'
-                                                        ? '#FFFFFF'
-                                                        : '',
+                                            @click="selectGender('Female')"
+                                            :color="
+                                                isFemaleSelected
+                                                    ? '#00893f'
+                                                    : 'gray'
+                                            "
+                                            :class="{
+                                                'text-white': isFemaleSelected,
                                             }"
-                                            >Female
+                                        >
+                                            Female
                                         </v-btn>
                                     </div>
                                 </div>
@@ -129,7 +123,7 @@
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
+import { ref, reactive, computed } from "vue";
 import { usePeopleRepository } from "@/store/PeopleRepository";
 
 const PeopleRepository = usePeopleRepository();
@@ -142,13 +136,15 @@ const formData = reactive({
     name: PeopleRepository.patient.name,
     phone: PeopleRepository.patient.phone,
     address: PeopleRepository.patient.address,
-    last_name:"nadeem",
-    type:"patient",
-    gender:PeopleRepository.patient.gender,
-    dateOfBirth:PeopleRepository.patient.dateOfBirth,
-    
-  
+    last_name: "nadeem",
+    type: "patient",
+    gender: PeopleRepository.patient.gender || "Male", // Default to 'Male'
+    dateOfBirth: PeopleRepository.patient.dateOfBirth,
 });
+// Computed properties for cleaner styling logic
+const isMaleSelected = computed(() => formData.gender === "Male");
+const isFemaleSelected = computed(() => formData.gender === "Female");
+
 const rules = {
     required: (value) => !!value || "This field is required.",
 
@@ -167,6 +163,11 @@ const save = async () => {
         }
     }
 };
-formData.dateOfBirth = PeopleRepository.getTodaysDate()
-
+formData.dateOfBirth = PeopleRepository.getTodaysDate();
 </script>
+
+<style scoped>
+.text-white {
+    color: white !important;
+}
+</style>
