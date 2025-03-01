@@ -14,6 +14,12 @@ class PeopleRequest extends FormRequest
         return true;
     }
 
+    public function prePareForValidation(){
+        return $this->merge([
+            "date_of_birth"=> $this->input("dateOfBirth"),
+        ]);
+    }
+
     /**
      * Get the validation rules that apply to the request.
      */

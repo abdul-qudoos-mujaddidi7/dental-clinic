@@ -7,7 +7,6 @@ use App\Http\Resources\CureResource;
 use App\Models\Cure;
 use App\Models\CurePayment;
 use App\Models\CureService;
-use App\Models\Patient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
