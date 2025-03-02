@@ -198,22 +198,55 @@
                 </v-list>
             </transition>
         </div>
-
         <div class="mt-auto">
-            <hr />
-            <v-list-item
-                prepend-avatar="https://randomuser.me/api/portraits/men/85.jpg"
-                title="John Leider"
-                nav
-                class="px-4 py-2"
-            />
-        </div>
+    <hr />
+    <!-- Profile Clickable Item -->
+    <v-list-item
+      prepend-avatar="https://randomuser.me/api/portraits/men/85.jpg"
+      title="John Leider"
+      subtitle="john.leider@example.com"
+      nav
+      class="px-4 py-2 cursor-pointer"
+      @click="dialog = true"
+    />
+
+    <!-- Profile Pop-up (Dialog) -->
+    <v-dialog v-model="dialog" max-width="350">
+      <v-card class="text-center">
+        <v-card-text>
+          <v-avatar size="80">
+            <img src="https://randomuser.me/api/portraits/men/85.jpg" alt="Profile Photo" />
+          </v-avatar>
+          <h3 class="mt-3">{{ user.name }}</h3>
+          <p class="text-gray-500">{{ user.email }}</p>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn color="error" block @click="logout">Log Out</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </div>
     </v-list>
 </template>
 
 <script setup>
 import { ref } from "vue";
+import {useAuthRepository} from "../store/AuthRepository"
+const AuthRepository = useAuthRepository()
 
+
+const dialog = ref(false);
+const user = ref({
+  name: 'John Leider',
+  email: 'john.leider@example.com',
+});
+
+const logout = () => {
+  console.log('Logging out...');
+  AuthRepository.Logout()
+
+  // Implement your logout logic here
+};
 // State for list visibility
 const isListVisible = ref(false);
 const isPeopleVisible = ref(false);
