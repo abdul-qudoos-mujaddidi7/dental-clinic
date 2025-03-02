@@ -28,11 +28,9 @@ class SystemSettingController extends Controller
 
 
     public function store(SystemSettingRequest $request){
-        $validated= $request->validated();
-        $validated['logo'] = $request->hasFile('logo') ? $this->storeImage($request,'company'): null;
-        $system= SystemSetting::create($validated);
-
-        return new SystemSettingResource($system);
+        $setting = $this->storeRecord($request,User::class);
+        // $validated= $request->validated();
+        return new SystemSettingResource($setting);
     }
 
 
