@@ -34,6 +34,7 @@ return new class extends Migration
 
             // Fields specific to employees
             $table->decimal('salary', 10, 2)->nullable();
+            $table->string('position')->nullable();
 
 
 
