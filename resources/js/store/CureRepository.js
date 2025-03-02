@@ -180,14 +180,14 @@ export let useCureRepository = defineStore("CureRepository", {
                 const response = await axios.get(`cures/${id}`);
                 this.cure = response.data.data;
                 this.cureProduct = response.data.data.servicesDetails;
-                this.cureProduct = this.cureProduct.map((data) => {
-                    return {
-                        ...data,
-                        name:
-                            data.cureProduct.serviceName ||
-                            data.cureProduct.name,
-                    };
-                });
+                // this.cureProduct = this.cureProduct.map((data) => {
+                //     return {
+                //         ...data,
+                //         name:
+                //             data.cureProduct.serviceName ||
+                //             data.cureProduct.name,
+                //     };
+                // });
                 console.log(this.cure, "fetch cure");
                 console.log(this.servicesDetails, "services in the fetch cure");
                 console.log(this.cureProduct, "services in the fetchProduct");
