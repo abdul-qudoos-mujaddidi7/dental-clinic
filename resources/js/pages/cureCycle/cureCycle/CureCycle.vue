@@ -172,7 +172,7 @@
                                                                 color="tealColor"
                                                                 >mdi-square-edit-outline</v-icon
                                                             >
-                                                            Edit
+                                                            View Cure 
                                                         </v-list-item-title>
                                                     </router-link>
 
