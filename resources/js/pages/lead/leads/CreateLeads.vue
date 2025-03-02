@@ -83,40 +83,39 @@
                                     density="compact"
                                 ></v-text-field>
                                 <div class="w-50">
-                                    <div class="rounded ml-2 styleBTN w-60">
+                                    <div class="rounded-sm ml-2 styleBTN w-60">
                                         <v-btn
                                             class="w-50"
-                                            variant="text"
+                                            variant="flat"
                                             rounded="0"
                                             @click="selectGender('Male')"
-                                            :style="{
-                                                backgroundColor:
-                                                    formData.gender === 'Male'
-                                                        ? '#00893F'
-                                                        : '',
-                                                color:
-                                                    formData.gender === 'Male'
-                                                        ? '#FFFFFF'
-                                                        : '',
+                                            :color="
+                                                isMaleSelected
+                                                    ? '#00893f'
+                                                    : 'gray'
+                                            "
+                                            :class="{
+                                                'text-white': isMaleSelected,
                                             }"
-                                            >Male</v-btn
                                         >
+                                            Male
+                                        </v-btn>
+
                                         <v-btn
                                             class="w-50"
-                                            variant="text"
-                                            @click="selectGender('Female')"
+                                            variant="flat"
                                             rounded="0"
-                                            :style="{
-                                                backgroundColor:
-                                                    formData.gender === 'Female'
-                                                        ? '#00893F'
-                                                        : '',
-                                                color:
-                                                    formData.gender === 'Female'
-                                                        ? '#FFFFFF'
-                                                        : '',
+                                            @click="selectGender('Female')"
+                                            :color="
+                                                isFemaleSelected
+                                                    ? '#00893f'
+                                                    : 'gray'
+                                            "
+                                            :class="{
+                                                'text-white': isFemaleSelected,
                                             }"
-                                            >Female
+                                        >
+                                            Female
                                         </v-btn>
                                     </div>
                                 </div>
@@ -153,7 +152,7 @@
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
+import { ref, reactive , computed} from "vue";
 import { useLeadRepository } from "@/store/LeadRepository";
 
 const LeadRepository = useLeadRepository();
@@ -167,12 +166,15 @@ const formData = reactive({
     name: LeadRepository.lead.name,
     phone: LeadRepository.lead.phone,
     address: LeadRepository.lead.address,
-    gender: LeadRepository.lead.gender,
+    gender: LeadRepository.lead.gender || "Male",
     note: LeadRepository.lead.note,
-    date: LeadRepository.lead.date,
+    date: LeadRepository.lead.date ,
     categoryId: LeadRepository.lead.category?.id,
     stageId: LeadRepository.lead.stage?.id,
 });
+// Computed properties for cleaner styling logic
+const isMaleSelected = computed(() => formData.gender === "Male");
+const isFemaleSelected = computed(() => formData.gender === "Female");
 const rules = {
     required: (value) => !!value || "This field is required.",
 
@@ -186,7 +188,7 @@ const rules = {
 
 const save = async () => {
     const isValid = await formRef.value.validate();
-    console.log(formData)
+    console.log(formData);
     if (isValid) {
         if (LeadRepository.isEditMode) {
             await LeadRepository.UpdateLead(formData.id, formData);
@@ -196,4 +198,5 @@ const save = async () => {
     }
 };
 LeadRepository.leadCategories();
+formData.date = LeadRepository.getTodaysDate();
 </script>

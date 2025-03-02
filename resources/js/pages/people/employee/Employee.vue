@@ -147,6 +147,7 @@ const headers = [
     { title: "Name ", key: "name", align: "start", sortable: false },
     { title: "phone", key: "phone", align: "center", sortable: false },
     { title: "Salary ", key: "salary", align: "center", sortable: false },
+    { title: "Position ", key: "position", align: "center", sortable: false },
     { title: " Email", key: "email", align: "center", sortable: false },
     { title: "Address", key: "address", align: "center", sortable: false },
     { title: "Action", key: "action", align: "end", sortable: false },

@@ -65,6 +65,14 @@
                                     :rules="[rules.required]"
                                 ></v-text-field>
                             </div>
+                            <v-text-field
+                                    v-model="formData.position"
+                                    variant="outlined"
+                                    label="Position  *"
+                                    class=" pb-4"
+                                    density="compact"
+                                    :rules="[rules.required]"
+                                ></v-text-field>
                             <div class="flex">
                       
                                 <v-textarea
@@ -105,6 +113,7 @@ const formData = reactive({
     salary: PeopleRepository.employee.salary,
     email: PeopleRepository.employee.email,
     address: PeopleRepository.employee.address,
+    position:PeopleRepository.employee.position,
     type:"employee"
 });
 const rules = {

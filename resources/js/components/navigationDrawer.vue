@@ -7,7 +7,7 @@
   
             <div class="flex items-center justify-center py-4"  >
                 <img
-                    src="https://i.pinimg.com/736x/a7/7a/a5/a77aa5d8c889c3beee52aa1a7c7dcf23.jpg"
+                    src="../../../public/storage/images//company/aDlHVeYTn15q7ItfNUujhuXuW7HBhFJOmLR7wvIj .png"
                     alt="Logo"
                     class="w-[4rem] h-[4rem] rounded-full object-cover  transition-all duration-300"
                 />

@@ -184,12 +184,7 @@ const deleteItem = async (item) => {
 const headers = [
     { title: "", key: "checkbox", align: "start", sortable: false },
     { title: "Product", key: "name", align: "start", sortable: false },
-    {
-        title: "Category",
-        key: "expenseCategory.name",
-        align: "center",
-        sortable: false,
-    },
+
 
     { title: "Unit", key: "unit", align: "center", sortable: false },
     { title: "Action", key: "action", align: "end", sortable: false },

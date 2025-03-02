@@ -159,6 +159,22 @@
                                                             Edit
                                                         </v-list-item-title>
                                                     </router-link>
+                                                    <router-link
+                                                        :to="
+                                                            '/viewCureCycle/' +
+                                                            item.id
+                                                        "
+                                                    >
+                                                        <v-list-item-title
+                                                            class="cursor-pointer d-flex gap-3 justify-left pb-3"
+                                                        >
+                                                            <v-icon
+                                                                color="tealColor"
+                                                                >mdi-square-edit-outline</v-icon
+                                                            >
+                                                            Edit
+                                                        </v-list-item-title>
+                                                    </router-link>
 
                                                     <v-list-item-title
                                                         class="cursor-pointer d-flex gap-3"
@@ -266,7 +282,7 @@ function getStatusClass(state) {
 // header
 const headers = [
     { title: "", key: "checkbox", align: "start", sortable: false },
-    { title: "Reference", key: "reference", align: "start", sortable: false },
+    { title: "Reference", key: "reference", align: "center", sortable: false },
     { title: "Date", key: "start_date", align: "start", sortable: false },
     { title: "Doctor", key: "dentist.name", align: "start", sortable: false },
     { title: "patient", key: "patient.name", align: "center", sortable: false },
