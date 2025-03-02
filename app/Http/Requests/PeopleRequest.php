@@ -39,6 +39,7 @@ class PeopleRequest extends FormRequest
             'particular_to_female' => 'nullable|json',
             'doctor_warning' => 'nullable|string',
             'status' => 'nullable|boolean',
+            'position' => 'nullable|string',
             'hire_date' => 'nullable|date',
             'image' => 'nullable|string',
             'share' => 'nullable|numeric|min:0|max:100',
