@@ -56,7 +56,7 @@ class UserController extends Controller
      */
     public function update(UserRequest $request, User $user)
     {
-       
+
         $validated = $request->validated();
         // $validated['image'] = $request->hasFile('image') ? $this->updateImage($request, $user, 'user') : null;
         $validated['password']=Hash::make($validated['password']);
@@ -73,17 +73,17 @@ class UserController extends Controller
         if ($user->id == Auth::id()) {
             return response()->json(['message' => "You cannot change the active user's status"], 403);
         }
-    
+
         $request->validate([
             'status' => 'required|boolean',
         ]);
-    
+
         $user->status = $request->status;
         $user->save();
-    
+
         return new UserResource($user);
     }
-    
+
 
 
     /**
