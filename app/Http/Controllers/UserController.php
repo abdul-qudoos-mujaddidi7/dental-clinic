@@ -16,16 +16,16 @@ use Spatie\Permission\Models\Role;
 class UserController extends Controller
 {
     use ImageHandler;
+
+    private $model = User::class;
+    private $resource = UserResource::class;
+
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        $perPage = $request->input("perPage");
-        $search = $request->input("search");
-
-        $users = User::search($search)->latest()->paginate($perPage);
-        return UserResource::collection($users);
+        return $this->resource::collection($this->listRecord($request,$this->model,['first_name','last_name','email']));
     }
 
     /**
@@ -33,14 +33,12 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
+        $user = $this->storeRecord($request,User::class);
         $validated = $request->validated();
-        $validated['image'] = $request->hasFile('image') ? $this->storeImage($request, 'user') : null;
-        $validated['password'] = Hash::make($validated['password']);
         $role = Role::findOrFail($validated["role_id"]);
-        $user = User::create($validated);
         $user->assignRole($role);
 
-        return new UserResource($user);
+        return new $this->resource($user);
     }
 
     /**

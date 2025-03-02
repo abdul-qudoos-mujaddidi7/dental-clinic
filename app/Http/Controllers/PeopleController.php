@@ -32,8 +32,7 @@ class PeopleController extends Controller
      */
     public function store(PeopleRequest $request)
     {
-        $validated = $request->validated();
-        People::create($validated);
+        $people=$this->storeRecord($request,People::class);
         return response()->json(["message"=>"record stored successfully"]);
 
     }
