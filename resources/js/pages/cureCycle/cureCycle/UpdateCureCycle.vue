@@ -160,7 +160,7 @@
                                 ></v-autocomplete>
                             </td>
                             <td class="text-center">
-                                <span>{{ multiple(pro) }}</span>
+                                <span>{{ pro.total}}</span>
                             </td>
                             <td class="px-3 text-end">
                                 <v-icon
@@ -240,7 +240,6 @@ const createService = () => {
     CureRepository.createDialog = true;
 };
 
-
 const routeParams = useRoute();
 const formData = reactive({
     id: "",
@@ -253,7 +252,8 @@ const formData = reactive({
     description: "",
     paid: 0,
     status: "",
-    services: []
+    services: [],
+    total: "",
 });
 
 // Fetch the data and populate `formData`
@@ -272,13 +272,12 @@ CureRepository.FetchCure(routeParams.params.id).then((res) => {
     console.log(formData.grandTotal, "Initial grand total");
 });
 
+// const multiple = (pro) => {
+//     const quantity = parseFloat(pro.quantity) || 0;
+//     const cost = parseFloat(pro.cost) || 0;
+//     return quantity * cost;
+// };
 
-const multiple = (pro) => {
-    console.log(pro);
-    const add = pro.quantity * pro.cost;
-    console.log(add);
-    return add || 0;
-};
 
 // // Computed property to calculate the total
 // const totalSum = computed(() => {
@@ -300,7 +299,13 @@ const multiple = (pro) => {
 const combinedServices = computed(() => {
     return [...formData.services];
 });
-
+watch(combinedServices, (newValues) => {
+  newValues.forEach((pro) => {
+    console.log("Row:", pro);
+    pro.total = (parseFloat(pro.quantity) || 0) * (parseFloat(pro.cost) || 0);
+    console.log("Updated Total:", pro.total);
+  });
+}, { deep: true });
 
 
 const formRef = ref(null);
@@ -318,14 +323,12 @@ watch(
     { immediate: true, deep: true }
 );
 
-
-
 const totalSum = computed(() => {
     let total = 0;
 
     if (Array.isArray(CureRepository.cure.servicesDetails)) {
         for (const item of CureRepository.cure.servicesDetails) {
-            total += multiple(item);
+            total += (parseFloat(item.quantity) || 0) * (parseFloat(item.cost) || 0);
         }
     }
 
@@ -339,7 +342,7 @@ const Duo = computed(() => {
 });
 // Update function
 const update = async () => {
-    formData.grandTotal=totalSum.value
+    formData.grandTotal = totalSum.value;
     if (Array.isArray(formData.services)) {
         formData.services = formData.services.map((data) => {
             if (data.services && data.services.id) {
@@ -348,7 +351,10 @@ const update = async () => {
                     product: { id: data.services.id },
                 };
             } else {
-                console.error("services is missing or invalid in services:", data);
+                console.error(
+                    "services is missing or invalid in services:",
+                    data
+                );
                 return data;
             }
         });
