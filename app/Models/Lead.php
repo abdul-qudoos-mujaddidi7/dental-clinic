@@ -8,8 +8,28 @@ use Illuminate\Database\Eloquent\Model;
 class Lead extends Model
 {
     use HasFactory;
+    protected $table = 'leads';
 
-    protected $fillable = ['name','phone','gender','address','date','category_id','stage_id','note'];
+    public const COLUMN_NAME = 'name';
+    public const COLUMN_PHONE = 'phone';
+    public const COLUMN_GENDER = 'gender';
+    public const COLUMN_ADDRESS = 'address';
+    public const COLUMN_DATE = 'date';
+    public const COLUMN_CATEGORY_ID = 'category_id';
+    public const COLUMN_STAGE_ID = 'stage_id';
+    public const COLUMN_NOTE = 'note';
+
+    protected $fillable = [
+        self::COLUMN_NAME,
+        self::COLUMN_PHONE,
+        self::COLUMN_GENDER,
+        self::COLUMN_ADDRESS,
+        self::COLUMN_DATE,
+        self::COLUMN_CATEGORY_ID,
+        self::COLUMN_STAGE_ID,
+        self::COLUMN_NOTE
+    ];
+
 
 
     public function scopeSearch($query, $search)

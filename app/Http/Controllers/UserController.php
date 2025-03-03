@@ -56,6 +56,8 @@ class UserController extends Controller
     {
 
         $validated = $request->validated();
+        $user = $this->storeRecord($request,User::class);
+
         // $validated['image'] = $request->hasFile('image') ? $this->updateImage($request, $user, 'user') : null;
         $validated['password']=Hash::make($validated['password']);
         $role = Role::findOrFail($validated['role_id']);

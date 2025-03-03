@@ -22,7 +22,6 @@ return new class extends Migration
             $table->decimal(Laboratory::COLUMN_PAID,10,2)->default(0);
             $table->enum(Laboratory::COLUMN_TYPE, ['in', 'out']);
             $table->text(Laboratory::COLUMN_DESCRIPTION)->nullable();
-
             $table->timestamps();
         });
     }

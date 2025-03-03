@@ -17,23 +17,26 @@ class Controller extends BaseController
         /// admin controller
     }
 
-    public function listRecord($request,$model,$filter = null, $withTables = null)
-    {
-        $requests    = $request->all();
-        $method      = $request->get('paginate', 0) == 1 ? 'paginate' : 'get';
-        $methodValue = $request->get('paginate', 0) == 1 ? $request->get('per_page', 10) : '*';
-        $orderColumn = $request->get('order_column') ?? 'id';
-        $orderType   = $request->get('order_type') ?? 'desc';
+    public function listRecord($request, $model, $filter = [], $withTables = null)
+{
+    $requests    = $request->all();
+    $method      = $request->get('paginate', 0) == 1 ? 'paginate' : 'get';
+    $methodValue = $request->get('paginate', 0) == 1 ? $request->get('perPage', 10) : '*';
+    $orderColumn = $request->get('order_column', 'id');
+    $orderType   = $request->get('order_type', 'desc');
 
-        $withTables ? $model::with($withTables) : $model;
-        return $model::where(function ($query) use ($requests, $filter) {
-            foreach ($requests as $key => $value) {
-                if (in_array($key, $filter)) {
-                    $query->where($key, 'like', '%' . $value . '%');
-                }
+    
+    $query = $withTables ? $model::with($withTables) : $model::query();
+
+    return $query->where(function ($query) use ($requests, $filter) {
+        foreach ($requests as $key => $value) {
+            if (in_array($key, $filter)) {
+                $query->where($key, 'like', '%' . $value . '%');
             }
-        })->orderBy($orderColumn, $orderType)->$method($methodValue);
-    }
+        }
+    })->orderBy($orderColumn, $orderType)->$method($methodValue);
+}
+
 
     public function showRecord($model , $id)
     {
@@ -43,15 +46,16 @@ class Controller extends BaseController
 
     public function storeRecord($request,$model)
     {
+        
         $record =  $model::create($request->validated());
         $this->storeImage($request, $record);
         return $record;
     }
 
-    public function updateRecord($request, $model, $id)
+    public function updateRecord($request, $record)
     {
 
-        $record  = $model::findOrFail($id);
+        // $record  = $model::findOrFail($id);
         $this->deleteImage($record);
         $record = tap($record)->update($request->validated());
 
@@ -74,9 +78,9 @@ class Controller extends BaseController
         return response("Number of rows affected: " . $result, 202);
     }
 
-    public function deleteRecord($model,$id)
+    public function deleteRecord($record)
     {
-        $record  = $model::findOrFail($id);
+        // $record  = $model::findOrFail($id);
         $result = $record->delete();
         $this->deleteImage($record);
         return response("Number of rows affected: " . $result, 202);

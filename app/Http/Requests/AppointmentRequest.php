@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Models\Appointment;
 
 class AppointmentRequest extends FormRequest
 {
@@ -14,11 +15,14 @@ class AppointmentRequest extends FormRequest
         return true;
     }
 
-    public function prePareForValidation()
+    /**
+     * Prepare the data for validation.
+     */
+    public function prepareForValidation()
     {
         return $this->merge([
-            "patient_id" => $this->input("patientId"),
-            "dentist_id" => $this->input("dentistId"),
+            Appointment::COLUMN_PATIENT_ID => $this->input('patientId'),
+            Appointment::COLUMN_DENTIST_ID => $this->input('dentistId'),
         ]);
     }
 
@@ -30,11 +34,11 @@ class AppointmentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'date' => 'required|date',
-            'time' => 'required|date_format:H:i',
-            'status' => 'required|string',
-            'dentist_id' => 'required|exists:people,id', // Ensure dentist exists
-            'patient_id' => 'required|exists:people,id', // Ensure patient exists
+            Appointment::COLUMN_DATE => 'required|date',
+            Appointment::COLUMN_TIME => 'required|date_format:H:i',
+            Appointment::COLUMN_STATUS => 'required|string',
+            Appointment::COLUMN_DENTIST_ID => 'required|exists:people,id', // Ensure dentist exists
+            Appointment::COLUMN_PATIENT_ID => 'required|exists:people,id',  // Ensure patient exists
         ];
     }
 }

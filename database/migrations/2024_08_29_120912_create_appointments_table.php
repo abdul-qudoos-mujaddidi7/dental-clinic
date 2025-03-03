@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\Appointment;
 
 return new class extends Migration
 {
@@ -15,14 +16,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('appointments', function (Blueprint $table) {
+        Schema::create((new Appointment())->getTable(), function (Blueprint $table) {
             $table->id();
-            $table->date('date');
-            $table->time('time');
-            $table->string('status');
-            $table->foreignIdFor(People::class,'dentist_id');
-            $table->foreignIdFor(User::class);
-            $table->foreignIdFor(People::class,'patient_id');
+            $table->date(Appointment::COLUMN_DATE);
+            $table->time(Appointment::COLUMN_TIME);
+            $table->string(Appointment::COLUMN_STATUS);
+            $table->foreignIdFor(People::class, Appointment::COLUMN_DENTIST_ID);
+            $table->foreignIdFor(User::class, Appointment::COLUMN_USER_ID);
+            $table->foreignIdFor(People::class, Appointment::COLUMN_PATIENT_ID);
             $table->timestamps();
         });
     }
@@ -32,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('appointments');
+        Schema::dropIfExists((new Appointment())->getTable());
     }
 };

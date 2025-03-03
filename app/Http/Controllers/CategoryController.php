@@ -9,16 +9,16 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-     /**
+
+    private $model = Category::class;
+    private $resource = CategoryResource::class;
+
+    /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        $perPage = $request->input("perPage");
-        $search = $request->input("search");
-
-        $categories = Category::search($search)->latest()->paginate($perPage);
-        return CategoryResource::collection($categories);
+        return $this->resource::collection($this->listRecord($request, $this->model, ['name']));
     }
 
     /**
@@ -26,9 +26,8 @@ class CategoryController extends Controller
      */
     public function store(CategoryRequest $request)
     {
-        $validated = $request->validated();
-        $category = Category::create($validated);
-        return new CategoryResource($category);
+        $category = $this->storeRecord($request, Category::class);
+        return new $this->resource($category);
     }
 
     /**
@@ -36,7 +35,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        return CategoryResource::make($category);
+        return new $this->resource($category);
     }
 
     /**
@@ -44,9 +43,8 @@ class CategoryController extends Controller
      */
     public function update(CategoryRequest $request, Category $category)
     {
-        $validated = $request->validated();
-        $category->update($validated);
-        return new CategoryResource($category);
+        $category = $this->updateRecord($request, $category);
+        return new $this->resource($category);
     }
 
     /**
@@ -54,7 +52,7 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        $category->delete();
-        return new CategoryResource($category);
+        $this->deleteRecord($category);
+        return new $this->resource($category);
     }
 }

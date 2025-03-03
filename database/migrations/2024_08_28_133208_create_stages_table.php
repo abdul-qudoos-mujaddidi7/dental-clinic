@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\Stage;
 
 return new class extends Migration
 {
@@ -11,9 +12,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('stages', function (Blueprint $table) {
+        Schema::create((new Stage())->getTable(), function (Blueprint $table) {
             $table->id();
-            $table->string('name')->default('New');
+            $table->string(Stage::COLUMN_NAME)->default('New');
             $table->timestamps();
         });
     }
@@ -23,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('stages');
+        Schema::dropIfExists((new Stage())->getTable());
     }
 };
