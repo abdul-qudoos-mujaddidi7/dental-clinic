@@ -24,27 +24,19 @@
 
                     <v-card-text>
                         <v-form ref="formRef" class="pt-4">
-                            <div class="flex w-100">
-                                <v-text-field
+                            <div class="pb-4">
+                                <date-picker
+                                    mode="single"
+                                    :column="1"
                                     v-model="formData.date"
-                                    variant="outlined"
-                                    label="Date  *"
-                                    class="w-50 pr-2 pb-4"
-                                    type="date"
-                                    density="compact"
-                                    :rules="[rules.required]"
-                                ></v-text-field>
-                                <v-text-field
-                                    v-model="formData.time"
-                                    variant="outlined"
-                                    label="time  *"
-                                    class="w-50 pl-2 pb-4"
-                                    type="time"
-                                    density="compact"
-                                    :rules="[rules.required]"
-                                ></v-text-field>
+                                    :styles="styles"
+                                    locale="fa"
+                                    type="datetime"
+                                    :locale-config="LocaleConfigs"
+                                />
+                                
                             </div>
-                           
+
                             <div class="flex">
                                 <v-autocomplete
                                     v-model="formData.patientId"
@@ -75,12 +67,15 @@
                                 </v-autocomplete>
                             </div>
                             <div class="flex">
-                       
-                                   
-                                
                                 <v-autocomplete
                                     v-model="formData.status"
-                                    :items="['Completed', 'Pending', 'Cancelled', 'In Progress','No Show' ]"
+                                    :items="[
+                                        'Completed',
+                                        'Pending',
+                                        'Cancelled',
+                                        'In Progress',
+                                        'No Show',
+                                    ]"
                                     :return-object="false"
                                     variant="outlined"
                                     label="Status *"
@@ -88,7 +83,7 @@
                                     item-title="name"
                                     density="compact"
                                     :rules="[rules.required]"
-                                    class=" pb-4"
+                                    class="pb-4"
                                 >
                                 </v-autocomplete>
                             </div>
@@ -111,6 +106,7 @@
 <script setup>
 import { ref, reactive } from "vue";
 import { useLeadRepository } from "@/store/LeadRepository";
+import { LocaleConfigs, styles } from "../../../LocaleConfigs.js";
 
 const LeadRepository = useLeadRepository();
 const formRef = ref(null);
