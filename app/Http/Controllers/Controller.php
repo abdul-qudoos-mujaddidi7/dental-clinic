@@ -20,8 +20,8 @@ class Controller extends BaseController
     public function listRecord($request, $model, $filter = [], $withTables = null)
 {
     $requests    = $request->all();
-    $method      = $request->get('paginate', 0) == 1 ? 'paginate' : 'get';
-    $methodValue = $request->get('paginate', 0) == 1 ? $request->get('perPage', 10) : '*';
+    $method      = $request->get('page', 0) == 1 ? 'paginate' : 'get';
+    $methodValue = $request->get('page', 0) == 1 ? $request->get('perPage', 10) : '*';
     $orderColumn = $request->get('order_column', 'id');
     $orderType   = $request->get('order_type', 'desc');
 
