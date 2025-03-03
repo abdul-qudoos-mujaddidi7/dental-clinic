@@ -135,7 +135,7 @@ export default {
     await dashboardStore.fetchDashboardData();
   });
   </script>
-   -->
+   
 
    <template>
     <div class="all-expense rounded-xl m-4">
@@ -164,7 +164,7 @@ export default {
           </div>
         </div>
   
-        <!-- Data Table -->
+
         <v-data-table-server
           theme="cursor-pointer"
           v-model:items-per-page="ReportRepository.itemsPerPage"
@@ -259,3 +259,25 @@ export default {
     margin-left: -5px !important;
   }
   </style>
+-->
+<template>
+  <div>
+    <h1>Select a date</h1>
+    <vue-awesome-datepicker
+      v-model="selectedDate"
+      :format="$datepickerConfig.format"
+      :lang="$datepickerConfig.lang"
+      :clearable="true"
+    />
+  </div>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+
+const selectedDate = ref('');
+</script>
+
+<style scoped>
+/* @import 'vue-awesome-datepicker/dist/style.css'; */
+</style>

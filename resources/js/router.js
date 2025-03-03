@@ -83,7 +83,6 @@ const router = createRouter({
                 { path: "/expenseProducts", component: ExpenseProduct },
                 { path: "/expenseCat", component: ExpenseCategory },
                 // people
-                { path: "/ownerPickup", component: OwnerPickup },
                 { path: "/patients", component: Patients },
                 { path: "/owners", component: Owner },
                 { path: "/doctors", component: Doctor },
@@ -120,7 +119,6 @@ const router = createRouter({
                 { path: "/patientsReport", component: PatientsReport },
                 { path: "/categoryReport", component: ExpenseCatReport },
                 { path: "/productReport", component: ExpenseProductReport },
-                { path: "/pickupReport", component: PickupReport },
                 { path: "/serviceReport", component: Services },
                 // Dashboard
                 // main lab 

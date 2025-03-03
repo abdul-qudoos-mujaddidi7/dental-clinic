@@ -335,7 +335,59 @@ const totalSum = computed(() => {
     formData.grandTotal = total;
     return total;
 });
+// javascript
+// // Computed property to calculate the total
+// const totalSum = computed(() => {
+//     // Sum up the services in `formData.services`
+//     const servicesTotal = formData.services.reduce((acc, item) => {
+//         return acc + (parseFloat(item.quantity) || 0) * (parseFloat(item.cost) || 0);
+//     }, 0);
 
+//     // Add the fetched grandTotal
+//     return servicesTotal;
+// });
+
+// // Watch the computed property if needed
+// watch(totalSum, (newVal) => {
+//     console.log(newVal, "Updated grand total");
+//     formData.grandTotal = newVal;
+// });
+
+// // Combine cureProduct from both repositories
+// const combinedServices = computed(() => {
+//     return [...formData.services];
+// });
+// watch(combinedServices, (newValues) => {
+//   newValues.forEach((pro) => {
+//     pro.total = (parseFloat(pro.quantity) || 0) * (parseFloat(pro.cost) || 0);
+//   });
+// }, { deep: true });
+
+// // Update function
+// const update = async () => {
+//     formData.grandTotal = totalSum.value;
+//     if (Array.isArray(formData.services)) {
+//         formData.services = formData.services.map((data) => {
+//             if (data.services && data.services.id) {
+//                 return {
+//                     ...data,
+//                     product: { id: data.services.id },
+//                 };
+//             } else {
+//                 console.error(
+//                     "services is missing or invalid in services:",
+//                     data
+//                 );
+//                 return data;
+//             }
+//         });
+//     }
+//     const isValid = await formRef.value.validate();
+//     if (isValid) {
+//         await CureRepository.UpdateCure(formData.id, formData);
+//     }
+// };
+// ```
 // Computed Duo (remaining balance)
 const Duo = computed(() => {
     return totalSum.value - formData.paid || 0;
