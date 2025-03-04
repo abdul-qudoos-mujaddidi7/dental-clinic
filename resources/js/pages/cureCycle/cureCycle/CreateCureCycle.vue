@@ -13,10 +13,11 @@
                     <date-picker
                         mode="single"
                         :column="1"
-                        v-model="formData.startDate"
+                        v-model="formData.date"
                         :styles="styles"
                         locale="fa"
                         type="date"
+                        format="jYYYY/jMM/jDD"
                         :locale-config="LocaleConfigs"
                     />
                 </div>

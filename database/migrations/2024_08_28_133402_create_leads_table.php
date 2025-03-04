@@ -15,6 +15,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create((new Lead())->getTable(), function (Blueprint $table) {
+            $table->id();
             $table->string(Lead::COLUMN_NAME);
             $table->string(Lead::COLUMN_PHONE)->nullable();
             $table->enum(Lead::COLUMN_GENDER, ['Male', 'Female']);
