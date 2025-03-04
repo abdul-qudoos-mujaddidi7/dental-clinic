@@ -32,6 +32,7 @@
                                     :styles="styles"
                                     locale="fa"
                                     type="datetime"
+                                    format="jYYYY/jMM/jDD"
                                     :locale-config="LocaleConfigs"
                                 />
                                 
@@ -112,7 +113,7 @@ const LeadRepository = useLeadRepository();
 const formRef = ref(null);
 const formData = reactive({
     id: LeadRepository.appointment.id,
-    date: LeadRepository.appointment.date,
+    dateTime: LeadRepository.appointment.date,
     time: LeadRepository.appointment.time,
     status: LeadRepository.appointment.status,
     patientId: LeadRepository.appointment.patients?.id,
