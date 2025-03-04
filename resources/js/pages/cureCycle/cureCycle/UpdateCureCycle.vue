@@ -9,16 +9,17 @@
                 color="success"
             ></v-divider>
             <v-form ref="formRef" class="d-flex pt-12">
-                <v-text-field
-                    type="date"
-                    v-model="formData.startDate"
-                    variant="outlined"
-                    label="Date *"
-                    class="pr-2"
-                    style="width: 45%"
-                    color="#d3e2f8"
-                    density="compact"
-                ></v-text-field>
+                <div class="pb-4 w-50 pr-2">
+                    <date-picker
+                        mode="single"
+                        :column="1"
+                        v-model="formData.startDate"
+                        :styles="styles"
+                        locale="fa"
+                        type="date"
+                        :locale-config="LocaleConfigs"
+                    />
+                </div>
 
                 <v-autocomplete
                     v-model="formData.patientId"
@@ -218,6 +219,8 @@
 import AppBar from "../../../components/AppBar.vue";
 import { reactive, computed, ref, watch, onMounted } from "vue";
 import { useRoute } from "vue-router";
+import { LocaleConfigs } from "../../../LocaleConfigs";
+
 
 import { useCureRepository } from "@/store/CureRepository";
 
@@ -269,8 +272,9 @@ CureRepository.FetchCure(routeParams.params.id).then((res) => {
     formData.paid = cure.paid;
     formData.status = cure.status;
 
-    console.log(formData.grandTotal, "Initial grand total");
+    console.log(formData.grandTotal, "Initial grand total", formData.dentistId ,'den id');
 });
+console.log()
 
 // const multiple = (pro) => {
 //     const quantity = parseFloat(pro.quantity) || 0;
