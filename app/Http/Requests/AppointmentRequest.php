@@ -23,6 +23,7 @@ class AppointmentRequest extends FormRequest
         return $this->merge([
             Appointment::COLUMN_PATIENT_ID => $this->input('patientId'),
             Appointment::COLUMN_DENTIST_ID => $this->input('dentistId'),
+            Appointment::COLUMN_DATETIME => $this->input('dateTime'),
         ]);
     }
 
@@ -34,11 +35,10 @@ class AppointmentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            Appointment::COLUMN_DATE => 'required|date',
-            Appointment::COLUMN_TIME => 'required|date_format:H:i',
+            Appointment::COLUMN_DATETIME => 'required|date_format:Y-m-d H:i',
             Appointment::COLUMN_STATUS => 'required|string',
             Appointment::COLUMN_DENTIST_ID => 'required|exists:people,id', // Ensure dentist exists
-            Appointment::COLUMN_PATIENT_ID => 'required|exists:people,id',  // Ensure patient exists
+            Appointment::COLUMN_PATIENT_ID => 'required|exists:people,id'
         ];
     }
 }

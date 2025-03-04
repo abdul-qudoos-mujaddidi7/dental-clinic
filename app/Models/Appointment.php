@@ -12,8 +12,7 @@ class Appointment extends Model
     private $model = Appointment::class;
 
     // Define constants for column names
-    const COLUMN_DATE = 'date';
-    const COLUMN_TIME = 'time';
+    const COLUMN_DATETIME = 'date_time';
     const COLUMN_STATUS = 'status';
     const COLUMN_DENTIST_ID = 'dentist_id';
     const COLUMN_USER_ID = 'user_id';
@@ -22,8 +21,7 @@ class Appointment extends Model
     protected $table= "appointments";
 
     protected $fillable = [
-        self::COLUMN_DATE,
-        self::COLUMN_TIME,
+        self::COLUMN_DATETIME,
         self::COLUMN_STATUS,
         self::COLUMN_DENTIST_ID,
         self::COLUMN_USER_ID,

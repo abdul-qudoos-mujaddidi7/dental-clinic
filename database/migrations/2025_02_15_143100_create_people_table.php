@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('people', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('phone');
+            $table->string('phone')->nullable();
             $table->string('email')->nullable()->unique();
             $table->string('address')->nullable();
             $table->enum('type', ['patient', 'dentist', 'supplier', 'owner', 'employee']);
