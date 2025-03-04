@@ -28,7 +28,7 @@
                                 <date-picker
                                     mode="single"
                                     :column="1"
-                                    v-model="formData.date"
+                                    v-model="formData.dateTime"
                                     :styles="styles"
                                     locale="fa"
                                     type="datetime"
