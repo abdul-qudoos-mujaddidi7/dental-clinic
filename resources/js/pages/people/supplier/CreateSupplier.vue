@@ -26,7 +26,7 @@
 
                     <v-card-text>
                         <v-form ref="formRef" class="pt-4">
-                            <div class=" w-100 flex">
+                            <div class="w-100 flex">
                                 <v-text-field
                                     v-model="formData.name"
                                     variant="outlined"
@@ -36,13 +36,15 @@
                                     :rules="[rules.required]"
                                 ></v-text-field>
                                 <v-autocomplete
-                                    v-model="formData.status"
-                                    :items="['Customer', 'Supplier']"
+                                    v-model="formData.type"
+                                    :items="selectType"
                                     :return-object="false"
                                     variant="outlined"
                                     label="Type *"
                                     class="pr-2 pl-2 pb-4 w-50"
                                     style="width: 45%"
+                                    item-value="id"
+                                    item-title="name"
                                     density="compact"
                                     :rules="[rules.required]"
                                 ></v-autocomplete>
@@ -84,11 +86,15 @@ import Supplier from "./Supplier.vue";
 const PeopleRepository = usePeopleRepository();
 const formRef = ref(null);
 
+const selectType = [
+    { id: "supplier", name: "Supplier" },
+    { id: "customer", name: "Customer" },
+];
 const formData = reactive({
     id: PeopleRepository.supplier.id,
     name: PeopleRepository.supplier.name,
     phone: PeopleRepository.supplier.phone,
-    type: "supplier",
+    type: PeopleRepository.supplier.type,
 });
 const rules = {
     required: (value) => !!value || "This field is required.",
