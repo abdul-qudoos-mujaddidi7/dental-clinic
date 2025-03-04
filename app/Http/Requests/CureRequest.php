@@ -50,7 +50,6 @@ class CureRequest extends FormRequest
         'services.*.quantity'=>'required|numeric',//ce details
         'services.*.total' => 'nullable|numeric', // Validate service details
         'services.*.status' => 'required|string' // Validate service details
-        // 'services.*.discount' => 'nullable|numeric', // Validate service details
     ];
 }
 

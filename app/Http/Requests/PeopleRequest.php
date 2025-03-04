@@ -29,7 +29,7 @@ class PeopleRequest extends FormRequest
             'first_name' => 'nullable|string|max:255',
             'last_name' => 'nullable|string|max:255',
             'name' => 'nullable|string|max:255',
-            'phone' => 'required|string|max:20',
+            'phone' => 'nullable|string|max:20',
             'email' => 'nullable|email|unique:people,email,' . $this->id,
             'address' => 'nullable|string|max:500',
             'type' => 'required|in:patient,dentist,supplier,owner,employee',

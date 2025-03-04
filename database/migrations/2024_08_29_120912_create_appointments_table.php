@@ -18,8 +18,7 @@ return new class extends Migration
     {
         Schema::create((new Appointment())->getTable(), function (Blueprint $table) {
             $table->id();
-            $table->date(Appointment::COLUMN_DATE);
-            $table->time(Appointment::COLUMN_TIME);
+            $table->dateTime(Appointment::COLUMN_DATETIME);
             $table->string(Appointment::COLUMN_STATUS);
             $table->foreignIdFor(People::class, Appointment::COLUMN_DENTIST_ID);
             $table->foreignIdFor(User::class, Appointment::COLUMN_USER_ID);

@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rules\Exists;
 use ResponseStatus;
 
 class Controller extends BaseController
@@ -20,8 +22,8 @@ class Controller extends BaseController
     public function listRecord($request, $model, $filter = [], $withTables = null)
 {
     $requests    = $request->all();
-    $method      = $request->get('page', 0) == 1 ? 'paginate' : 'get';
-    $methodValue = $request->get('page', 0) == 1 ? $request->get('perPage', 10) : '*';
+    $method      = $request->has('page') ?'paginate' : 'get';
+    $methodValue = $request->has('page') ? $request->get('perPage', 10) : '*';
     $orderColumn = $request->get('order_column', 'id');
     $orderType   = $request->get('order_type', 'desc');
 
@@ -46,8 +48,9 @@ class Controller extends BaseController
 
     public function storeRecord($request,$model)
     {
-        
-        $record =  $model::create($request->validated());
+        $validated = $request->validated();
+        $validated['user_id'] = Auth::id();
+        $record =  $model::create($validated);
         $this->storeImage($request, $record);
         return $record;
     }
