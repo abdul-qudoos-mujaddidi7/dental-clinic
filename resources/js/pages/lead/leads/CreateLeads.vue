@@ -74,14 +74,19 @@
                                 </v-autocomplete>
                             </div>
                             <div class="flex w-100">
-                                <v-text-field
-                                    type="date"
+                                <div class="pb-4 w-50 pr-2">
+                                <date-picker
+                                    mode="single"
+                                    :column="1"
                                     v-model="formData.date"
-                                    variant="outlined"
-                                    label="Date"
-                                    class="pr-2 w-50"
-                                    density="compact"
-                                ></v-text-field>
+                                    :styles="styles"
+                                    locale="fa"
+                                    type="date"
+                                    format="jYYYY/jMM/jDD"
+                                    :locale-config="LocaleConfigs"
+                                />
+                                
+                            </div>
                                 <div class="w-50">
                                     <div class="rounded-sm ml-2 styleBTN w-60">
                                         <v-btn
@@ -154,6 +159,7 @@
 <script setup>
 import { ref, reactive , computed} from "vue";
 import { useLeadRepository } from "@/store/LeadRepository";
+import { LocaleConfigs } from "../../../LocaleConfigs";
 
 const LeadRepository = useLeadRepository();
 const formRef = ref(null);

@@ -29,6 +29,7 @@ export const LocaleConfigs = {
             submit: "تایید",
         },
         inputFormat: "jYYYY/jMM/jDD",
+        
         displayFormat: "jD jMMMM",
     },
   

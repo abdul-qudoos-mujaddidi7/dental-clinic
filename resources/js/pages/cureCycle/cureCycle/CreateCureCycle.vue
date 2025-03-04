@@ -9,16 +9,17 @@
                 color="success"
             ></v-divider>
             <v-form ref="formRef" class="d-flex pt-12">
-                <v-text-field
-                    v-model="formData.startDate"
-                    type="date"
-                    variant="outlined"
-                    label="Date *"
-                    class="pr-2"
-                    style="width: 45%"
-                    color="#d3e2f8"
-                    density="compact"
-                ></v-text-field>
+                <div class="pb-4 w-50 pr-2">
+                    <date-picker
+                        mode="single"
+                        :column="1"
+                        v-model="formData.startDate"
+                        :styles="styles"
+                        locale="fa"
+                        type="date"
+                        :locale-config="LocaleConfigs"
+                    />
+                </div>
 
                 <v-autocomplete
                     v-model="formData.patientId"
@@ -234,6 +235,7 @@ import AppBar from "../../../components/AppBar.vue";
 import { reactive, computed, ref, watch, onMounted } from "vue";
 
 import { useCureRepository } from "@/store/CureRepository";
+import { LocaleConfigs } from "../../../LocaleConfigs";
 
 const CureRepository = useCureRepository();
 const CalcFetchProduct = (index) => {
