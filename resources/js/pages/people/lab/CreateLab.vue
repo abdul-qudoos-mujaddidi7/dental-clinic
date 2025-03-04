@@ -8,27 +8,42 @@
                 class="border-opacity-100"
                 color="success"
             ></v-divider>
-            <v-form ref="formRef" class="d-flex pt-12">
-                <v-text-field
-                    type="date"
-                    v-model="formData.issueAt"
-                    variant="outlined"
-                    label="Issue At *"
-                    class="pr-2"
-                    style="width: 45%"
-                    color="#d3e2f8"
-                    density="compact"
-                ></v-text-field>
-                <v-text-field
-                    type="date"
-                    v-model="formData.returnDate"
-                    variant="outlined"
-                    label="Return Date *"
-                    class="px-2"
-                    style="width: 45%"
-                    color="#d3e2f8"
-                    density="compact"
-                ></v-text-field>
+            <v-form ref="formRef" class="d-flex pt-12 relative">
+                <h3 class="absolute right-90 top-5 text-gray-500 text-sm">
+                    Issue At
+                </h3>
+                <div class="pb-4 w-50 pr-2">
+                    <date-picker
+                        mode="single"
+                        :column="1"
+                        v-model="formData.issueAt"
+                        :styles="styles"
+                        locale="fa"
+                        type="date"
+                        format="jYYYY/jMM/jDD"
+                        :locale-config="LocaleConfigs"
+                    />
+                </div>
+                <div class="w-50">
+                    <h3
+                        class="absolute left-50 top-5 text-gray-500 text-sm pl-2"
+                    >
+                        Return Date
+                    </h3>
+
+                    <div class="pb-4 px-2">
+                        <date-picker
+                            mode="single"
+                            :column="1"
+                            v-model="formData.returnDate"
+                            :styles="styles"
+                            locale="fa"
+                            type="date"
+                            format="jYYYY/jMM/jDD"
+                            :locale-config="LocaleConfigs"
+                        />
+                    </div>
+                </div>
 
                 <v-autocomplete
                     v-model="formData.status"
@@ -214,7 +229,7 @@
 <script setup>
 import AppBar from "../../../components/AppBar.vue";
 import { reactive, computed, ref, watch, onMounted } from "vue";
-
+import { LocaleConfigs } from "../../../LocaleConfigs";
 import { usePeopleRepository } from "@/store/PeopleRepository";
 
 const PeopleRepository = usePeopleRepository();

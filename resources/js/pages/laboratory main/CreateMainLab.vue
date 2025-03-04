@@ -9,9 +9,10 @@
                 color="success"
             ></v-divider>
             <v-form ref="formRef" class="d-flex pt-12 relative">
-                <h3 class="absolute right-90 top-5 text-gray-500 text-sm">Issue At</h3>
-                <div class="pb-4 w-50 pr-2 ">
-                   
+                <h3 class="absolute right-90 top-5 text-gray-500 text-sm">
+                    Issue At
+                </h3>
+                <div class="pb-4 w-50 pr-2">
                     <date-picker
                         mode="single"
                         :column="1"
@@ -24,21 +25,25 @@
                     />
                 </div>
                 <div class="w-50">
-                <h3 class="absolute left-50 top-5 text-gray-500 text-sm pl-2">Return Date</h3>
+                    <h3
+                        class="absolute left-50 top-5 text-gray-500 text-sm pl-2"
+                    >
+                        Return Date
+                    </h3>
 
-                <div class="pb-4  px-2">
-                    <date-picker
-                        mode="single"
-                        :column="1"
-                        v-model="formData.returnDate"
-                        :styles="styles"
-                        locale="fa"
-                        type="date"
-                        format="jYYYY/jMM/jDD"
-                        :locale-config="LocaleConfigs"
-                    />
+                    <div class="pb-4 px-2">
+                        <date-picker
+                            mode="single"
+                            :column="1"
+                            v-model="formData.returnDate"
+                            :styles="styles"
+                            locale="fa"
+                            type="date"
+                            format="jYYYY/jMM/jDD"
+                            :locale-config="LocaleConfigs"
+                        />
+                    </div>
                 </div>
-            </div>
                 <v-autocomplete
                     v-model="formData.status"
                     :items="LaboratoryRepository.leadStageFor"

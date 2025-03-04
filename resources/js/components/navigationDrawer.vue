@@ -351,7 +351,7 @@ const peopleItems = [
 
     {
         to: "/supplier",
-        title: "Supplier",
+        title: "Stakeholder",
         icon: "mdi mdi-circle-medium",
         value: "supplier",
     },

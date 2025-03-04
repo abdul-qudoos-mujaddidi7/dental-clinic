@@ -26,14 +26,27 @@
 
                     <v-card-text>
                         <v-form ref="formRef" class="pt-4">
-                            <v-text-field
-                                v-model="formData.name"
-                                variant="outlined"
-                                label="Name *"
-                                class="pb-4"
-                                density="compact"
-                                :rules="[rules.required]"
-                            ></v-text-field>
+                            <div class=" w-100 flex">
+                                <v-text-field
+                                    v-model="formData.name"
+                                    variant="outlined"
+                                    label="Name *"
+                                    class="pb-4 w-50 pr-2"
+                                    density="compact"
+                                    :rules="[rules.required]"
+                                ></v-text-field>
+                                <v-autocomplete
+                                    v-model="formData.status"
+                                    :items="['Customer', 'Supplier']"
+                                    :return-object="false"
+                                    variant="outlined"
+                                    label="Type *"
+                                    class="pr-2 pl-2 pb-4 w-50"
+                                    style="width: 45%"
+                                    density="compact"
+                                    :rules="[rules.required]"
+                                ></v-autocomplete>
+                            </div>
 
                             <v-text-field
                                 v-model="formData.phone"
@@ -66,6 +79,7 @@
 <script setup>
 import { ref, reactive } from "vue";
 import { usePeopleRepository } from "@/store/PeopleRepository";
+import Supplier from "./Supplier.vue";
 
 const PeopleRepository = usePeopleRepository();
 const formRef = ref(null);

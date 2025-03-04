@@ -182,7 +182,7 @@ export let useLaboratoryRepository = defineStore("LaboratoryRepository",{
         
                         // Using Axios to make a post request with async/await and custom headers
                         const response = await axios(config);
-                        this.router.push("/laboratory");
+                        this.router.push("/mainLaboratory");
         
                         this.FetchLaboratories({
                             page: this.page,

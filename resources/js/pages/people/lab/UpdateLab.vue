@@ -8,28 +8,42 @@
                 class="border-opacity-100"
                 color="success"
             ></v-divider>
-            <v-form ref="formRef" class="d-flex pt-12">
-                <v-text-field
-                    type="date"
-                    v-model="formData.returnDate"
-                    variant="outlined"
-                    label="Return Date *"
-                    class="pr-2"
-                    style="width: 45%"
-                    color="#d3e2f8"
-                    density="compact"
-                ></v-text-field>
+            <v-form ref="formRef" class="d-flex pt-12 relative">
+                <h3 class="absolute right-90 top-5 text-gray-500 text-sm">
+                    Issue At
+                </h3>
+                <div class="pb-4 w-50 pr-2">
+                    <date-picker
+                        mode="single"
+                        :column="1"
+                        v-model="formData.issueAt"
+                        :styles="styles"
+                        locale="fa"
+                        type="date"
+                        format="jYYYY/jMM/jDD"
+                        :locale-config="LocaleConfigs"
+                    />
+                </div>
+                <div class="w-50">
+                    <h3
+                        class="absolute left-50 top-5 text-gray-500 text-sm pl-2"
+                    >
+                        Return Date
+                    </h3>
 
-                <v-text-field
-                    type="date"
-                    v-model="formData.issueAt"
-                    variant="outlined"
-                    label="Issue At *"
-                    class="px-2"
-                    style="width: 45%"
-                    color="#d3e2f8"
-                    density="compact"
-                ></v-text-field>
+                    <div class="pb-4 px-2">
+                        <date-picker
+                            mode="single"
+                            :column="1"
+                            v-model="formData.returnDate"
+                            :styles="styles"
+                            locale="fa"
+                            type="date"
+                            format="jYYYY/jMM/jDD"
+                            :locale-config="LocaleConfigs"
+                        />
+                    </div>
+                </div>
 
                 <v-autocomplete
                     v-model="formData.status"
@@ -99,7 +113,7 @@
                             <th scope="col" class="px-3 py-3 text-start">
                                 Cost
                             </th>
-                        
+
                             <th scope="col" class="px-3 py-3 text-center">
                                 Sub Total
                             </th>
@@ -118,7 +132,7 @@
                                 {{ index + 1 }}
                             </td>
                             <td class="pl-3 text-start">
-                                {{ pro.name|| pro.toothName }}
+                                {{ pro.name || pro.toothName }}
                             </td>
 
                             <td class="pt-2 text-center pb-0 w-[14rem]">
@@ -145,7 +159,7 @@
                                     </span>
                                 </v-text-field>
                             </td>
-                          
+
                             <td class="text-center">
                                 <span>{{ multiple(pro) }}</span>
                             </td>
@@ -206,7 +220,7 @@
 import AppBar from "../../../components/AppBar.vue";
 import { reactive, computed, ref, watch, onMounted } from "vue";
 import { useRoute } from "vue-router";
-
+import { LocaleConfigs } from "../../../LocaleConfigs";
 import { usePeopleRepository } from "@/store/PeopleRepository";
 
 const PeopleRepository = usePeopleRepository();
@@ -238,7 +252,7 @@ const formData = reactive({
     issueAt: "",
     description: "",
     paid: "",
-  
+    type:"out"
 });
 const routeParams = useRoute();
 
@@ -257,17 +271,21 @@ PeopleRepository.FetchLaboratory(routeParams.params.id).then((res) => {
     console.log(formData.grandTotal, "Initial grand total");
 });
 
-watch(() => PeopleRepository.laboratory, (newData) => {
-    if (newData) {
-        formData.tooths = newData.details || [];
-        formData.grandTotal = newData.grandTotal;
-        formData.returnDate = newData.returnDate;
-        formData.issueAt = newData.issueAt;
-        formData.description = newData.description;
-        formData.paid = newData.paid;
-        formData.status = newData.status;
-    }
-}, { deep: true });
+watch(
+    () => PeopleRepository.laboratory,
+    (newData) => {
+        if (newData) {
+            formData.tooths = newData.details || [];
+            formData.grandTotal = newData.grandTotal;
+            formData.returnDate = newData.returnDate;
+            formData.issueAt = newData.issueAt;
+            formData.description = newData.description;
+            formData.paid = newData.paid;
+            formData.status = newData.status;
+        }
+    },
+    { deep: true }
+);
 
 const formRef = ref(null);
 const rules = {
@@ -329,7 +347,8 @@ const update = async () => {
 
     // Validate form
     const isValid = await formRef.value.validate();
-    if (isValid.valid) {  // Vuetify 3 validation returns an object { valid: true/false }
+    if (isValid.valid) {
+        // Vuetify 3 validation returns an object { valid: true/false }
         try {
             await PeopleRepository.UpdateLaboratory(formData.id, formData);
             console.log("Updated successfully:", formData);

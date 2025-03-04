@@ -8,10 +8,12 @@
                 class="border-opacity-100"
                 color="success"
             ></v-divider>
-            <v-form ref="formRef" class="d-flex pt-12">
+            <v-form ref="formRef" class="d-flex pt-12 relative">
+                <h3 class="absolute right-90 top-5 text-gray-500 text-sm">
+                    Issue At
+                </h3>
                 <div class="pb-4 w-50 pr-2">
                     <date-picker
-                        label="Issue At"
                         mode="single"
                         :column="1"
                         v-model="formData.issueAt"
@@ -22,19 +24,25 @@
                         :locale-config="LocaleConfigs"
                     />
                 </div>
+                <div class="w-50">
+                    <h3
+                        class="absolute left-50 top-5 text-gray-500 text-sm pl-2"
+                    >
+                        Return Date
+                    </h3>
 
-                <div class="pb-4 w-50 px-2">
-                    <date-picker
-                        label="Return Date"
-                        mode="single"
-                        :column="1"
-                        v-model="formData.returnDate"
-                        :styles="styles"
-                        locale="fa"
-                        type="date"
-                        format="jYYYY/jMM/jDD"
-                        :locale-config="LocaleConfigs"
-                    />
+                    <div class="pb-4 px-2">
+                        <date-picker
+                            mode="single"
+                            :column="1"
+                            v-model="formData.returnDate"
+                            :styles="styles"
+                            locale="fa"
+                            type="date"
+                            format="jYYYY/jMM/jDD"
+                            :locale-config="LocaleConfigs"
+                        />
+                    </div>
                 </div>
 
                 <v-autocomplete
@@ -225,6 +233,7 @@
 import AppBar from "../../components/AppBar.vue";
 import { reactive, computed, ref, watch, onMounted } from "vue";
 import { useRoute } from "vue-router";
+import { LocaleConfigs } from "../../LocaleConfigs";
 
 import { useLaboratoryRepository } from "@/store/LaboratoryRepository";
 
@@ -257,17 +266,17 @@ const formData = reactive({
     issueAt: "",
     description: "",
     paid: "",
+    type: "in",
 });
 const routeParams = useRoute();
 
 LaboratoryRepository.FetchLaboratory(routeParams.params.id).then((res) => {
     const laboratory = LaboratoryRepository.laboratory; // Assuming the data is stored here
     formData.id = laboratory.id;
-    LaboratoryRepository.services = laboratory.details || [];
-
-    formData.grandTotal = laboratory.grandTotal;
     formData.returnDate = laboratory.returnDate;
     formData.issueAt = laboratory.issueAt;
+    LaboratoryRepository.services = laboratory.details || [];
+    formData.grandTotal = laboratory.grandTotal;
     formData.description = laboratory.description;
     formData.paid = laboratory.paid;
     formData.status = laboratory.status;
@@ -281,8 +290,7 @@ watch(
         if (newData) {
             formData.tooths = newData.details || [];
             formData.grandTotal = newData.grandTotal;
-            formData.returnDate = newData.returnDate;
-            formData.issueAt = newData.issueAt;
+            
             formData.description = newData.description;
             formData.paid = newData.paid;
             formData.status = newData.status;
