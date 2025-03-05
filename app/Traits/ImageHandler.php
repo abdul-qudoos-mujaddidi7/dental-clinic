@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Storage;
 
 trait ImageHandler
 {
-    public function storeImage($request, $folder)
+    public function storeImage($request, $folder,$filename)
     {
-            return $request->file("logo")->store('images/'. $folder, 'public');
+            return $request->file($filename)->store('images/'. $folder, 'public');
 
     }
 
