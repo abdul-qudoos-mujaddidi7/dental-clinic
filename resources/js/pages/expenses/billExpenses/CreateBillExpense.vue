@@ -9,16 +9,18 @@
                 color="success"
             ></v-divider>
             <v-form ref="formRef" class="d-flex pt-12">
-                <v-text-field
-                    type="date"
-                    v-model="formData.billDate"
-                    variant="outlined"
-                    label="Date *"
-                    class="pr-2"
-                    style="width: 45%"
-                    color="#d3e2f8"
-                    density="compact"
-                ></v-text-field>
+                <div class="pb-4 w-50 pr-2">
+                    <date-picker
+                        mode="single"
+                        :column="1"
+                        v-model="formData.billDate"
+                        :styles="styles"
+                        locale="fa"
+                        type="date"
+                        format="jYYYY/jMM/jDD"
+                        :locale-config="LocaleConfigs"
+                    />
+                </div>
 
                 <v-autocomplete
                     :items="ExpenseRepository.suppliersFor"
@@ -61,7 +63,7 @@
                         ></v-text-field>
                         <v-btn
                             @click="createExpenseProduct"
-                            color="#ecf1f4"
+                            color="primaryOld"
                             style="height: 2.5rem"
                             flat
                         >
@@ -214,7 +216,7 @@ import AppBar from "../../../components/AppBar.vue";
 import { reactive, computed, ref, watch, onMounted } from "vue";
 import CreateProduct from "../expenseProduct/CreateProduct.vue";
 import { useExpenseRepository } from "@/store/ExpenseRepository";
-
+import { LocaleConfigs } from "../../../LocaleConfigs";
 const ExpenseRepository = useExpenseRepository();
 const CalcFetchProduct = (index) => {
     console.log(index, "man of the match");

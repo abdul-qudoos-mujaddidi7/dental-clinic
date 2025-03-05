@@ -2,7 +2,7 @@
     <CreateSupplier v-if="PeopleRepository.createDialog" />
     <div class="all-expense rounded-xl">
         <div class="card rounded-xl">
-            <AppBar mainTitle="Supplier" sub-title="people" />
+            <AppBar mainTitle="Stakeholder" sub-title="people" />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
@@ -177,7 +177,7 @@ const headers = [
     { title: "", key: "checkbox", align: "start", sortable: false },
     { title: "Name", key: "name", align: "start", sortable: false },
     { title: "Phone", key: "phone", align: "start", sortable: false },
-
+    { title: "Type", key: "type", align: "start", sortable: false },
     { title: "Action", key: "action", align: "center", sortable: false },
 ];
 </script>

@@ -32,10 +32,12 @@
                                     :styles="styles"
                                     locale="fa"
                                     type="datetime"
-                                    format="jYYYY/jMM/jDD"
+                                    
                                     :locale-config="LocaleConfigs"
+                                    input-format="jYYYY/jMM/jDD H:m"
+
+                                    format="jYYYY/jMM/jDD H:m"
                                 />
-                                
                             </div>
 
                             <div class="flex">

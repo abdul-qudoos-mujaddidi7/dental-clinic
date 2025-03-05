@@ -41,14 +41,18 @@
                                     :rules="[rules.required]"
                                     class="w-50 pr-2"
                                 ></v-autocomplete>
-                                <v-text-field
-                                    type="date"
-                                    v-model="formData.date"
-                                    variant="outlined"
-                                    label="Date"
-                                    class="pl-2 w-50"
-                                    density="compact"
-                                ></v-text-field>
+                                <div class="pb-4 w-50 pl-2">
+                                    <date-picker
+                                        mode="single"
+                                        :column="1"
+                                        v-model="formData.date"
+                                        :styles="styles"
+                                        locale="fa"
+                                        type="date"
+                                        format="jYYYY/jMM/jDD"
+                                        :locale-config="LocaleConfigs"
+                                    />
+                                </div>
                             </div>
 
                             <v-text-field
@@ -91,7 +95,7 @@
 <script setup>
 import { ref, reactive } from "vue";
 import { useExpenseRepository } from "@/store/ExpenseRepository";
-
+import { LocaleConfigs } from "../../../LocaleConfigs";
 const ExpenseRepository = useExpenseRepository();
 const formRef = ref(null);
 
