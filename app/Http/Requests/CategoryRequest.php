@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Models\Category;
 
 class CategoryRequest extends FormRequest
 {
@@ -22,7 +23,7 @@ class CategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name"=> "required|string",
+            Category::COLUMN_NAME => "required|string",
         ];
     }
 }

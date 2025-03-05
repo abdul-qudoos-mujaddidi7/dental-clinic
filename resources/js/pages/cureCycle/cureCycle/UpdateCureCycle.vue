@@ -9,16 +9,17 @@
                 color="success"
             ></v-divider>
             <v-form ref="formRef" class="d-flex pt-12">
-                <v-text-field
-                    type="date"
-                    v-model="formData.startDate"
-                    variant="outlined"
-                    label="Date *"
-                    class="pr-2"
-                    style="width: 45%"
-                    color="#d3e2f8"
-                    density="compact"
-                ></v-text-field>
+                <div class="pb-4 w-50 pr-2">
+                    <date-picker
+                        mode="single"
+                        :column="1"
+                        v-model="formData.startDate"
+                        :styles="styles"
+                        locale="fa"
+                        type="date"
+                        :locale-config="LocaleConfigs"
+                    />
+                </div>
 
                 <v-autocomplete
                     v-model="formData.patientId"
@@ -160,7 +161,7 @@
                                 ></v-autocomplete>
                             </td>
                             <td class="text-center">
-                                <span>{{ multiple(pro) }}</span>
+                                <span>{{ pro.total}}</span>
                             </td>
                             <td class="px-3 text-end">
                                 <v-icon
@@ -218,6 +219,8 @@
 import AppBar from "../../../components/AppBar.vue";
 import { reactive, computed, ref, watch, onMounted } from "vue";
 import { useRoute } from "vue-router";
+import { LocaleConfigs } from "../../../LocaleConfigs";
+
 
 import { useCureRepository } from "@/store/CureRepository";
 
@@ -240,7 +243,6 @@ const createService = () => {
     CureRepository.createDialog = true;
 };
 
-
 const routeParams = useRoute();
 const formData = reactive({
     id: "",
@@ -253,7 +255,8 @@ const formData = reactive({
     description: "",
     paid: 0,
     status: "",
-    services: []
+    services: [],
+    total: "",
 });
 
 // Fetch the data and populate `formData`
@@ -269,16 +272,16 @@ CureRepository.FetchCure(routeParams.params.id).then((res) => {
     formData.paid = cure.paid;
     formData.status = cure.status;
 
-    console.log(formData.grandTotal, "Initial grand total");
+    console.log(formData.grandTotal, "Initial grand total", formData.dentistId ,'den id');
 });
+console.log()
 
+// const multiple = (pro) => {
+//     const quantity = parseFloat(pro.quantity) || 0;
+//     const cost = parseFloat(pro.cost) || 0;
+//     return quantity * cost;
+// };
 
-const multiple = (pro) => {
-    console.log(pro);
-    const add = pro.quantity * pro.cost;
-    console.log(add);
-    return add || 0;
-};
 
 // // Computed property to calculate the total
 // const totalSum = computed(() => {
@@ -300,7 +303,13 @@ const multiple = (pro) => {
 const combinedServices = computed(() => {
     return [...formData.services];
 });
-
+watch(combinedServices, (newValues) => {
+  newValues.forEach((pro) => {
+    console.log("Row:", pro);
+    pro.total = (parseFloat(pro.quantity) || 0) * (parseFloat(pro.cost) || 0);
+    console.log("Updated Total:", pro.total);
+  });
+}, { deep: true });
 
 
 const formRef = ref(null);
@@ -318,28 +327,78 @@ watch(
     { immediate: true, deep: true }
 );
 
-
-
 const totalSum = computed(() => {
     let total = 0;
 
     if (Array.isArray(CureRepository.cure.servicesDetails)) {
         for (const item of CureRepository.cure.servicesDetails) {
-            total += multiple(item);
+            total += (parseFloat(item.quantity) || 0) * (parseFloat(item.cost) || 0);
         }
     }
 
     formData.grandTotal = total;
     return total;
 });
+// javascript
+// // Computed property to calculate the total
+// const totalSum = computed(() => {
+//     // Sum up the services in `formData.services`
+//     const servicesTotal = formData.services.reduce((acc, item) => {
+//         return acc + (parseFloat(item.quantity) || 0) * (parseFloat(item.cost) || 0);
+//     }, 0);
 
+//     // Add the fetched grandTotal
+//     return servicesTotal;
+// });
+
+// // Watch the computed property if needed
+// watch(totalSum, (newVal) => {
+//     console.log(newVal, "Updated grand total");
+//     formData.grandTotal = newVal;
+// });
+
+// // Combine cureProduct from both repositories
+// const combinedServices = computed(() => {
+//     return [...formData.services];
+// });
+// watch(combinedServices, (newValues) => {
+//   newValues.forEach((pro) => {
+//     pro.total = (parseFloat(pro.quantity) || 0) * (parseFloat(pro.cost) || 0);
+//   });
+// }, { deep: true });
+
+// // Update function
+// const update = async () => {
+//     formData.grandTotal = totalSum.value;
+//     if (Array.isArray(formData.services)) {
+//         formData.services = formData.services.map((data) => {
+//             if (data.services && data.services.id) {
+//                 return {
+//                     ...data,
+//                     product: { id: data.services.id },
+//                 };
+//             } else {
+//                 console.error(
+//                     "services is missing or invalid in services:",
+//                     data
+//                 );
+//                 return data;
+//             }
+//         });
+//     }
+//     const isValid = await formRef.value.validate();
+//     if (isValid) {
+//         await CureRepository.UpdateCure(formData.id, formData);
+//     }
+// };
+// ```
 // Computed Duo (remaining balance)
 const Duo = computed(() => {
     return totalSum.value - formData.paid || 0;
 });
 // Update function
 const update = async () => {
-    formData.grandTotal=totalSum.value
+    formData.grandTotal = totalSum.value;
     if (Array.isArray(formData.services)) {
         formData.services = formData.services.map((data) => {
             if (data.services && data.services.id) {
@@ -348,7 +407,10 @@ const update = async () => {
                     product: { id: data.services.id },
                 };
             } else {
-                console.error("services is missing or invalid in services:", data);
+                console.error(
+                    "services is missing or invalid in services:",
+                    data
+                );
                 return data;
             }
         });

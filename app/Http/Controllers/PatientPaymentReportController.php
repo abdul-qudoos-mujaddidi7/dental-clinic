@@ -10,18 +10,18 @@ class PatientPaymentReportController extends Controller
     public function __invoke(Request $request)
     {
         // Get the date filters from the request
-        $fromDate = $request->fromDate;
-        $toDate = $request->toDate;
+        $fromDate = $request->start_date;
+        $toDate = $request->end_date;
 
         // Fetch patient payments with optional date range filter
-        $patientPayments = DB::table('patients')
-            ->selectRaw('patients.id, patients.name, patients.phone, patients.address, SUM(grand_total) - SUM(paid) as due')
-            ->join('cures', 'cures.patient_id', '=', 'patients.id')
+        $patientPayments = DB::table('people')
+            ->selectRaw('people.id, people.name, people.phone, people.address, SUM(grand_total) - SUM(paid) as due')
+            ->join('cures', 'cures.patient_id', '=', 'people.id')
             ->when($fromDate && $toDate, function ($query) use ($fromDate, $toDate) {
                 // Apply date filter if provided
-                $query->whereBetween('cures.created_at', [$fromDate, $toDate]);
+                $query->whereBetween('cures.start_date', [$fromDate, $toDate]);
             })
-            ->groupBy('patients.id', 'patients.name', 'patients.phone', 'patients.address')
+            ->groupBy('people.id', 'people.name', 'people.phone', 'people.address')
             ->paginate(5);
 
         return response()->json([

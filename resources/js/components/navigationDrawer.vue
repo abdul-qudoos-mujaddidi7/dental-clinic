@@ -76,17 +76,35 @@
             </router-link>
 
             <!-- main lab -->
-             <router-link to="mainLaboratory">
+           
             <v-list-item
                 active-class="bg-primaryOld text-white"
                 prepend-icon="mdi-microscope"
                 value="lab"
-              
+                @click="toggleLab"
                 class="transition-all duration-300 cursor-pointer py-3 borderRadius"
             >
                 Laboratory
             </v-list-item>
-             </router-link>
+       
+             <!-- laboratory -->
+             <transition name="slide-fade">
+                <v-list v-if="isLabVisible" class="pl-4">
+                    <router-link
+                        v-for="item in labItems"
+                        :key="item.to"
+                        :to="item.to"
+                    >
+                        <v-list-item
+                            :title="item.title"
+                            :prepend-icon="item.icon"
+                            :value="item.value"
+                            color="primaryOld"
+                            class="child rounded-lg"
+                        />
+                    </router-link>
+                </v-list>
+            </transition>
       
 
             <v-list-item
@@ -251,7 +269,7 @@ const logout = () => {
 const isListVisible = ref(false);
 const isPeopleVisible = ref(false);
 const isLeadVisible = ref(false);
-const isCureVisible = ref(false);
+const isLabVisible = ref(false);
 const isSettingVisible = ref(false);
 const isReportVisible = ref(false);
 
@@ -266,8 +284,8 @@ const togglePeople = () => {
 const toggleLead = () => {
     isLeadVisible.value = !isLeadVisible.value;
 };
-const toggleCure = () => {
-    isCureVisible.value = !isCureVisible.value;
+const toggleLab = () => {
+    isLabVisible.value = !isLabVisible.value;
 };
 const toggleSetting = () => {
     isSettingVisible.value = !isSettingVisible.value;
@@ -343,12 +361,7 @@ const peopleItems = [
         icon: "mdi mdi-circle-medium",
         value: "categories",
     },
-    {
-        to: "/ownerPickup",
-        title: "Owner Pickup",
-        icon: "mdi mdi-circle-medium",
-        value: "ownerPickup",
-    },
+ 
     {
         to: "/laboratory",
         title: "Laboratory",
@@ -356,6 +369,33 @@ const peopleItems = [
         value: "lab",
     },
 ];
+const labItems = [
+    {
+        to: "/mainLaboratory",
+        title: "Main Laboratory",
+        icon: "mdi mdi-circle-medium",
+        value: "mainLab",
+    },
+    {
+        to: "/leadCategory",
+        title: "Lead Category",
+        icon: "mdi mdi-circle-medium",
+        value: "user",
+    },
+    {
+        to: "/leadStage",
+        title: "Lead Stage",
+        icon: "mdi mdi-circle-medium",
+        value: "stage",
+    },
+    // {
+    //     to: "/appointments",
+    //     title: "Appointments",
+    //     icon: "mdi mdi-circle-medium",
+    //     value: "appointments",
+    // },
+];
+
 const leadItems = [
     {
         to: "/lead",
@@ -443,12 +483,6 @@ const reportItems = [
         title: "Expense Product",
         icon: "mdi mdi-circle-medium",
         value: "expense pro report    ",
-    },
-    {
-        to: "/pickupReport",
-        title: "Pickup",
-        icon: "mdi mdi-circle-medium",
-        value: "pickup report    ",
     },
     {
         to: "/serviceReport",

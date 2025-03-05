@@ -40,9 +40,7 @@ class LaboratoryRequest extends FormRequest
             'dentist_id' => 'nullable|exists:people,id',
             'status' => 'required|string',
             'description' => 'nullable|string',
-            'tooths' => 'nullable|array',        // Validate tooths array
-            'tooths.*.id' => 'nullable', // Validate each service name
-            'tooths.*.toothId' => 'required', // Validate each service name
+            'tooths' => 'required|array',
             'tooths.*.cost' => 'required|numeric', //te service details
             'tooths.*.quantity' => 'required|numeric', //ce details
             'tooths.*.total' => 'nullable|numeric', // Validate service details

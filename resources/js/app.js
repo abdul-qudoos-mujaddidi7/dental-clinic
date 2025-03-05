@@ -21,8 +21,15 @@ import "vuetify/styles";
 import vuetify from "../plugins/vuetify";
 import router from "./router.js";
 import App from "./App.vue";
+import DatePicker from '@alireza-ab/vue3-persian-datepicker';
+
+// import "@alireza-ab/vue3-persian-datepicker/dist/style.css";
+
+
+
 
 const app = createApp(App);
+app.component('DatePicker', DatePicker);
 app.use(router);
 app.use(createPinia());
 app.use(vuetify); 

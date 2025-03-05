@@ -7,29 +7,27 @@ use App\Http\Resources\SystemSettingResource;
 use App\Models\SystemSetting;
 use App\Models\User;
 use App\Traits\ImageHandler;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage; #Storage: For handling file storage operations.
+use PHPUnit\Event\Telemetry\System;
 
-
-class SystemSettingController extends Controller 
+class SystemSettingController extends Controller
 {
     use ImageHandler;
+    private $model = SystemSetting::class;
+    private $resource = SystemSettingResource::class;
 
-    public function index()
+    public function index(Request $request)
     {
-        $setting = SystemSetting::first();
 
-        if (!$setting) {
-            return response()->json(['message' => 'System settings not found.'], 404);
-        }
-
-        return new SystemSettingResource($setting);
+        return $this->resource::collection($this->listRecord($request, $this->model));
     }
 
 
-    public function store(SystemSettingRequest $request){
-        $setting = $this->storeRecord($request,User::class);
-        // $validated= $request->validated();
+    public function store(SystemSettingRequest $request)
+    {
+        $setting = $this->storeRecord($request, $this->model);
         return new SystemSettingResource($setting);
     }
 
@@ -37,13 +35,9 @@ class SystemSettingController extends Controller
 
     public function updateSetting(SystemSettingRequest $request, SystemSetting $systemSetting)
     {
-        
-        $logo = $systemSetting->logo;
-        $validated = $request->validated();
-        $validated['logo'] = $request->hasFile('logo') ? $this->updateImage($request, $systemSetting, 'company') :  $logo ;        
 
-       
-        $systemSetting->update($validated); // Update the system setting
+
+        $systemSetting = $this->updateRecord($request, $systemSetting);
         return new SystemSettingResource($systemSetting);
     }
 }

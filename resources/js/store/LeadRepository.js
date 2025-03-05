@@ -70,10 +70,10 @@ export let useLeadRepository = defineStore("LeadRepository", {
         async FetchLeads({ page, itemsPerPage }) {
             this.loading = true;
             const response = await axios.get(
-                `leads?page=${page}&perPage=${itemsPerPage}&${this.leadSearch}`
+                `leads?page=${page}&perPage=${itemsPerPage}&name=${this.leadSearch}`
             );
             this.leads = response.data.data;
-            this.totalItems = response.data.meta.total;
+            // this.totalItems = response.data.meta.total;
             this.loading = false;
         },
         async FetchLead(id) {
@@ -161,7 +161,7 @@ export let useLeadRepository = defineStore("LeadRepository", {
                 `categories?page=${page}&perPage=${itemsPerPage}&${this.categorySearch}`
             );
             this.categories = response.data.data;
-            this.totalItems = response.data.meta.total;
+            // this.totalItems = response.data.meta.total;
             this.loading = false;
         },
         async FetchCategory(id) {
@@ -234,7 +234,7 @@ export let useLeadRepository = defineStore("LeadRepository", {
                 `stages?page=${page}&perPage=${itemsPerPage}&${this.stageSearch}`
             );
             this.stages = response.data.data;
-            this.totalItems = response.data.meta.total;
+            // this.totalItems = response.data.meta.total;
             this.loading = false;
         },
         async FetchStage(id) {
@@ -332,7 +332,7 @@ export let useLeadRepository = defineStore("LeadRepository", {
                 `appointments?page=${page}&perPage=${itemsPerPage}&${this.appointmentSearch}`
             );
             this.appointments = response.data.data;
-            this.totalItems = response.data.meta.total;
+            // this.totalItems = response.data.meta.total;
             this.loading = false;
         },
         async fetchAppointment(id) {

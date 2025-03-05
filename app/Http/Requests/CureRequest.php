@@ -34,8 +34,8 @@ class CureRequest extends FormRequest
     {
 {
     return [
-        'patient_id' => 'required|exists:patients,id',
-        'dentist_id' => 'required|exists:dentists,id',
+        'patient_id' => 'required|exists:people,id',
+        'dentist_id' => 'required|exists:people,id',
         'start_date' => 'required|date',
         'grand_total' => 'required|numeric|min:0',
         'paid' => 'nullable|numeric|min:0',
@@ -50,7 +50,6 @@ class CureRequest extends FormRequest
         'services.*.quantity'=>'required|numeric',//ce details
         'services.*.total' => 'nullable|numeric', // Validate service details
         'services.*.status' => 'required|string' // Validate service details
-        // 'services.*.discount' => 'nullable|numeric', // Validate service details
     ];
 }
 

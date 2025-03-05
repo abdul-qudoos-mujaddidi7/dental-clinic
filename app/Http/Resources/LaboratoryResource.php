@@ -25,7 +25,7 @@ class LaboratoryResource extends JsonResource
             // 'paymentStatus' => $this->getPaymentStatus(),
             'status' => $this->status,
             'description' => $this->description,
-            'details' => LaboratoryDetailResource::collection($this->whenLoaded('details')),
+            'details' => LaboratoryDetailResource::collection($this->whenLoaded('laboratoryDetails')),
         ];
     
 }

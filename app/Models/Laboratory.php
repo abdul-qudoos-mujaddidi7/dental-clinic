@@ -36,7 +36,7 @@ class Laboratory extends Model
     ];
 
    
-    public function details()
+    public function laboratoryDetails()
     {
         return $this->hasMany(LaboratoryDetail::class);
     }

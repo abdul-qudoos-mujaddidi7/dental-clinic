@@ -11,16 +11,11 @@ use Illuminate\Http\Request;
 class LaboratoryController extends Controller
 {
 
-    protected $model;
-    protected $request;
-    protected $resource;
+    private $model=Laboratory::class;
+    private $request=LaboratoryRequest::class;
+    private $resource=LaboratoryResource::class;
 
-    public function __construct()
-    {
-        $this->model = Laboratory::class;
-        $this->request = LaboratoryRequest::class;
-        $this->resource = LaboratoryResource::class;
-    }
+    
 
     public function index(Request $request)
     {
@@ -29,7 +24,7 @@ class LaboratoryController extends Controller
         $search = $request->input("search");
         $type = $request->input("type");
 
-        $laboratories = $this->model::with('details')->where('type',$type)->search($search)->latest()->paginate($perPage);
+        $laboratories = $this->model::with('laboratoryDetails')->where('type',$type)->search($search)->latest()->paginate($perPage);
 
         return $this->resource::collection($laboratories);
     }
@@ -45,7 +40,6 @@ class LaboratoryController extends Controller
             foreach ($validated['tooths'] as $tooth) {
                 LaboratoryDetail::create([
                     'laboratory_id' => $laboratory->id,
-                    'tooth_id' => $tooth['toothId'],
                     'cost' => $tooth['cost'],
                     'quantity' => $tooth['quantity'],
                     'total' => $tooth['total'],
@@ -64,12 +58,12 @@ class LaboratoryController extends Controller
         //     ]);
         // }
 
-        return new $this->resource($laboratory->load('details'));
+        return new $this->resource($laboratory->load('laboratoryDetails'));
     }
 
     public function show(Laboratory $laboratory)
     {
-        $laboratory->load(['details']);
+        $laboratory->load(['laboratoryDetails']);
         return new $this->resource($laboratory);
     }
 
@@ -86,7 +80,6 @@ class LaboratoryController extends Controller
             foreach ($validated['tooths'] as $tooth) {
                 $details[] = [
                     'laboratory_id' => $laboratory->id,
-                    'tooth_id' => $tooth['toothId'],
                     'cost' => $tooth['cost'],
                     'quantity' => $tooth['quantity'],
                     'total' => $tooth['total'],

@@ -1,8 +1,10 @@
 <?php
 
+use App\Models\SystemSetting;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use PHPUnit\Event\Telemetry\System;
 
 return new class extends Migration
 {
@@ -11,13 +13,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('system_settings', function (Blueprint $table) {
+        Schema::create((new SystemSetting())->getTable(), function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email',192)->unique();
-            $table->string('phone',15);
-            $table->string('logo')->nullable();
-            $table->text('address');
+            $table->string(SystemSetting::COLUMN_NAME);
+            $table->string(SystemSetting::COLUMN_EMAIL)->unique();
+            $table->string(SystemSetting::COLUMN_PHONE,15)->nullable();
+            $table->string(SystemSetting::COLUMN_IMAGE)->nullable();
+            $table->text(SystemSetting::COLUMN_ADDRESS);
             $table->timestamps();
             $table->softDeletes();
         });
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('system_settings');
+        Schema::dropIfExists((new SystemSetting())->getTable());
     }
 };

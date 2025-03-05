@@ -10,29 +10,28 @@ use Illuminate\Support\Facades\Auth;
 
 class AppointmentController extends Controller
 {
+    private $model = Appointment::class;
+    private $resource = AppointmentResource::class;
+
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        $perPage= $request->input("perPage");
-        $search= $request->input("search");
 
-        $appointments= Appointment::with(['patient','dentist','user'])->search($search)->latest()->paginate($perPage);
-        return AppointmentResource::collection($appointments);
+
+        $appointments = $this->listRecord($request, $this->model, ['date', 'time'], ['patient', 'dentist', 'user']);
+        return $this->resource::collection($appointments);
     }
 
-  
     /**
      * Store a newly created resource in storage.
      */
     public function store(AppointmentRequest $request)
     {
         
-        $validated= $request->validated();
-        $validated['user_id'] = Auth::id()?? 1;
-        $appointment = Appointment::create($validated);
-        return new AppointmentResource($appointment);
+        $appointment = $this->storeRecord($request, $this->model);
+        return new $this->resource($appointment);
     }
 
     /**
@@ -40,20 +39,18 @@ class AppointmentController extends Controller
      */
     public function show(Appointment $appointment)
     {
-        return AppointmentResource::make($appointment);
+        return new $this->resource($appointment);
     }
-
-   
 
     /**
      * Update the specified resource in storage.
      */
     public function update(AppointmentRequest $request, Appointment $appointment)
     {
-        $validated= $request->validated();
-        $validated['user_id'] = Auth::id()?? 1;
-        $appointment->update($validated);
-        return new AppointmentResource($appointment);
+
+        
+        $appointment = $this->updateRecord($request, $appointment);
+        return new $this->resource($appointment);
     }
 
     /**
@@ -61,7 +58,7 @@ class AppointmentController extends Controller
      */
     public function destroy(Appointment $appointment)
     {
-        $appointment->delete();
-        return new AppointmentResource($appointment);
+        $this->deleteRecord($appointment);
+        return new $this->resource($appointment);
     }
 }

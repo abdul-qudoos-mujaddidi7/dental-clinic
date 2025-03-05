@@ -20,6 +20,15 @@ class UserController extends Controller
     private $model = User::class;
     private $resource = UserResource::class;
 
+    function __construct()
+    {
+        $this->middleware("can:viewUser")->only(["index", "show"]);
+        $this->middleware("can:addUser")->only('store');
+        $this->middleware("can:updateUser")->only('update');
+        $this->middleware("can:deleteUser")->only('destroy');
+
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -56,6 +65,8 @@ class UserController extends Controller
     {
 
         $validated = $request->validated();
+        $user = $this->storeRecord($request,User::class);
+
         // $validated['image'] = $request->hasFile('image') ? $this->updateImage($request, $user, 'user') : null;
         $validated['password']=Hash::make($validated['password']);
         $role = Role::findOrFail($validated['role_id']);
@@ -90,7 +101,6 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $this->deleteImage($user);
-        $user->delete();
         return new UserResource($user);
     }
 }

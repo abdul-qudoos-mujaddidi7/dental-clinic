@@ -1,5 +1,5 @@
 <template>
-    <CReateExpensePRoduct v-if="ExpenseRepository.createDialog" />
+    <CreateProduct v-if="ExpenseRepository.createDialog" />
     <div class="all-expense rounded-xl m-4">
         <div class="card rounded-xl bg-white" rtl>
             <AppBar mainTitle="Create Bill Expense" subTitle="expense" />
@@ -57,9 +57,18 @@
                             density="compact"
                             append-inner-icon="mdi-magnify"
                             clearable
-                            class="border-none"
+                            class="border-none pr-2"
                         ></v-text-field>
+                        <v-btn
+                            @click="createExpenseProduct"
+                            color="#ecf1f4"
+                            style="height: 2.5rem"
+                            flat
+                        >
+                    Create Product
+                        </v-btn>
                     </div>
+                   
                     <div
                         class="rounded shadow-lg px-5 mb-12"
                         v-if="ExpenseRepository.searchFetch.length > 0"
@@ -203,7 +212,7 @@
 <script setup>
 import AppBar from "../../../components/AppBar.vue";
 import { reactive, computed, ref, watch, onMounted } from "vue";
-
+import CreateProduct from "../expenseProduct/CreateProduct.vue";
 import { useExpenseRepository } from "@/store/ExpenseRepository";
 
 const ExpenseRepository = useExpenseRepository();
@@ -212,6 +221,7 @@ const CalcFetchProduct = (index) => {
     ExpenseRepository.fetchProduct(index.id);
     clearSearch();
 };
+
 
 // ======================
 const clearSearch = () => {

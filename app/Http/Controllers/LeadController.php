@@ -10,16 +10,20 @@ use Illuminate\Validation\Rule;
 
 class LeadController extends Controller
 {
+
+    private $model = Lead::class;
+    private $resource = LeadResource::class;
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        $perPage= $request->input("perPage");
-        $search= $request->input("search");
+        // $perPage= $request->input("perPage");
+        // $search= $request->input("search");
+        return $this->resource::collection($this->listRecord($request,$this->model,['name'],['category','stage']));
 
-        $lead= Lead::with(['category','stage'])->search($search)->latest()->paginate($perPage);
-        return LeadResource::collection($lead);
+        // $lead= Lead::with(['category','stage'])->search($search)->latest()->paginate($perPage);
+        // return LeadResource::collection($lead);
     }
 
   
@@ -29,8 +33,7 @@ class LeadController extends Controller
      */
     public function store(LeadRequest $request)
     {
-        $validated= $request->validated();
-        $lead= Lead::create($validated);
+        $lead= $this->storeRecord($request,Lead::class);
         return new LeadResource($lead);
     }
 
@@ -39,7 +42,7 @@ class LeadController extends Controller
      */
     public function show(Lead $lead)
     {
-        return LeadResource::make($lead);
+        return $this->resource::make($lead);
     }
 
   
@@ -50,8 +53,8 @@ class LeadController extends Controller
     public function update(LeadRequest $request, Lead $lead)
     {
         $validated= $request->validated();
-        $lead->update($validated);
-        return new LeadResource($lead);
+        $lead=$this->updateRecord($request,$lead);
+        return new $this->resource($lead);
     }
 
     public function updateStage(Request $request, Lead $lead)
@@ -73,7 +76,7 @@ class LeadController extends Controller
      */
     public function destroy(Lead $lead)
     {
-        $lead->delete();
+        $this->deleteRecord($lead);
         return new LeadResource($lead);
     }
 }

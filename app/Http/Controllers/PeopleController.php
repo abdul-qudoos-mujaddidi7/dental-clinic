@@ -10,21 +10,19 @@ use Illuminate\Support\Facades\Auth;
 
 class PeopleController extends Controller
 {
+    private $model = People::class;
+    private $resource = PeopleResource::class;
+
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        $perPage = $request->input("perPage", 10);
-        $search = $request->input("search");
-        $type = $request->input("type");
-    
-        $peoples = People::where('type', $type)
-            ->search($search)
-            ->latest()
-            ->paginate($perPage);
-    
-        return PeopleResource::collection($peoples);
+
+        // Fetch paginated records, applying search and type filters
+        $people = $this->listRecord($request, $this->model, ['name','type']);
+
+        return $this->resource::collection($people);
     }
 
     /**
@@ -32,9 +30,9 @@ class PeopleController extends Controller
      */
     public function store(PeopleRequest $request)
     {
-        $people=$this->storeRecord($request,People::class);
-        return response()->json(["message"=>"record stored successfully"]);
+        $people = $this->storeRecord($request, $this->model);
 
+        return response()->json(["message" => "record stored successfully"]);
     }
 
     /**
@@ -42,7 +40,7 @@ class PeopleController extends Controller
      */
     public function show(People $people)
     {
-        return new PeopleResource($people);
+        return new $this->resource($people);
     }
 
     /**
@@ -50,9 +48,10 @@ class PeopleController extends Controller
      */
     public function update(PeopleRequest $request, People $people)
     {
-        $validated = $request->validated();
-        $people->update($validated);
-        return new PeopleResource($people);
+        $people = $this->updateRecord($request, $people);
+
+
+        return new $this->resource($people);
     }
 
     /**
@@ -60,8 +59,10 @@ class PeopleController extends Controller
      */
     public function destroy(People $people)
     {
-        $people->delete();
+        $this->deleteRecord($people);
 
-        return response()->json(["message"=>"record deleted successfully"]);;
+        return response()->json(["message" => "Record deleted successfully"]);
     }
+
+    
 }
