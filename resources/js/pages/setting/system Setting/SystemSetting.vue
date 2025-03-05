@@ -170,7 +170,7 @@ const CreateComponySetting = async () => {
         phone: SettingRepository.systemSettings.phone,
         email: SettingRepository.systemSettings.email,
         address: SettingRepository.systemSettings.address,
-        logo: SettingRepository.systemSettings.logo,
+        image: SettingRepository.systemSettings.logo,
     });
 
     await SettingRepository.UpdateSystemSetting(formData);

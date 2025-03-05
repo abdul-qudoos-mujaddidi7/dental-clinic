@@ -105,7 +105,7 @@ class DashboardController extends Controller
         // Count new patients added today
         $newPatients = People::where('type', 'patient')->whereDay('created_at', $today)->count();
         // Total number of patients
-        $totalPatients = People::where('type','patient')->count();
+        $totalPatients = People::where('type', 'patient')->count();
 
         $dailyExpenses = DB::table('expenses')
             ->join('expense_categories', 'expenses.expense_category_id', '=', 'expense_categories.id')
@@ -139,12 +139,14 @@ class DashboardController extends Controller
 
         // Upcoming Appointments
         $upcomingAppointments = DB::table('appointments')
-            ->join('people', 'appointments.patient_id', '=', 'people.id') // Join with the patients table
-            ->select('people.name', 'people.phone', 'appointments.time') // Select the patient's name and appointment time
-            ->whereDate('appointments.created_at', $today) // Filter by today's date
-            ->orderBy('appointments.time', 'asc') // Order by appointment time
-            ->limit(5) // Limit to 5 appointments
+            ->join('people', 'appointments.patient_id', '=', 'people.id')
+            ->select('people.name', 'people.phone', DB::raw('TIME(appointments.date_time) as time'))
+            ->whereDate('appointments.date_time', $today)
+            ->orderBy('time', 'asc')
+            ->limit(5) 
             ->get();
+
+
 
         $everyMonthExpenses = [];
         $everyMonthIncomes = []; // Array to hold monthly data

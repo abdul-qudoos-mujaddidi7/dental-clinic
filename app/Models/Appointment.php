@@ -18,7 +18,6 @@ class Appointment extends Model
     const COLUMN_USER_ID = 'user_id';
     const COLUMN_PATIENT_ID = 'patient_id';
 
-    protected $table= "appointments";
 
     protected $fillable = [
         self::COLUMN_DATETIME,

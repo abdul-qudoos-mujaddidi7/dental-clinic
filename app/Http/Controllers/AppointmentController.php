@@ -48,7 +48,7 @@ class AppointmentController extends Controller
     public function update(AppointmentRequest $request, Appointment $appointment)
     {
 
-        $request['user_id'] = Auth::id() ?? 1;
+        
         $appointment = $this->updateRecord($request, $appointment);
         return new $this->resource($appointment);
     }
