@@ -77,7 +77,7 @@
                 <div class="d-flex gap-2 pb-6 flex flex-wrap">
                     <v-chip
                         v-for="(service, i) in availableServices"
-                        :key="service.id"
+                        :key="i"
                         :variant="
                             selectedServices.some((s) => s.id === service.id)
                                 ? 'flat'
@@ -222,7 +222,7 @@ import { useLaboratoryRepository } from "@/store/LaboratoryRepository";
 
 const LaboratoryRepository = useLaboratoryRepository();
 const formData = reactive({
-    tooths: LaboratoryRepository.services ,
+    tooths: LaboratoryRepository.services ||[] ,
     grandTotal: "",
     toothId: "",
     returnDate: "",
@@ -358,19 +358,6 @@ const removeProduct = (index) => {
         (s) => s.id !== removedService.id
     );
 };
-watch(
-    () => LaboratoryRepository.services,
-    (newServices) => {
-        localStorage.setItem("labServices", JSON.stringify(newServices));
-    },
-    { deep: true }
-);
-onMounted(() => {
-    const savedServices = localStorage.getItem("labServices");
-    if (savedServices) {
-        LaboratoryRepository.services = JSON.parse(savedServices);
-    }
-});
 // ================================
 // =====================================
 </script>

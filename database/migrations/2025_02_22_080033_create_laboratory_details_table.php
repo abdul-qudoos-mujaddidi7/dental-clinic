@@ -23,7 +23,7 @@ return new class extends Migration
             $table->decimal(LaboratoryDetail::COLUMN_COST, 10, 2);
             $table->integer(LaboratoryDetail::COLUMN_QUANTITY);
             $table->decimal(LaboratoryDetail::COLUMN_TOTAL, 10, 2);
-            $table->enum(LaboratoryDetail::COLUMN_TOOTH_TYPE, []);
+            $table->enum(LaboratoryDetail::COLUMN_TOOTH_TYPE, ['jawad']);
             $table->timestamps();
         });
     }
