@@ -107,6 +107,9 @@ export let useLaboratoryRepository = defineStore("LaboratoryRepository",{
                         console.error("Error fetching product:", error);
                     }
                 },
+                // ======================
+                
+                // =======================
                 async FetchLaboratories({ page, itemsPerPage }) {
                     this.loading = true;
         

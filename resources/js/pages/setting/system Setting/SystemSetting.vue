@@ -30,7 +30,7 @@
                                                 .name
                                         "
                                         :rules="[rules.required, rules.name]"
-                                        :counter="10"
+                             
                                         label=" * company name  "
                                         variant="outlined"
                                         density="compact"

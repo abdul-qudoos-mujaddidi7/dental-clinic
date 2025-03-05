@@ -1,7 +1,7 @@
 <template>
     <div class="all-expense rounded-xl">
         <div class="card rounded-xl">
-            <AppBar mainTitle="Laboratory" sub-title="laboratory" />
+            <AppBar mainTitle="InBound Laboratory" sub-title="laboratory" />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
