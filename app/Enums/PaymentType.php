@@ -19,10 +19,10 @@ class PaymentType
     {   
         switch ($operationType) {
 
-            case OperationType::PURCHASE:
-                return PaymentType::RECEIVED;
-            case OperationType::PURCHASE_PAYMENT:
-                return PaymentType::PAID;
+            case OperationType::PAY_SALARY:
+                return self::PAID;
+            case OperationType::PAYSLIP:
+                return self::RECEIVED;
             default:
                 throw new InvalidArgumentException("Invalid operation type: $operationType");
         }

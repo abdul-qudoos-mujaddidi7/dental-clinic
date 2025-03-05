@@ -23,6 +23,10 @@ class CreateProcedures extends Migration
         DB::unprepared("DROP PROCEDURE IF EXISTS UpdateMoneyAccountTransaction");
         DB::unprepared("DROP PROCEDURE IF EXISTS DeleteMoneyAccountTransaction");
 
+        DB::unprepared("DROP PROCEDURE IF EXISTS InsertPeopleAccountTransaction");
+        DB::unprepared("DROP PROCEDURE IF EXISTS UpdatePeopleAccountTransaction");
+        DB::unprepared("DROP PROCEDURE IF EXISTS DeletePeopleAccountTransaction");
+
         DB::unprepared("DROP PROCEDURE IF EXISTS UpdateMoneyAccountBalance");
         DB::unprepared("DROP PROCEDURE IF EXISTS UpdatePeopleAccountBalance");
 

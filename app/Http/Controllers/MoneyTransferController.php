@@ -8,7 +8,7 @@ use App\Http\Requests\PaginateRequest;
 use App\Http\Resources\MoneyTransferResource;
 
 
-class MoneyTransferController extends AdminController
+class MoneyTransferController extends Controller
 {
 
     protected $model = MoneyTransfer::class;

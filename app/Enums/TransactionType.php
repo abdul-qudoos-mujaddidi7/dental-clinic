@@ -16,4 +16,17 @@ class TransactionType
             self::TRANSFER
         ];
     }
+
+    public static function getType($operationType)
+    {
+        switch ($operationType) {
+            case OperationType::PAY_SALARY:
+                return self::PAYMENT;
+            case OperationType::PAYSLIP:
+                return self::OPERATION;
+            default:
+                throw new InvalidArgumentException("Invalid operation type: $operationType");
+        }
+    }
+
 }

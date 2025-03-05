@@ -14,11 +14,18 @@ use App\Models\PeopleAccountTransaction;
 use App\Http\Requests\PeopleAccountExchangeRequest;
 use App\Http\Requests\PeopleAccountTransactionRequest;
 use App\Http\Resources\PeopleAccountTransactionResource;
+use App\Http\Services\PaymentService;
 
-class PeopleAccountTransactionController extends AdminController
+class PeopleAccountTransactionController extends Controller
 {
     protected $model = PeopleAccountTransaction::class;
     protected $resource = PeopleAccountTransactionResource::class;
+    protected $paymentService;
+
+    public function __construct(PaymentService $paymentService)
+    {
+        $this->paymentService = $paymentService;
+    }
 
 
     public function index(PaginateRequest $request)
@@ -47,5 +54,13 @@ class PeopleAccountTransactionController extends AdminController
     }
 
   
+    public function generatePaySlip(PeopleAccountTransactionRequest $request)
+    {
+        return new $this->resource($this->paymentService->generatePaySlip($request->validated()));
+    }
 
+    public function paySalary(PeopleAccountTransactionRequest $request)
+    {
+        return new $this->resource($this->paymentService->paySalary($request->validated()));
+    }
 }

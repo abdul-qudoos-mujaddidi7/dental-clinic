@@ -2,20 +2,22 @@
 
 namespace Database\Seeders;
 
-use App\Models\BillExpense;
-use App\Models\Category;
 use App\Models\Cure;
+use App\Models\Lead;
+use App\Models\User;
+use App\Models\Stage;
+use App\Models\People;
 use App\Models\Dentist;
 use App\Models\Expense;
-use App\Models\ExpenseCategory;
-use App\Models\Lead;
 use App\Models\Patient;
 use App\Models\Product;
 use App\Models\Service;
-use App\Models\Stage;
+use App\Models\Category;
 use App\Models\Supplier;
-use App\Models\User;
+use App\Models\BillExpense;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\MoneyAccount;
+use App\Models\ExpenseCategory;
 use Illuminate\Database\Seeder;
 use PHPUnit\Event\Telemetry\System;
 
@@ -41,6 +43,14 @@ class DatabaseSeeder extends Seeder
         Category::factory(3)->create();
         Lead::factory(3)->create();
 
+    
+
+        People::create([
+            "name" => "Mohammad jan naser",
+            "type" => 'customer'
+        ]);
+
+        MoneyAccount::create();
 
     
         // $this->call(SystemSettingSeeder::class);

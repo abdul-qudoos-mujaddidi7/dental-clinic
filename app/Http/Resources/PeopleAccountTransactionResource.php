@@ -21,14 +21,10 @@ class PeopleAccountTransactionResource extends JsonResource
             "amount"              => $this[PeopleAccountTransaction::COLUMN_AMOUNT],
             "balance"           => $this[PeopleAccountTransaction::COLUMN_BALANCE],
             "payment_type"      => $this[PeopleAccountTransaction::COLUMN_PAYMENT_TYPE],
-            "people_account"   => [
-                'id'    => $this->peopleAccount ? $this->peopleAccount->id : NULL,
-                'name'  => $this->peopleAccount ? $this->peopleAccount->name : NULL,
-            ],
 
             "people" => [
                 'id' => $this->people ? $this->people->id : NULL,
-                'name'  => $this->people ? $this->poeple->name : NULL,
+                'name'  => $this->people ? $this->people->name : NULL,
             ],
             'date' => $this[PeopleAccountTransaction::COLUMN_DATE],
             'description' => $this[PeopleAccountTransaction::COLUMN_DESCRIPTION],

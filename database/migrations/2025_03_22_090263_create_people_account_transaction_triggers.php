@@ -31,6 +31,7 @@ class CreatePeopleAccountTransactionTriggers extends Migration
                         CALL InsertMoneyAccountTransaction(
                             NEW." . PeopleAccountTransaction::COLUMN_ID . ",
                             NEW." . PeopleAccountTransaction::COLUMN_MONEY_ACCOUNT_ID . ",
+                            NEW." . PeopleAccountTransaction::COLUMN_PEOPLE_ID . ",
                             NEW." . PeopleAccountTransaction::COLUMN_OPERATION_TYPE . ",
                             NEW." . PeopleAccountTransaction::COLUMN_PAYMENT_TYPE . ",
                             NEW." . PeopleAccountTransaction::COLUMN_AMOUNT . ",
@@ -59,6 +60,7 @@ class CreatePeopleAccountTransactionTriggers extends Migration
                         CALL UpdateMoneyAccountTransaction(
                             NEW." . PeopleAccountTransaction::COLUMN_ID . ",
                             NEW." . PeopleAccountTransaction::COLUMN_MONEY_ACCOUNT_ID . ",
+                            NEW." . PeopleAccountTransaction::COLUMN_PEOPLE_ID . ",
                             NEW." . PeopleAccountTransaction::COLUMN_OPERATION_TYPE . ",
                             NEW." . PeopleAccountTransaction::COLUMN_PAYMENT_TYPE . ",
                             NEW." . PeopleAccountTransaction::COLUMN_AMOUNT . ",

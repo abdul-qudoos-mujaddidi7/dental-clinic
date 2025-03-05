@@ -33,6 +33,12 @@ class PeopleAccountTransactionRequest extends FormRequest
     public function rules() : array
     {
         return [
+
+            PeopleAccountTransaction::COLUMN_PEOPLE_ID       => [
+                'required',
+                'integer',
+            Rule::exists((new People())->getTable(), 'id')],
+
             PeopleAccountTransaction::COLUMN_AMOUNT       => [
                 'required',
                 'numeric',
@@ -43,30 +49,8 @@ class PeopleAccountTransactionRequest extends FormRequest
                 'integer',
             ],
 
-            PeopleAccountTransaction::COLUMN_PEOPLE_ID       => [
-                'required',
-                'integer',
-            Rule::exists((new People())->getTable(), 'id')],
-
-            PeopleAccountTransaction::COLUMN_PEOPLE_ACCOUNT_ID       => [
-                'required',
-                'integer',
-            Rule::exists((new PeopleAccount())->getTable(), 'id')],
-
-            PeopleAccountTransaction::COLUMN_TRANSACTION_TYPE            => [
-                'required',
-                'string',
-                Rule::in(TransactionType::getValues())
-            ],
-
-            PeopleAccountTransaction::COLUMN_OPERATION_TYPE            => [
-                'required',
-                'string',
-                Rule::in(OperationType::getValues())
-            ],
-
             PeopleAccountTransaction::COLUMN_PAYMENT_TYPE            => [
-                'required',
+                'nullable',
                 'string',
                 Rule::in(PaymentType::getValues())
             ],
