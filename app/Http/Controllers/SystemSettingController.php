@@ -33,6 +33,7 @@ class SystemSettingController extends Controller
 
 
 
+
     public function updateSetting(SystemSettingRequest $request, SystemSetting $systemSetting)
     {
 
