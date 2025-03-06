@@ -207,21 +207,6 @@ import { LocaleConfigs } from "../../../LocaleConfigs";
 import { usePeopleRepository } from "@/store/PeopleRepository";
 
 const PeopleRepository = usePeopleRepository();
-const CalcFetchProduct = (index) => {
-    console.log(index, "man of the match");
-    PeopleRepository.fetchProduct(index.id);
-    clearSearch();
-};
-
-// ======================
-const clearSearch = () => {
-    PeopleRepository.billExpenseSearch = ""; //
-    PeopleRepository.searchFetch = [];
-};
-
-const createExpenseProduct = () => {
-    PeopleRepository.createDialog = true;
-};
 
 const formData = reactive({
     tooths: PeopleRepository.services || [],
@@ -307,9 +292,7 @@ const createEarning = async () => {
     }
 };
 
-const saveData = async (id) => {
-    await PeopleRepository.fetchProduct(id);
-};
+
 
 const deleteItem = async (item) => {
     await PeopleRepository.DeleteLaboratory(item.id);
