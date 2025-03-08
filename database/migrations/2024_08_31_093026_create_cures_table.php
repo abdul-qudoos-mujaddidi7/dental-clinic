@@ -18,12 +18,16 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(People::class,'patient_id');
             $table->foreignIdFor(People::class,'dentist_id');
+            $table->integer('people_account_id');
+            $table->integer('money_account_id');
+            
             $table->date('start_date');
             $table->decimal('grand_total',10,2);
             $table->decimal('paid',10,2)->default(0);
             $table->string('status');
             $table->string('reference',20);
             $table->text('description')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

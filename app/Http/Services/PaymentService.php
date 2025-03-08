@@ -13,6 +13,36 @@ use App\Enums\{PaymentType, OperationType};
 class PaymentService
 {
     
+    public function payCash(array $request)
+    {
+        $data = $this->prepareData($request,OperationType::MONEY_PAID);
+        return PeopleAccountTransaction::create($data);
+    }
+
+    public function receiveCash(array $request)
+    {
+        $data = $this->prepareData($request,OperationType::MONEY_RECEIVED);
+        return PeopleAccountTransaction::create($data);
+    }
+
+    public function payCureCycle(array $request)
+    {
+        $data = $this->prepareData($request,OperationType::CURE_CYLCE_PAYMENT);
+        return PeopleAccountTransaction::create($data);
+    }
+
+    public function inBoundLabPayment(array $request)
+    {
+        $data = $this->prepareData($request,OperationType::IN_BOUND_LAB_PAYMNET);
+        return PeopleAccountTransaction::create($data);
+    }
+        
+    public function payExpensePayment(array $request)
+    {
+        $data = $this->prepareData($request,OperationType::INVOICE_EXPENSE_PAYMENT);
+        return PeopleAccountTransaction::create($data);
+    }
+    
     public function paySalary(array $request)
     {
         $data = $this->prepareData($request,OperationType::PAY_SALARY);
@@ -24,6 +54,7 @@ class PaymentService
         $data = $this->prepareData($request,OperationType::PAYSLIP);
         return PeopleAccountTransaction::create($data);
     }
+
 
     public function prepareData(array $request,$operationType)
     {
@@ -39,7 +70,7 @@ class PaymentService
     {
         $peopleAccount = PeopleAccount::firstOrCreate(
             [PeopleAccount::COLUMN_PEOPLE_ID => $peopleId],
-            [PeopleAccount::COLUMN_ACCOUNT_BALANCE => 0] // Assuming a default balance of 0 for new accounts
+            [PeopleAccount::COLUMN_ACCOUNT_BALANCE => 0] 
         );
 
         return $peopleAccount->id;

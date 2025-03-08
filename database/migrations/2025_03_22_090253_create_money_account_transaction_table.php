@@ -26,7 +26,7 @@ return new class extends Migration
             ->noActionOnDelete()
             ->noActionOnUpdate();
 
-            $table->foreignId(MoneyAccountTransaction::COLUMN_PEOPLE_ID)
+            $table->foreignId(MoneyAccountTransaction::COLUMN_PEOPLE_ID)->nullable()
             ->constrained((new People())->getTable())
             ->noActionOnDelete()
             ->noActionOnUpdate();

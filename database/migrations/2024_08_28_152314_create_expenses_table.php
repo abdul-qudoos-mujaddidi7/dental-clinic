@@ -1,10 +1,12 @@
 <?php
 
-use App\Models\ExpenseCategory;
 use App\Models\User;
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use App\Models\Expense;
+use App\Models\MoneyAccount;
+use App\Models\ExpenseCategory;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -18,8 +20,9 @@ return new class extends Migration
             $table->date('date');
             $table->string('reference',20);
             $table->decimal('amount', 10, 2); //with precision (10, 2)
-            $table->text('note')->nullable();
+            $table->text(Expense::COLUMN_DESCRIPTION)->nullable();
             $table->foreignIdFor(User::class);
+            $table->foreignIdFor(MoneyAccount::class);
             $table->foreignIdFor(ExpenseCategory::class);
             $table->softDeletes();
             $table->timestamps();

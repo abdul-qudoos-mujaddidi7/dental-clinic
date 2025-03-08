@@ -17,6 +17,7 @@ use App\Models\Supplier;
 use App\Models\BillExpense;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\MoneyAccount;
+use App\Models\PeopleAccount;
 use App\Models\ExpenseCategory;
 use Illuminate\Database\Seeder;
 use PHPUnit\Event\Telemetry\System;
@@ -30,6 +31,11 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(AdminSeeder::class);
         $this->call(SystemSettingSeeder::class);
+
+        MoneyAccount::create([
+            "name" => 'account name'
+        ]);
+
         User::factory(3)->create();
         Supplier::factory(3)->create();
 
@@ -42,15 +48,16 @@ class DatabaseSeeder extends Seeder
         Stage::factory(3)->create();
         Category::factory(3)->create();
         Lead::factory(3)->create();
-
-    
-
+        
         People::create([
             "name" => "Mohammad jan naser",
             "type" => 'customer'
         ]);
 
-        MoneyAccount::create();
+        PeopleAccount::create([
+            'people_id' => 1,
+            "name" => 'account name'
+        ]);
 
     
         // $this->call(SystemSettingSeeder::class);
