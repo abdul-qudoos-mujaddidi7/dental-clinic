@@ -72,7 +72,7 @@ class LaboratoryController extends Controller
         $validated = app($this->request)->validated();
 
         // Delete old services
-        $laboratory->details()->delete();
+        $laboratory->laboratoryDetails()->delete();
 
         // Update services (if provided)
         if ($request->has('tooths')) {

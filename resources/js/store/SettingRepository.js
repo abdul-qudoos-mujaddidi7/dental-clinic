@@ -55,7 +55,6 @@ export let useSettingRepository = defineStore("SettingRepository", {
 
             const response = await axios.get(`systemSettings`);
             this.systemSettings = response.data.data;
-            // this.totalItems = response.data.meta.total;
             console.log(this.systemSettings,'system setting');
 
             this.loading = false;
@@ -67,7 +66,7 @@ export let useSettingRepository = defineStore("SettingRepository", {
                 const response = await axios.get(`systemSettings/${id}`);
 
                 this.systemSetting = response.data.data;
-                console.log(this.systemSetting);
+                console.log(this.systemSetting, "mn");
             } catch (err) {
                 // this.error = err.message;
             }

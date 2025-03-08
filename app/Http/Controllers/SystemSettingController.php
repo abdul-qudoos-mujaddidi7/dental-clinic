@@ -20,8 +20,8 @@ class SystemSettingController extends Controller
 
     public function index(Request $request)
     {
-
-        return $this->resource::collection($this->listRecord($request, $this->model));
+        $setting = SystemSetting::first();
+        return new SystemSettingResource($setting);
     }
 
 
@@ -30,6 +30,7 @@ class SystemSettingController extends Controller
         $setting = $this->storeRecord($request, $this->model);
         return new SystemSettingResource($setting);
     }
+
 
 
 

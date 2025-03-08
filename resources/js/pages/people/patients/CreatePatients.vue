@@ -35,15 +35,22 @@
                                     density="compact"
                                     :rules="[rules.required]"
                                 ></v-text-field>
-                                <v-text-field
-                                    v-model="formData.dateOfBirth"
-                                    variant="outlined"
-                                    label="Date of Birth *"
-                                    type="date"
-                                    class="w-50 pb-4 pl-2"
-                                    density="compact"
-                                    :rules="[rules.required]"
-                                ></v-text-field>
+
+                                <div class="relative w-50">
+                                    <h4 class="absolute bottom-20 left-5 text-gray-500 text-sm">Date Of Birth</h4>
+                                <div class="pb-4  pl-2  ">
+                                    <date-picker
+                                        mode="single"
+                                        :column="1"
+                                        v-model="formData.dateOfBirth"
+                                        :styles="styles"
+                                        locale="fa"
+                                        type="date"
+                                        format="jYYYY/jMM/jDD"
+                                        :locale-config="LocaleConfigs"
+                                    />
+                                </div>
+                            </div>
                             </div>
 
                             <div class="flex w-100">
@@ -57,8 +64,7 @@
                                     class="w-50 pr-2 pb-4"
                                     :rules="[rules.required]"
                                 ></v-text-field>
-                                <div class="w-50 "> 
-                                  
+                                <div class="w-50">
                                     <div class="rounded-sm ml-2 styleBTN w-60">
                                         <v-btn
                                             class="w-50"
@@ -125,7 +131,7 @@
 <script setup>
 import { ref, reactive, computed } from "vue";
 import { usePeopleRepository } from "@/store/PeopleRepository";
-
+import { LocaleConfigs } from "../../../LocaleConfigs";
 const PeopleRepository = usePeopleRepository();
 const formRef = ref(null);
 const selectGender = (gender) => {

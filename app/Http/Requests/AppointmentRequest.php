@@ -35,7 +35,7 @@ class AppointmentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            Appointment::COLUMN_DATETIME => 'required|date_format:Y-m-d H:i',
+            Appointment::COLUMN_DATETIME => 'required|date_format:Y/m/d H:i',
             Appointment::COLUMN_STATUS => 'required|string',
             Appointment::COLUMN_DENTIST_ID => 'required|exists:people,id', // Ensure dentist exists
             Appointment::COLUMN_PATIENT_ID => 'required|exists:people,id'

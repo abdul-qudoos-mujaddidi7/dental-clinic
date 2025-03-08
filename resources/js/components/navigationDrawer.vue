@@ -4,12 +4,11 @@
         @update:model="handleDrawerState"
     >
         <router-link to="/dashboard">
-  
-            <div class="flex items-center justify-center py-4"  >
+            <div class="flex items-center justify-center py-4">
                 <img
                     src="/storage/images/company/dental.png"
                     alt="Logo"
-                    class="w-[4rem] h-[4rem] rounded-full object-cover  transition-all duration-300"
+                    class="w-[4rem] h-[4rem] rounded-full object-cover transition-all duration-300"
                 />
             </div>
         </router-link>
@@ -76,36 +75,26 @@
             </router-link>
 
             <!-- main lab -->
-           
-            <v-list-item
-                active-class="bg-primaryOld text-white"
-                prepend-icon="mdi-microscope"
-                value="lab"
-                @click="toggleLab"
-                class="transition-all duration-300 cursor-pointer py-3 borderRadius"
-            >
-                Laboratory
-            </v-list-item>
-       
-             <!-- laboratory -->
-             <transition name="slide-fade">
-                <v-list v-if="isLabVisible" class="pl-4">
-                    <router-link
-                        v-for="item in labItems"
-                        :key="item.to"
-                        :to="item.to"
-                    >
-                        <v-list-item
-                            :title="item.title"
-                            :prepend-icon="item.icon"
-                            :value="item.value"
-                            color="primaryOld"
-                            class="child rounded-lg"
-                        />
-                    </router-link>
-                </v-list>
-            </transition>
-      
+            <router-link to="mainLaboratory">
+                <v-list-item
+                    active-class="bg-primaryOld text-white"
+                    prepend-icon="mdi-microscope"
+                    value="in lab"
+                    class="transition-all duration-300 cursor-pointer py-3 borderRadius"
+                >
+                    InBound Laboratory
+                </v-list-item>
+            </router-link>
+            <router-link to="laboratory">
+                <v-list-item
+                    active-class="bg-primaryOld text-white"
+                    prepend-icon="mdi-microscope"
+                    value="out lab"
+                    class="transition-all duration-300 cursor-pointer py-3 borderRadius"
+                >
+                   OutBound Laboratory
+                </v-list-item>
+            </router-link>
 
             <v-list-item
                 active-class="bg-primaryOld text-white"
@@ -217,53 +206,57 @@
             </transition>
         </div>
         <div class="mt-auto">
-    <hr />
-    <!-- Profile Clickable Item -->
-    <v-list-item
-      prepend-avatar="https://randomuser.me/api/portraits/men/85.jpg"
-      title="John Leider"
-      subtitle="john.leider@example.com"
-      nav
-      class="px-4 py-2 cursor-pointer"
-      @click="dialog = true"
-    />
+            <hr />
+            <!-- Profile Clickable Item -->
+            <v-list-item
+                prepend-avatar="https://randomuser.me/api/portraits/men/85.jpg"
+                title="John Leider"
+                subtitle="john.leider@example.com"
+                nav
+                class="px-4 py-2 cursor-pointer"
+                @click="dialog = true"
+            />
 
-    <!-- Profile Pop-up (Dialog) -->
-    <v-dialog v-model="dialog" max-width="350">
-      <v-card class="text-center">
-        <v-card-text>
-          <v-avatar size="80">
-            <img src="https://randomuser.me/api/portraits/men/85.jpg" alt="Profile Photo" />
-          </v-avatar>
-          <h3 class="mt-3">{{ user.name }}</h3>
-          <p class="text-gray-500">{{ user.email }}</p>
-        </v-card-text>
-        <v-card-actions>
-          <v-btn color="error" block @click="logout">Log Out</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </div>
+            <!-- Profile Pop-up (Dialog) -->
+            <v-dialog v-model="dialog" max-width="350">
+                <v-card class="text-center">
+                    <v-card-text>
+                        <v-avatar size="80">
+                            <img
+                                src="https://randomuser.me/api/portraits/men/85.jpg"
+                                alt="Profile Photo"
+                            />
+                        </v-avatar>
+                        <h3 class="mt-3">{{ user.name }}</h3>
+                        <p class="text-gray-500">{{ user.email }}</p>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-btn color="error" block @click="logout"
+                            >Log Out</v-btn
+                        >
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+        </div>
     </v-list>
 </template>
 
 <script setup>
 import { ref } from "vue";
-import {useAuthRepository} from "../store/AuthRepository"
-const AuthRepository = useAuthRepository()
-
+import { useAuthRepository } from "../store/AuthRepository";
+const AuthRepository = useAuthRepository();
 
 const dialog = ref(false);
 const user = ref({
-  name: 'John Leider',
-  email: 'john.leider@example.com',
+    name: "John Leider",
+    email: "john.leider@example.com",
 });
 
 const logout = () => {
-  console.log('Logging out...');
-  AuthRepository.Logout()
+    console.log("Logging out...");
+    AuthRepository.Logout();
 
-  // Implement your logout logic here
+    // Implement your logout logic here
 };
 // State for list visibility
 const isListVisible = ref(false);
@@ -284,9 +277,7 @@ const togglePeople = () => {
 const toggleLead = () => {
     isLeadVisible.value = !isLeadVisible.value;
 };
-const toggleLab = () => {
-    isLabVisible.value = !isLabVisible.value;
-};
+
 const toggleSetting = () => {
     isSettingVisible.value = !isSettingVisible.value;
 };
@@ -351,7 +342,7 @@ const peopleItems = [
 
     {
         to: "/supplier",
-        title: "Supplier",
+        title: "Stakeholder",
         icon: "mdi mdi-circle-medium",
         value: "supplier",
     },
@@ -361,13 +352,8 @@ const peopleItems = [
         icon: "mdi mdi-circle-medium",
         value: "categories",
     },
- 
-    {
-        to: "/laboratory",
-        title: "Laboratory",
-        icon: "mdi mdi-circle-medium",
-        value: "lab",
-    },
+
+
 ];
 const labItems = [
     {

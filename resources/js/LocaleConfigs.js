@@ -17,8 +17,8 @@ export const LocaleConfigs = {
             "حوت",
         ],
         dir: {
-            input: "rtl", 
-            picker: "rtl", 
+            input: "ltr", 
+            picker: "ltr", 
         },
         translations: {
             label: "شمسی",

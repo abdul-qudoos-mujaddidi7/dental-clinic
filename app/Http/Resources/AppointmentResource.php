@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Carbon\Carbon;
+use Morilog\Jalali\Jalalian;
 
 class AppointmentResource extends JsonResource
 {
@@ -17,8 +18,8 @@ class AppointmentResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'date' => Carbon::parse($this->datetime)->format('Y-m-d'), 
-            'time' => Carbon::parse($this->datetime)->format('H:i'), 
+            'date' => Jalalian::fromCarbon(Carbon::parse($this->datetime))->format('Y-m-d'),
+            'time' => Carbon::parse($this->datetime)->format('H:i'),
             'status' => $this->status,
             'userName' => $this->user->first_name,
             'dentists' => [
