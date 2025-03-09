@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\LabStatus;
+use App\Enums\TeethTypes;
 use App\Models\Laboratory;
 use App\Models\LaboratoryDetail;
 use App\Models\Tooth;
@@ -23,7 +24,7 @@ return new class extends Migration
             $table->decimal(LaboratoryDetail::COLUMN_COST, 10, 2);
             $table->integer(LaboratoryDetail::COLUMN_QUANTITY);
             $table->decimal(LaboratoryDetail::COLUMN_TOTAL, 10, 2);
-            $table->enum(LaboratoryDetail::COLUMN_TOOTH_TYPE, ['Golden Pro','CC Plate']);
+            $table->enum(LaboratoryDetail::COLUMN_TOOTH_TYPE, TeethTypes::getValues());
             $table->timestamps();
         });
     }

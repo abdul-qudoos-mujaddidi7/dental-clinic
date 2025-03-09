@@ -59,14 +59,14 @@
                     :rules="[rules.required]"
                 ></v-autocomplete>
                 <v-autocomplete
-                    v-model="formData.doctor"
+                    v-model="formData.dentistId"
                     :items="LaboratoryRepository.doctorsFor"
                     :return-object="false"
                     variant="outlined"
                     label="Doctor *"
                     class="pl-2"
                     style="width: 45%"
-                    item-value="name"
+                    item-value="id"
                     item-title="name"
                     density="compact"
                     :rules="[rules.required]"
@@ -104,7 +104,7 @@
                         <tr class="border-gray-300">
                             <th scope="col" class="px-3 py-3 text-start">#</th>
                             <th scope="col" class="px-3 py-3 text-start">
-                                Service
+                                Tooth Type
                             </th>
                             <th scope="col" class="px-3 py-3 text-start">
                                 Qty
@@ -244,6 +244,7 @@ const formData = reactive({
     grandTotal: "",
     patientId: "",
     returnDate: "",
+    dentistId: null,
     issueAt: "",
     description: "",
     paid: "",
@@ -261,6 +262,7 @@ LaboratoryRepository.FetchLaboratory(routeParams.params.id).then((res) => {
     formData.description = laboratory.description;
     formData.paid = laboratory.paid;
     formData.status = laboratory.status;
+    formData.dentistId = laboratory.dentist?.id;
 
     console.log(formData.grandTotal, "Initial grand total");
 });
@@ -271,7 +273,7 @@ watch(
         if (newData) {
             formData.tooths = newData.details || [];
             formData.grandTotal = newData.grandTotal;
-            
+
             formData.description = newData.description;
             formData.paid = newData.paid;
             formData.status = newData.status;
@@ -391,7 +393,6 @@ LaboratoryRepository.leadStagesFor();
 //         /^[a-zA-Z\u0600-\u06FF\s]*$/.test(value) || "Invalid name.",
 // };
 
-
 watch(
     () => LaboratoryRepository.services,
     () => {
@@ -418,7 +419,6 @@ watch(
 // });
 
 // Computed Duo (remaining balance)
-
 
 const createEarning = async () => {
     const isValid = await formRef.value.validate();

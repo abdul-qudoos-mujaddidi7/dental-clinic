@@ -18,7 +18,7 @@ class LaboratoryDetailResource extends JsonResource
             'id' => $this->id,
             'laboratoryId' => $this->laboratory_id,
             'toothId' => $this->tooth_id,
-            'toothName'=>$this->tooth?->name,
+            'name'=>$this->tooth_type,
             'cost' => $this->cost,
             'total' => $this->total,
             'quantity'=>$this->quantity,

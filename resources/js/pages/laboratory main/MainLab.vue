@@ -120,7 +120,6 @@ const CreateDialogShow = () => {
 
 // Header
 const headers = [
-    { title: "Teeth Type", key: "details", align: "start", sortable: false },
     { title: "Issue At", key: "issueAt", align: "start", sortable: false },
     { title: "Return Date", key: "returnDate", align: "start", sortable: false },
     { title: "Grand total", key: "grandTotal", align: "start", sortable: false },

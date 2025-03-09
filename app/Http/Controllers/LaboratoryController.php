@@ -24,7 +24,7 @@ class LaboratoryController extends Controller
         $search = $request->input("search");
         $type = $request->input("type");
 
-        $laboratories = $this->model::with('laboratoryDetails')->where('type',$type)->search($search)->latest()->paginate($perPage);
+        $laboratories = $this->model::where('type',$type)->search($search)->latest()->paginate($perPage);
 
         return $this->resource::collection($laboratories);
     }
@@ -41,6 +41,7 @@ class LaboratoryController extends Controller
                 LaboratoryDetail::create([
                     'laboratory_id' => $laboratory->id,
                     'cost' => $tooth['cost'],
+                    'tooth_type' => $tooth['name'],
                     'quantity' => $tooth['quantity'],
                     'total' => $tooth['total'],
                     'created_at' => now(),
@@ -49,14 +50,6 @@ class LaboratoryController extends Controller
             }
         }
 
-        // Handle payment if provided
-        // if ($request->has('paid')) {
-        //     CurePayment::create([
-        //         'cure_id' => $cure->id,
-        //         'amount' => $validated['paid'],
-        //         'date' => $validated['start_date']
-        //     ]);
-        // }
 
         return new $this->resource($laboratory->load('laboratoryDetails'));
     }
@@ -80,6 +73,7 @@ class LaboratoryController extends Controller
             foreach ($validated['tooths'] as $tooth) {
                 $details[] = [
                     'laboratory_id' => $laboratory->id,
+                    'tooth_type' => $tooth['name'],
                     'cost' => $tooth['cost'],
                     'quantity' => $tooth['quantity'],
                     'total' => $tooth['total'],
@@ -103,7 +97,7 @@ class LaboratoryController extends Controller
     public function destroy(Laboratory $laboratory)
     {
         // Delete the related services first
-        $laboratory->details()->delete();
+        $laboratory->laboratoryDetails()->delete();
 
         // Delete the Cure itself
         $laboratory->delete();
