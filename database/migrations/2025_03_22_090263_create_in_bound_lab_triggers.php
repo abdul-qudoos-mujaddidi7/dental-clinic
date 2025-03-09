@@ -1,0 +1,91 @@
+<?php
+
+
+use App\Models\Expense;
+use App\Enums\PaymentType;
+use App\Enums\OperationType;
+use App\Enums\TransactionType;
+use Illuminate\Support\Facades\DB;
+use App\Models\PeopleAccountTransaction;
+use Illuminate\Database\Migrations\Migration;
+
+class CreateInBoundLabTriggers extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+
+        // Drop existing triggers if they exist
+        DB::unprepared("DROP TRIGGER IF EXISTS after_in_bound_lab_insert");
+        DB::unprepared("DROP TRIGGER IF EXISTS after_in_bound_lab_update");
+        DB::unprepared("DROP TRIGGER IF EXISTS after_in_bound_lab_delete");
+
+        $table = (new Expense())->getTable();
+
+        // Create INSERT trigger
+        // DB::unprepared("
+        //     CREATE TRIGGER after_in_bound_lab_insert
+        //     AFTER INSERT ON $table
+        //     FOR EACH ROW
+        //     BEGIN
+        //         CALL InsertPeopleAccountTransaction(
+        //             NEW.id,
+        //             NEW.people_account_id,
+        //             NEW.money_account_id,
+        //             NEW.people_id,
+        //             '" . TransactionType::OPERATION . "',
+        //             '" . OperationType::CURE_CYLCE . "',
+        //             '" . PaymentType::PAID . "',
+        //             NEW.amount,
+        //             NEW.description,
+        //             NEW.start_date
+        //         );
+        //     END;
+        // ");
+
+        // Create UPDATE trigger
+        // DB::unprepared("
+        //     CREATE TRIGGER after_in_bound_lab_update
+        //     AFTER UPDATE ON $table
+        //     FOR EACH ROW
+        //     BEGIN
+        //         CALL UpdatePeopleAccountTransaction(
+        //             NEW.id,
+        //             NEW.people_account_id,
+        //             NEW.money_account_id,
+        //             NEW.people_id,
+        //             '" . TransactionType::OPERATION . "',
+        //             '" . OperationType::CURE_CYLCE . "',
+        //             '" . PaymentType::PAID . "',
+        //             NEW.amount,
+        //             NEW.description,
+        //             NEW.start_date,
+        //             NEW.deleted_at
+        //         );
+        //     END;
+        // ");
+
+        // Create DELETE trigger
+        // DB::unprepared("
+        //     CREATE TRIGGER after_in_bound_lab_delete
+        //     AFTER DELETE ON $table
+        //     FOR EACH ROW
+        //     BEGIN
+        //         CALL DeletePeopleAccountTransaction(OLD.id,'" . OperationType::CURE_CYLCE . "');
+        //     END;
+        // ");
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        // Drop triggers
+        DB::unprepared("DROP TRIGGER IF EXISTS after_in_bound_lab_insert");
+        DB::unprepared("DROP TRIGGER IF EXISTS after_in_bound_lab_update");
+        DB::unprepared("DROP TRIGGER IF EXISTS after_in_bound_lab_delete");
+    }
+}

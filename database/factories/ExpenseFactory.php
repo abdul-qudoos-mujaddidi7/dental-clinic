@@ -23,6 +23,7 @@ class ExpenseFactory extends Factory
             'date' => $this->faker->date(),
             'amount' => $this->faker->randomFloat(2, 10, 1000),
             'user_id' => rand(1,3),
+            'money_account_id' => 1,
             'expense_category_id' => rand(1,3)
         ];
     }

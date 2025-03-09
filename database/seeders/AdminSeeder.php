@@ -153,8 +153,7 @@ class AdminSeeder extends Seeder
             'first_name' => "Jawad", 
             'last_name' => "Mujaddidi",   
             'phone' => "0784801901",    
-            'email' => "jawad@gmail.com", 
-            // 'image' => "img.jpeg",       
+            'email' => "admin@elitevalley.af",     
             'status' => true,         
             'password' => bcrypt('12345678'),      
         ])->assignRole($adminRole); // Assign the Admin role to the user

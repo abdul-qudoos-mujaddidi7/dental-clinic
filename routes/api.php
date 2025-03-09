@@ -1,42 +1,44 @@
 <?php
 
-use App\Http\Controllers\AppointmentController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\BillExpenseController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\CureController;
-use App\Http\Controllers\CureCycleController;
-use App\Http\Controllers\CurePaymentController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\DentistController;
+use App\Models\Service;
+use App\Models\Laboratory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ExpenseCategoryController;
-use App\Http\Controllers\ExpenseCategoryReportController;
-use App\Http\Controllers\ExpenseController;
-use App\Http\Controllers\ExpenseProductReportController;
-use App\Http\Controllers\LaboratoryController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CureController;
 use App\Http\Controllers\LeadController;
-use App\Http\Controllers\OwnerController;
-use App\Http\Controllers\OwnerPickupController;
-use App\Http\Controllers\OwnerPickupReportController;
-use App\Http\Controllers\PatientController;
-use App\Http\Controllers\PatientPaymentReportController;
-use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\PeopleController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\ProfitLossReportController;
-use App\Http\Controllers\RolePermissionController;
-use App\Http\Controllers\ServiceController;
-use App\Http\Controllers\ServiceGroupController;
-use App\Http\Controllers\ServiceReportController;
-use App\Http\Controllers\StageController;
-use App\Http\Controllers\SupplierController;
-use App\Http\Controllers\SystemSettingController;
-use App\Http\Controllers\ToothController;
 use App\Http\Controllers\UserController;
-use App\Models\Laboratory;
-use App\Models\Service;
+use App\Http\Controllers\OwnerController;
+use App\Http\Controllers\StageController;
+use App\Http\Controllers\ToothController;
+use App\Http\Controllers\PeopleController;
+use App\Http\Controllers\DentistController;
+use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\PatientController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\CureCycleController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LaboratoryController;
+use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\BillExpenseController;
+use App\Http\Controllers\CurePaymentController;
+use App\Http\Controllers\OwnerPickupController;
+use App\Http\Controllers\ServiceGroupController;
+use App\Http\Controllers\PeopleAccountController;
+use App\Http\Controllers\ServiceReportController;
+use App\Http\Controllers\SystemSettingController;
+use App\Http\Controllers\RolePermissionController;
+use App\Http\Controllers\ExpenseCategoryController;
+use App\Http\Controllers\ProfitLossReportController;
+use App\Http\Controllers\OwnerPickupReportController;
+use App\Http\Controllers\ExpenseProductReportController;
+use App\Http\Controllers\PatientPaymentReportController;
+use App\Http\Controllers\ExpenseCategoryReportController;
+use App\Http\Controllers\PeopleAccountTransactionController;
 
 // Authentication routes
 Route::post('/login', [AuthController::class, 'login']);
@@ -109,4 +111,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('patientPaymentReport', PatientPaymentReportController::class);
     Route::get('serviceReport', ServiceReportController::class);
     
+    
 });
+
+Route::post('/generatePaySlip', [PeopleAccountTransactionController::class, 'generatePaySlip']);
+Route::post('/paySalary', [PeopleAccountTransactionController::class, 'paySalary']);
+
