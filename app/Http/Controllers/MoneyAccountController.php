@@ -4,18 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\MoneyAccount;
 use App\Http\Requests\MoneyAccountRequest;
-use App\Http\Requests\PaginateRequest;
+use Illuminate\Http\Request;
+
 use App\Http\Resources\MoneyAccountResource;
 
 
-class MoneyAccountController extends AdminController
+class MoneyAccountController extends Controller
 {
 
     protected $model = MoneyAccount::class;
     protected $resource = MoneyAccountResource::class;
 
 
-    public function index(PaginateRequest $request)
+    public function index(Request $request)
     {
         return $this->resource::collection($this->listRecord($request, $this->model,[MoneyAccount::COLUMN_NAME]));
     }
@@ -30,13 +31,13 @@ class MoneyAccountController extends AdminController
         return new $this->resource($this->storeRecord($request,$this->model));
     }
 
-    public function update(MoneyAccountRequest $request,$id)
+    public function update(MoneyAccountRequest $request, MoneyAccount $moneyAccount)
     {
-        return new $this->resource($this->updateRecord($request,$this->model,$id));
+        return new $this->resource($this->updateRecord($request,$moneyAccount,));
     }
 
-    public function destroy($id)
+    public function destroy( MoneyAccount $moneyAccount)
     {
-        return $this->deleteRecord($this->model,$id);
+        return $this->deleteRecord( $moneyAccount);
     }
 }

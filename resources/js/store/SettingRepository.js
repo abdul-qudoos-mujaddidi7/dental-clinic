@@ -16,6 +16,7 @@ export let useSettingRepository = defineStore("SettingRepository", {
             selectedItems: ref([]),
             itemsPerPage: ref(5),
             createDialog: ref(false),
+            transferDialog:ref(false),
             // systemSettings
             systemSettings:reactive([]),
             systemSetting:reactive([]),
@@ -35,6 +36,10 @@ export let useSettingRepository = defineStore("SettingRepository", {
             dentalSearch:ref(""),
             dentals:reactive([]),
             dental:reactive([]),
+            // money Account 
+            moneyAccSearch: ref(""),
+            moneyAccs: reactive([]),
+            moneyAcc: reactive([]),
         };
     },
     actions: {
@@ -479,6 +484,125 @@ export let useSettingRepository = defineStore("SettingRepository", {
                 this.error = err;
             }
         },
+                // accounts
+                // async MoneyAccounts() {
+                //     const config = {
+                //         url: "currencies",
+                //     };
+                //     const response = await axios(config);
+                //     this.accounts = response.data.data;
+                // },
+                // ==================================================
+                async fetchMoneyAccounts({ page, itemsPerPage }) {
+                    this.loading = true;
+        
+                    const response = await axios.get(
+                        `moneyAccount?page=${page}&perPage=${itemsPerPage}&search=${this.moneyAccSearch}`
+                    );
+                    this.moneyAccs = response.data.data;
+                    this.totalItems = response.data.meta.total;
+                    this.loading = false;
+                },
+                async fetchMoneyAcc(id) {
+                    // this.error = null;
+                    try {
+                        const response = await axios.get(`moneyAccount/${id}`);
+        
+                        this.moneyAcc = response.data.data;
+                        console.log(this.moneyAccs);
+                    } catch (err) {
+                        // this.error = err.message;
+                    }
+                },
+                async UpdateMoneyAcc(id, data) {
+                    try {
+                        const config = {
+                            method: "PUT",
+                            url: "moneyAccount/" + id,
+        
+                            data: data,
+                        };
+        
+                        // Using Axios to make a post request with async/await and custom headers
+                        const response = await axios(config);
+                        this.createDialog = false;
+                        this.fetchMoneyAccounts({
+                            page: this.page,
+                            itemsPerPage: this.itemsPerPage,
+                        });
+                    } catch (err) {
+                        // If there's an error, set the error in the store
+                        this.error = err;
+                    }
+                },
+                async CreateMoneyAcc(formData) {
+                    console.log(formData);
+                    try {
+                        // Adding a custom header to the Axios request
+                        const config = {
+                            method: "POST",
+                            url: "moneyAccount",
+        
+                            data: formData,
+                        };
+        
+                        // Using Axios to make a GET request with async/await and custom headers
+                        const response = await axios(config);
+                        this.createDialog = false;
+                        this.fetchMoneyAccounts({
+                            page: this.page,
+                            itemsPerPage: this.itemsPerPage,
+                        });
+                    } catch (err) {
+                        // If there's an error, set the error in the stor
+                    }
+                },
+                async DeleteMoneyAcc(id) {
+                    this.isLoading = true;
+                    this.setting = [];
+                    this.error = null;
+        
+                    try {
+                        const config = {
+                            method: "DELETE",
+                            url: "moneyAccount/" + id,
+                        };
+        
+                        const response = await axios(config);
+        
+                        // this.setting = response.data.data;
+                        this.fetchMoneyAccounts({
+                            page: this.page,
+                            itemsPerPage: this.itemsPerPage,
+                        });
+                    } catch (err) {
+                        this.error = err;
+                    }
+                },
+                // money Transfer
+                //
+                async CreateTransferAcc(formData) {
+                    console.log(formData);
+                    try {
+                        // Adding a custom header to the Axios request
+                        const config = {
+                            method: "POST",
+                            url: "moneyTransfer",
+        
+                            data: formData,
+                        };
+        
+                        // Using Axios to make a GET request with async/await and custom headers
+                        const response = await axios(config);
+                        this.transferDialog = false;
+                        this.fetchMoneyAccounts({
+                            page: this.page,
+                            itemsPerPage: this.itemsPerPage,
+                        });
+                    } catch (err) {
+                        // If there's an error, set the error in the stor
+                    }
+                },
 
     },
        

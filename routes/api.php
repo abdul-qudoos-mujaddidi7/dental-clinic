@@ -39,6 +39,8 @@ use App\Http\Controllers\ExpenseProductReportController;
 use App\Http\Controllers\PatientPaymentReportController;
 use App\Http\Controllers\ExpenseCategoryReportController;
 use App\Http\Controllers\PeopleAccountTransactionController;
+use App\Http\Controllers\MoneyAccountController;
+use App\Http\Controllers\MoneyTransferController;
 
 // Authentication routes
 Route::post('/login', [AuthController::class, 'login']);
@@ -110,6 +112,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('expenseCategoryReport', ExpenseCategoryReportController::class);
     Route::get('patientPaymentReport', PatientPaymentReportController::class);
     Route::get('serviceReport', ServiceReportController::class);
+    // money account  
+    Route::apiResource('/moneyAccount', MoneyAccountController::class);
+    Route::apiResource('/moneyTransfer', MoneyTransferController::class);
+
     
     
 });

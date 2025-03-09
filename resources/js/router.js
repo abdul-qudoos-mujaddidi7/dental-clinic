@@ -32,6 +32,7 @@ import CreatePermissions from "./pages/setting/rolePermission/CreatePermissions.
 import ServiceGroup from "./pages/setting/service Group/ServiceGroup.vue";
 import Service from "./pages/setting/service/Service.vue";
 import DentalType from "./pages/setting/DentalTypes/DentalTypes.vue";
+import MoneyAccount from "./pages/setting/Money Account/MoneyAcc.vue"
 // reports
 import ProfitLoss from "./pages/reports/profit and loss/Profit&Loss.vue";
 import PatientsReport from "./pages/reports/patients report/PatientsReport.vue";
@@ -111,6 +112,9 @@ const router = createRouter({
                     props: true,
                     component: UpdatePermissions,
                 },
+                
+                { path: "/moneyAcc", component: MoneyAccount },
+
                 { path: "/serviceGroup", component: ServiceGroup },
                 { path: "/service", component: Service },
                 { path: "/dental-types", component: DentalType },

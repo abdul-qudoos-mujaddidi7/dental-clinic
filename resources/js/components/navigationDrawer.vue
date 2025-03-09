@@ -417,6 +417,12 @@ const settingItems = [
         value: "system ",
     },
     {
+        to: "/moneyAcc",
+        title: "Money Account",
+        icon: "mdi mdi-circle-medium",
+        value: "money acc   ",
+    },
+    {
         to: "/rolePermissions",
         title: "Role Permissions",
         icon: "mdi mdi-circle-medium",
@@ -442,6 +448,7 @@ const settingItems = [
         icon: "mdi mdi-circle-medium",
         value: "Dental   ",
     },
+    
 ];
 const reportItems = [
     {
