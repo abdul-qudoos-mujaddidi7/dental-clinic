@@ -21,6 +21,10 @@ class LaboratoryResource extends JsonResource
             'issueAt' => $this->issue_at,
             'grandTotal' => $this->grand_total,
             'paid' => $this->paid,
+            'dentist'=>[
+                'id'=>$this->dentist?->id,
+                'name'=>$this->dentist?->name
+            ],
             // 'due'=> $due,
             // 'paymentStatus' => $this->getPaymentStatus(),
             'status' => $this->status,
