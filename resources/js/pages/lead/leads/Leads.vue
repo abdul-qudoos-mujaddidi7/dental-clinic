@@ -43,6 +43,7 @@
                     <v-main class="main">
                         <v-row>
                             <v-col>
+                                <!--  :location="location" -->
                                 <v-data-table-server
                                     theme="cursor-pointer"
                                     v-model:items-per-page="LeadRepository.itemsPerPage"
@@ -179,8 +180,6 @@ const getStageName = (itemId) => {
     const currentIndex = stageIndexes.value[itemId] % leadStage.length;
     return leadStage[currentIndex]?.name || "...";
 };
-
-
 
 // Function to get button color based on stage name
 const getStageColor = (itemId) => {

@@ -175,6 +175,8 @@ import BillExpensePayment from "../bill Expense Payment/BillExpensePayment.vue";
 import ShowExpensePayment from "../bill Expense Payment/ShowExpensePayment.vue";
 //
 import { useExpenseRepository } from "@/store/ExpenseRepository";
+import { useI18n } from "vue-i18n";
+const {t} = useI18n();
 const ExpenseRepository = useExpenseRepository();
 // bulk delete
 const selectedIds = ref([]);
@@ -221,20 +223,20 @@ const deleteItem = async (item) => {
 // header
 const headers = [
     { title: "", key: "checkbox", align: "start", sortable: false },
-    { title: "Date", key: "date", align: "start", sortable: false },
-    { title: "Reference", key: "reference", align: "center", sortable: false },
-    { title: "Added By", key: "addedBy", align: "center", sortable: false },
+    { title: t("date"), key: "date", align: "start", sortable: false },
+    { title: t("reference"), key: "reference", align: "center", sortable: false },
+    { title: t("addedBy"), key: "addedBy", align: "center", sortable: false },
     {
-        title: "Supplier",
+        title: t("supplier"),
         key: "supplier.name",
         align: "center",
         sortable: false,
     },
-    { title: "Amount", key: "grandTotal", align: "center", sortable: false },
-    { title: "PAID", key: "paid", align: "center", sortable: false },
-    { title: "DUE", key: "due", align: "center", sortable: false },
+    { title: t("amount"), key: "grandTotal", align: "center", sortable: false },
+    { title: t("paid"), key: "paid", align: "center", sortable: false },
+    { title: t("due"), key: "due", align: "center", sortable: false },
 
-    { title: "Action", key: "action", align: "center", sortable: false },
+    { title: t("action"), key: "action", align: "center", sortable: false },
 ];
 </script>
 

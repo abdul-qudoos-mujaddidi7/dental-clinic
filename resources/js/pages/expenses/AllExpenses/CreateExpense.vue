@@ -12,11 +12,8 @@
                         class="px-2 pt-4 d-flex justify-space-between"
                     >
                         <h2 class="font-weight-bold pl-4">
-                            {{
-                                ExpenseRepository.isEditMode
-                                    ? "Update"
-                                    : "Create"
-                            }}
+                            {{ ExpenseRepository.isEditMode ? $t("update") : $t("create") }}
+
                         </h2>
                         <v-btn variant="text" @click="isActive.value = false">
                             <v-icon>mdi-close</v-icon>
@@ -34,7 +31,8 @@
                                     v-model="formData.expenseCategoryId"
                                     :items="ExpenseRepository.categories"
                                     variant="outlined"
-                                    label="Category *"
+                                    :label="$t('category')"
+
                                     item-value="id"
                                     item-title="name"
                                     density="compact"
@@ -58,7 +56,8 @@
                             <v-text-field
                                 v-model="formData.amount"
                                 variant="outlined"
-                                label="Amount *"
+                                :label="$t('amount')"
+
                                 class="pb-3"
                                 density="compact"
                                 :rules="[rules.required, rules.number]"
@@ -68,7 +67,8 @@
                                 v-model="formData.note"
                                 density="compact"
                                 variant="outlined"
-                                label="Details *"
+                                :label="$t('details')"
+
                             ></v-textarea>
                         </v-form>
                     </v-card-text>
@@ -79,11 +79,8 @@
                             class="px-4"
                             @click="saveExpense"
                         >
-                            {{
-                                ExpenseRepository.isEditMode
-                                    ? "Update"
-                                    : "Submit"
-                            }}
+                        {{ ExpenseRepository.isEditMode ? $t("update") : $t("submit") }}
+
                         </v-btn>
                     </div>
                 </v-card>
