@@ -1,9 +1,9 @@
 <template>
-    <CurePyament v-if="CureRepository.createDialog"/>
-    <ShowCurePayment v-if="CureRepository.ShowCurePaymentDialog"/>
+    <CurePyament v-if="CureRepository.createDialog" />
+    <ShowCurePayment v-if="CureRepository.ShowCurePaymentDialog" />
     <div class="all-expense rounded-xl">
         <div class="card rounded-xl">
-            <AppBar mainTitle="Cure Cycle" sub-title="cure Cycle" />
+            <AppBar :mainTitle="$t('cureCycle')" :sub-title="$t('cureCycle')" />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
@@ -17,7 +17,7 @@
                         color="primaryOld"
                         density="compact"
                         variant="outlined"
-                        label="Search ..."
+                        :label="$t('search')"
                         append-inner-icon="mdi-magnify"
                         hide-details
                         v-model="CureRepository.curesSearch"
@@ -25,14 +25,14 @@
                 </div>
                 <div class="btn">
                     <v-btn variant="outlined" color="primaryOld" class="px-6">
-                        Filter
+                        {{ $t("filter") }}
                     </v-btn>
                     &nbsp;
                     <router-link to="/createCure">
                         <v-btn
                             color="primaryOld"
                             variant="flat"
-                            text="Create"
+                            :text="$t('create')"
                             class="px-6"
                         >
                         </v-btn>
@@ -82,20 +82,15 @@
                                             {{ item.paymentStatus }}
                                         </span>
                                     </template>
-                                    <template v-slot:item.due="{item}">
-                                        <span class="text-[#E54141]">{{item.due}}</span>
-
+                                    <template v-slot:item.due="{ item }">
+                                        <span class="text-[#E54141]">{{
+                                            item.due
+                                        }}</span>
                                     </template>
 
-                                    <template
-                                        v-slot:item.status="{ item }"
-                                    >
+                                    <template v-slot:item.status="{ item }">
                                         <span
-                                            :class="
-                                                getStatusClass(
-                                                    item.status
-                                                )
-                                            "
+                                            :class="getStatusClass(item.status)"
                                         >
                                             {{ item.status }}
                                         </span>
@@ -156,7 +151,7 @@
                                                                 color="tealColor"
                                                                 >mdi-square-edit-outline</v-icon
                                                             >
-                                                            Edit
+                                                            {{ $t("edit") }}
                                                         </v-list-item-title>
                                                     </router-link>
                                                     <router-link
@@ -172,7 +167,7 @@
                                                                 color="tealColor"
                                                                 >mdi-square-edit-outline</v-icon
                                                             >
-                                                            View Cure 
+                                                            {{$t('show')}}
                                                         </v-list-item-title>
                                                     </router-link>
 
@@ -185,7 +180,7 @@
                                                         <v-icon color="error"
                                                             >mdi-delete-outline</v-icon
                                                         >
-                                                        Delete
+                                                        {{ $t("delete") }}
                                                     </v-list-item-title>
                                                 </v-list-item>
                                             </v-list>
@@ -263,52 +258,67 @@ const ViewPaymentDialog = (item) => {
         });
     // }
 };
-// change the color 
+// change the color
 function getPaymentStatusClass(status) {
-  const statusClasses = {
-    DUE: 'text-[#E54141]  font-bold',
-    PAID: 'text-[#00893F] font-bold',
-    PARTIAL: 'text-[#EC942C] font-bold',
-  };
-  return statusClasses[status] || 'text-[#000000]'; // Default fallback
+    const statusClasses = {
+        DUE: "text-[#E54141]  font-bold",
+        PAID: "text-[#00893F] font-bold",
+        PARTIAL: "text-[#EC942C] font-bold",
+    };
+    return statusClasses[status] || "text-[#000000]"; // Default fallback
 }
 function getStatusClass(state) {
-  const status = {
-    completed: 'text-[#E54141]  font-bold',
-    ongoing: 'text-[#00893F] font-bold',
-    new: 'text-[#EC942C] font-bold',
-  };
-  return status[state] || 'text-[#000000]'; // Default fallback
+    const status = {
+        completed: "text-[#E54141]  font-bold",
+        ongoing: "text-[#00893F] font-bold",
+        new: "text-[#EC942C] font-bold",
+    };
+    return status[state] || "text-[#000000]"; // Default fallback
 }
 // header
 const headers = [
     { title: "", key: "checkbox", align: "start", sortable: false },
-    { title: "Reference", key: "reference", align: "center", sortable: false },
-    { title: t('date'), key: "start_date", align: "start", sortable: false },
-    { title: "Doctor", key: "dentist.name", align: "start", sortable: false },
-    { title: "patient", key: "patient.name", align: "center", sortable: false },
     {
-        title: "CURE STATUS",
+        title: t("reference"),
+        key: "reference",
+        align: "center",
+        sortable: false,
+    },
+    { title: t("date"), key: "start_date", align: "start", sortable: false },
+    {
+        title: t("doctor"),
+        key: "dentist.name",
+        align: "start",
+        sortable: false,
+    },
+    {
+        title: t("patient"),
+        key: "patient.name",
+        align: "center",
+        sortable: false,
+    },
+    {
+        title: t("status"),
         key: "status",
         align: "center",
         sortable: false,
     },
     {
-        title: "Grand total",
+        title: t("grandTotal"),
         key: "grand_total",
         align: "center",
         sortable: false,
     },
-    { title: "PAID", key: "paid", align: "center", sortable: false },
-    { title: "DUE", key: "due", align: "center", sortable: false },
+    { title: t("paid"), key: "paid", align: "center", sortable: false },
+    { title: t("due"), key: "due", align: "center", sortable: false },
     {
-        title: "Payment Status",
+        title: t("paymentStatus"),
         key: "paymentStatus",
         align: "center",
         sortable: false,
     },
 
-    { title: "Action", key: "action", align: "center", sortable: false },
+    { title: t("action"), key: "action", align: "center", sortable: false },
 ];
 </script>
 

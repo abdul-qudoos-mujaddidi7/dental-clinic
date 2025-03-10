@@ -221,7 +221,7 @@
                 <v-textarea
                     v-model="formData.description"
                     class="textArea"
-                    :label="$t('description')"
+                    :label="$t('details')"
                     variant="outlined"
                     density="compact"
                 >

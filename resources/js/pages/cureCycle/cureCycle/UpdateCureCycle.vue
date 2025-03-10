@@ -26,7 +26,7 @@
                     :items="CureRepository.patientsFor"
                     :return-object="false"
                     variant="outlined"
-                    label="Patient *"
+                    :label="$t('patient')"
                     class="pr-2 pl-2"
                     style="width: 45%"
                     item-value="id"
@@ -40,7 +40,7 @@
                     :items="CureRepository.doctorFor"
                     :return-object="false"
                     variant="outlined"
-                    label="Doctor *"
+                    :label="$t('doctor')"
                     class="pr-2 pl-2"
                     style="width: 45%"
                     item-value="id"
@@ -53,7 +53,7 @@
                     :items="CureRepository.leadStageFor"
                     :return-object="false"
                     variant="outlined"
-                    label="Status *"
+                    :label="$t('status')"
                     class="pr-2 pl-2"
                     style="width: 45%"
                     item-value="name"
@@ -72,7 +72,7 @@
                             @input="CureRepository.SearchFetchData"
                             @click:clear="clearSearch"
                             variant="outlined"
-                            label="Search Services"
+                            :label="$t('search')"
                             density="compact"
                             append-inner-icon="mdi-magnify"
                             clearable
@@ -107,22 +107,24 @@
                         <tr>
                             <th scope="col" class="px-3 py-3 text-start">#</th>
                             <th scope="col" class="px-3 py-3 text-start">
-                                Service
+                                                               {{ t("service") }}
+                                {{ t("service") }}
+
                             </th>
                             <th scope="col" class="px-3 py-3 text-start">
-                                Qty
+                                {{ t("qty") }}
                             </th>
                             <th scope="col" class="px-3 py-3 text-start">
                                 Cost
                             </th>
                             <th scope="col" class="px-3 py-3 text-start">
-                                Status
+                                {{ t("cost") }}
                             </th>
                             <th scope="col" class="px-3 py-3 text-center">
-                                Sub Total
+                                {{ t("subTotal") }}
                             </th>
                             <th scope="col" class="px-3 py-3 text-end">
-                                Action
+                                {{ t("action") }}
                             </th>
                         </tr>
                     </thead>
@@ -183,7 +185,7 @@
                     class="flex justify-between w-[14rem] border-t-[.1rem] border-b-[.1rem] border-dashed border-[#C6C6C6] p-1 text-lg font-bold"
                 >
                     <span>{{ totalSum }}</span>
-                    <span>Total</span>
+                    <span>{{ t("total") }}</span>
                 </div>
 
                 <div>
@@ -209,7 +211,7 @@
                 </v-textarea>
             </div>
             <div class="d-flex flex-row-reverse mt-6">
-                <v-btn color="#112F53" @click="update"> Submit</v-btn>
+                <v-btn color="#112F53" @click="update"> {{ t("update") }}</v-btn>
             </div>
         </div>
     </div>
@@ -220,7 +222,6 @@ import AppBar from "../../../components/AppBar.vue";
 import { reactive, computed, ref, watch, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { LocaleConfigs } from "../../../LocaleConfigs";
-
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 import { useCureRepository } from "@/store/CureRepository";

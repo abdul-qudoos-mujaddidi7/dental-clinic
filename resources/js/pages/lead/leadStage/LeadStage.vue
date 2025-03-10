@@ -38,7 +38,7 @@
                 </div>
             </div>
             <!-- v-table server  -->
-            <div class="overflow-x-hidden">
+            <div class="overflow-x-hidden" :location="location">
                 <v-app>
                     <v-main class="main">
                         <v-row>
@@ -128,6 +128,9 @@ const CreateDialogShow = () => {
     LeadRepository.isEditMode=false;
     LeadRepository.createDialog = true;
 };
+
+
+
 
 const edit = (item) => {
     console.log(item, "me");
