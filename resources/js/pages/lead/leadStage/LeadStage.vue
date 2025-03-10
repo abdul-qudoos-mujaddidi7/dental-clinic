@@ -16,7 +16,7 @@
                         color="primaryOld"
                         density="compact"
                         variant="outlined"
-                        label="Search ..."
+                        :label="$t('search')"
                         append-inner-icon="mdi-magnify"
                         hide-details
                         v-model="LeadRepository.stageSearch"
@@ -24,14 +24,14 @@
                 </div>
                 <div class="btn">
                     <v-btn variant="outlined" color="primaryOld" class="px-6">
-                        Filter
+                        {{$t('filter')}}
                     </v-btn>
                     &nbsp;
                     <v-btn
                         @click="CreateDialogShow"
                         color="primaryOld"
                         variant="flat"
-                        text="Create"
+                        :text="$t('create')"
                         class="px-6"
                     >
                     </v-btn>
@@ -84,7 +84,7 @@
                                                             color="tealColor"
                                                             >mdi-square-edit-outline</v-icon
                                                         >
-                                                        Edit
+                                                        {{$t('edit')}}
                                                     </v-list-item-title>
 
                                                     <v-list-item-title
@@ -96,7 +96,7 @@
                                                         <v-icon color="error"
                                                             >mdi-delete-outline</v-icon
                                                         >
-                                                        Delete
+                                                        {{$t('delete')}}
                                                     </v-list-item-title>
                                                 </v-list-item>
                                             </v-list>
@@ -117,6 +117,8 @@
 import { ref } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 import CreateStage from "./CreateStage.vue";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 import { useLeadRepository } from "@/store/LeadRepository";
 const LeadRepository = useLeadRepository();
 // delete and update Create
@@ -149,9 +151,9 @@ const deleteItem = async (item) => {
 // header
 const headers = [
 
-    { title: "Name", key: "name", align: "center", sortable: false },
-    { title: "Leads", key: "leads", align: "center", sortable: false },
-    { title: "Action", key: "action", align: "end", sortable: false },
+    { title: t("name"), key: "name", align: "center", sortable: false },
+    { title: t('leads'), key: "leads", align: "center", sortable: false },
+    { title: t("action"), key: "action", align: "end", sortable: false },
 ];
 </script>
 

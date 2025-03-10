@@ -1,5 +1,6 @@
 <template>
     <v-layout class="rounded rounded-md side">
+<<<<<<< HEAD
         <v-navigation-drawer
             v-model="drawer"
             :rail="rail"
@@ -16,6 +17,23 @@
             class="d-flex flex-col custom-scrollbar"
             style="min-height: 300px; overflow: auto"
         >
+=======
+    <v-navigation-drawer
+      v-model="drawer"
+      :rail="rail"
+      permanent
+      color="#F8F8F8"
+      floating
+      :location="location"
+      class="sideBar"
+    
+    >
+      <NavigationDrawer />
+    </v-navigation-drawer>
+
+
+        <v-main class="d-flex flex-col" style="min-height: 300px">
+>>>>>>> 792ff3a3ec121e5735a3bbccf4a113cb2b7afecd
             <v-card
                 variant="flat"
                 elevation="1"
@@ -33,6 +51,8 @@ import { ref, watch, computed } from "vue";
 import { useRoute } from "vue-router"; // Import to get the current route
 import NavigationDrawer from "./components/navigationDrawer.vue";
 import { useAuthRepository } from "@/store/AuthRepository";
+import { useI18n } from "vue-i18n";
+const { t, locale } = useI18n();
 
 const authRepo = useAuthRepository();
 const drawer = ref(true);
@@ -53,4 +73,12 @@ const vCardStyle = computed(() => {
         ? "background-color:#f8f8f8"
         : "background-color:white";
 });
+
+const location= computed(()=>{
+    if (locale.value === "fa") {
+    return 'right' // Reverse the order for Farsi
+  }
+
+  return 'left'
+})
 </script>

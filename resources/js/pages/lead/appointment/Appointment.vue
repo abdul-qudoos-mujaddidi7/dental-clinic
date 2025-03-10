@@ -2,7 +2,7 @@
     <CreateAppointment v-if="LeadRepository.createDialog" />
     <div class="all-expense rounded-xl">
         <div class="card rounded-xl">
-            <AppBar mainTitle="Appointment" sub-title="appointment" />
+            <AppBar :mainTitle="$t('appointment')" :sub-title="$t('appointment')" />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
@@ -16,7 +16,7 @@
                         color="primaryOld"
                         density="compact"
                         variant="outlined"
-                        label="Search ..."
+                        :label="$t('search')"
                         append-inner-icon="mdi-magnify"
                         hide-details
                         v-model="LeadRepository.appointmentSearch"
@@ -24,20 +24,21 @@
                 </div>
                 <div class="btn">
                     <v-btn variant="outlined" color="primaryOld" class="px-6">
-                        Filter
+                        {{ $t('filter') }}
                     </v-btn>
                     &nbsp;
                     <v-btn
                         @click="CreateDialogShow"
                         color="primaryOld"
                         variant="flat"
-                        text="Create"
+                        :text="$t('create')"
                         class="px-6"
                     >
                     </v-btn>
                 </div>
             </div>
-            <!-- v-table server  -->
+
+            <!-- v-table server -->
             <div class="overflow-x-hidden">
                 <v-app>
                     <v-main class="main">
@@ -45,26 +46,20 @@
                             <v-col>
                                 <v-data-table-server
                                     theme="cursor-pointer"
-                                    v-model:items-per-page="
-                                        LeadRepository.itemsPerPage
-                                    "
+                                    v-model:items-per-page="LeadRepository.itemsPerPage"
                                     :headers="headers"
                                     :items-length="LeadRepository.totalItems"
                                     :items="LeadRepository.appointments"
                                     :loading="LeadRepository.loading"
                                     :search="LeadRepository.appointmentSearch"
-                                    @update:options="
-                                        LeadRepository.FetchAppointments
-                                    "
+                                    @update:options="LeadRepository.FetchAppointments"
                                     :item-key="LeadRepository.appointments"
                                     hover
                                     class="w-100 mx-auto"
                                 >
                                     <template v-slot:item.action="{ item }">
                                         <v-menu>
-                                            <template
-                                                v-slot:activator="{ props }"
-                                            >
+                                            <template v-slot:activator="{ props }">
                                                 <v-btn
                                                     icon="mdi-dots-vertical"
                                                     v-bind="props"
@@ -77,23 +72,16 @@
                                                         @click="edit(item)"
                                                         class="cursor-pointer d-flex gap-3 justify-left pb-3"
                                                     >
-                                                        <v-icon
-                                                            color="tealColor"
-                                                            >mdi-square-edit-outline</v-icon
-                                                        >
-                                                        Edit
+                                                        <v-icon color="tealColor">mdi-square-edit-outline</v-icon>
+                                                        {{ $t('edit') }}
                                                     </v-list-item-title>
 
                                                     <v-list-item-title
                                                         class="cursor-pointer d-flex gap-3"
-                                                        @click="
-                                                            deleteItem(item)
-                                                        "
+                                                        @click="deleteItem(item)"
                                                     >
-                                                        <v-icon color="error"
-                                                            >mdi-delete-outline</v-icon
-                                                        >
-                                                        Delete
+                                                        <v-icon color="error">mdi-delete-outline</v-icon>
+                                                        {{ $t('delete') }}
                                                     </v-list-item-title>
                                                 </v-list-item>
                                             </v-list>
@@ -112,22 +100,24 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import AppBar from "../../../components/AppBar.vue";
-// import CreateOwner from "./CreateOwner.vue";
 import CreateAppointment from "./CreateAppointment.vue";
 import { useLeadRepository } from "@/store/LeadRepository";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 const LeadRepository = useLeadRepository();
+
 // bulk delete
 
 // delete and update Create
 const CreateDialogShow = () => {
-    LeadRepository.appointment = {},
-    LeadRepository.isEditMode=false;
+    LeadRepository.appointment = {};
+    LeadRepository.isEditMode = false;
     LeadRepository.createDialog = true;
 };
 
 const edit = (item) => {
     console.log(item, "me");
-    LeadRepository.isEditMode=true;
+    LeadRepository.isEditMode = true;
     LeadRepository.appointment = {};
     if (Object.keys(LeadRepository.appointment).length === 0) {
         LeadRepository.fetchAppointment(item.id)
@@ -143,14 +133,15 @@ const edit = (item) => {
 const deleteItem = async (item) => {
     await LeadRepository.DeleteAppointment(item.id);
 };
+
 // header
 const headers = [
-    { title: "Patient", key: "patients.name", align: "start", sortable: false },
-    { title: "Doctor", key: "dentists.name", align: "start", sortable: false },
-    { title: "Date", key: "date", align: "start", sortable: false },
-    { title: "Added By", key: "userName", align: "start", sortable: false },
-    { title: "Time", key: "time", align: "start", sortable: false },
-    { title: "Status", key: "status", align: "start", sortable: false },
-    { title: "Action ", key: "action", align: "end", sortable: false },
+    { title: t("patient"), key: "patients.name", align: "start", sortable: false },
+    { title: t("doctor"), key: "dentists.name", align: "start", sortable: false },
+    { title: t("date"), key: "date", align: "start", sortable: false },
+    { title: t("addedBy"), key: "userName", align: "start", sortable: false },
+    { title: t("time"), key: "time", align: "start", sortable: false },
+    { title: t("status"), key: "status", align: "start", sortable: false },
+    { title: t("action"), key: "action", align: "end", sortable: false },
 ];
 </script>

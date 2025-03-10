@@ -12,9 +12,7 @@
                         class="px-2 pt-4 d-flex justify-space-between"
                     >
                         <h2 class="font-weight-bold pl-4">
-                            {{
-                                LeadRepository.isEditMode ? "Update" : "Create"
-                            }}
+                            {{ LeadRepository.isEditMode ? $t("update") : $t("create") }}
                         </h2>
                         <v-btn variant="text" @click="isActive.value = false">
                             <v-icon>mdi-close</v-icon>
@@ -32,10 +30,8 @@
                                     :styles="styles"
                                     locale="fa"
                                     type="datetime"
-                                    
                                     :locale-config="LocaleConfigs"
                                     input-format="jYYYY/jMM/jDD H:m"
-
                                     format="jYYYY/jMM/jDD H:m"
                                 />
                             </div>
@@ -46,7 +42,7 @@
                                     :items="LeadRepository.patientsForApp"
                                     :return-object="false"
                                     variant="outlined"
-                                    label="Patient *"
+                                    :label="$t('patient') + ' *'"
                                     item-value="id"
                                     item-title="name"
                                     density="compact"
@@ -60,7 +56,7 @@
                                     :items="LeadRepository.doctorsForApp"
                                     :return-object="false"
                                     variant="outlined"
-                                    label="Doctors *"
+                                    :label="$t('doctor') + ' *'"
                                     item-value="id"
                                     item-title="name"
                                     density="compact"
@@ -73,15 +69,15 @@
                                 <v-autocomplete
                                     v-model="formData.status"
                                     :items="[
-                                        'Completed',
-                                        'Pending',
-                                        'Cancelled',
-                                        'In Progress',
-                                        'No Show',
+                                        $t('completed'),
+                                        $t('pending'),
+                                        $t('cancelled'),
+                                        $t('inProgress'),
+                                        $t('noShow')
                                     ]"
                                     :return-object="false"
                                     variant="outlined"
-                                    label="Status *"
+                                    :label="$t('status') + ' *'"
                                     item-value="id"
                                     item-title="name"
                                     density="compact"
@@ -95,9 +91,7 @@
 
                     <div class="d-flex flex-row-reverse mb-6 mx-6">
                         <v-btn color="#112F53" class="px-4" @click="save">
-                            {{
-                                LeadRepository.isEditMode ? "Update" : "Submit"
-                            }}
+                            {{ LeadRepository.isEditMode ? $t('update') : $t('submit') }}
                         </v-btn>
                     </div>
                 </v-card>
@@ -123,11 +117,11 @@ const formData = reactive({
     userId: LeadRepository.appointment.user?.id,
 });
 const rules = {
-    required: (value) => !!value || "This field is required.",
+    required: (value) => !!value || $t("thisFieldIsRequired"),
 
     name: (value) =>
         /^[a-zA-Z\u0600-\u06FF\s]*$/.test(value) ||
-        "Please enter a valid name.",
+        $t("pleaseEnterAValidName"),
 };
 
 const save = async () => {
@@ -141,12 +135,10 @@ const save = async () => {
         LeadRepository.isEditMode = false;
     }
 };
+
 LeadRepository.fetchPatients();
-// patientsForApp
 LeadRepository.fetchDoctors();
-// doctorsForApp
 LeadRepository.fetchUsers();
-// userForApp
 
 formData.date = LeadRepository.getTodaysDate();
 </script>

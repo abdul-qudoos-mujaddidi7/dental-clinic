@@ -215,7 +215,8 @@ import { ref } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 import CurePyament from "../cure payment/CurePyament.vue";
 import ShowCurePayment from "../cure payment/ShowCurePayment.vue";
-
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 import { useCureRepository } from "@/store/CureRepository";
 const CureRepository = useCureRepository();
 // bulk delete
@@ -283,7 +284,7 @@ function getStatusClass(state) {
 const headers = [
     { title: "", key: "checkbox", align: "start", sortable: false },
     { title: "Reference", key: "reference", align: "center", sortable: false },
-    { title: "Date", key: "start_date", align: "start", sortable: false },
+    { title: t('date'), key: "start_date", align: "start", sortable: false },
     { title: "Doctor", key: "dentist.name", align: "start", sortable: false },
     { title: "patient", key: "patient.name", align: "center", sortable: false },
     {

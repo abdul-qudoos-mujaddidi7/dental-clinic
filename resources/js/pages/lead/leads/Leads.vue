@@ -16,7 +16,7 @@
                         color="primaryOld"
                         density="compact"
                         variant="outlined"
-                        label="Search ..."
+                        :label="$t('search')"
                         append-inner-icon="mdi-magnify"
                         hide-details
                         v-model="LeadRepository.leadSearch"
@@ -24,14 +24,14 @@
                 </div>
                 <div class="btn">
                     <v-btn variant="outlined" color="primaryOld" class="px-6">
-                        Filter
+                        {{ t("filter") }}
                     </v-btn>
                     &nbsp;
                     <v-btn
                         @click="CreateDialogShow"
                         color="primaryOld"
                         variant="flat"
-                        text="Create"
+                        :text="$t('create')"
                         class="px-6"
                     >
                     </v-btn>
@@ -45,9 +45,7 @@
                             <v-col>
                                 <v-data-table-server
                                     theme="cursor-pointer"
-                                    v-model:items-per-page="
-                                        LeadRepository.itemsPerPage
-                                    "
+                                    v-model:items-per-page="LeadRepository.itemsPerPage"
                                     :headers="headers"
                                     :items-length="LeadRepository.totalItems"
                                     :items="LeadRepository.leads"
@@ -57,7 +55,9 @@
                                     :item-key="LeadRepository.leads"
                                     hover
                                     class="w-100 mx-auto"
-                                >
+                                    >
+                                    
+
                                     <template v-slot:item.stage="{ item }">
                                         <td class="py-2 pl-4">
                                             <v-btn
@@ -116,7 +116,7 @@
                                                             color="tealColor"
                                                             >mdi-square-edit-outline</v-icon
                                                         >
-                                                        Edit
+                                                        {{ $t("edit") }}
                                                     </v-list-item-title>
 
                                                     <v-list-item-title
@@ -128,7 +128,7 @@
                                                         <v-icon color="error"
                                                             >mdi-delete-outline</v-icon
                                                         >
-                                                        Delete
+                                                        {{ $t("delete") }}
                                                     </v-list-item-title>
                                                 </v-list-item>
                                             </v-list>
@@ -158,6 +158,8 @@
 import { ref, computed, reactive } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 import CreateLeads from "./CreateLeads.vue";
+import { useI18n } from "vue-i18n";
+const { t, locale } = useI18n();
 import { useLeadRepository } from "@/store/LeadRepository";
 const LeadRepository = useLeadRepository();
 // swap function
@@ -177,6 +179,8 @@ const getStageName = (itemId) => {
     const currentIndex = stageIndexes.value[itemId] % leadStage.length;
     return leadStage[currentIndex]?.name || "...";
 };
+
+
 
 // Function to get button color based on stage name
 const getStageColor = (itemId) => {
@@ -279,21 +283,30 @@ const deleteItem = async (item) => {
     await LeadRepository.DeleteLead(item.id);
 };
 // header
-const headers = [
+const headers = computed(() => {
+  const baseHeaders = [
     { title: "", key: "checkbox", align: "start", sortable: false },
-    { title: "Name", key: "name", align: "center", sortable: false },
-    { title: "Phone", key: "phone", align: "start", sortable: false },
+    { title: t("name"), key: "name", align: t('style'), sortable: false },
+    { title: t("phone"), key: "phone", align: t('style'), sortable: false },
     {
-        title: "Category",
-        key: "category.name",
-        align: "start",
-        sortable: false,
+      title: t("category"),
+      key: "category.name",
+      align: "start",
+      sortable: false,
     },
-    { title: "Status", key: "stage", align: "center", sortable: false },
-    { title: "Address", key: "address", align: "start", sortable: false },
-    { title: "Details", key: "note", align: "start", sortable: false },
-    { title: "Action", key: "action", align: "center", sortable: false },
-];
+    { title: t("status"), key: "stage", align: "center", sortable: false },
+    { title: t("address"), key: "address", align: t('style'), sortable: false },
+    { title: t("details"), key: "note", align: t('style'), sortable: false },
+    { title: t("action"), key: "action", align: "center", sortable: false },
+  ];
+
+  // Reverse the headers when the language is Farsi (assuming 'fa' is the Farsi language code)
+  if (locale.value === "fa") {
+    return [...baseHeaders].reverse(); // Reverse the order for Farsi
+  }
+  return baseHeaders;
+});
+
 LeadRepository.leadStages();
 </script>
 

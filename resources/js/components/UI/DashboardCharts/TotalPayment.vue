@@ -1,7 +1,10 @@
 <script setup>
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 import * as echarts from "echarts";
 import { onMounted, watch } from "vue";
 import { useDashboardRepository } from "@/store/DashboardRepository";
+
 
 let DashboardRepository = useDashboardRepository();
 DashboardRepository.fetchDashboardData();
@@ -35,7 +38,7 @@ async function updateChart() {
             },
         },
         title: {
-            text: `Profit: ${lastMonthEarnings}`, // Display the value dynamically
+            text: `${t("profit")}: ${lastMonthEarnings}`, // Display the value dynamically
             left: "left",
             top: "1%",
             textStyle: {
@@ -49,7 +52,7 @@ async function updateChart() {
             show: false, // Hide the legend
         },
         grid: {
-            top:"20%",
+            top: "20%",
             left: "2%",
             right: "2%",
             bottom: "0%",
@@ -121,6 +124,6 @@ onMounted(updateChart);
 
 <template>
     <div class="shadow-md pt-6 bg-white rounded-xl pb-10 d-flex justify-center">
-        <canvas id="income" style="width: 34rem;"></canvas>
+        <canvas id="income" style="width: 34rem"></canvas>
     </div>
 </template>
