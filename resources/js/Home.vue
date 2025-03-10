@@ -1,23 +1,5 @@
 <template>
     <v-layout class="rounded rounded-md side">
-<<<<<<< HEAD
-        <v-navigation-drawer
-            v-model="drawer"
-            :rail="rail"
-            permanent
-            color="#F8F8F8"
-            floating
-            location="left"
-            class="sideBar"
-        >
-            <NavigationDrawer />
-        </v-navigation-drawer>
-
-        <v-main
-            class="d-flex flex-col custom-scrollbar"
-            style="min-height: 300px; overflow: auto"
-        >
-=======
     <v-navigation-drawer
       v-model="drawer"
       :rail="rail"
@@ -33,7 +15,6 @@
 
 
         <v-main class="d-flex flex-col" style="min-height: 300px">
->>>>>>> 792ff3a3ec121e5735a3bbccf4a113cb2b7afecd
             <v-card
                 variant="flat"
                 elevation="1"
