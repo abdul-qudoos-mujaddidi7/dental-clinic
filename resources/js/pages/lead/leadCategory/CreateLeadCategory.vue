@@ -13,7 +13,7 @@
                     >
                         <h2 class="font-weight-bold pl-4">
                             {{
-                                LeadRepository.isEditMode ? "Update" : "Create"
+                                formTitle
                             }}
                         </h2>
                         <v-btn variant="text" @click="isActive.value = false">
@@ -28,7 +28,7 @@
                                 <v-text-field
                                     v-model="formData.name"
                                     variant="outlined"
-                                    label="Full name  *"
+                                    :label="$t('fullName')"
                                     class="pr-2 "
                                     density="compact"
                                     :rules="[rules.required,rules.name]"
@@ -45,7 +45,7 @@
                     <div class="d-flex flex-row-reverse mb-6 mx-6">
                         <v-btn color="#112F53" class="px-4" @click="save">
                             {{
-                                LeadRepository.isEditMode ? "Update" : "Submit"
+                                formTitle
                             }}
                         </v-btn>
                     </div>
@@ -56,10 +56,14 @@
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
+import { ref, reactive,computed} from "vue";
 import { useLeadRepository } from "@/store/LeadRepository";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 
 const LeadRepository = useLeadRepository();
+const formTitle = computed(() => LeadRepository.isEditMode ? t('update') : t('create'));
+const buttonText = computed(() => LeadRepository.isEditMode ? t('update') : t('submit'));
 const formRef = ref(null);
 const formData = reactive({
     id: LeadRepository.category.id,

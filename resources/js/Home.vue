@@ -6,7 +6,7 @@
       permanent
       color="#F8F8F8"
       floating
-      location="left"
+      :location="location"
       class="sideBar"
     
     >
@@ -32,6 +32,8 @@ import { ref, watch, computed } from "vue";
 import { useRoute } from "vue-router"; // Import to get the current route
 import NavigationDrawer from "./components/navigationDrawer.vue";
 import { useAuthRepository } from "@/store/AuthRepository";
+import { useI18n } from "vue-i18n";
+const { t, locale } = useI18n();
 
 const authRepo = useAuthRepository();
 const drawer = ref(true);
@@ -53,6 +55,14 @@ const vCardStyle = computed(() => {
         ? "background-color:#f8f8f8"
         : "background-color:white";
 });
+
+const location= computed(()=>{
+    if (locale.value === "fa") {
+    return 'right' // Reverse the order for Farsi
+  }
+
+  return 'left'
+})
 </script>
 
 <style scoped>

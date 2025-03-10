@@ -13,7 +13,6 @@
                     <template v-slot:title>
                         <div class="d-flex">
                             <v-avatar size="40" class="mr-4">
-                                <!-- <v-icon size="36">mdi-account-details</v-icon> -->
                                 <img
                                     src="@/assets/images/dashboard/totalVisa.svg"
                                     class="w-6"
@@ -33,17 +32,16 @@
                     <v-card-text
                         class="text-h6 d-flex justify-start calibri_font ml-14"
                     >
-                        Profit
+                        {{ t('profit') }}
                     </v-card-text>
-                </v-card></v-col
-            >
+                </v-card>
+            </v-col>
 
             <v-col>
                 <v-card variant="flat" rounded="lg">
                     <template v-slot:title>
                         <div class="d-flex align-center justify-start">
                             <v-avatar size="40" class="mr-4">
-                                <!-- <v-icon size="36">mdi-account-details</v-icon> -->
                                 <img
                                     src="@/assets/images/dashboard/totalTicket.svg"
                                     class="w-8"
@@ -60,16 +58,15 @@
                     <v-card-text
                         class="text-h6 d-flex justify-start calibri_font ml-14"
                     >
-                        Expense
+                        {{ t('expense') }}
                     </v-card-text>
-                </v-card></v-col
-            >
+                </v-card>
+            </v-col>
             <v-col>
                 <v-card variant="flat" rounded="lg">
                     <template v-slot:title>
                         <div class="d-flex align-center justify-start">
                             <v-avatar size="40" class="mr-4">
-                                <!-- <v-icon size="36">mdi-account-details</v-icon> -->
                                 <img
                                     src="@/assets/images/dashboard/totalTourpackageBooket.svg"
                                     class="w-6"
@@ -86,17 +83,16 @@
                     <v-card-text
                         class="text-h6 d-flex justify-start calibri_font ml-14"
                     >
-                        Sales
+                        {{ t('sales') }}
                     </v-card-text>
-                </v-card></v-col
-            >
+                </v-card>
+            </v-col>
 
             <v-col>
                 <v-card variant="flat" rounded="lg">
                     <template v-slot:title>
                         <div class="d-flex align-center justify-start">
                             <v-avatar size="40" class="mr-4">
-                                <!-- <v-icon size="36">mdi-account-details</v-icon> -->
                                 <img
                                     src="@/assets/images/dashboard/totalTourpackage.svg"
                                     class="w-4"
@@ -113,7 +109,7 @@
                     <v-card-text
                         class="text-h6 d-flex justify-start calibri_font ml-14"
                     >
-                        Patients
+                        {{ t('patients') }}
                     </v-card-text>
                 </v-card>
             </v-col>
@@ -141,7 +137,7 @@
                                     }}
                                 </p>
                                 <p class="text-subtitle-2">
-                                    Expenses based on amount and percentage
+                                    {{ t('expensesBasedOnAmountAndPercentage') }}
                                 </p>
                             </span>
                             <span class="flex flex-col gap-1">
@@ -166,7 +162,7 @@
                                         )
                                     "
                                 >
-                                    {{ "this year" }}
+                                    {{ t('thisYear') }}
                                 </v-btn>
                                 <v-btn
                                     size="x-small"
@@ -188,7 +184,7 @@
                                         )
                                     "
                                 >
-                                    {{ "this month" }}
+                                    {{ t('thisMonth') }}
                                 </v-btn>
                                 <v-btn
                                     size="x-small"
@@ -210,7 +206,7 @@
                                         )
                                     "
                                 >
-                                    {{ "today" }}
+                                    {{ t('today') }}
                                 </v-btn>
                             </span>
                         </div>
@@ -243,29 +239,27 @@
             </v-col>
             <v-col>
                 <v-card class="bg-white rounded-xl mr-3 px-4 mt-0 h-100">
-                    <h2 class="pl-2 py-4">Upcoming Appointment</h2>
+                    <h2 class="pl-2 py-4">{{ t('upcomingAppointment') }}</h2>
                     <div class="flex justify-center">
                         <v-table class="rounded w-100">
-                            <!-- Adjust width as needed -->
                             <template v-slot:default>
                                 <thead class="bg-gray-100">
                                     <tr>
                                         <th 
                                             class="text-left font-medium text-gray-700"
                                         >
-                                            Patient
+                                            {{ t('patient') }}
                                         </th>
                                         <th
                                             class="text-center font-medium text-gray-700"
                                         >
-                                            Time
+                                            {{ t('time') }}
                                         </th>
                                         <th
                                             class="text-center font-medium text-gray-700"
                                         >
-                                            Phone
+                                            {{ t('phone') }}
                                         </th>
-                                      
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -279,7 +273,6 @@
                                         <td class="text-left">{{ item.name }}</td>
                                         <td class="text-center">{{ item.time }}</td>
                                         <td class="text-center">{{ item.phone }}</td>
-                                       
                                     </tr>
                                 </tbody>
                             </template>
@@ -291,6 +284,8 @@
     </div>
 </template>
 
+
+
 <!-- ============================================================================================================================= -->
 
 <script setup>
@@ -298,6 +293,8 @@ import DataBar from "@/components/UI/DashboardCharts/barChart.vue";
 import MoneyAccountChart from "@/components/UI/DashboardCharts/MoneyAccountChart.vue";
 import TotalPayment from "@/components/UI/DashboardCharts/TotalPayment.vue";
 import AppBar from "../../components/AppBar.vue";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 
 import { useDashboardRepository } from "@/store/DashboardRepository";
 import { onMounted, ref } from "vue";

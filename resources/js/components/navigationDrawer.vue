@@ -21,7 +21,7 @@
                     value="home"
                     prepend-icon="mdi mdi-home-lightning-bolt-outline"
                     class="transition-all duration-300 cursor-pointer py-3 borderRadius"
-                    >Dashboard
+                    >{{ t("dashboard") }}
                 </v-list-item>
             </router-link>
             <v-list-item
@@ -31,7 +31,7 @@
                 @click="toggleLead"
                 class="transition-all duration-300 cursor-pointer py-3 borderRadius"
             >
-                Lead
+                {{ t("leads") }}
             </v-list-item>
 
             <transition name="slide-fade">
@@ -59,7 +59,7 @@
                     value="appointment"
                     class="transition-all duration-300 cursor-pointer py-3 borderRadius"
                 >
-                    Appointment
+                    {{ t("appointment") }}
                 </v-list-item>
             </router-link>
             <!-- cure cycle  -->
@@ -70,7 +70,7 @@
                     value="cure"
                     class="transition-all duration-300 cursor-pointer py-3 borderRadius"
                 >
-                    Cure Cycle
+                    {{ t("cureCycle") }}
                 </v-list-item>
             </router-link>
 
@@ -82,7 +82,7 @@
                     value="in lab"
                     class="transition-all duration-300 cursor-pointer py-3 borderRadius"
                 >
-                    InBound Laboratory
+                    {{ t("inboundLaboratory") }}
                 </v-list-item>
             </router-link>
             <router-link to="laboratory">
@@ -92,7 +92,7 @@
                     value="out lab"
                     class="transition-all duration-300 cursor-pointer py-3 borderRadius"
                 >
-                   OutBound Laboratory
+                    {{ t("outboundLaboratory") }}
                 </v-list-item>
             </router-link>
 
@@ -103,7 +103,7 @@
                 @click="toggleList"
                 class="transition-all duration-300 cursor-pointer py-3 borderRadius"
             >
-                Expenses
+                {{ t("expenses") }}
             </v-list-item>
 
             <transition name="slide-fade">
@@ -131,7 +131,7 @@
                 @click="togglePeople"
                 class="transition-all duration-300 cursor-pointer py-3 borderRadius"
             >
-                People
+                {{ t("people") }}
             </v-list-item>
             <transition name="slide-fade">
                 <v-list v-if="isPeopleVisible" class="pl-4">
@@ -158,7 +158,7 @@
                 @click="toggleReports"
                 class="transition-all duration-300 cursor-pointer py-3 borderRadius"
             >
-                Reports
+                {{ t("reports") }}
             </v-list-item>
             <transition name="slide-fade">
                 <v-list v-if="isReportVisible" class="pl-4">
@@ -185,7 +185,7 @@
                 @click="toggleSetting"
                 class="transition-all duration-300 cursor-pointer py-3 borderRadius"
             >
-                Setting
+                {{ t("setting") }}
             </v-list-item>
             <transition name="slide-fade">
                 <v-list v-if="isSettingVisible" class="pl-4">
@@ -242,7 +242,9 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { computed, ref } from "vue";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 import { useAuthRepository } from "../store/AuthRepository";
 const AuthRepository = useAuthRepository();
 
@@ -352,8 +354,6 @@ const peopleItems = [
         icon: "mdi mdi-circle-medium",
         value: "categories",
     },
-
-
 ];
 const labItems = [
     {
@@ -382,32 +382,33 @@ const labItems = [
     // },
 ];
 
-const leadItems = [
-    {
-        to: "/lead",
-        title: "Lead",
-        icon: "mdi mdi-circle-medium",
-        value: "lead",
-    },
-    {
-        to: "/leadCategory",
-        title: "Lead Category",
-        icon: "mdi mdi-circle-medium",
-        value: "user",
-    },
-    {
-        to: "/leadStage",
-        title: "Lead Stage",
-        icon: "mdi mdi-circle-medium",
-        value: "stage",
-    },
+const leadItems = computed(()=> [
+  {
+    to: "/lead",
+    title: t('leads'),
+    icon: "mdi mdi-circle-medium",
+    value: "lead",
+  },
+  {
+    to: "/leadCategory",
+    title: t('leadCategory'),
+    icon: "mdi mdi-circle-medium",
+    value: "user",
+  },
+  {
+    to: "/leadStage",
+    title: t('leadStage'),
+    icon: "mdi mdi-circle-medium",
+    value: "leadStage",  // Adjust value as needed
+  },
+
     // {
     //     to: "/appointments",
     //     title: "Appointments",
     //     icon: "mdi mdi-circle-medium",
     //     value: "appointments",
     // },
-];
+]);
 
 const settingItems = [
     {

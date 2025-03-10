@@ -1,4 +1,6 @@
 <script setup>
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 import * as echarts from "echarts";
 import { onMounted, watch } from "vue";
 import { useDashboardRepository } from "@/store/DashboardRepository";
@@ -24,7 +26,7 @@ async function updateChart() {
     var option = {
         title: [
             {
-                text: "This Year Income vs Expense",
+                text:  t('thisYearIncomeVsExpense'),
                 left: "left",
                 textStyle: {
                     fontSize: 16,

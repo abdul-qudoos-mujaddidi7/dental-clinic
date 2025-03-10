@@ -221,7 +221,8 @@ import { reactive, computed, ref, watch, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { LocaleConfigs } from "../../../LocaleConfigs";
 
-
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 import { useCureRepository } from "@/store/CureRepository";
 
 const CureRepository = useCureRepository();

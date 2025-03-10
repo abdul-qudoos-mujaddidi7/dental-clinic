@@ -1,13 +1,18 @@
 import { createI18n } from 'vue-i18n';
-import en from './locales/en';
-import fa from './locales/fa';
+import EN from './locales/en.json';
+import DARI from './locales/fa.json';
+
+const messages = {
+    en: EN,
+    fa: DARI,
+
+};
 
 const i18n = createI18n({
-  locale: 'en', // Set default language to English
-  messages: {
-    en,
-    fa,
-  },
+    legacy: false, 
+    locale: "en", 
+    fallbackLocale: "en",
+    messages,
 });
 
 export default i18n;
