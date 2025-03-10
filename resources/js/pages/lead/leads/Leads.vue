@@ -44,8 +44,11 @@
                         <v-row>
                             <v-col>
                                 <v-data-table-server
+                                    :location="location"
                                     theme="cursor-pointer"
-                                    v-model:items-per-page="LeadRepository.itemsPerPage"
+                                    v-model:items-per-page="
+                                        LeadRepository.itemsPerPage
+                                    "
                                     :headers="headers"
                                     :items-length="LeadRepository.totalItems"
                                     :items="LeadRepository.leads"
@@ -55,9 +58,7 @@
                                     :item-key="LeadRepository.leads"
                                     hover
                                     class="w-100 mx-auto"
-                                    >
-                                    
-
+                                >
                                     <template v-slot:item.stage="{ item }">
                                         <td class="py-2 pl-4">
                                             <v-btn
@@ -163,6 +164,13 @@ const { t, locale } = useI18n();
 import { useLeadRepository } from "@/store/LeadRepository";
 const LeadRepository = useLeadRepository();
 // swap function
+
+const location= computed(()=>{
+    if (locale.value === "fa") {
+    return 'right' // Reverse the order for Farsi
+  }
+
+  return 'left'
 
 const stageIndexes = ref({}); // Track individual indexes for each item
 
@@ -284,7 +292,7 @@ const deleteItem = async (item) => {
 };
 // header
 const headers = computed(() => {
-  const baseHeaders = [
+ [
     { title: "", key: "checkbox", align: "start", sortable: false },
     { title: t("name"), key: "name", align: t('style'), sortable: false },
     { title: t("phone"), key: "phone", align: t('style'), sortable: false },
@@ -301,10 +309,10 @@ const headers = computed(() => {
   ];
 
   // Reverse the headers when the language is Farsi (assuming 'fa' is the Farsi language code)
-  if (locale.value === "fa") {
-    return [...baseHeaders].reverse(); // Reverse the order for Farsi
-  }
-  return baseHeaders;
+//   if (locale.value === "fa") {
+//     return [...baseHeaders].reverse(); // Reverse the order for Farsi
+//   }
+//   return baseHeaders;
 });
 
 LeadRepository.leadStages();

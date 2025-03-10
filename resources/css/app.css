@@ -55,3 +55,12 @@ body{
     display: flex;
     flex-wrap: nowrap;
 }
+.v-navigation-drawer__content {
+    flex: 0 1 auto;
+    height: 100%;
+    max-width: 100%;
+    /* overflow-x: hidden; */
+    overflow-y: hidden !important;
+
+    
+}
