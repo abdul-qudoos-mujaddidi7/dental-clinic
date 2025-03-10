@@ -2,7 +2,7 @@
     <CreateExpense v-if="ExpenseRepository.createDialog" />
     <div class="all-expense rounded-xl">
         <div class="card rounded-xl">
-            <AppBar mainTitle="Expense" sub-title="expense" />
+            <AppBar :mainTitle="$t('expenses')" :sub-title="$t('expense')" />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
@@ -16,7 +16,7 @@
                         color="primaryOld"
                         density="compact"
                         variant="outlined"
-                        label="Search ..."
+                        :label="t('search')"
                         append-inner-icon="mdi-magnify"
                         hide-details
                         v-model="ExpenseRepository.ExpenseSearch"
@@ -24,14 +24,14 @@
                 </div>
                 <div class="btn">
                     <v-btn variant="outlined" color="primaryOld" class="px-6">
-                        Filter
+                        {{ t("filter") }}
                     </v-btn>
                     &nbsp;
                     <v-btn
                         @click="CreateDialogShow"
                         color="primaryOld"
                         variant="flat"
-                        text="Create"
+                        :text="t('create')"
                         class="px-6"
                     >
                     </v-btn>
@@ -91,7 +91,7 @@
                                                             color="tealColor"
                                                             >mdi-square-edit-outline</v-icon
                                                         >
-                                                        Edit
+                                                        {{ t("edit") }}
                                                     </v-list-item-title>
 
                                                     <v-list-item-title
@@ -103,7 +103,7 @@
                                                         <v-icon color="error"
                                                             >mdi-delete-outline</v-icon
                                                         >
-                                                        Delete
+                                                        {{ t("delete") }}
                                                     </v-list-item-title>
                                                 </v-list-item>
                                             </v-list>
@@ -129,12 +129,14 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted ,computed} from "vue";
 import AppBar from "../../../components/AppBar.vue";
 import CreateExpense from "./CreateExpense.vue";
 import { useExpenseRepository } from "@/store/ExpenseRepository";
 const ExpenseRepository = useExpenseRepository();
 // bulk delete
+import { useI18n } from "vue-i18n";
+const {t} = useI18n();
 const selectedIds = ref([]);
 const sendSelectedIds = () => {
     if (selectedIds.value.length > 0) {
@@ -177,20 +179,20 @@ const deleteItem = async (item) => {
     await ExpenseRepository.DeleteExpense(item.id);
 };
 // header
-const headers = [
+const headers = computed(()=>[
     { title: "", key: "checkbox", align: "start", sortable: false },
-    { title: "Date", key: "date", align: "start", sortable: false },
-    { title: "Reference", key: "reference", align: "center", sortable: false },
-    { title: "Added By", key: "addedBy", align: "center", sortable: false },
+    { title: t("date"), key: "date", align: "start", sortable: false },
+    { title: t("reference"), key: "reference", align: "center", sortable: false },
+    { title: t("addedBy"), key: "addedBy", align: "center", sortable: false },
     {
-        title: "Category",
+        title: t("category"),
         key: "expenseCategory.name",
         align: "center",
         sortable: false,
     },
-    { title: "Amount", key: "amount", align: "center", sortable: false },
-    { title: "Action", key: "action", align: "center", sortable: false },
-];
+    { title: t("amount"), key: "amount", align: "center", sortable: false },
+    { title: t("action"), key: "action", align: "center", sortable: false },
+])
 </script>
 
 <style scoped>

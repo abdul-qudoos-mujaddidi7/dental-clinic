@@ -43,9 +43,12 @@
                     <v-main class="main">
                         <v-row>
                             <v-col>
+                                <!--  :location="location" -->
                                 <v-data-table-server
                                     theme="cursor-pointer"
-                                    v-model:items-per-page="LeadRepository.itemsPerPage"
+                                    v-model:items-per-page="
+                                        LeadRepository.itemsPerPage
+                                    "
                                     :headers="headers"
                                     :items-length="LeadRepository.totalItems"
                                     :items="LeadRepository.leads"
@@ -55,9 +58,7 @@
                                     :item-key="LeadRepository.leads"
                                     hover
                                     class="w-100 mx-auto"
-                                    >
-                                    
-
+                                >
                                     <template v-slot:item.stage="{ item }">
                                         <td class="py-2 pl-4">
                                             <v-btn
@@ -164,6 +165,12 @@ import { useLeadRepository } from "@/store/LeadRepository";
 const LeadRepository = useLeadRepository();
 // swap function
 
+const location = computed(() => {
+    if (locale.value === "fa") {
+        return "right"; // Reverse the order for Farsi
+    }
+    return "left";
+});
 const stageIndexes = ref({}); // Track individual indexes for each item
 
 // Computed property to get the current stage name for each item based on its ID
@@ -179,8 +186,6 @@ const getStageName = (itemId) => {
     const currentIndex = stageIndexes.value[itemId] % leadStage.length;
     return leadStage[currentIndex]?.name || "...";
 };
-
-
 
 // Function to get button color based on stage name
 const getStageColor = (itemId) => {
@@ -284,27 +289,38 @@ const deleteItem = async (item) => {
 };
 // header
 const headers = computed(() => {
-  const baseHeaders = [
-    { title: "", key: "checkbox", align: "start", sortable: false },
-    { title: t("name"), key: "name", align: t('style'), sortable: false },
-    { title: t("phone"), key: "phone", align: t('style'), sortable: false },
-    {
-      title: t("category"),
-      key: "category.name",
-      align: "start",
-      sortable: false,
-    },
-    { title: t("status"), key: "stage", align: "center", sortable: false },
-    { title: t("address"), key: "address", align: t('style'), sortable: false },
-    { title: t("details"), key: "note", align: t('style'), sortable: false },
-    { title: t("action"), key: "action", align: "center", sortable: false },
-  ];
 
-  // Reverse the headers when the language is Farsi (assuming 'fa' is the Farsi language code)
-  if (locale.value === "fa") {
-    return [...baseHeaders].reverse(); // Reverse the order for Farsi
-  }
-  return baseHeaders;
+    const baseHeaders= [
+        { title: "", key: "checkbox", align: "start", sortable: false },
+        { title: t("name"), key: "name", align: t("style"), sortable: false },
+        { title: t("phone"), key: "phone", align: t("style"), sortable: false },
+        {
+            title: t("category"),
+            key: "category.name",
+            align: "start",
+            sortable: false,
+        },
+        { title: t("status"), key: "stage", align: "center", sortable: false },
+        {
+            title: t("address"),
+            key: "address",
+            align: t("style"),
+            sortable: false,
+        },
+        {
+            title: t("details"),
+            key: "note",
+            align: t("style"),
+            sortable: false,
+        },
+        { title: t("action"), key: "action", align: "center", sortable: false },
+    ];
+
+    // Reverse the headers when the language is Farsi (assuming 'fa' is the Farsi language code)
+      if (locale.value === "fa") {
+        return [...baseHeaders].reverse(); // Reverse the order for Farsi
+      }
+      return baseHeaders;
 });
 
 LeadRepository.leadStages();

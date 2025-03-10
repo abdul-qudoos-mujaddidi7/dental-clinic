@@ -7,11 +7,12 @@
   "cureCycle": "دوره درمان",
   "inboundLaboratory": "آزمایشگاه ورودی",
   "outboundLaboratory": "آزمایشگاه خروجی",
-  "expenses": "مصارف",
+  "expenses": "مصارفات",
   "people": "اشخاص",
   "reports": "گزارشات",
   "setting":"تنظیمات",
-
+  "reference":"کد مرجع",
+  
   "purchase": "خرید",
   "company": "شرکت",
   "service": "خدمات",

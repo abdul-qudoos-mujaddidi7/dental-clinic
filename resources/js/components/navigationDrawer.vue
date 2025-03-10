@@ -288,10 +288,10 @@ const toggleReports = () => {
 };
 
 // Define navigation items in a structured list for cleaner handling
-const navItems = [
+const navItems = computed(() => [
     {
         to: "/expense",
-        title: "All Expense",
+        title: t("expenses"),
         icon: "mdi mdi-circle-medium",
         value: "AllExpenses",
     },
@@ -314,7 +314,7 @@ const navItems = [
         icon: "mdi mdi-circle-medium",
         value: "categories",
     },
-];
+]);
 const peopleItems = [
     {
         to: "/employee",
@@ -382,25 +382,25 @@ const labItems = [
     // },
 ];
 
-const leadItems = computed(()=> [
-  {
-    to: "/lead",
-    title: t('leads'),
-    icon: "mdi mdi-circle-medium",
-    value: "lead",
-  },
-  {
-    to: "/leadCategory",
-    title: t('leadCategory'),
-    icon: "mdi mdi-circle-medium",
-    value: "user",
-  },
-  {
-    to: "/leadStage",
-    title: t('leadStage'),
-    icon: "mdi mdi-circle-medium",
-    value: "leadStage",  // Adjust value as needed
-  },
+const leadItems = computed(() => [
+    {
+        to: "/lead",
+        title: t("leads"),
+        icon: "mdi mdi-circle-medium",
+        value: "lead",
+    },
+    {
+        to: "/leadCategory",
+        title: t("leadCategory"),
+        icon: "mdi mdi-circle-medium",
+        value: "user",
+    },
+    {
+        to: "/leadStage",
+        title: t("leadStage"),
+        icon: "mdi mdi-circle-medium",
+        value: "leadStage", // Adjust value as needed
+    },
 
     // {
     //     to: "/appointments",
@@ -449,7 +449,6 @@ const settingItems = [
         icon: "mdi mdi-circle-medium",
         value: "Dental   ",
     },
-    
 ];
 const reportItems = [
     {
