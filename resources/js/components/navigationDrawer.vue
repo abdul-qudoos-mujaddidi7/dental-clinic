@@ -103,7 +103,7 @@
                 @click="toggleList"
                 class="transition-all duration-300 cursor-pointer py-3 borderRadius"
             >
-                {{ t("expenses") }}
+                {{ t("expense") }}
             </v-list-item>
 
             <transition name="slide-fade">
@@ -291,70 +291,70 @@ const toggleReports = () => {
 const navItems = computed(() => [
     {
         to: "/expense",
-        title: t("expenses"),
+        title: t("expense"),
         icon: "mdi mdi-circle-medium",
         value: "AllExpenses",
     },
     {
         to: "/billExpense",
-        title: "Bill Expense",
+        title:  t("billExpense"),
         icon: "mdi mdi-circle-medium",
         value: "billExpense",
     },
 
     {
         to: "/expenseProducts",
-        title: "Products",
+        title:  t("product"),
         icon: "mdi mdi-circle-medium",
         value: "expense product",
     },
     {
         to: "/expenseCat",
-        title: "Category",
+        title:  t("category"),
         icon: "mdi mdi-circle-medium",
         value: "categories",
     },
 ]);
-const peopleItems = [
+const peopleItems = computed(() =>[
     {
         to: "/employee",
-        title: "Employee",
+        title: t("employee"),
         icon: "mdi mdi-circle-medium",
         value: "employee",
     },
     {
         to: "/patients",
-        title: "Patient",
+        title: t("patient"),
         icon: "mdi mdi-circle-medium",
         value: "AllExpenses",
     },
     {
         to: "/user",
-        title: "User",
+        title: t("user"),
         icon: "mdi mdi-circle-medium",
         value: "user",
     },
 
     {
         to: "/owners",
-        title: "Owner",
+        title: t("owner"),
         icon: "mdi mdi-circle-medium",
         value: "owner",
     },
 
     {
         to: "/supplier",
-        title: "Stakeholder",
+        title: t("stakeholder"),
         icon: "mdi mdi-circle-medium",
         value: "supplier",
     },
     {
         to: "/doctors",
-        title: "Doctor",
+        title: t("doctor"),
         icon: "mdi mdi-circle-medium",
         value: "categories",
     },
-];
+]);
 const labItems = [
     {
         to: "/mainLaboratory",
@@ -410,80 +410,80 @@ const leadItems = computed(() => [
     // },
 ]);
 
-const settingItems = [
+const settingItems =computed(() => [
     {
         to: "/systemSetting",
-        title: "System Setting",
+        title: t("systemSetting"),
         icon: "mdi mdi-circle-medium",
         value: "system ",
     },
     {
         to: "/moneyAcc",
-        title: "Money Account",
+        title: t("moneyAccount"),
         icon: "mdi mdi-circle-medium",
         value: "money acc   ",
     },
     {
         to: "/rolePermissions",
-        title: "Role Permissions",
+        title: t("rolePermission"),
         icon: "mdi mdi-circle-medium",
         value: "roles  ",
     },
 
-    {
-        to: "/serviceGroup",
-        title: "Service Group",
-        icon: "mdi mdi-circle-medium",
-        value: "service group  ",
-    },
+    // {
+    //     to: "/serviceGroup",
+    //     title: "Service Group",
+    //     icon: "mdi mdi-circle-medium",
+    //     value: "service group  ",
+    // },
 
     {
         to: "/service",
-        title: "Service",
+        title: t("service"),
         icon: "mdi mdi-circle-medium",
         value: "service   ",
     },
     {
         to: "/dental-types",
-        title: "Dental Types",
+        title: t("dentalTypes"),
         icon: "mdi mdi-circle-medium",
         value: "Dental   ",
     },
-];
-const reportItems = [
+]);
+const reportItems = computed(() =>[
     {
         to: "/profitLoss",
-        title: "Profit & Loss",
+        title: t("profitLoss"),
         icon: "mdi mdi-circle-medium",
         value: "profit",
     },
     {
         to: "/patientsReport",
-        title: "Patient",
+        title: t("patient"),
         icon: "mdi mdi-circle-medium",
         value: "patients report ",
     },
 
     {
         to: "/categoryReport",
-        title: "Expense Category",
+        title: t("expenseCategory"),
         icon: "mdi mdi-circle-medium",
         value: "cat report  ",
     },
 
     {
         to: "/productReport",
-        title: "Expense Product",
+        title: t("expenseProduct"),
         icon: "mdi mdi-circle-medium",
         value: "expense pro report    ",
     },
     {
         to: "/serviceReport",
-        title: "Service Report ",
+        title: t("service"),
         icon: "mdi mdi-circle-medium",
         value: "patients report",
     },
-];
+]);
 
 function handleDrawerState(isOpen) {
     if (isOpen) {

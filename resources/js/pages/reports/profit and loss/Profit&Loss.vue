@@ -1,23 +1,23 @@
 <template>
-    <AppBar mainTitle="Profit & Loss" sub-title="reports" />
+    <AppBar :mainTitle="$t('profitLoss')" sub-title="reports" />
 
     <v-row class="pt-12">
         <v-col>
-            <v-card subtitle="Expense" hover>
+            <v-card :subtitle="$t('expenses')" hover>
                 <v-card-text class="borderBT mb-4 mx-3">
                     {{ ReportRepository.totalAllExpense }}
                 </v-card-text>
             </v-card>
         </v-col>
         <v-col>
-            <v-card subtitle="Net Profit" hover>
+            <v-card :subtitle="$t('profit')" hover>
                 <v-card-text class="borderBlue mb-4 mx-3">
                     {{ ReportRepository.totalAllProfit }}
                 </v-card-text>
             </v-card>
         </v-col>
         <v-col>
-            <v-card subtitle="Pickup" hover>
+            <v-card :subtitle="$t('pickup')" hover>
                 <v-card-text class="bordeRed mb-4 mx-3">
                     {{ ReportRepository.totalAllPickup }}
                 </v-card-text>
@@ -27,15 +27,15 @@
 </template>
 
 <script setup>
+import {computed} from 'vue';
 import { useReportRepository } from "@/store/ReportRepository";
-// ignore
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 
 import AppBar from "../../../components/AppBar.vue";
 
 const ReportRepository = useReportRepository();
 ReportRepository.fetchTotalReportsOfEarnings();
-
-
 
 </script>
 

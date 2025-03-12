@@ -147,7 +147,6 @@ class DashboardController extends Controller
             ->get();
 
 
-
         $everyMonthExpenses = [];
         $everyMonthIncomes = []; // Array to hold monthly data
 

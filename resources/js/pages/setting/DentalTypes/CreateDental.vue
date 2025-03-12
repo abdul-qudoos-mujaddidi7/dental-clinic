@@ -14,8 +14,8 @@
                         <h2 class="font-weight-bold pl-4">
                             {{
                                 SettingRepository.isEditMode
-                                    ? "Update"
-                                    : "Create"
+                                    ? t("update")
+                                    : t("create")
                             }}
                         </h2>
                         <v-btn variant="text" @click="isActive.value = false">
@@ -29,7 +29,7 @@
                             <v-text-field
                                 v-model="formData.name"
                                 variant="outlined"
-                                label="Tooth Name  *"
+                                :label="$t('toothType')"
                                 class="pb-4"
                                 density="compact"
                                 :rules="[rules.required]"
@@ -38,7 +38,7 @@
                             <v-text-field
                                 v-model="formData.description"
                                 variant="outlined"
-                                label="Description *"
+                                :label="$t('details')"
                                 density="compact"
                                 class="pb-4"
                                 :rules="[rules.required]"
@@ -50,8 +50,8 @@
                         <v-btn color="#112F53" class="px-4" @click="save">
                             {{
                                 SettingRepository.isEditMode
-                                    ? "Update"
-                                    : "Submit"
+                                    ? t("update")
+                                    : t("submit")
                             }}
                         </v-btn>
                     </div>
@@ -64,6 +64,8 @@
 <script setup>
 import { ref, reactive } from "vue";
 import { useSettingRepository } from "@/store/SettingRepository";
+import { useI18n } from "vue-i18n";
+const { t} = useI18n();
 
 const SettingRepository = useSettingRepository();
 const formRef = ref(null);

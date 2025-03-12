@@ -1,6 +1,6 @@
 <template>
     <CreateDental v-if="SettingRepository.createDialog" />
-    <div>
+    <div :dir="dir">
         <AppBar mainTitle="Dental" sub-title="setting" />
         <v-divider
             :thickness="1"
@@ -15,7 +15,7 @@
                     color="primaryOld"
                     density="compact"
                     variant="outlined"
-                    label="Search ..."
+                    :label="$t('search')"
                     append-inner-icon="mdi-magnify"
                     hide-details
                     v-model="SettingRepository.dentalSearch"
@@ -23,7 +23,7 @@
             </div>
             <div class="btn">
                 <v-btn variant="outlined" color="primaryOld" class="px-6">
-                    Filter
+                    {{t('filter')}}
                 </v-btn>
                 &nbsp;
 
@@ -31,7 +31,7 @@
                     @click="CreateDialogShow"
                     color="primaryOld"
                     variant="flat"
-                    text="Create"
+                    :text="$t('create')"
                     class="px-6"
                 >
                 </v-btn>
@@ -40,10 +40,15 @@
         <!-- v-table server  -->
         <div class="overflow-x-hidden">
             <v-app>
-                <v-main class="main">
+                <v-main class="main" :dir="dir">
                     <v-row>
                         <v-col>
                             <v-data-table-server
+                            :class="
+                                        dir === 'rtl'
+                                            ? 'rtl-border'
+                                            : 'ltr-border'
+                                    "
                                 theme="cursor-pointer"
                                 v-model:items-per-page="
                                     SettingRepository.itemsPerPage
@@ -53,9 +58,7 @@
                                 :items="SettingRepository.dentals"
                                 :loading="SettingRepository.loading"
                                 :search="SettingRepository.dentalSearch"
-                                @update:options="
-                                    SettingRepository.FetchDentals
-                                "
+                                @update:options="SettingRepository.FetchDentals"
                                 :item-key="SettingRepository.dentals"
                                 hover
                                 class="w-100 mx-auto"
@@ -80,7 +83,7 @@
                                                     <v-icon color="tealColor"
                                                         >mdi-square-edit-outline</v-icon
                                                     >
-                                                    Edit
+                                                    {{t('edit')}}
                                                 </v-list-item-title>
 
                                                 <v-list-item-title
@@ -90,7 +93,7 @@
                                                     <v-icon color="error"
                                                         >mdi-delete-outline</v-icon
                                                     >
-                                                    Delete
+                                                    {{t('delete')}}
                                                 </v-list-item-title>
                                             </v-list-item>
                                         </v-list>
@@ -106,23 +109,30 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref,computed } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 import CreateDental from "./CreateDental.vue";
 import { useSettingRepository } from "@/store/SettingRepository";
+import { useI18n } from "vue-i18n";
+const { t,locale } = useI18n();
+
+// direction
+const dir = computed(() => {
+    return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
+});
 const SettingRepository = useSettingRepository();
 // delete and update Create
 const CreateDialogShow = () => {
     SettingRepository.dental = {};
     // SettingRepository.setEditMode(false);
-    SettingRepository.isEditMode=false;
+    SettingRepository.isEditMode = false;
     SettingRepository.createDialog = true;
 };
 
 const edit = (item) => {
     console.log(item, "me");
     // SettingRepository.setEditMode(true);
-    SettingRepository.isEditMode=true
+    SettingRepository.isEditMode = true;
     SettingRepository.dental = {};
     if (Object.keys(SettingRepository.dental).length === 0) {
         SettingRepository.fetchDental(item.id)
@@ -140,8 +150,8 @@ const deleteItem = async (item) => {
 };
 // header
 const headers = [
-    { title: "Name", key: "name", align: "center", sortable: false },
-    { title: "Details", key: "description", align: "center", sortable: false },
-    { title: "Action", key: "action", align: "end", sortable: false },
+    { title: t("name"), key: "name", align: "center", sortable: false },
+    { title: t("details"), key: "description", align: "center", sortable: false },
+    { title: t("action"),key: "action", align: "end", sortable: false },
 ];
 </script>

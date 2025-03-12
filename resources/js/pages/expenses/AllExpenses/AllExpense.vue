@@ -1,8 +1,8 @@
 <template>
     <CreateExpense v-if="ExpenseRepository.createDialog" />
-    <div class="all-expense rounded-xl">
+    <div class="all-expense rounded-xl"  :dir="dir">
         <div class="card rounded-xl">
-            <AppBar :mainTitle="$t('expenses')" :sub-title="$t('expense')" />
+            <AppBar :mainTitle="$t('expense')" :sub-title="$t('expense')" />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
@@ -40,10 +40,15 @@
             <!-- v-table server  -->
             <div class="overflow-x-hidden">
                 <v-app>
-                    <v-main class="main">
+                    <v-main class="main" :dir="dir">
                         <v-row>
                             <v-col>
                                 <v-data-table-server
+                                :class="
+                                        dir === 'rtl'
+                                            ? 'rtl-border'
+                                            : 'ltr-border'
+                                    "
                                     theme="cursor-pointer"
                                     v-model:items-per-page="
                                         ExpenseRepository.itemsPerPage
@@ -136,7 +141,7 @@ import { useExpenseRepository } from "@/store/ExpenseRepository";
 const ExpenseRepository = useExpenseRepository();
 // bulk delete
 import { useI18n } from "vue-i18n";
-const {t} = useI18n();
+const {t,locale} = useI18n();
 const selectedIds = ref([]);
 const sendSelectedIds = () => {
     if (selectedIds.value.length > 0) {
@@ -151,6 +156,11 @@ const sendSelectedIds = () => {
         console.log("No IDs selected.");
     }
 };
+// direction
+const dir = computed(() => {
+    return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
+});
+
 
 // delete and update Create
 const CreateDialogShow = () => {

@@ -1,6 +1,6 @@
 <template>
     <div class="all-expense rounded-xl">
-        <div class="card rounded-xl">
+        <div class="card rounded-xl" :dir="dir">
             <AppBar mainTitle="OutBound laboratory" sub-title="people" />
             <v-divider
                 :thickness="1"
@@ -40,10 +40,15 @@
             <!-- v-table server  -->
             <div class="overflow-x-hidden">
                 <v-app>
-                    <v-main class="main">
+                    <v-main class="main" :dir="dir">
                         <v-row>
                             <v-col>
                                 <v-data-table-server
+                                :class="
+                                        dir === 'rtl'
+                                            ? 'rtl-border'
+                                            : 'ltr-border'
+                                    "
                                     theme="cursor-pointer"
                                     v-model:items-per-page="
                                         PeopleRepository.itemsPerPage
@@ -121,8 +126,10 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted,computed } from "vue";
 import AppBar from "../../../components/AppBar.vue";
+import { useI18n } from "vue-i18n";
+const { t,locale } = useI18n();
 
 import { usePeopleRepository } from "@/store/PeopleRepository";
 const PeopleRepository = usePeopleRepository();
@@ -134,6 +141,12 @@ const CreateDialogShow = () => {
     PeopleRepository.createDialog = true;
     PeopleRepository.labId = id;
 };
+
+// direction
+const dir = computed(() => {
+    return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
+});
+
 
 // const edit = (item) => {
 //     console.log(item, "me");

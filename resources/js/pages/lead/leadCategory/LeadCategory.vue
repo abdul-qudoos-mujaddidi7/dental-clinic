@@ -1,6 +1,6 @@
 <template>
     <CreateLeadCategory v-if="LeadRepository.createDialog" />
-    <div class="all-expense rounded-xl">
+    <div class="all-expense rounded-xl" :dir="dir">
         <div class="card rounded-xl">
             <AppBar mainTitle="Lead Category" sub-title="Lead" />
             <v-divider
@@ -41,10 +41,15 @@
             <!-- v-table server  -->
             <div class="overflow-x-hidden">
                 <v-app>
-                    <v-main class="main">
+                    <v-main class="main" :dir="dir">
                         <v-row>
                             <v-col>
                                 <v-data-table-server
+                                :class="
+                                        dir === 'rtl'
+                                            ? 'rtl-border'
+                                            : 'ltr-border'
+                                    "
                                     theme="cursor-pointer"
                                     v-model:items-per-page="
                                         LeadRepository.itemsPerPage
@@ -115,11 +120,11 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref,computed} from "vue";
 import AppBar from "../../../components/AppBar.vue";
 import CreateLeadCategory from "./CreateLeadCategory.vue";
 import { useI18n } from "vue-i18n";
-const { t } = useI18n();
+const { t,locale } = useI18n();
 import { useLeadRepository } from "@/store/LeadRepository";
 const LeadRepository = useLeadRepository();
 // delete and update Create
@@ -130,6 +135,10 @@ const CreateDialogShow = () => {
 
     LeadRepository.createDialog = true;
 };
+
+const dir = computed(() => {
+    return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
+});
 
 const edit = (item) => {
     console.log(item, "me");

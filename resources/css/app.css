@@ -20,24 +20,33 @@ div.v-data-table-footer
 body{
     background-color: #F8F8F8;
     
-    /* font-family: 'Work Sans', sans-serif; */
-    
+    /* font-family: 'Work Sans', sans-serif; */ 
 }
 .v-table > :nth-child(1) > :nth-child(1) > :nth-child(1) > tr {
     background-color: #ECF1F4;
-    border-left: 4px solid #F4D03F;
     border-bottom: 4px solid #ffff;
     border-width: 4px;
+    border-top: none;
+    border-right: none;
+
+}
+
+.v-table > :nth-child(1) > :nth-child(1) > :nth-child(2) > tr {
+    border-bottom: 4px solid #ffff;
+    border-width: 4px;
+    
+}
+
+
+.ltr-border tr {
+    border-left: 4px solid #F4D03F;
     border-right: none;
     border-top: none;
 }
 
-.v-table > :nth-child(1) > :nth-child(1) > :nth-child(2) > tr {
-    border-left: 4px solid #F4D03F;
-    border-bottom: 4px solid #ffff;
-    border-width: 4px;
-    border-right: none;
-    border-top: none;
+.rtl-border tr {
+    border-right: 4px solid #F4D03F !important;
+    border-left: none;
 }
 .span {
     background-color: #ecf1f4;

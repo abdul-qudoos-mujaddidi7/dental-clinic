@@ -18,8 +18,9 @@ class AppointmentResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'date' => Jalalian::fromCarbon(Carbon::parse($this->datetime))->format('Y-m-d'),
-            'time' => Carbon::parse($this->datetime)->format('H:i'),
+            'dateTime' => $this->date_time,  
+            'date' => Jalalian::fromFormat('Y-m-d H:i:s', $this->date_time)->format('Y/m/d'), // Extract only Jalali date
+            'time' => Jalalian::fromFormat('Y-m-d H:i:s', $this->date_time)->format('H:i'),
             'status' => $this->status,
             'userName' => $this->user->first_name,
             'dentists' => [

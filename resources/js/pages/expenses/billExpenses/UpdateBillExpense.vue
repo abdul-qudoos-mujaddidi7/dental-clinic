@@ -2,30 +2,36 @@
     <CReateExpensePRoduct v-if="ExpenseRepository.createDialog" />
     <div class="all-expense rounded-xl m-4">
         <div class="card rounded-xl bg-white" rtl>
-            <AppBar mainTitle="Create Bill Expense" subTitle="expense" />
+            <AppBar
+                :mainTitle="t('updateBillExpense')"
+                :subTitle="t('expense')"
+            />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
                 color="success"
             ></v-divider>
             <v-form ref="formRef" class="d-flex pt-12">
-                <v-text-field
-                    type="date"
-                    v-model="formData.billDate"
-                    variant="outlined"
-                    label="Date *"
-                    class="pr-2"
-                    style="width: 45%"
-                    color="#d3e2f8"
-                    density="compact"
-                ></v-text-field>
+                <div class="pb-4 w-50 pr-2">
+                    <date-picker
+                        mode="single"
+                        :column="1"
+                        v-model="formData.billDate"
+                        :styles="styles"
+                        locale="fa"
+                        type="date"
+                        format="jYYYY/jMM/jDD"
+                        :locale-config="LocaleConfigs"
+                    />
+                </div>
+
 
                 <v-autocomplete
                     :items="ExpenseRepository.suppliersFor"
                     v-model="formData.supplierId"
                     :return-object="false"
                     variant="outlined"
-                    label="Supplier *"
+                    :label="t('supplier') + ' *'"
                     class="pr-2 pl-2"
                     style="width: 45%"
                     item-value="id"
@@ -36,7 +42,7 @@
                 <v-text-field
                     v-model="formData.billNumber"
                     variant="outlined"
-                    label="Bill Number"
+                    :label="t('billNumber')"
                     class="pl-2"
                     density="compact"
                     style="width: 45%"
@@ -53,7 +59,7 @@
                             @input="ExpenseRepository.SearchFetchData"
                             @click:clear="clearSearch"
                             variant="outlined"
-                            label="Search Product"
+                            :label="t('searchProduct')"
                             density="compact"
                             append-inner-icon="mdi-magnify"
                             clearable
@@ -89,23 +95,22 @@
                         <tr>
                             <th scope="col" class="px-3 py-3 text-start">#</th>
                             <th scope="col" class="px-3 py-3 text-start">
-                                Product
+                                {{ t("product") }}
                             </th>
                             <th scope="col" class="px-3 py-3 text-start">
-                                Qty
+                                {{ t("qty") }}
                             </th>
                             <th scope="col" class="px-3 py-3 text-start">
-                                Cost
+                                {{ t("cost") }}
                             </th>
                             <th scope="col" class="px-3 py-3 text-center">
-                                Grand Total
+                                {{ t("subTotal") }}
                             </th>
                             <th scope="col" class="px-3 py-3 text-end">
-                                Action
+                                {{ t("action") }}
                             </th>
                         </tr>
                     </thead>
-
                     <tbody>
                         <tr
                             class="product-table"
@@ -166,7 +171,7 @@
                 <div
                     class="flex justify-between w-[14rem] border-t-[.1rem] border-b-[.1rem] border-dashed border-[#C6C6C6] p-1 text-lg font-bold"
                 >
-                    <span>{{ totalSum }}</span>
+                    <span>{{ t("total") }}</span>
                     <span>Total</span>
                 </div>
 
@@ -174,7 +179,7 @@
                     <v-text-field
                         v-model="formData.paid"
                         variant="outlined"
-                        label="Paid"
+                        :label="t('paid')"
                         type="number"
                         density="compact"
                     >
@@ -186,14 +191,14 @@
                 <v-textarea
                     v-model="formData.note"
                     class="textArea"
-                    label="Details"
+                    :label="t('details')"
                     variant="outlined"
                     density="compact"
                 >
                 </v-textarea>
             </div>
             <div class="d-flex flex-row-reverse mt-6">
-                <v-btn color="#112F53" @click="update"> Submit</v-btn>
+                <v-btn color="#112F53" @click="update"> {{t('update')}}</v-btn>
             </div>
         </div>
     </div>
@@ -203,6 +208,9 @@
 import AppBar from "../../../components/AppBar.vue";
 import { reactive, ref, watch, onMounted, computed } from "vue";
 import { useRoute } from "vue-router";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+import { LocaleConfigs } from "../../../LocaleConfigs";
 import { useExpenseRepository } from "@/store/ExpenseRepository";
 
 const ExpenseRepository = useExpenseRepository();

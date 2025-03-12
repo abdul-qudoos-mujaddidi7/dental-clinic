@@ -1,6 +1,6 @@
 <template>
     <CreatePatients v-if="ReportRepository.createDialog" />
-    <div class="all-expense rounded-xl">
+    <div class="all-expense rounded-xl" :dir="dir">
         <div class="card rounded-xl">
             <AppBar mainTitle="Service Report" sub-title="report" />
             <v-divider
@@ -16,7 +16,7 @@
                         color="primaryOld"
                         density="compact"
                         variant="outlined"
-                        label="Search ..."
+                        :label="t('search')"
                         append-inner-icon="mdi-magnify"
                         hide-details
                         v-model="ReportRepository.serviceReportSearch"
@@ -33,10 +33,15 @@
             <!-- v-table server  -->
             <div class="overflow-x-hidden">
                 <v-app>
-                    <v-main class="main">
+                    <v-main class="main" :dir="dir">
                         <v-row>
                             <v-col>
                                 <v-data-table-server
+                                :class="
+                                        dir === 'rtl'
+                                            ? 'rtl-border'
+                                            : 'ltr-border'
+                                    "
                                     theme="cursor-pointer"
                                     v-model:items-per-page="
                                         ReportRepository.itemsPerPage
@@ -66,12 +71,14 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted, watch,computed } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 import { useReportRepository } from "@/store/ReportRepository";
 const ReportRepository = useReportRepository();
 import DatePicker from "vue-datepicker-next";
 import "vue-datepicker-next/index.css";
+import { useI18n } from "vue-i18n";
+const { t,locale } = useI18n();
 const productDateRange = ref([new Date(), new Date()]);
 const onDateChange = () => {
     console.log('called');
@@ -84,6 +91,12 @@ const onDateChange = () => {
         ReportRepository.fetchServiceReports({ page: 1, itemsPerPage: 10 }, startDate, endDate);
     }
 };
+
+// direction
+const dir = computed(() => {
+    return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
+});
+
 
 watch(
     () => ReportRepository.ProductReportSearch,
@@ -100,8 +113,8 @@ onMounted(() => {
 });
 // header
 const headers = [
-    { title: "Service Name", key: "name", align: "start", sortable: false },
-    { title: "Used", key: "totalApplied", align: "start", sortable: false },
+    { title: t("service"), key: "name", align: "start", sortable: false },
+    { title: t("used"), key: "totalApplied", align: "start", sortable: false },
     // { title: "Amount", key: "Amount", align: "start", sortable: false },
     // { title: "Amount", key: "idk", align: "start", sortable: false },
 ];

@@ -16,7 +16,7 @@
                         color="primaryOld"
                         density="compact"
                         variant="outlined"
-                        label="Search ..."
+                        :label="$t('search')"
                         append-inner-icon="mdi-magnify"
                         hide-details
                         v-model="PeopleRepository.patientSearch"
@@ -24,14 +24,14 @@
                 </div>
                 <div class="btn">
                     <v-btn variant="outlined" color="primaryOld" class="px-6">
-                        Filter
+                        {{ t("filter") }}
                     </v-btn>
                     &nbsp;
                     <v-btn
                         @click="CreateDialogShow"
                         color="primaryOld"
                         variant="flat"
-                        text="Create"
+                        :text="$t('create')"
                         class="px-6"
                     >
                     </v-btn>
@@ -91,7 +91,7 @@
                                                             color="tealColor"
                                                             >mdi-square-edit-outline</v-icon
                                                         >
-                                                        Edit
+                                                        {{ t("edit") }}
                                                     </v-list-item-title>
 
                                                     <v-list-item-title
@@ -103,7 +103,7 @@
                                                         <v-icon color="error"
                                                             >mdi-delete-outline</v-icon
                                                         >
-                                                        Delete
+                                                        {{ t("delete") }}
                                                     </v-list-item-title>
                                                 </v-list-item>
                                             </v-list>
@@ -132,6 +132,8 @@
 import { ref, onMounted } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 import CreatePatients from "./CreatePatients.vue";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 import { usePeopleRepository } from "@/store/PeopleRepository";
 const PeopleRepository = usePeopleRepository();
 // bulk delete
@@ -152,7 +154,7 @@ const sendSelectedIds = () => {
 
 // delete and update Create
 const CreateDialogShow = () => {
-    PeopleRepository.isEditMode=false;
+    PeopleRepository.isEditMode = false;
     PeopleRepository.createDialog = true;
 };
 
@@ -177,12 +179,12 @@ const deleteItem = async (item) => {
 // header
 const headers = [
     { title: "", key: "checkbox", align: "start", sortable: false },
-    { title: "Name", key: "name", align: "start", sortable: false },
-    { title: "Phone", key: "phone", align: "start", sortable: false },
-    { title: "Address", key: "address", align: "start", sortable: false },
-    { title: "Age", key: "dateOfBirth", align: "center", sortable: false },
-    { title: "Gender", key: "gender", align: "center", sortable: false },
-    { title: "Action", key: "action", align: "center", sortable: false },
+    { title: t("name"), key: "name", align: "start", sortable: false },
+    { title: t("phone"), key: "phone", align: "start", sortable: false },
+    { title: t("address"), key: "address", align: "start", sortable: false },
+    { title: t("age"), key: "dateOfBirth", align: "center", sortable: false },
+    { title: t("gender"), key: "gender", align: "center", sortable: false },
+    { title: t("action"), key: "action", align: "center", sortable: false },
 ];
 </script>
 

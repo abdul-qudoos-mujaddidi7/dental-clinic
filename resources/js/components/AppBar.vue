@@ -130,7 +130,7 @@
 <script setup>
 import { useAuthRepository } from "@/store/AuthRepository";
 import { useI18n } from "vue-i18n";
-import { ref } from "vue";
+import { ref ,computed} from "vue";
 const AuthRepository = useAuthRepository();
 
 const toggleFullscreen = async () => {
@@ -148,6 +148,10 @@ const toggleFullscreen = async () => {
 };
 
 const { t, locale } = useI18n();
+const dir = computed(() => {
+    return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
+});
+
 const isRtl = ref(false); // Reactive property for RTL
 
 // Define items with icons for language switcher

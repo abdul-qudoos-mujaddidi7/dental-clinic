@@ -1,6 +1,6 @@
 <template>
     <CreateAppointment v-if="LeadRepository.createDialog" />
-    <div class="all-expense rounded-xl">
+    <div class="all-expense rounded-xl" :dir="dir">
         <div class="card rounded-xl">
             <AppBar :mainTitle="$t('appointment')" :sub-title="$t('appointment')" />
             <v-divider
@@ -41,10 +41,15 @@
             <!-- v-table server -->
             <div class="overflow-x-hidden">
                 <v-app>
-                    <v-main class="main">
+                    <v-main class="main" :dir="dir">
                         <v-row>
                             <v-col>
                                 <v-data-table-server
+                                :class="
+                                        dir === 'rtl'
+                                            ? 'rtl-border'
+                                            : 'ltr-border'
+                                    "
                                     theme="cursor-pointer"
                                     v-model:items-per-page="LeadRepository.itemsPerPage"
                                     :headers="headers"
@@ -98,12 +103,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted,computed } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 import CreateAppointment from "./CreateAppointment.vue";
 import { useLeadRepository } from "@/store/LeadRepository";
 import { useI18n } from "vue-i18n";
-const { t } = useI18n();
+const { t,locale } = useI18n();
 const LeadRepository = useLeadRepository();
 
 // bulk delete
@@ -114,6 +119,10 @@ const CreateDialogShow = () => {
     LeadRepository.isEditMode = false;
     LeadRepository.createDialog = true;
 };
+
+const dir = computed(() => {
+    return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
+});
 
 const edit = (item) => {
     console.log(item, "me");

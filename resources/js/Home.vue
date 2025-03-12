@@ -6,7 +6,7 @@
       permanent
       color="#F8F8F8"
       floating
-      location="left"
+      :location="dir"
       class="sideBar"
     
     >
@@ -31,6 +31,8 @@
 import { ref, watch, computed } from "vue";
 import { useRoute } from "vue-router"; // Import to get the current route
 import NavigationDrawer from "./components/navigationDrawer.vue";
+import {useI18n} from 'vue-i18n';
+const {locale} = useI18n();
 import { useAuthRepository } from "@/store/AuthRepository";
 
 const authRepo = useAuthRepository();
@@ -44,6 +46,13 @@ watch(
     }
 );
 
+const dir= computed(()=>{
+    if (locale.value === "fa") {
+    return 'right' // Reverse the order for Farsi
+  }
+
+  return 'left'
+});
 
 // Use Vue Router's `useRoute` to determine the current route
 const route = useRoute();

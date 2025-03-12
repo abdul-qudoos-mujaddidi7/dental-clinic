@@ -1,8 +1,8 @@
 <template>
     <CreateProduct v-if="ExpenseRepository.createDialog" />
-    <div class="all-expense rounded-xl">
+    <div class="all-expense rounded-xl" :dir="dir">
         <div class="card rounded-xl">
-            <AppBar mainTitle="Products" sub-title="expense" />
+            <AppBar :mainTitle="t('product')" :sub-title="t('expense')" />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
@@ -16,7 +16,7 @@
                         color="primaryOld"
                         density="compact"
                         variant="outlined"
-                        label="Search ..."
+                        :label="t('search')"
                         append-inner-icon="mdi-magnify"
                         hide-details
                         v-model="ExpenseRepository.expenseProductSearch"
@@ -24,14 +24,14 @@
                 </div>
                 <div class="btn">
                     <v-btn variant="outlined" color="primaryOld" class="px-6">
-                        Filter
+                        {{ t('filter') }}
                     </v-btn>
                     &nbsp;
                     <v-btn
                         @click="CreateDialogShow"
                         color="primaryOld"
                         variant="flat"
-                        text="Create"
+                        :text="$t('create')"
                         class="px-6"
                     >
                     </v-btn>
@@ -40,10 +40,15 @@
             <!-- v-table server  -->
             <div class="overflow-x-hidden">
                 <v-app>
-                    <v-main class="main">
+                    <v-main class="main" :dir="dir">
                         <v-row>
                             <v-col>
                                 <v-data-table-server
+                                :class="
+                                        dir === 'rtl'
+                                            ? 'rtl-border'
+                                            : 'ltr-border'
+                                    "
                                     theme="cursor-pointer"
                                     v-model:items-per-page="
                                         ExpenseRepository.itemsPerPage
@@ -95,7 +100,7 @@
                                                             color="tealColor"
                                                             >mdi-square-edit-outline</v-icon
                                                         >
-                                                        Edit
+                                                        {{ t('edit') }}
                                                     </v-list-item-title>
 
                                                     <v-list-item-title
@@ -107,7 +112,7 @@
                                                         <v-icon color="error"
                                                             >mdi-delete-outline</v-icon
                                                         >
-                                                        Delete
+                                                        {{ t('delete') }}
                                                     </v-list-item-title>
                                                 </v-list-item>
                                             </v-list>
@@ -120,7 +125,7 @@
                                     @click="sendSelectedIds"
                                     color="#B71C1C"
                                     flat
-                                    text="delete"
+                                    :text="t('delete')"
                                 >
                                 </v-btn>
                             </v-col>
@@ -132,11 +137,14 @@
     </div>
 </template>
 
+
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted,computed } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 import CreateProduct from "./CreateProduct.vue";
 import { useExpenseRepository } from "@/store/ExpenseRepository";
+import { useI18n } from "vue-i18n";
+const { t ,locale} = useI18n();
 const ExpenseRepository = useExpenseRepository();
 // bulk delete
 const selectedIds = ref([]);
@@ -153,6 +161,12 @@ const sendSelectedIds = () => {
         console.log("No IDs selected.");
     }
 };
+
+// direction
+// direction
+const dir = computed(() => {
+    return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
+});
 
 // delete and update Create
 const CreateDialogShow = () => {
@@ -183,11 +197,9 @@ const deleteItem = async (item) => {
 // header
 const headers = [
     { title: "", key: "checkbox", align: "start", sortable: false },
-    { title: "Product", key: "name", align: "start", sortable: false },
-
-
-    { title: "Unit", key: "unit", align: "center", sortable: false },
-    { title: "Action", key: "action", align: "end", sortable: false },
+    { title: t("product"), key: "name", align: "start", sortable: false },
+    { title: t("unit"), key: "unit", align: "center", sortable: false },
+    { title: t("action"), key: "action", align: "end", sortable: false },
 ];
 </script>
 

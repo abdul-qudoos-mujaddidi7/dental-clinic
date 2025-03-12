@@ -109,7 +109,7 @@ const LeadRepository = useLeadRepository();
 const formRef = ref(null);
 const formData = reactive({
     id: LeadRepository.appointment.id,
-    dateTime: LeadRepository.appointment.date,
+    dateTime: LeadRepository.appointment.dateTime,
     time: LeadRepository.appointment.time,
     status: LeadRepository.appointment.status,
     patientId: LeadRepository.appointment.patients?.id,

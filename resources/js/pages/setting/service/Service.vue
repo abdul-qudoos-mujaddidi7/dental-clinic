@@ -1,6 +1,6 @@
 <template>
     <CreatesService v-if="SettingRepository.createDialog" />
-    <div>
+    <div :dir="dir">
         <AppBar mainTitle="Service" sub-title="setting" />
         <v-divider
             :thickness="1"
@@ -15,7 +15,7 @@
                     color="primaryOld"
                     density="compact"
                     variant="outlined"
-                    label="Search ..."
+                    :label="$t('search')"
                     append-inner-icon="mdi-magnify"
                     hide-details
                     v-model="SettingRepository.serviceSearch"
@@ -23,7 +23,7 @@
             </div>
             <div class="btn">
                 <v-btn variant="outlined" color="primaryOld" class="px-6">
-                    Filter
+                    {{t('filter')}}
                 </v-btn>
                 &nbsp;
 
@@ -31,7 +31,7 @@
                     @click="CreateDialogShow"
                     color="primaryOld"
                     variant="flat"
-                    text="Create"
+                    :text="$t('create')"
                     class="px-6"
                 >
                 </v-btn>
@@ -40,10 +40,15 @@
         <!-- v-table server  -->
         <div class="overflow-x-hidden">
             <v-app>
-                <v-main class="main">
+                <v-main class="main" :dir="dir">
                     <v-row>
                         <v-col>
                             <v-data-table-server
+                            :class="
+                                        dir === 'rtl'
+                                            ? 'rtl-border'
+                                            : 'ltr-border'
+                                    "
                                 theme="cursor-pointer"
                                 v-model:items-per-page="
                                     SettingRepository.itemsPerPage
@@ -80,7 +85,8 @@
                                                     <v-icon color="tealColor"
                                                         >mdi-square-edit-outline</v-icon
                                                     >
-                                                    Edit
+                                                                        {{t('edit')}}
+
                                                 </v-list-item-title>
 
                                                 <v-list-item-title
@@ -90,7 +96,8 @@
                                                     <v-icon color="error"
                                                         >mdi-delete-outline</v-icon
                                                     >
-                                                    Delete
+                                                                        {{t('delete')}}
+
                                                 </v-list-item-title>
                                             </v-list-item>
                                         </v-list>
@@ -106,11 +113,19 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref,computed } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 import CreatesService from "./CreatesService.vue";
 import { useSettingRepository } from "@/store/SettingRepository";
 const SettingRepository = useSettingRepository();
+import { useI18n } from "vue-i18n";
+const { t,locale } = useI18n();
+
+// direction
+const dir = computed(() => {
+    return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
+});
+
 // delete and update Create
 const CreateDialogShow = () => {
     SettingRepository.service = {};
@@ -140,8 +155,8 @@ const deleteItem = async (item) => {
 };
 // header
 const headers = [
-    { title: "Name", key: "name", align: "center", sortable: false },
-    { title: "Details", key: "description", align: "center", sortable: false },
-    { title: "Action", key: "action", align: "end", sortable: false },
+    { title: t("name"), key: "name", align: "center", sortable: false },
+    { title: t("details"), key: "description", align: "center", sortable: false },
+    { title: t("action"), key: "action", align: "end", sortable: false },
 ];
 </script>

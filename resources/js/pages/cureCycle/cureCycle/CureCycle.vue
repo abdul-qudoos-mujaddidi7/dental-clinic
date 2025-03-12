@@ -1,7 +1,7 @@
 <template>
     <CurePyament v-if="CureRepository.createDialog" />
     <ShowCurePayment v-if="CureRepository.ShowCurePaymentDialog" />
-    <div class="all-expense rounded-xl">
+    <div class="all-expense rounded-xl" :dir="dir">
         <div class="card rounded-xl">
             <AppBar :mainTitle="$t('cureCycle')" :sub-title="$t('cureCycle')" />
             <v-divider
@@ -42,10 +42,15 @@
             <!-- v-table server  -->
             <div class="overflow-x-hidden">
                 <v-app>
-                    <v-main class="main">
+                    <v-main class="main" :dir="dir">
                         <v-row>
                             <v-col>
                                 <v-data-table-server
+                                :class="
+                                        dir === 'rtl'
+                                            ? 'rtl-border'
+                                            : 'ltr-border'
+                                    "
                                     theme="cursor-pointer"
                                     v-model:items-per-page="
                                         CureRepository.itemsPerPage
@@ -206,14 +211,18 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref,computed } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 import CurePyament from "../cure payment/CurePyament.vue";
 import ShowCurePayment from "../cure payment/ShowCurePayment.vue";
 import { useI18n } from "vue-i18n";
-const { t } = useI18n();
+const { t,locale } = useI18n();
 import { useCureRepository } from "@/store/CureRepository";
 const CureRepository = useCureRepository();
+
+const dir = computed(() => {
+    return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
+});
 // bulk delete
 const selectedIds = ref([]);
 const sendSelectedIds = () => {

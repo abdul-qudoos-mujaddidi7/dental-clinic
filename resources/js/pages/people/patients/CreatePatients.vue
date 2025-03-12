@@ -14,8 +14,8 @@
                         <h2 class="font-weight-bold pl-4">
                             {{
                                 PeopleRepository.isEditMode
-                                    ? "Update"
-                                    : "Create"
+                                    ? t("update")
+                                    : t("create")
                             }}
                         </h2>
                         <v-btn variant="text" @click="isActive.value = false">
@@ -30,34 +30,38 @@
                                 <v-text-field
                                     v-model="formData.name"
                                     variant="outlined"
-                                    label="Name *"
+                                    :label="$t('name')"
                                     class="w-50 pb-4 pr-2"
                                     density="compact"
                                     :rules="[rules.required]"
                                 ></v-text-field>
 
                                 <div class="relative w-50">
-                                    <h4 class="absolute bottom-20 left-5 text-gray-500 text-sm">Date Of Birth</h4>
-                                <div class="pb-4  pl-2  ">
-                                    <date-picker
-                                        mode="single"
-                                        :column="1"
-                                        v-model="formData.dateOfBirth"
-                                        :styles="styles"
-                                        locale="fa"
-                                        type="date"
-                                        format="jYYYY/jMM/jDD"
-                                        :locale-config="LocaleConfigs"
-                                    />
+                                    <h4
+                                        class="absolute bottom-20 left-5 text-gray-500 text-sm"
+                                    >
+                                        Date Of Birth
+                                    </h4>
+                                    <div class="pb-4 pl-2">
+                                        <date-picker
+                                            mode="single"
+                                            :column="1"
+                                            v-model="formData.dateOfBirth"
+                                            :styles="styles"
+                                            locale="fa"
+                                            type="date"
+                                            format="jYYYY/jMM/jDD"
+                                            :locale-config="LocaleConfigs"
+                                        />
+                                    </div>
                                 </div>
-                            </div>
                             </div>
 
                             <div class="flex w-100">
                                 <v-text-field
                                     v-model="formData.phone"
                                     variant="outlined"
-                                    label="Phone "
+                                    :label="$t('phone')"
                                     density="compact"
                                     :counter="10"
                                     type="tel"
@@ -80,7 +84,7 @@
                                                 'text-white': isMaleSelected,
                                             }"
                                         >
-                                            Male
+                                            {{ $t("male") }}
                                         </v-btn>
 
                                         <v-btn
@@ -97,7 +101,7 @@
                                                 'text-white': isFemaleSelected,
                                             }"
                                         >
-                                            Female
+                                            {{ $t("female") }}
                                         </v-btn>
                                     </div>
                                 </div>
@@ -106,7 +110,7 @@
                             <v-textarea
                                 v-model="formData.address"
                                 variant="outlined"
-                                label="Address  "
+                                :label="$t('address')  "
                                 density="compact"
                             >
                             </v-textarea>
@@ -117,8 +121,8 @@
                         <v-btn color="#112F53" class="px-4" @click="save">
                             {{
                                 PeopleRepository.isEditMode
-                                    ? "Update"
-                                    : "Submit"
+                                    ? t("update")
+                                    : t("submit")
                             }}
                         </v-btn>
                     </div>
@@ -132,6 +136,8 @@
 import { ref, reactive, computed } from "vue";
 import { usePeopleRepository } from "@/store/PeopleRepository";
 import { LocaleConfigs } from "../../../LocaleConfigs";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 const PeopleRepository = usePeopleRepository();
 const formRef = ref(null);
 const selectGender = (gender) => {

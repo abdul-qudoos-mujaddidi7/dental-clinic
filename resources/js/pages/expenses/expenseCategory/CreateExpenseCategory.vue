@@ -14,8 +14,8 @@
                         <h2 class="font-weight-bold pl-4">
                             {{
                                 ExpenseRepository.isEditMode
-                                    ? "Update"
-                                    : "Create"
+                                    ? t('update')
+                                    : t('create')
                             }}
                         </h2>
                         <v-btn variant="text" @click="isActive.value = false">
@@ -32,7 +32,7 @@
                             <v-text-field
                                 v-model="formData.name"
                                 variant="outlined"
-                                label="Category *"
+                                :label="t('category')"
                                 class="pb-4"
                                 density="compact"
                                 :rules="[rules.required]"
@@ -41,7 +41,7 @@
                             <v-text-field
                                 v-model="formData.description"
                                 variant="outlined"
-                                label="Description "
+                                :label="t('details')"
                                 class="pb-3"
                                 density="compact"
                                 :rules="[rules.required]"
@@ -53,8 +53,8 @@
                         <v-btn color="#112F53" class="px-4" @click="save">
                             {{
                                 ExpenseRepository.isEditMode
-                                    ? "Update"
-                                    : "Submit"
+                                    ? t('update')
+                                    : t('submit')
                             }}
                         </v-btn>
                     </div>
@@ -64,8 +64,11 @@
     </div>
 </template>
 
+
 <script setup>
 import { ref, reactive } from "vue";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 import { useExpenseRepository } from "@/store/ExpenseRepository";
 
 const ExpenseRepository = useExpenseRepository();

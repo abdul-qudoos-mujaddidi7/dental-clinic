@@ -16,7 +16,7 @@
                         color="primaryOld"
                         density="compact"
                         variant="outlined"
-                        label="Search ..."
+                        :label="$t('search')"
                         append-inner-icon="mdi-magnify"
                         hide-details
                         v-model="PeopleRepository.employeeSearch"
@@ -24,14 +24,14 @@
                 </div>
                 <div class="btn">
                     <v-btn variant="outlined" color="primaryOld" class="px-6">
-                        Filter
+                        {{ t("filter") }}
                     </v-btn>
                     &nbsp;
                     <v-btn
                         @click="CreateDialogShow"
                         color="primaryOld"
                         variant="flat"
-                        text="Create"
+                        :text="t('create')"
                         class="px-6"
                     >
                     </v-btn>
@@ -81,7 +81,7 @@
                                                             color="tealColor"
                                                             >mdi-square-edit-outline</v-icon
                                                         >
-                                                        Edit
+                                                        {{ t("edit") }}
                                                     </v-list-item-title>
 
                                                     <v-list-item-title
@@ -93,7 +93,7 @@
                                                         <v-icon color="error"
                                                             >mdi-delete-outline</v-icon
                                                         >
-                                                        Delete
+                                                        {{ t("delete") }}
                                                     </v-list-item-title>
                                                 </v-list-item>
                                             </v-list>
@@ -113,14 +113,15 @@
 import { ref, onMounted } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 import CreateEmployee from "./CreateEmployee.vue";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 import { usePeopleRepository } from "@/store/PeopleRepository";
 const PeopleRepository = usePeopleRepository();
 // bulk delete
 
 // delete and update Create
 const CreateDialogShow = () => {
-    PeopleRepository.employee = {},
-    PeopleRepository.setEditMode(false);
+    (PeopleRepository.employee = {}), PeopleRepository.setEditMode(false);
     PeopleRepository.createDialog = true;
 };
 
@@ -144,12 +145,12 @@ const deleteItem = async (item) => {
 };
 // header
 const headers = [
-    { title: "Name ", key: "name", align: "start", sortable: false },
-    { title: "phone", key: "phone", align: "center", sortable: false },
-    { title: "Salary ", key: "salary", align: "center", sortable: false },
-    { title: "Position ", key: "position", align: "center", sortable: false },
-    { title: " Email", key: "email", align: "center", sortable: false },
-    { title: "Address", key: "address", align: "center", sortable: false },
-    { title: "Action", key: "action", align: "end", sortable: false },
+    { title: t("name"), key: "name", align: "start", sortable: false },
+    { title: t("phone"), key: "phone", align: "center", sortable: false },
+    { title: t("salary"), key: "salary", align: "center", sortable: false },
+    { title: t("position"), key: "position", align: "center", sortable: false },
+    { title: t("email"), key: "email", align: "center", sortable: false },
+    { title: t("address"), key: "address", align: "center", sortable: false },
+    { title: t("action"), key: "action", align: "end", sortable: false },
 ];
 </script>

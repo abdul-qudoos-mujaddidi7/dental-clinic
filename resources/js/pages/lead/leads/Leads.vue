@@ -1,7 +1,7 @@
 <template>
     <CreateLeads v-if="LeadRepository.createDialog" />
-    <div class="all-expense rounded-xl">
-        <div class="card rounded-xl">
+    <div class="all-expense rounded-xl" :dir="dir">
+        <div class="card rounded-xl" >
             <AppBar mainTitle="leads" sub-title="Lead" />
             <v-divider
                 :thickness="1"
@@ -40,11 +40,16 @@
             <!-- v-table server  -->
             <div class="overflow-x-hidden">
                 <v-app>
-                    <v-main class="main">
+                    <v-main class="main" :dir="dir">
                         <v-row>
                             <v-col>
                                 <!--  :location="location" -->
                                 <v-data-table-server
+                                :class="
+                                        dir === 'rtl'
+                                            ? 'rtl-border'
+                                            : 'ltr-border'
+                                    "
                                     theme="cursor-pointer"
                                     v-model:items-per-page="LeadRepository.itemsPerPage"
                                     :headers="headers"
@@ -180,6 +185,10 @@ const getStageName = (itemId) => {
     const currentIndex = stageIndexes.value[itemId] % leadStage.length;
     return leadStage[currentIndex]?.name || "...";
 };
+
+const dir = computed(() => {
+    return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
+});
 
 // Function to get button color based on stage name
 const getStageColor = (itemId) => {

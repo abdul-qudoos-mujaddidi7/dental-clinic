@@ -1,7 +1,7 @@
 <template>
-    <div class="all-expense rounded-xl">
+    <div class="all-expense rounded-xl" :dir="dir">
         <div class="card rounded-xl">
-            <AppBar mainTitle="Role Permission" sub-title="setting" />
+            <AppBar :mainTitle="$t('rolePermission')" :sub-title="$t('setting')"  />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
@@ -15,7 +15,7 @@
                         color="primaryOld"
                         density="compact"
                         variant="outlined"
-                        label="Search ..."
+                        :label="$t('search')"
                         append-inner-icon="mdi-magnify"
                         hide-details
                         v-model="SettingRepository.permissionSearch"
@@ -23,7 +23,7 @@
                 </div>
                 <div class="btn">
                     <v-btn variant="outlined" color="primaryOld" class="px-6">
-                        Filter
+                        {{ t("filter") }}
                     </v-btn>
                     &nbsp;
                     <router-link to="/createPermissions">
@@ -31,7 +31,7 @@
                             @click="CreateDialogShow"
                             color="primaryOld"
                             variant="flat"
-                            text="Create"
+                        :text="$t('create')"
                             class="px-6"
                         >
                         </v-btn>
@@ -41,10 +41,15 @@
             <!-- v-table server  -->
             <div class="overflow-x-hidden">
                 <v-app>
-                    <v-main class="main">
+                    <v-main class="main" :dir="dir">
                         <v-row>
                             <v-col>
                                 <v-data-table-server
+                                :class="
+                                        dir === 'rtl'
+                                            ? 'rtl-border'
+                                            : 'ltr-border'
+                                    "
                                     theme="cursor-pointer"
                                     v-model:items-per-page="
                                         SettingRepository.itemsPerPage
@@ -82,16 +87,15 @@
                                                             item.id
                                                         "
                                                     >
-                                                    <v-list-item-title
-                                                        
-                                                        class="cursor-pointer d-flex gap-3 justify-left pb-3"
-                                                    >
-                                                        <v-icon
-                                                            color="tealColor"
-                                                            >mdi-square-edit-outline</v-icon
+                                                        <v-list-item-title
+                                                            class="cursor-pointer d-flex gap-3 justify-left pb-3"
                                                         >
-                                                        Edit
-                                                    </v-list-item-title>
+                                                            <v-icon
+                                                                color="tealColor"
+                                                                >mdi-square-edit-outline</v-icon
+                                                            >
+                                                            {{ t("edit") }}
+                                                        </v-list-item-title>
                                                     </router-link>
 
                                                     <v-list-item-title
@@ -103,7 +107,7 @@
                                                         <v-icon color="error"
                                                             >mdi-delete-outline</v-icon
                                                         >
-                                                        Delete
+                                                        {{ t("delete") }}
                                                     </v-list-item-title>
                                                 </v-list-item>
                                             </v-list>
@@ -120,11 +124,19 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref,computed } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 
 import { useSettingRepository } from "@/store/SettingRepository";
 const SettingRepository = useSettingRepository();
+import { useI18n } from "vue-i18n";
+const { t,locale } = useI18n();
+
+// direction
+const dir = computed(() => {
+    return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
+});
+
 // delete and update Create
 const CreateDialogShow = () => {
     SettingRepository.permission = {};
@@ -152,12 +164,15 @@ const deleteItem = async (item) => {
 };
 // header
 const headers = [
-    { title: "Name", key: "name", align: "center", sortable: false },
-    { title: "Details", key: "description", align: "center", sortable: false },
-    { title: "Action", key: "action", align: "end", sortable: false },
+    { title: t("name"), key: "name", align: "center", sortable: false },
+    {
+        title: t("details"),
+        key: "description",
+        align: "center",
+        sortable: false,
+    },
+    { title: t("action"), key: "action", align: "end", sortable: false },
 ];
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

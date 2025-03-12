@@ -39,7 +39,7 @@ export let useSettingRepository = defineStore("SettingRepository", {
             // money Account 
             moneyAccSearch: ref(""),
             moneyAccs: reactive([]),
-            moneyAcc: reactive([]),
+            s: reactive([]),
         };
     },
     actions: {
@@ -508,7 +508,7 @@ export let useSettingRepository = defineStore("SettingRepository", {
                     try {
                         const response = await axios.get(`moneyAccount/${id}`);
         
-                        this.moneyAcc = response.data.data;
+                        this.s = response.data.data;
                         console.log(this.moneyAccs);
                     } catch (err) {
                         // this.error = err.message;

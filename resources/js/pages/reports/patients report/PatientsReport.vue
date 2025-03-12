@@ -1,6 +1,6 @@
 <template>
     <CreatePatients v-if="ReportRepository.createDialog" />
-    <div class="all-expense rounded-xl">
+    <div class="all-expense rounded-xl" :dir="dir">
         <div class="card rounded-xl">
             <AppBar mainTitle="patient report " sub-title="report" />
             <v-divider
@@ -16,7 +16,7 @@
                         color="primaryOld"
                         density="compact"
                         variant="outlined"
-                        label="Search ..."
+                        :label="$t('search')"
                         append-inner-icon="mdi-magnify"
                         hide-details
                         v-model="ReportRepository.patientReportSearch"
@@ -33,10 +33,15 @@
             <!-- v-table server  -->
             <div class="overflow-x-hidden">
                 <v-app>
-                    <v-main class="main">
+                    <v-main class="main" :dir="dir">
                         <v-row>
                             <v-col>
                                 <v-data-table-server
+                                :class="
+                                        dir === 'rtl'
+                                            ? 'rtl-border'
+                                            : 'ltr-border'
+                                    "
                                     theme="cursor-pointer"
                                     v-model:items-per-page="
                                         ReportRepository.itemsPerPage
@@ -66,10 +71,17 @@
 </template>
 
 <script setup>
-import { ref, onMounted, reactive, watch } from "vue";
+import { ref, onMounted, reactive, watch,computed } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 import { useReportRepository } from "@/store/ReportRepository";
+import { useI18n } from "vue-i18n";
+const { t,locale } = useI18n();
 const ReportRepository = useReportRepository();
+
+// direction
+const dir = computed(() => {
+    return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
+});
 
 import DatePicker from "vue-datepicker-next";
 import "vue-datepicker-next/index.css";
@@ -111,9 +123,9 @@ onMounted(() => {
 });
 // header
 const headers = [
-    { title: "Patients", key: "name", align: "start", sortable: false },
-    { title: "Phone", key: "phone", align: "start", sortable: false },
-    { title: "Address", key: "address", align: "start", sortable: false },
-    { title: "Due", key: "due", align: "center", sortable: false },
+    { title: t("patient"), key: "name", align: "start", sortable: false },
+    { title: t("phone"), key: "phone", align: "start", sortable: false },
+    { title: t("address"), key: "address", align: "start", sortable: false },
+    { title: t("due"), key: "due", align: "center", sortable: false },
 ];
 </script>

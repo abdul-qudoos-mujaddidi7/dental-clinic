@@ -1,7 +1,7 @@
 <template>
     <div class="all-expense rounded-xl mt-4">
         <div class="card rounded-xl bg-white">
-            <AppBar mainTitle="System Settings"  subTitle="setting"/>
+            <AppBar :mainTitle="$t('systemSetting')" :subTitle="$t('setting')" />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
@@ -9,20 +9,19 @@
             ></v-divider>
             <div class="overflow-x-hidden pt-6 w-full">
                 <v-app>
-                    <v-main class="main rounded-xl ">
-
+                    <v-main class="main rounded-xl">
                         <form
                             @submit.prevent="CreateComponySetting"
-                            class="px-6 pb-4  border-2  rounded-xl"
+                            class="px-6 pb-4 border-2 rounded-xl"
                         >
-                        <h1 class=" p-6">System Setting </h1>
+                            <h1 class="p-6">{{ t("setting") }}</h1>
 
                             <v-row>
                                 <v-divider
-                                :thickness="2"
-                                class="border-opacity-100 mb-8 "
-                                color="#d3e2f8"
-                            ></v-divider>
+                                    :thickness="2"
+                                    class="border-opacity-100 mb-8"
+                                    color="#d3e2f8"
+                                ></v-divider>
                                 <v-col cols="10" class="">
                                     <v-text-field
                                         v-model="
@@ -30,19 +29,19 @@
                                                 .name
                                         "
                                         :rules="[rules.required, rules.name]"
-                             
-                                        label=" * company name  "
+                                        :label="$t('companyName')"
                                         variant="outlined"
                                         density="compact"
                                         class="mb-4"
                                     ></v-text-field>
                                     <v-text-field
                                         v-model="
-                                            SettingRepository.systemSettings.phone
+                                            SettingRepository.systemSettings
+                                                .phone
                                         "
                                         :rules="[rules.required, rules.number]"
                                         :counter="10"
-                                        label=" * Phone Number "
+                                        :label="$t('phone')"
                                         variant="outlined"
                                         density="compact"
                                     ></v-text-field>
@@ -54,8 +53,8 @@
                                     >
                                         <v-icon
                                             v-if="
-                                                !SettingRepository.systemSettings
-                                                    .photo
+                                                !SettingRepository
+                                                    .systemSettings.photo
                                             "
                                             size="x-large"
                                             color="blue-grey-lighten-2"
@@ -68,7 +67,7 @@
                                                 SettingRepository.systemSettings
                                                     .photo
                                             "
-                                            alt="Selected Image"
+                                            :alt="$t('image')"
                                             class="w-full h-full object-cover"
                                         />
                                     </button>
@@ -88,15 +87,17 @@
                                         SettingRepository.systemSettings.address
                                     "
                                     :rules="[rules.required]"
-                                    label="* Address"
+                                    :label="$t('address')"
                                     variant="outlined"
                                     density="compact"
                                     class="pr-2"
                                 ></v-text-field>
                                 <v-text-field
-                                    v-model="SettingRepository.systemSettings.email"
+                                    v-model="
+                                        SettingRepository.systemSettings.email
+                                    "
                                     :rules="[rules.required, rules.email]"
-                                    label=" * Email "
+                                    :label="$t('email')"
                                     variant="outlined"
                                     density="compact"
                                     type="email"
@@ -109,7 +110,7 @@
                                     class="me-4"
                                     color="primaryOld"
                                     type="submit"
-                                    >submit</v-btn
+                                    >{{t('submit')}}</v-btn
                                 >
                             </div>
                         </form>
@@ -123,7 +124,9 @@
 <script setup>
 import { useSettingRepository } from "@/store/SettingRepository";
 import { useRoute, useRouter } from "vue-router";
-import AppBar from "@/components/AppBar.vue"
+import AppBar from "@/components/AppBar.vue";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 const SettingRepository = useSettingRepository();
 
 import { reactive } from "vue";
@@ -165,7 +168,7 @@ const rules = {
 
 const CreateComponySetting = async () => {
     formData = reactive({
-        id:1,
+        id: 1,
         name: SettingRepository.systemSettings.name,
         phone: SettingRepository.systemSettings.phone,
         email: SettingRepository.systemSettings.email,

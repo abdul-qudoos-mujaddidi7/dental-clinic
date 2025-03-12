@@ -9,7 +9,11 @@
             <v-card class="px-3">
                 <v-card-title class="px-2 pt-4 d-flex justify-space-between">
                     <h2 class="font-weight-bold pl-4">
-                        {{ PeopleRepository.isEditMode ? "Update" : "Create" }}
+                        {{
+                                PeopleRepository.isEditMode
+                                    ? $t("update")
+                                    : $t("create")
+                            }}
                     </h2>
                     <v-btn variant="text" @click="isActive.value = false">
                         <v-icon>mdi-close</v-icon>
@@ -22,7 +26,7 @@
                         <v-text-field
                             v-model="formData.firstName"
                             variant="outlined"
-                            label="Name *"
+                            :label="t('name')"
                             class="pb-4"
                             density="compact"
                             :rules="[rules.required, rules.name]"
@@ -31,7 +35,7 @@
                         <v-text-field
                             v-model="formData.phone"
                             variant="outlined"
-                            label="Phone *"
+                            :label="t('phone')"
                             density="compact"
                             :counter="10"
                             type="tel"
@@ -43,14 +47,14 @@
                                 v-model="formData.email"
                                 variant="outlined"
                                 density="compact"
-                                label="Email *"
+                                :label="t('email')"
                                 :rules="[rules.required, rules.email]"
                                 class="w-50 pb-4 pr-2"
                             >
                             </v-text-field>
                             <v-text-field
                                 v-model="formData.password"
-                                label="Password *"
+                                :label="t('password')"
                                 variant="outlined"
                                 density="compact"
                                 :rules="[rules.required, rules.password]"
@@ -66,7 +70,7 @@
                                 item-title="name"
                                 variant="outlined"
                                 density="compact"
-                                label="Role *"
+                                :label="t('role')"
                                 :rules="[rules.required]"
                                 class="w-50 pb-4 pr-2"
                             >
@@ -103,7 +107,11 @@
 
                 <div class="d-flex flex-row-reverse mb-6 mx-6">
                     <v-btn color="#112F53" class="px-4" @click="save">
-                        {{ PeopleRepository.isEditMode ? "Update" : "Submit" }}
+                        {{
+                                PeopleRepository.isEditMode
+                                    ? $t("update")
+                                    : $t("create")
+                            }}
                     </v-btn>
                 </div>
             </v-card>
@@ -113,6 +121,8 @@
 
 <script setup>
 import { ref, reactive } from "vue";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 import { usePeopleRepository } from "@/store/PeopleRepository";
 
 const PeopleRepository = usePeopleRepository();

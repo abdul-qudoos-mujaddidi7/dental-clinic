@@ -1,6 +1,6 @@
 <template>
     <div class="all-expense rounded-xl">
-        <div class="card rounded-xl">
+        <div class="card rounded-xl" :dir="dir">
             <AppBar mainTitle="InBound Laboratory" sub-title="laboratory" />
             <v-divider
                 :thickness="1"
@@ -41,10 +41,15 @@
             <!-- v-table server  -->
             <div class="overflow-x-hidden">
                 <v-app>
-                    <v-main class="main">
+                    <v-main class="main" :dir="dir">
                         <v-row>
                             <v-col>
                                 <v-data-table-server
+                                 :class="
+                                        dir === 'rtl'
+                                            ? 'rtl-border'
+                                            : 'ltr-border'
+                                    "
                                     theme="cursor-pointer"
                                     v-model:items-per-page="LaboratoryRepository.itemsPerPage"
                                     :headers="headers"
@@ -106,9 +111,14 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import AppBar from "../../components/AppBar.vue";
+import { useI18n } from "vue-i18n";
+const { t,locale } = useI18n();
 import { useLaboratoryRepository } from "@/store/LaboratoryRepository";
 const LaboratoryRepository = useLaboratoryRepository();
 
+const dir = computed(() => {
+    return locale.value === "fa" ? "rtl" : "ltr";
+});
 // Bulk delete
 
 // Delete and update Create

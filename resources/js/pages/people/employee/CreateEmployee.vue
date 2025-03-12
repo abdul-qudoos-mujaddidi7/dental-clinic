@@ -14,8 +14,8 @@
                         <h2 class="font-weight-bold pl-4">
                             {{
                                 PeopleRepository.isEditMode
-                                    ? "Update"
-                                    : "Create"
+                                    ? $t("update")
+                                    : $t("create")
                             }}
                         </h2>
                         <v-btn variant="text" @click="isActive.value = false">
@@ -30,7 +30,7 @@
                                 <v-text-field
                                     v-model="formData.name"
                                     variant="outlined"
-                                    label="Name  *"
+                                    :label="$t('name')"
                                     class="w-50 pr-2 pb-4"
                                     density="compact"
                                     :rules="[rules.required]"
@@ -38,7 +38,7 @@
                                 <v-text-field
                                     v-model="formData.phone"
                                     variant="outlined"
-                                    label="phone  *"
+                                    :label="$t('phone')"
                                     :counter="10"
                                     class="w-50 pl-2 pb-4"
                                     density="compact"
@@ -50,7 +50,7 @@
                                 <v-text-field
                                     v-model="formData.email"
                                     variant="outlined"
-                                    label="Email  *"
+                                    :label="$t('email')"
                                     type="email"
                                     class="w-50 pr-2 pb-4"
                                     density="compact"
@@ -59,25 +59,24 @@
                                 <v-text-field
                                     v-model="formData.salary"
                                     variant="outlined"
-                                    label="Salary  *"
+                                    :label="$t('salary')"
                                     class="w-50 pl-2 pb-4"
                                     density="compact"
                                     :rules="[rules.required]"
                                 ></v-text-field>
                             </div>
                             <v-text-field
-                                    v-model="formData.position"
-                                    variant="outlined"
-                                    label="Position  *"
-                                    class=" pb-4"
-                                    density="compact"
-                                    :rules="[rules.required]"
-                                ></v-text-field>
+                                v-model="formData.position"
+                                variant="outlined"
+                                :label="$t('position')"
+                                class="pb-4"
+                                density="compact"
+                                :rules="[rules.required]"
+                            ></v-text-field>
                             <div class="flex">
-                      
                                 <v-textarea
                                     v-model="formData.address"
-                                    label="Address"
+                                    :label="$t('address')"
                                     variant="outlined"
                                     density="compact"
                                 ></v-textarea>
@@ -89,8 +88,8 @@
                         <v-btn color="#112F53" class="px-4" @click="save">
                             {{
                                 PeopleRepository.isEditMode
-                                    ? "Update"
-                                    : "Submit"
+                                    ? $t("update")
+                                    : $t("create")
                             }}
                         </v-btn>
                     </div>
@@ -102,6 +101,8 @@
 
 <script setup>
 import { ref, reactive } from "vue";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 import { usePeopleRepository } from "@/store/PeopleRepository";
 
 const PeopleRepository = usePeopleRepository();
@@ -113,8 +114,8 @@ const formData = reactive({
     salary: PeopleRepository.employee.salary,
     email: PeopleRepository.employee.email,
     address: PeopleRepository.employee.address,
-    position:PeopleRepository.employee.position,
-    type:"employee"
+    position: PeopleRepository.employee.position,
+    type: "employee",
 });
 const rules = {
     required: (value) => !!value || "This field is required.",
