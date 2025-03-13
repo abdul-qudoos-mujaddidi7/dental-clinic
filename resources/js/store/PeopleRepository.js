@@ -47,11 +47,12 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             laboratorySearch: ref(""),
             laboratories: reactive([]),
             laboratory: reactive([]),
+            dentalsFor:reactive([]),
             searchFetch: reactive([]),
             cureProduct: reactive([]),
             services: [],
-            leadStageFor:reactive([]),
-            labId:ref("")
+            leadStageFor: reactive([]),
+            labId: ref(""),
         };
     },
     actions: {
@@ -540,7 +541,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             const response = await axios.get(
                 `users?page=${page}&perPage=${itemsPerPage}&search=${this.userSearch}`
             );
-            
+
             this.users = response.data.data;
             this.totalItems = response.data.meta.total;
             this.loading = false;
@@ -724,43 +725,52 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             this.loading = false;
             // this.searchFetch = "";
         },
-        async fetchProduct(id, isUpdate = false) {
-            try {
-                const response = await axios.get(`tooths/${id}`);
-                const productData = response.data.data;
+        // async fetchProduct(id, isUpdate = false) {
+        //     try {
+        //         const response = await axios.get(`tooths/${id}`);
+        //         const productData = response.data.data;
 
-                if (isUpdate) delete productData.id;
+        //         if (isUpdate) delete productData.id;
 
-                // Only add if it doesn’t already exist
-                if (!this.services.some((item) => item.id === productData.id)) {
-                    this.services.push(productData);
-                    // this.cure.services.push(productData);
-                    // this.billExpense.expenseDetails.push(productData);
-                }
+        //         // Only add if it doesn’t already exist
+        //         if (!this.services.some((item) => item.id === productData.id)) {
+        //             this.services.push(productData);
+        //             // this.cure.services.push(productData);
+        //             // this.billExpense.expenseDetails.push(productData);
+        //         }
 
-                console.log(response.data.data, "fetchProduct");
+        //         console.log(response.data.data, "fetchProduct");
 
-                // Avoid duplication in `cureProduct`
-                if (
-                    !this.cureProduct.some((item) => item.id === productData.id)
-                ) {
-                    this.cureProduct.push(productData);
-                }
+        //         // Avoid duplication in `cureProduct`
+        //         if (
+        //             !this.cureProduct.some((item) => item.id === productData.id)
+        //         ) {
+        //             this.cureProduct.push(productData);
+        //         }
 
-                // Avoid duplication in `servicesDetails`
-                if (
-                    !this.laboratory.tooths.some(
-                        (item) => item.id === productData.id
-                    )
-                ) {
-                    this.laboratory.tooths.push(productData);
-                }
+        //         // Avoid duplication in `servicesDetails`
+        //         if (
+        //             !this.laboratory.tooths.some(
+        //                 (item) => item.id === productData.id
+        //             )
+        //         ) {
+        //             this.laboratory.tooths.push(productData);
+        //         }
 
-                // Clear search results
-                this.searchFetch = [];
-            } catch (error) {
-                console.error("Error fetching product:", error);
-            }
+        //         // Clear search results
+        //         this.searchFetch = [];
+        //     } catch (error) {
+        //         console.error("Error fetching product:", error);
+        //     }
+        // },
+        async FetchDentals() {
+            this.loading = true;
+
+            const response = await axios.get(`tooths`);
+            this.dentalsFor = response.data.data;
+
+            this.loading = false;
+            console.log(this.dentalsFor)
         },
         async FetchLaboratories({ page, itemsPerPage }) {
             this.loading = true;
@@ -864,9 +874,9 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
                     itemsPerPage: this.itemsPerPage,
                 });
             } catch (err) {
-                this.error = err
+                this.error = err;
                 // If there's an error, set the error in the stor
             }
         },
-    }
+    },
 });

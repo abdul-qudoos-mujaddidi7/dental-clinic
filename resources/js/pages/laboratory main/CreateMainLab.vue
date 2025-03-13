@@ -76,7 +76,7 @@
             <v-row no-gutters class="justify-space-between mt-16">
                 <div class="d-flex gap-2 pb-6 flex flex-wrap">
                     <v-chip
-                        v-for="(service, i) in availableServices"
+                        v-for="(service, i) in LaboratoryRepository.dentalsFor"
                         :key="i"
                         :variant="
                             selectedServices.some((s) => s.id === service.id)
@@ -332,6 +332,7 @@ const availableServices = ref([
     { id: 13, name: "CC Plate", quantity: 1, cost: 2000 },
     { id: 14, name: "Full Night Guard", quantity: 1, cost: 700 },
 ]);
+LaboratoryRepository.FetchDentals()
 const selectedServices = ref([]);
 const toggleService = (service) => {
     const index = LaboratoryRepository.services.findIndex(

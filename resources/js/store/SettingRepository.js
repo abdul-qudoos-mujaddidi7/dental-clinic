@@ -16,27 +16,27 @@ export let useSettingRepository = defineStore("SettingRepository", {
             selectedItems: ref([]),
             itemsPerPage: ref(5),
             createDialog: ref(false),
-            transferDialog:ref(false),
+            transferDialog: ref(false),
             // systemSettings
-            systemSettings:reactive([]),
-            systemSetting:reactive([]),
+            systemSettings: reactive([]),
+            systemSetting: reactive([]),
             // permissions
-            permissionSearch:ref(""),
-            permissions:reactive([]),
-            permission:reactive([]),
+            permissionSearch: ref(""),
+            permissions: reactive([]),
+            permission: reactive([]),
             // service groups
-            serviceGroupSearch:ref(""),
-            serviceGroups:reactive([]), 
-            serviceGroup:reactive([]),
+            serviceGroupSearch: ref(""),
+            serviceGroups: reactive([]),
+            serviceGroup: reactive([]),
             // service
-            serviceSearch:ref(""),
-            services:reactive([]),
-            service:reactive([]),
+            serviceSearch: ref(""),
+            services: reactive([]),
+            service: reactive([]),
             // Dental
-            dentalSearch:ref(""),
-            dentals:reactive([]),
-            dental:reactive([]),
-            // money Account 
+            dentalSearch: ref(""),
+            dentals: reactive([]),
+            dental: reactive([]),
+            // money Account
             moneyAccSearch: ref(""),
             moneyAccs: reactive([]),
             s: reactive([]),
@@ -60,12 +60,12 @@ export let useSettingRepository = defineStore("SettingRepository", {
 
             const response = await axios.get(`systemSettings`);
             this.systemSettings = response.data.data;
-            console.log(this.systemSettings,'system setting');
+            console.log(this.systemSettings, "system setting");
 
             this.loading = false;
         },
         async fetchSystemSetting(id) {
-            console.log(id)
+            console.log(id);
             // this.error = null;
             try {
                 const response = await axios.get(`systemSettings/${id}`);
@@ -77,7 +77,7 @@ export let useSettingRepository = defineStore("SettingRepository", {
             }
         },
         async UpdateSystemSetting(data) {
-            console.log(data,'data')
+            console.log(data, "data");
             try {
                 const config = {
                     method: "POST",
@@ -175,7 +175,7 @@ export let useSettingRepository = defineStore("SettingRepository", {
 
                 // Using Axios to make a post request with async/await and custom headers
                 const response = await axios(config);
-                this.router.push('/rolePermissions')
+                this.router.push("/rolePermissions");
                 this.fetchRolePermissions({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
@@ -229,7 +229,7 @@ export let useSettingRepository = defineStore("SettingRepository", {
                 this.error = err;
             }
         },
-        // service Group 
+        // service Group
         async FetchServiceGroups({ page, itemsPerPage }) {
             this.loading = true;
 
@@ -268,14 +268,12 @@ export let useSettingRepository = defineStore("SettingRepository", {
                     itemsPerPage: this.itemsPerPage,
                 });
             } catch (err) {
-              
                 this.error = err;
             }
         },
         async CreateServiceGroup(formData) {
             console.log(formData);
             try {
-            
                 const config = {
                     method: "POST",
                     url: "serviceGroups",
@@ -313,7 +311,7 @@ export let useSettingRepository = defineStore("SettingRepository", {
                 this.error = err;
             }
         },
-        // service 
+        // service
         async FetchServices({ page, itemsPerPage }) {
             this.loading = true;
 
@@ -352,14 +350,12 @@ export let useSettingRepository = defineStore("SettingRepository", {
                     itemsPerPage: this.itemsPerPage,
                 });
             } catch (err) {
-              
                 this.error = err;
             }
         },
         async CreateService(formData) {
             console.log(formData);
             try {
-            
                 const config = {
                     method: "POST",
                     url: "services",
@@ -437,14 +433,12 @@ export let useSettingRepository = defineStore("SettingRepository", {
                     itemsPerPage: this.itemsPerPage,
                 });
             } catch (err) {
-              
                 this.error = err;
             }
         },
         async CreateDental(formData) {
             console.log(formData);
             try {
-            
                 const config = {
                     method: "POST",
                     url: "tooths",
@@ -484,129 +478,124 @@ export let useSettingRepository = defineStore("SettingRepository", {
                 this.error = err;
             }
         },
-                // accounts
-                // async MoneyAccounts() {
-                //     const config = {
-                //         url: "currencies",
-                //     };
-                //     const response = await axios(config);
-                //     this.accounts = response.data.data;
-                // },
-                // ==================================================
-                async fetchMoneyAccounts({ page, itemsPerPage }) {
-                    this.loading = true;
-        
-                    const response = await axios.get(
-                        `moneyAccount?page=${page}&perPage=${itemsPerPage}&search=${this.moneyAccSearch}`
-                    );
-                    this.moneyAccs = response.data.data;
-                    this.totalItems = response.data.meta.total;
-                    this.loading = false;
-                },
-                async fetchMoneyAcc(id) {
-                    // this.error = null;
-                    try {
-                        const response = await axios.get(`moneyAccount/${id}`);
-        
-                        this.s = response.data.data;
-                        console.log(this.moneyAccs);
-                    } catch (err) {
-                        // this.error = err.message;
-                    }
-                },
-                async UpdateMoneyAcc(id, data) {
-                    try {
-                        const config = {
-                            method: "PUT",
-                            url: "moneyAccount/" + id,
-        
-                            data: data,
-                        };
-        
-                        // Using Axios to make a post request with async/await and custom headers
-                        const response = await axios(config);
-                        this.createDialog = false;
-                        this.fetchMoneyAccounts({
-                            page: this.page,
-                            itemsPerPage: this.itemsPerPage,
-                        });
-                    } catch (err) {
-                        // If there's an error, set the error in the store
-                        this.error = err;
-                    }
-                },
-                async CreateMoneyAcc(formData) {
-                    console.log(formData);
-                    try {
-                        // Adding a custom header to the Axios request
-                        const config = {
-                            method: "POST",
-                            url: "moneyAccount",
-        
-                            data: formData,
-                        };
-        
-                        // Using Axios to make a GET request with async/await and custom headers
-                        const response = await axios(config);
-                        this.createDialog = false;
-                        this.fetchMoneyAccounts({
-                            page: this.page,
-                            itemsPerPage: this.itemsPerPage,
-                        });
-                    } catch (err) {
-                        // If there's an error, set the error in the stor
-                    }
-                },
-                async DeleteMoneyAcc(id) {
-                    this.isLoading = true;
-                    this.setting = [];
-                    this.error = null;
-        
-                    try {
-                        const config = {
-                            method: "DELETE",
-                            url: "moneyAccount/" + id,
-                        };
-        
-                        const response = await axios(config);
-        
-                        // this.setting = response.data.data;
-                        this.fetchMoneyAccounts({
-                            page: this.page,
-                            itemsPerPage: this.itemsPerPage,
-                        });
-                    } catch (err) {
-                        this.error = err;
-                    }
-                },
-                // money Transfer
-                //
-                async CreateTransferAcc(formData) {
-                    console.log(formData);
-                    try {
-                        // Adding a custom header to the Axios request
-                        const config = {
-                            method: "POST",
-                            url: "moneyTransfer",
-        
-                            data: formData,
-                        };
-        
-                        // Using Axios to make a GET request with async/await and custom headers
-                        const response = await axios(config);
-                        this.transferDialog = false;
-                        this.fetchMoneyAccounts({
-                            page: this.page,
-                            itemsPerPage: this.itemsPerPage,
-                        });
-                    } catch (err) {
-                        // If there's an error, set the error in the stor
-                    }
-                },
+        // accounts
+        // async MoneyAccounts() {
+        //     const config = {
+        //         url: "currencies",
+        //     };
+        //     const response = await axios(config);
+        //     this.accounts = response.data.data;
+        // },
+        // ==================================================
+        async fetchMoneyAccounts({ page, itemsPerPage }) {
+            this.loading = true;
 
+            const response = await axios.get(
+                `moneyAccount?page=${page}&perPage=${itemsPerPage}&search=${this.moneyAccSearch}`
+            );
+            this.moneyAccs = response.data.data;
+            this.totalItems = response.data.meta.total;
+            this.loading = false;
+        },
+        async fetchMoneyAcc(id) {
+            // this.error = null;
+            try {
+                const response = await axios.get(`moneyAccount/${id}`);
+
+                this.s = response.data.data;
+                console.log(this.moneyAccs);
+            } catch (err) {
+                // this.error = err.message;
+            }
+        },
+        async UpdateMoneyAcc(id, data) {
+            try {
+                const config = {
+                    method: "PUT",
+                    url: "moneyAccount/" + id,
+
+                    data: data,
+                };
+
+                // Using Axios to make a post request with async/await and custom headers
+                const response = await axios(config);
+                this.createDialog = false;
+                this.fetchMoneyAccounts({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                // If there's an error, set the error in the store
+                this.error = err;
+            }
+        },
+        async CreateMoneyAcc(formData) {
+            console.log(formData);
+            try {
+                // Adding a custom header to the Axios request
+                const config = {
+                    method: "POST",
+                    url: "moneyAccount",
+
+                    data: formData,
+                };
+
+                // Using Axios to make a GET request with async/await and custom headers
+                const response = await axios(config);
+                this.createDialog = false;
+                this.fetchMoneyAccounts({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                // If there's an error, set the error in the stor
+            }
+        },
+        async DeleteMoneyAcc(id) {
+            this.isLoading = true;
+            this.setting = [];
+            this.error = null;
+
+            try {
+                const config = {
+                    method: "DELETE",
+                    url: "moneyAccount/" + id,
+                };
+
+                const response = await axios(config);
+
+                // this.setting = response.data.data;
+                this.fetchMoneyAccounts({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                this.error = err;
+            }
+        },
+        // money Transfer
+        //
+        async CreateTransferAcc(formData) {
+            console.log(formData);
+            try {
+                // Adding a custom header to the Axios request
+                const config = {
+                    method: "POST",
+                    url: "moneyTransfer",
+
+                    data: formData,
+                };
+
+                // Using Axios to make a GET request with async/await and custom headers
+                const response = await axios(config);
+                this.transferDialog = false;
+                this.fetchMoneyAccounts({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                // If there's an error, set the error in the stor
+            }
+        },
     },
-       
-
-
-    },
-);
+});

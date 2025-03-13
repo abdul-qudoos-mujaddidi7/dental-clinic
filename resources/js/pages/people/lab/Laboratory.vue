@@ -1,7 +1,9 @@
 <template>
     <div class="all-expense rounded-xl">
         <div class="card rounded-xl" :dir="dir">
-            <AppBar mainTitle="OutBound laboratory" sub-title="people" />
+          
+            <AppBar :mainTitle="$t('outboundLaboratory')" :sub-title="$t('outboundLaboratory')" />
+
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
@@ -15,7 +17,8 @@
                         color="primaryOld"
                         density="compact"
                         variant="outlined"
-                        label="Search ..."
+                        :label="t('search')"
+
                         append-inner-icon="mdi-magnify"
                         hide-details
                         v-model="PeopleRepository.laboratorySearch"
@@ -23,14 +26,15 @@
                 </div>
                 <div class="btn">
                     <v-btn variant="outlined" color="primaryOld" class="px-6">
-                        Filter
+                        {{ t("filter") }}
                     </v-btn>
                     &nbsp;
                     <router-link to="createLab">
                         <v-btn
                             color="primaryOld"
                             variant="flat"
-                            text="Create"
+                            :text="t('create')"
+
                             class="px-6"
                         >
                         </v-btn>
@@ -96,7 +100,7 @@
                                                                 color="tealColor"
                                                                 >mdi-square-edit-outline</v-icon
                                                             >
-                                                            Edit
+                                                            {{ t("edit") }}
                                                         </v-list-item-title>
                                                     </router-link>
 
@@ -109,7 +113,7 @@
                                                         <v-icon color="error"
                                                             >mdi-delete-outline</v-icon
                                                         >
-                                                        Delete
+                                                        {{ t("delete") }}
                                                     </v-list-item-title>
                                                 </v-list-item>
                                             </v-list>
@@ -168,25 +172,25 @@ const deleteItem = async (item) => {
 };
 // header
 const headers = [
-{ title: "Teeth Type", key: "details", align: "start", sortable: false },
+{ title: t("teethType"), key: "details", align: "start", sortable: false },
 
-    { title: "Issue At", key: "issueAt", align: "start", sortable: false },
+    { title: t("issueAt"), key: "issueAt", align: "start", sortable: false },
 
     {
-        title: "Return Date",
+        title: t("returnDate"),
         key: "returnDate",
         align: "start",
         sortable: false,
     },
     {
-        title: "Grand total",
+        title: t("grandTotal"),
         key: "grandTotal",
         align: "start",
         sortable: false,
     },
-    { title: "Paid", key: "paid", align: "start", sortable: false },
-    { title: "Status", key: "status", align: "start", sortable: false },
-    { title: "Details", key: "description", align: "start", sortable: false },
-    { title: "Action", key: "action", align: "end", sortable: false },
+    { title: t("paid"), key: "paid", align: "start", sortable: false },
+    { title: t("status"), key: "status", align: "start", sortable: false },
+    { title: t("details"), key: "description", align: "start", sortable: false },
+    { title: t("action"), key: "action", align: "end", sortable: false },
 ];
 </script>

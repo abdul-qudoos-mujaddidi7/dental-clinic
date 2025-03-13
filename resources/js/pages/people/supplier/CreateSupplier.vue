@@ -12,11 +12,7 @@
                         class="px-2 pt-4 d-flex justify-space-between"
                     >
                         <h2 class="font-weight-bold pl-4">
-                            {{
-                                PeopleRepository.isEditMode
-                                    ? "Update"
-                                    : "Create"
-                            }}
+                            {{ PeopleRepository.isEditMode ? $t("update") : $t("create") }}
                         </h2>
                         <v-btn variant="text" @click="isActive.value = false">
                             <v-icon>mdi-close</v-icon>
@@ -30,7 +26,7 @@
                                 <v-text-field
                                     v-model="formData.name"
                                     variant="outlined"
-                                    label="Name *"
+                                     :label="$t('name')"
                                     class="pb-4 w-50 pr-2"
                                     density="compact"
                                     :rules="[rules.required]"
@@ -40,7 +36,8 @@
                                     :items="selectType"
                                     :return-object="false"
                                     variant="outlined"
-                                    label="Type *"
+                                    :label="$t('type')"
+
                                     class="pr-2 pl-2 pb-4 w-50"
                                     style="width: 45%"
                                     item-value="id"
@@ -53,7 +50,8 @@
                             <v-text-field
                                 v-model="formData.phone"
                                 variant="outlined"
-                                label="Phone *"
+                                :label="$t('phone')"
+
                                 density="compact"
                                 :counter="10"
                                 type="tel"
@@ -65,11 +63,7 @@
 
                     <div class="d-flex flex-row-reverse mb-6 mx-6">
                         <v-btn color="#112F53" class="px-4" @click="save">
-                            {{
-                                PeopleRepository.isEditMode
-                                    ? "Update"
-                                    : "Submit"
-                            }}
+                            {{ PeopleRepository.isEditMode ? $t("update") : $t("submit") }}
                         </v-btn>
                     </div>
                 </v-card>
