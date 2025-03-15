@@ -344,10 +344,17 @@ const peopleItems = computed(() =>[
 
     {
         to: "/supplier",
-        title: t("stakeholder"),
+        title: t("supplier"),
         icon: "mdi mdi-circle-medium",
         value: "supplier",
     },
+    {
+        to: "/customer",
+        title: t("customer"),
+        icon: "mdi mdi-circle-medium",
+        value: "customer",
+    },
+    
     {
         to: "/doctors",
         title: t("doctor"),

@@ -52,16 +52,31 @@
                                     />
                                 </div>
                             </div>
+                            <div class="flex w-100">
+                            <v-autocomplete
+                                    :items="ExpenseRepository.moneyAccsFor"
+                                    v-model="formData.money_account_id"
+                                    :return-object="false"
+                                    variant="outlined"
+                                    :label="t('account') + ' *'"
+                                    class="pr-2 w-50 pb-4"
+                                    style="width: 45%"
+                                    item-value="id"
+                                    item-title="name"
+                                    density="compact"
+                                    :rules="[rules.required]"
+                                ></v-autocomplete>
 
                             <v-text-field
                                 v-model="formData.amount"
                                 variant="outlined"
                                 :label="$t('amount')"
 
-                                class="pb-3"
+                                class="pb-4 pl-2 w-50 "
                                 density="compact"
                                 :rules="[rules.required, rules.number]"
                             ></v-text-field>
+                        </div>
 
                             <v-textarea
                                 v-model="formData.note"
@@ -93,6 +108,8 @@
 import { ref, reactive } from "vue";
 import { useExpenseRepository } from "@/store/ExpenseRepository";
 import { LocaleConfigs } from "../../../LocaleConfigs";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 const ExpenseRepository = useExpenseRepository();
 const formRef = ref(null);
 
@@ -100,6 +117,7 @@ const formData = reactive({
     id: ExpenseRepository.Expense.id,
     date: ExpenseRepository.Expense.date,
     amount: ExpenseRepository.Expense.amount,
+    money_account_id:ExpenseRepository.Expense.money_account_id,
     expenseCategoryId: ExpenseRepository.Expense.expenseCategory?.id,
     note: ExpenseRepository.Expense.note,
 });
@@ -127,6 +145,8 @@ const saveExpense = async () => {
         }
     }
 };
+ExpenseRepository.fetchMoneyAccountsFor()
+
 formData.date = ExpenseRepository.getTodaysDate();
 ExpenseRepository.Categories();
 </script>

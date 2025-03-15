@@ -1,8 +1,8 @@
 <template>
-    <CreateSupplier v-if="PeopleRepository.createDialog" />
+    <CreateCustomer v-if="PeopleRepository.createDialog" />
     <div class="all-expense rounded-xl">
         <div class="card rounded-xl">
-            <AppBar :mainTitle="$t('supplier')" :sub-title="$t('people')" />
+            <AppBar :mainTitle="$t('Customer')" :sub-title="$t('people')" />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
@@ -19,7 +19,7 @@
                          :label="t('search')"
                         append-inner-icon="mdi-magnify"
                         hide-details
-                        v-model="PeopleRepository.supplierSearch"
+                        v-model="PeopleRepository.customerSearch"
                     ></v-text-field>
                 </div>
                 <div class="btn">
@@ -57,13 +57,13 @@
                                     "
                                     :headers="headers"
                                     :items-length="PeopleRepository.totalItems"
-                                    :items="PeopleRepository.suppliers"
+                                    :items="PeopleRepository.customers"
                                     :loading="PeopleRepository.loading"
-                                    :search="PeopleRepository.supplierSearch"
+                                    :search="PeopleRepository.customerSearch"
                                     @update:options="
-                                        PeopleRepository.FetchSuppliers
+                                        PeopleRepository.FetchCustomers
                                     "
-                                    :item-key="PeopleRepository.suppliers"
+                                    :item-key="PeopleRepository.customers"
                                     hover
                                     class="w-100 mx-auto"
                                 >
@@ -135,7 +135,7 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
 import AppBar from "../../../components/AppBar.vue";
-import CreateSupplier from "./CreateSupplier.vue";
+import CreateCustomer from "./CreateCustomer.vue";
 import { usePeopleRepository } from "@/store/PeopleRepository";
 import { useI18n } from "vue-i18n";
 const {t,locale} = useI18n();
@@ -146,12 +146,12 @@ const selectedIds = ref([]);
 const sendSelectedIds = () => {
     if (selectedIds.value.length > 0) {
         const data = {
-            supplierIds: selectedIds.value,
+            customerIds: selectedIds.value,
         };
 
         console.log("Sending data:", data);
 
-        PeopleRepository.bulkDeleteSupplier(data);
+        PeopleRepository.bulkDeleteCustomer(data);
     } else {
         console.log("No IDs selected.");
     }
@@ -162,7 +162,7 @@ const dir = computed(() => {
 });
 // delete and update Create
 const CreateDialogShow = () => {
-    PeopleRepository.supplier = {};
+    PeopleRepository.customer = {};
     PeopleRepository.setEditMode(false);
     PeopleRepository.createDialog = true;
 };
@@ -170,9 +170,9 @@ const CreateDialogShow = () => {
 const edit = (item) => {
     console.log(item, "me");
     PeopleRepository.setEditMode(true);
-    PeopleRepository.supplier = {};
-    if (Object.keys(PeopleRepository.supplier).length === 0) {
-        PeopleRepository.FetchSupplier(item.id)
+    PeopleRepository.customer = {};
+    if (Object.keys(PeopleRepository.customer).length === 0) {
+        PeopleRepository.FetchCustomer(item.id)
             .then(() => {
                 PeopleRepository.createDialog = true;
             })
@@ -183,7 +183,7 @@ const edit = (item) => {
 };
 
 const deleteItem = async (item) => {
-    await PeopleRepository.DeleteSupplier(item.id);
+    await PeopleRepository.DeleteCustomer(item.id);
 };
 // header
 const headers = [
