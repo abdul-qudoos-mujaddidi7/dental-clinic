@@ -16,7 +16,7 @@
                         color="primaryOld"
                         density="compact"
                         variant="outlined"
-                         :label="t('search')"
+                        :label="t('search')"
                         append-inner-icon="mdi-magnify"
                         hide-details
                         v-model="PeopleRepository.supplierSearch"
@@ -32,7 +32,6 @@
                         color="primaryOld"
                         variant="flat"
                         :text="t('create')"
-
                         class="px-6"
                     >
                     </v-btn>
@@ -45,13 +44,12 @@
                         <v-row>
                             <v-col>
                                 <v-data-table-server
-                                :class="
+                                    :class="
                                         dir === 'rtl'
                                             ? 'rtl-border'
                                             : 'ltr-border'
                                     "
                                     theme="cursor-pointer"
-
                                     v-model:items-per-page="
                                         PeopleRepository.itemsPerPage
                                     "
@@ -67,7 +65,7 @@
                                     hover
                                     class="w-100 mx-auto"
                                 >
-                                <template v-slot:item.checkbox="{ item }">
+                                    <template v-slot:item.checkbox="{ item }">
                                         <v-checkbox
                                             :value="item.id"
                                             v-model="selectedIds"
@@ -87,6 +85,22 @@
                                             </template>
                                             <v-list>
                                                 <v-list-item>
+                                                    <router-link
+                                                        :to="
+                                                            '/viewSupplier/' +
+                                                            item.id
+                                                        "
+                                                    >
+                                                        <v-list-item-title
+                                                            class="cursor-pointer d-flex gap-3 justify-left pb-3"
+                                                        >
+                                                            <v-icon
+                                                                color="tealColor"
+                                                                >mdi-eye-outline</v-icon
+                                                            >
+                                                            {{ t("view") }}
+                                                        </v-list-item-title>
+                                                    </router-link>
                                                     <v-list-item-title
                                                         @click="edit(item)"
                                                         class="cursor-pointer d-flex gap-3 justify-left pb-3"
@@ -97,6 +111,7 @@
                                                         >
                                                         {{ t("edit") }}
                                                     </v-list-item-title>
+                                                    <!--  -->
 
                                                     <v-list-item-title
                                                         class="cursor-pointer d-flex gap-3"
@@ -138,7 +153,7 @@ import AppBar from "../../../components/AppBar.vue";
 import CreateSupplier from "./CreateSupplier.vue";
 import { usePeopleRepository } from "@/store/PeopleRepository";
 import { useI18n } from "vue-i18n";
-const {t,locale} = useI18n();
+const { t, locale } = useI18n();
 
 const PeopleRepository = usePeopleRepository();
 // bulk delete
