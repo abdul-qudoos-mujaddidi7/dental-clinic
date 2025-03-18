@@ -57,6 +57,10 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             customerSearch: ref(""),
             customers: reactive([]),
             customer: reactive([]),
+            // people account 
+            peopleAccSearch:ref(""),
+            peopleAccounts:reactive([]),
+            peopleAccount:reactive([]),
         };
     },
     actions: {
@@ -969,5 +973,93 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
                 this.error = err;
             }
         },
+        // peopleAccount
+        async FetchPeopleAccounts({ page, itemsPerPage }) {
+            this.loading = true;
+
+            const response = await axios.get(
+                `peopleAccount?page=${page}&perPage=${itemsPerPage}&search=${this.peopleAccSearch}`
+            );
+            this.peopleAccounts = response.data.data;
+            this.totalItems = response.data.meta.total;
+            this.loading = false;
+        },
+        async FetchPeopleAccount(id) {
+            // this.error = null;
+            try {
+                const response = await axios.get(`peopleAccount/${id}`);
+
+                this.peopleAccount= response.data.data;
+                console.log(this.customer);
+            } catch (err) {
+                // this.error = err.message;
+            }
+        },
+        async CreatePeopleAccount(formData) {
+            console.log(formData);
+            try {
+                // Adding a custom header to the Axios request
+                const config = {
+                    method: "POST",
+                    url: "peopleAccount",
+
+                    data: formData,
+                };
+
+                // Using Axios to make a GET request with async/await and custom headers
+                const response = await axios(config);
+                this.createDialog = false;
+                this.FetchPeopleAccounts({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                // If there's an error, set the error in the stor
+            }
+        },
+        async UpdatePeopleAccount(id, data) {
+            console.log(data);
+            try {
+                const config = {
+                    method: "PUT",
+                    url: `peopleAccount/${id}`,
+
+                    data: data,
+                };
+
+                // Using Axios to make a post request with async/await and custom headers
+                const response = await axios(config);
+                this.createDialog = false;
+                this.FetchPeopleAccounts({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                // If there's an error, set the error in the stor
+            }
+        },
+        async DeletePeopleAccount(id) {
+            this.isLoading = true;
+            this.Expenses = [];
+            this.error = null;
+
+            try {
+                const config = {
+                    method: "DELETE",
+                    url: "peopleAccount/" + id,
+                };
+
+                const response = await axios(config);
+
+                // this.Customer = response.data.data;
+                this.FetchPeopleAccounts({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                this.error = err;
+            }
+        },
+
     },
 });

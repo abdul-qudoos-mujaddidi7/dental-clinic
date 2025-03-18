@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\PeopleAccount;
 
 
-use App\Http\Requests\PaginateRequest;
+use Illuminate\Http\Request;
 use App\Http\Requests\PeopleAccountRequest;
 use App\Http\Resources\PeopleAccountResource;
 
@@ -15,7 +15,7 @@ class PeopleAccountController extends Controller
     protected $resource = PeopleAccountResource::class;
 
 
-    public function index(PaginateRequest $request)
+    public function index(Request $request)
     {
         return $this->resource::collection($this->listRecord($request, $this->model, ['name']));
     }

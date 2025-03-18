@@ -1,26 +1,33 @@
 <template>
     <AppBar :mainTitle="$t('profitLoss')" sub-title="reports" />
 
-    <div class="pb-2">
+    <div class="pb-8">
     <v-row class="pt-12 ">
         <v-col class="">
-            <v-card :subtitle="$t('expenses')" hover>
+            <v-card :subtitle="$t('allPayment')" hover>
                 <v-card-text class="borderBT mb-4 mx-3">
-                    {{ ReportRepository.totalAllExpense }}
+                    {{ PeopleRepository.totalAllExpense }}
                 </v-card-text>
             </v-card>
         </v-col>
         <v-col>
             <v-card :subtitle="$t('profit')" hover>
                 <v-card-text class="borderBlue mb-4 mx-3">
-                    {{ ReportRepository.totalAllProfit }}
+                    {{ PeopleRepository.totalAllProfit }}
                 </v-card-text>
             </v-card>
         </v-col>
         <v-col>
             <v-card :subtitle="$t('pickup')" hover>
                 <v-card-text class="bordeRed mb-4 mx-3">
-                    {{ ReportRepository.totalAllPickup }}
+                    {{ PeopleRepository.totalAllPickup }}
+                </v-card-text>
+            </v-card>
+        </v-col>
+        <v-col>
+            <v-card :subtitle="$t('pickup')" hover>
+                <v-card-text class="bordeBlack mb-4 mx-3">
+                    {{ PeopleRepository.totalAllPickup }}
                 </v-card-text>
             </v-card>
         </v-col>
@@ -29,19 +36,19 @@
     <div class="w-full">
         <v-card
             class="px-6 rounded-lg"
-            dir="rtl"
+             :dir="dir"
             variant="elevated"
             elevation="1"
         >
             <!-- Flight Group Details Tabs section  -->
             <v-tabs v-model="tab" color="primary">
-                <v-tab value="earnings">Sales </v-tab>
-                <v-tab value="Payment">transfers </v-tab>
+                <v-tab value="earnings">{{ t("accounts") }} </v-tab>
+                <v-tab value="Payment">{{ t("transfers") }} </v-tab>
             </v-tabs>
             <v-divider></v-divider>
             <v-window v-model="tab">
-                <v-window-item value="earnings">man </v-window-item>
-                <v-window-item value="Payment">women </v-window-item>
+                <v-window-item value="earnings"><CreateAccSupp></CreateAccSupp> </v-window-item>
+                <v-window-item value="Payment"><create-transfer-sup></create-transfer-sup> </v-window-item>
             </v-window>
         </v-card>
     </div>
@@ -49,15 +56,20 @@
 
 <script setup>
 import { ref,computed } from "vue";
-import { useReportRepository } from "@/store/ReportRepository";
+import {usePeopleRepository} from '@/store/PeopleRepository'
+
 import { useI18n } from "vue-i18n";
-const { t } = useI18n();
+import CreateTransferSup from "./payment/CreateTransferSup.vue";
+const { t, locale } = useI18n();
 let tab = ref(null);
+const dir = computed(() => {
+    return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
+});
 
 import AppBar from "../../../components/AppBar.vue";
 
-const ReportRepository = useReportRepository();
-ReportRepository.fetchTotalReportsOfEarnings();
+const PeopleRepository = usePeopleRepository();
+// PeopleRepository.fetchTotalReportsOfEarnings();
 </script>
 
 <style scoped>
@@ -72,6 +84,9 @@ ReportRepository.fetchTotalReportsOfEarnings();
 }
 .bordeRed {
     border-bottom: 4px solid #e54141;
+}
+.bordeBlack {
+    border-bottom: 4px solid #000;
 }
 .card {
     /* background-color: green; */
