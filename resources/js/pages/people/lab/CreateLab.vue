@@ -63,7 +63,7 @@
             <v-row no-gutters class="justify-space-between mt-16">
                 <div class="d-flex gap-2 pb-6 flex flex-wrap">
                     <v-chip
-                        v-for="(service, i) in availableServices"
+                        v-for="(service, i) in PeopleRepository.dentalsFor"
                         :key="i"
                         :variant="
                             selectedServices.some((s) => s.id === service.id)
@@ -208,6 +208,7 @@ import { usePeopleRepository } from "@/store/PeopleRepository";
 
 const PeopleRepository = usePeopleRepository();
 
+
 const formData = reactive({
     tooths: PeopleRepository.services || [],
     grandTotal: "",
@@ -232,7 +233,7 @@ const multiple = (pro) => {
     console.log(add);
     return add || 0;
 };
-
+PeopleRepository.FetchDentals()
 watch(
     () => PeopleRepository.services,
     () => {

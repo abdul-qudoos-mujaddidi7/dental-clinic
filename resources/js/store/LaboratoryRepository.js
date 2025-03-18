@@ -23,6 +23,7 @@ export let useLaboratoryRepository = defineStore("LaboratoryRepository", {
             laboratorySearch: ref(""),
             laboratories: reactive([]),
             laboratory: reactive([]),
+            dentalsFor:reactive([]),
             searchFetch: reactive([]),
             cureProduct: reactive([]),
             services: [],
@@ -104,6 +105,15 @@ export let useLaboratoryRepository = defineStore("LaboratoryRepository", {
             } catch (error) {
                 console.error("Error fetching product:", error);
             }
+        },
+        async FetchDentals() {
+            this.loading = true;
+
+            const response = await axios.get(`tooths`);
+            this.dentalsFor = response.data.data;
+
+            this.loading = false;
+            console.log(this.dentalsFor)
         },
         // ======================
 

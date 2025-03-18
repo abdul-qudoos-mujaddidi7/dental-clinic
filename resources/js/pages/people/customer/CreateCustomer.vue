@@ -75,20 +75,17 @@
 <script setup>
 import { ref, reactive } from "vue";
 import { usePeopleRepository } from "@/store/PeopleRepository";
-import Supplier from "./Supplier.vue";
+
 
 const PeopleRepository = usePeopleRepository();
 const formRef = ref(null);
 
-const selectType = [
-    { id: "supplier", name: "Supplier" },
-    { id: "customer", name: "Customer" },
-];
+
 const formData = reactive({
-    id: PeopleRepository.supplier.id,
-    name: PeopleRepository.supplier.name,
-    phone: PeopleRepository.supplier.phone,
-    type: "supplier",
+    id: PeopleRepository.customer.id,
+    name: PeopleRepository.customer.name,
+    phone: PeopleRepository.customer.phone,
+    type: "customer",
 });
 const rules = {
     required: (value) => !!value || "This field is required.",
@@ -102,9 +99,9 @@ const save = async () => {
     const isValid = await formRef.value.validate();
     if (isValid) {
         if (PeopleRepository.isEditMode) {
-            await PeopleRepository.UpdateSupplier(formData.id, formData);
+            await PeopleRepository.UpdateCustomer(formData.id, formData);
         } else {
-            await PeopleRepository.CreateSupplier(formData);
+            await PeopleRepository.CreateCustomer(formData);
         }
     }
 };

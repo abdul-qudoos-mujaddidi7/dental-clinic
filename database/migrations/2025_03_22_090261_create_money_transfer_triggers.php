@@ -27,7 +27,7 @@ class CreateMoneyTransferTriggers extends Migration
 
                 CALL InsertMoneyAccountTransaction(
                     NEW.". MoneyTransfer::COLUMN_ID. ",
-                    NEW.". MoneyTransfer::COLUMN_FROM_ACCOUNT_ID. ",
+                    NEW.". MoneyTransfer::COLUMN_FROM_ACCOUNT_ID. ",null,
                     '". OperationType::MONEY_ACCOUNT_TRANSFER."',
                     '". PaymentType::PAID."',
                     NEW.". MoneyTransfer::COLUMN_AMOUNT. ",
@@ -37,7 +37,7 @@ class CreateMoneyTransferTriggers extends Migration
 
                 CALL InsertMoneyAccountTransaction(
                     NEW.". MoneyTransfer::COLUMN_ID. ",
-                    NEW.". MoneyTransfer::COLUMN_TO_ACCOUNT_ID. ",
+                    NEW.". MoneyTransfer::COLUMN_TO_ACCOUNT_ID. ",null,
                     '". OperationType::MONEY_ACCOUNT_TRANSFER."',
                     '". PaymentType::RECEIVED."',
                     NEW.". MoneyTransfer::COLUMN_AMOUNT. ",

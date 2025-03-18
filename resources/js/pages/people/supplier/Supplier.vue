@@ -2,7 +2,7 @@
     <CreateSupplier v-if="PeopleRepository.createDialog" />
     <div class="all-expense rounded-xl">
         <div class="card rounded-xl">
-            <AppBar mainTitle="Stakeholder" sub-title="people" />
+            <AppBar :mainTitle="$t('supplier')" :sub-title="$t('people')" />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
@@ -16,7 +16,7 @@
                         color="primaryOld"
                         density="compact"
                         variant="outlined"
-                        label="Search ..."
+                        :label="t('search')"
                         append-inner-icon="mdi-magnify"
                         hide-details
                         v-model="PeopleRepository.supplierSearch"
@@ -24,14 +24,14 @@
                 </div>
                 <div class="btn">
                     <v-btn variant="outlined" color="primaryOld" class="px-6">
-                        Filter
+                        {{ t("filter") }}
                     </v-btn>
                     &nbsp;
                     <v-btn
                         @click="CreateDialogShow"
                         color="primaryOld"
                         variant="flat"
-                        text="Create"
+                        :text="t('create')"
                         class="px-6"
                     >
                     </v-btn>
@@ -44,6 +44,11 @@
                         <v-row>
                             <v-col>
                                 <v-data-table-server
+                                    :class="
+                                        dir === 'rtl'
+                                            ? 'rtl-border'
+                                            : 'ltr-border'
+                                    "
                                     theme="cursor-pointer"
                                     v-model:items-per-page="
                                         PeopleRepository.itemsPerPage
@@ -60,7 +65,7 @@
                                     hover
                                     class="w-100 mx-auto"
                                 >
-                                <template v-slot:item.checkbox="{ item }">
+                                    <template v-slot:item.checkbox="{ item }">
                                         <v-checkbox
                                             :value="item.id"
                                             v-model="selectedIds"
@@ -80,6 +85,22 @@
                                             </template>
                                             <v-list>
                                                 <v-list-item>
+                                                    <router-link
+                                                        :to="
+                                                            '/viewSupplier/' +
+                                                            item.id
+                                                        "
+                                                    >
+                                                        <v-list-item-title
+                                                            class="cursor-pointer d-flex gap-3 justify-left pb-3"
+                                                        >
+                                                            <v-icon
+                                                                color="tealColor"
+                                                                >mdi-eye-outline</v-icon
+                                                            >
+                                                            {{ t("view") }}
+                                                        </v-list-item-title>
+                                                    </router-link>
                                                     <v-list-item-title
                                                         @click="edit(item)"
                                                         class="cursor-pointer d-flex gap-3 justify-left pb-3"
@@ -88,8 +109,9 @@
                                                             color="tealColor"
                                                             >mdi-square-edit-outline</v-icon
                                                         >
-                                                        Edit
+                                                        {{ t("edit") }}
                                                     </v-list-item-title>
+                                                    <!--  -->
 
                                                     <v-list-item-title
                                                         class="cursor-pointer d-flex gap-3"
@@ -100,7 +122,7 @@
                                                         <v-icon color="error"
                                                             >mdi-delete-outline</v-icon
                                                         >
-                                                        Delete
+                                                        {{ t("delete") }}
                                                     </v-list-item-title>
                                                 </v-list-item>
                                             </v-list>
@@ -126,10 +148,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 import CreateSupplier from "./CreateSupplier.vue";
 import { usePeopleRepository } from "@/store/PeopleRepository";
+import { useI18n } from "vue-i18n";
+const { t, locale } = useI18n();
+
 const PeopleRepository = usePeopleRepository();
 // bulk delete
 const selectedIds = ref([]);
@@ -147,6 +172,9 @@ const sendSelectedIds = () => {
     }
 };
 
+const dir = computed(() => {
+    return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
+});
 // delete and update Create
 const CreateDialogShow = () => {
     PeopleRepository.supplier = {};
@@ -175,10 +203,10 @@ const deleteItem = async (item) => {
 // header
 const headers = [
     { title: "", key: "checkbox", align: "start", sortable: false },
-    { title: "Name", key: "name", align: "start", sortable: false },
-    { title: "Phone", key: "phone", align: "start", sortable: false },
-    { title: "Type", key: "type", align: "start", sortable: false },
-    { title: "Action", key: "action", align: "center", sortable: false },
+    { title: t("name"), key: "name", align: "start", sortable: false },
+    { title: t("phone"), key: "phone", align: "start", sortable: false },
+    // { title: t("type"), key: "type", align: "start", sortable: false },
+    { title: t("action"), key: "action", align: "center", sortable: false },
 ];
 </script>
 
