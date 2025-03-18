@@ -16,12 +16,12 @@ class PeopleAccountResource extends JsonResource
     public function toArray($request): array
     {
         return [
-            "id"                => $this->id,
-            "name"              => $this->name,
-            "balance"           => $this->balance,
-            "people"            => [
-                'id'    => $this->people ? $this->people->id : null,
-                'name'  => $this->people ? $this->people->name : null,
+            "id"=> $this->id,
+            "name"=> $this->name,
+            "balance"=> $this->balance,
+            "people"=> [
+                'id' => $this->people ? $this->people->id : null,
+                'name' => $this->people ? $this->people->name : null,
             ],
        
         ];

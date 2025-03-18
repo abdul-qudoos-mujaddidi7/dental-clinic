@@ -1,5 +1,5 @@
 <template>
-    <CreateCustomer v-if="PeopleRepository.createDialog" />
+    <CreateAccSupp v-if="PeopleRepository.createDialog" />
     <div class="all-expense rounded-xl">
         <div class="card rounded-xl">
 
@@ -135,7 +135,7 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
 // import AppBar from "../../../components/AppBar.vue";
-// import CreateCustomer from "./CreateCustomer.vue";
+import CreateAccSupp from "./CreateAccSupp.vue";
 import { usePeopleRepository } from "@/store/PeopleRepository";
 import { useI18n } from "vue-i18n";
 const {t,locale} = useI18n();
@@ -189,8 +189,8 @@ const deleteItem = async (item) => {
 const headers = [
     { title: "", key: "checkbox", align: "start", sortable: false },
     { title: t("name"), key: "name", align: "start", sortable: false },
-    { title: t("account"), key: "phone", align: "start", sortable: false },
-    // { title: t("type"), key: "type", align: "start", sortable: false },
+    { title: t("account"), key: "people.name", align: "start", sortable: false },
+    { title: t("balance"), key: "balance", align: "start", sortable: false },
     { title: t("action"), key: "action", align: "center", sortable: false },
 ];
 </script>

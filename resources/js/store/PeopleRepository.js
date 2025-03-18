@@ -61,6 +61,8 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             peopleAccSearch:ref(""),
             peopleAccounts:reactive([]),
             peopleAccount:reactive([]),
+            moneyAccsFor:reactive([]),
+            idForCreatePayment:ref("")
         };
     },
     actions: {
@@ -974,6 +976,15 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             }
         },
         // peopleAccount
+        async fetchMoneyAccountsFor( ) {
+            this.loading = true;
+
+            const response = await axios.get(
+                `moneyAccount`
+            );
+            this.moneyAccsFor = response.data.data;
+            this.loading = false;
+        },
         async FetchPeopleAccounts({ page, itemsPerPage }) {
             this.loading = true;
 

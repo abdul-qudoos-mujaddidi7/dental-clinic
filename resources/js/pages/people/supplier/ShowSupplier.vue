@@ -47,8 +47,8 @@
             </v-tabs>
             <v-divider></v-divider>
             <v-window v-model="tab">
-                <v-window-item value="earnings"><CreateAccSupp></CreateAccSupp> </v-window-item>
-                <v-window-item value="Payment"><create-transfer-sup></create-transfer-sup> </v-window-item>
+                <v-window-item value="earnings"><AccSuppTable/> </v-window-item>
+                <v-window-item value="Payment"><TransferSuppTable/> </v-window-item>
             </v-window>
         </v-card>
     </div>
@@ -57,9 +57,9 @@
 <script setup>
 import { ref,computed } from "vue";
 import {usePeopleRepository} from '@/store/PeopleRepository'
-
+import AccSuppTable from "./payment/AccSuppTable.vue"
 import { useI18n } from "vue-i18n";
-import CreateTransferSup from "./payment/CreateTransferSup.vue";
+import TransferSuppTable from "./payment/TransferSupTable.vue"
 const { t, locale } = useI18n();
 let tab = ref(null);
 const dir = computed(() => {

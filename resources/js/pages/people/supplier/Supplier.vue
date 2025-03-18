@@ -93,6 +93,9 @@
                                                     >
                                                         <v-list-item-title
                                                             class="cursor-pointer d-flex gap-3 justify-left pb-3"
+                                                            @click="
+                                                                showId(item.id)
+                                                            "
                                                         >
                                                             <v-icon
                                                                 color="tealColor"
@@ -171,7 +174,9 @@ const sendSelectedIds = () => {
         console.log("No IDs selected.");
     }
 };
-
+const showId = (id) => {
+    PeopleRepository.idForCreatePayment = id;
+};
 const dir = computed(() => {
     return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
 });
