@@ -40,15 +40,11 @@
             <!-- v-table server  -->
             <div class="overflow-x-hidden">
                 <v-app>
-                    <v-main class="main" :dir="dir">
+                    <v-main class="main" >
                         <v-row>
                             <v-col>
                                 <v-data-table-server
-                                :class="
-                                        dir === 'rtl'
-                                            ? 'rtl-border'
-                                            : 'ltr-border'
-                                    "
+                                :dir="dir"
                                     theme="cursor-pointer"
                                     v-model:items-per-page="
                                         ExpenseRepository.itemsPerPage
@@ -75,7 +71,7 @@
                                         <v-checkbox
                                             :value="item.id"
                                             v-model="selectedIds"
-                                            class="w-1 d-flex"
+                                            class="w-6 d-flex"
                                         ></v-checkbox>
                                     </template>
 

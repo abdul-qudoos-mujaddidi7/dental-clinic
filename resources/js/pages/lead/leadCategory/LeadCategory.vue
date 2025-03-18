@@ -45,11 +45,7 @@
                         <v-row>
                             <v-col>
                                 <v-data-table-server
-                                :class="
-                                        dir === 'rtl'
-                                            ? 'rtl-border'
-                                            : 'ltr-border'
-                                    "
+                               :dir="dir"
                                     theme="cursor-pointer"
                                     v-model:items-per-page="
                                         LeadRepository.itemsPerPage

@@ -40,16 +40,12 @@
             <!-- v-table server  -->
             <div class="overflow-x-hidden">
                 <v-app>
-                    <v-main class="main" :dir="dir">
+                    <v-main class="main">
                         <v-row>
                             <v-col>
                                 <!--  :location="location" -->
                                 <v-data-table-server
-                                :class="
-                                        dir === 'rtl'
-                                            ? 'rtl-border'
-                                            : 'ltr-border'
-                                    "
+                                :dir="dir"
                                     theme="cursor-pointer"
                                     v-model:items-per-page="LeadRepository.itemsPerPage"
                                     :headers="headers"

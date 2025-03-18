@@ -1,6 +1,6 @@
 <template>
     <CreateDoctor v-if="PeopleRepository.createDialog" />
-    <div>
+    <div :dir="dir">
         <AppBar mainTitle="Doctor" sub-title="people" />
         <v-divider
             :thickness="1"
@@ -43,6 +43,7 @@
                     <v-row>
                         <v-col>
                             <v-data-table-server
+                            :dir="dir"
                                 theme="cursor-pointer"
                                 v-model:items-per-page="
                                     PeopleRepository.itemsPerPage
@@ -118,13 +119,19 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted,computed } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 import CreateDoctor from "./CreateDoctor.vue";
 import { useI18n } from "vue-i18n";
-const { t } = useI18n();
+const { t,locale } = useI18n();
 import { usePeopleRepository } from "@/store/PeopleRepository";
 const PeopleRepository = usePeopleRepository();
+
+// direction
+const dir = computed(() => {
+    return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
+});
+
 // bulk delete
 const selectedIds = ref([]);
 const sendSelectedIds = () => {

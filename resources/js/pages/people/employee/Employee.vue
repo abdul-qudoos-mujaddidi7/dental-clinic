@@ -1,6 +1,6 @@
 <template>
     <CreateEmployee v-if="PeopleRepository.createDialog" />
-    <div class="all-expense rounded-xl">
+    <div class="all-expense rounded-xl" :dir="dir">
         <div class="card rounded-xl">
             <AppBar mainTitle="Employee" sub-title="people" />
             <v-divider
@@ -44,6 +44,7 @@
                         <v-row>
                             <v-col>
                                 <v-data-table-server
+                                :dir="dir"
                                     theme="cursor-pointer"
                                     v-model:items-per-page="
                                         PeopleRepository.itemsPerPage
@@ -110,13 +111,19 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted,computed } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 import CreateEmployee from "./CreateEmployee.vue";
 import { useI18n } from "vue-i18n";
-const { t } = useI18n();
+const { t ,locale} = useI18n();
 import { usePeopleRepository } from "@/store/PeopleRepository";
 const PeopleRepository = usePeopleRepository();
+
+// direction
+const dir = computed(() => {
+    return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
+});
+
 // bulk delete
 
 // delete and update Create

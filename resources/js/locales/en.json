@@ -58,6 +58,10 @@
     "client": "Client",
     "employee": "Employee",
     "owner": "Owner",
+    "owners": "Owners",
+    "products": "Products",
+    "categories": "Categories ",
+
     "supplier": "Supplier",
     "user": "User",
     "systemSetting": "System Setting",
