@@ -44,7 +44,19 @@
                         />
                     </div>
                 </div>
-
+                <v-autocomplete
+                    v-model="formData.supplierId"
+                    :items="PeopleRepository.suppliersFor"
+                    :return-object="false"
+                    variant="outlined"
+                    label="Supplier *"
+                    class="pr-2 pl-2"
+                    style="width: 45%"
+                    item-value="name"
+                    item-title="name"
+                    density="compact"
+                    :rules="[rules.required]"
+                ></v-autocomplete>
                 <v-autocomplete
                     v-model="formData.status"
                     :items="PeopleRepository.leadStageFor"
@@ -111,9 +123,7 @@
                     <tbody class="space">
                         <tr
                             class="product-table h-[3.4rem] text-xs"
-                            v-for="(
-                                pro, index
-                            ) in PeopleRepository.services"
+                            v-for="(pro, index) in PeopleRepository.services"
                             :key="index"
                         >
                             <td class="pl-3 text-start">{{ index + 1 }}</td>
@@ -210,7 +220,6 @@ import { usePeopleRepository } from "@/store/PeopleRepository";
 const PeopleRepository = usePeopleRepository();
 // PeopleRepository.services =  laboratory.details || [];
 
-    
 const formData = reactive({
     tooths: PeopleRepository.services || [],
     grandTotal: "",
@@ -219,7 +228,7 @@ const formData = reactive({
     issueAt: "",
     description: "",
     paid: "",
-    type:"out"
+    type: "out",
 });
 const routeParams = useRoute();
 
@@ -326,7 +335,7 @@ const update = async () => {
         console.error("Form validation failed");
     }
 };
-PeopleRepository.FetchDentals()
+PeopleRepository.FetchDentals();
 
 // Computed Duo (remaining balance)
 const Duo = computed(() => {
@@ -347,9 +356,6 @@ formData.startDate = PeopleRepository.getTodaysDate();
 PeopleRepository.leadStagesFor();
 // ====================
 
-
-
-
 watch(
     () => PeopleRepository.services,
     () => {
@@ -361,7 +367,6 @@ watch(
     },
     { deep: true }
 );
-
 
 // const totalSum = computed(() => {
 //     let total = 0;
@@ -378,16 +383,13 @@ watch(
 
 // Computed Duo (remaining balance)
 
-
-
-
-
-
 formData.returnDate = PeopleRepository.getTodaysDate();
 formData.issueAt = PeopleRepository.getTodaysDate();
 
 // PeopleRepository.Patients();
 // PeopleRepository.Doctor();
+PeopleRepository.FetchSuppliersFor();
+
 PeopleRepository.leadStagesFor();
 // ========================
 

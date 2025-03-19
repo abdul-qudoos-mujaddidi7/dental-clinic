@@ -45,11 +45,11 @@
                     </div>
                 </div>
                 <v-autocomplete
-                    v-model="formData.status"
-                    :items="LaboratoryRepository.leadStageFor"
+                    v-model="formData.customerId"
+                    :items="LaboratoryRepository.customersFor"
                     :return-object="false"
                     variant="outlined"
-                    label="Status *"
+                    label="Customer *"
                     class="pr-2 pl-2"
                     style="width: 45%"
                     item-value="name"
@@ -313,7 +313,9 @@ formData.returnDate = LaboratoryRepository.getTodaysDate();
 formData.issueAt = LaboratoryRepository.getTodaysDate();
 // LaboratoryRepository.Patients();
 LaboratoryRepository.Doctors();
-LaboratoryRepository.leadStagesFor();
+
+LaboratoryRepository.FetchCustomersFor();
+// LaboratoryRepository.leadStagesFor();
 // =============================
 // Define available services
 const availableServices = ref([
