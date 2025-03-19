@@ -223,22 +223,6 @@ import { useLaboratoryRepository } from "@/store/LaboratoryRepository";
 
 const LaboratoryRepository = useLaboratoryRepository();
 // LaboratoryRepository.services =  laboratory.details || [];
-const CalcFetchProduct = (index) => {
-    console.log(index, "man of the match");
-    LaboratoryRepository.fetchProduct(index.id);
-    clearSearch();
-};
-
-// ======================
-const clearSearch = () => {
-    LaboratoryRepository.billExpenseSearch = ""; //
-    LaboratoryRepository.searchFetch = [];
-};
-
-const createExpenseProduct = () => {
-    LaboratoryRepository.createDialog = true;
-};
-
 const formData = reactive({
     tooths: LaboratoryRepository.services || [],
     grandTotal: "",
@@ -268,16 +252,13 @@ LaboratoryRepository.FetchLaboratory(routeParams.params.id).then((res) => {
 });
 
 watch(
-    () => LaboratoryRepository.laboratory,
-    (newData) => {
-        if (newData) {
-            formData.tooths = newData.details || [];
-            formData.grandTotal = newData.grandTotal;
-
-            formData.description = newData.description;
-            formData.paid = newData.paid;
-            formData.status = newData.status;
-        }
+    () => LaboratoryRepository.services,
+    () => {
+        LaboratoryRepository.services.forEach((services) => {
+            // Update the 'subtotal' property for each service
+            services.total = multiple(services);
+            console.log(services);
+        });
     },
     { deep: true }
 );
@@ -363,6 +344,7 @@ const Duo = computed(() => {
 const saveData = async (id) => {
     await LaboratoryRepository.fetchProduct(id);
 };
+LaboratoryRepository.FetchDentals()
 
 const deleteItem = async (item) => {
     await LaboratoryRepository.DeleteLaboratory(item.id);
@@ -420,26 +402,7 @@ watch(
 
 // Computed Duo (remaining balance)
 
-const createEarning = async () => {
-    const isValid = await formRef.value.validate();
-    if (isValid) {
-        formData.tooths.map((data) => (data.serviceId = data.id));
-        await LaboratoryRepository.CreateLaboratory(formData);
-        formData.tooths = [];
-        LaboratoryRepository.services = [];
 
-        // Reset other formData fields
-        formData.grandTotal = "";
-        formData.toothId = "";
-        formData.returnDate = LaboratoryRepository.getTodaysDate();
-        formData.issueAt = LaboratoryRepository.getTodaysDate();
-        formData.description = "";
-        formData.paid = "";
-        formData.status = "";
-
-        console.log("Form submitted and cleared successfully!");
-    }
-};
 
 formData.returnDate = LaboratoryRepository.getTodaysDate();
 formData.issueAt = LaboratoryRepository.getTodaysDate();
@@ -447,23 +410,7 @@ formData.issueAt = LaboratoryRepository.getTodaysDate();
 LaboratoryRepository.Doctors();
 LaboratoryRepository.leadStagesFor();
 // =============================
-// Define available services
-const availableServices = ref([
-    { id: 1, name: "Cad Cam", quantity: 1, cost: 2200 },
-    { id: 2, name: "Zarconia", quantity: 1, cost: 2000 },
-    { id: 3, name: "Veneer", quantity: 1, cost: 2200 },
-    { id: 4, name: "Attachment", quantity: 1, cost: 4500 },
-    { id: 5, name: "Procelain Style", quantity: 1, cost: 600 },
-    { id: 6, name: "Procelain Design", quantity: 1, cost: 400 },
-    { id: 7, name: "Procelain Classic", quantity: 1, cost: 400 },
-    { id: 8, name: "Procelain Pro Shofo", quantity: 1, cost: 300 },
-    { id: 9, name: "Procelain Noritake", quantity: 1, cost: 300 },
-    { id: 10, name: "Metal Suprema Cast", quantity: 1, cost: 200 },
-    { id: 11, name: "Golden Pro", quantity: 1, cost: 200 },
-    { id: 12, name: "Full Denture", quantity: 1, cost: 2500 },
-    { id: 13, name: "CC Plate", quantity: 1, cost: 2000 },
-    { id: 14, name: "Full Night Guard", quantity: 1, cost: 700 },
-]);
+
 const selectedServices = ref([]);
 const toggleService = (service) => {
     const index = LaboratoryRepository.services.findIndex(

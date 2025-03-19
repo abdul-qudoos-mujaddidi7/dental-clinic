@@ -326,6 +326,7 @@ const update = async () => {
         console.error("Form validation failed");
     }
 };
+PeopleRepository.FetchDentals()
 
 // Computed Duo (remaining balance)
 const Duo = computed(() => {
@@ -378,26 +379,6 @@ watch(
 // Computed Duo (remaining balance)
 
 
-const createEarning = async () => {
-    const isValid = await formRef.value.validate();
-    if (isValid) {
-        formData.tooths.map((data) => (data.serviceId = data.id));
-        await PeopleRepository.CreateLaboratory(formData);
-        formData.tooths = [];
-        PeopleRepository.services = [];
-
-        // Reset other formData fields
-        formData.grandTotal = "";
-        formData.toothId = "";
-        formData.returnDate = PeopleRepository.getTodaysDate();
-        formData.issueAt = PeopleRepository.getTodaysDate();
-        formData.description = "";
-        formData.paid = "";
-        formData.status = "";
-
-        console.log("Form submitted and cleared successfully!");
-    }
-};
 
 
 
@@ -412,22 +393,22 @@ PeopleRepository.leadStagesFor();
 
 // =============================
 // Define available services
-const availableServices = ref([
-    { id: 1, name: "Cad Cam", quantity: 1, cost: 2200 },
-    { id: 2, name: "Zarconia", quantity: 1, cost: 2000 },
-    { id: 3, name: "Veneer", quantity: 1, cost: 2200 },
-    { id: 4, name: "Attachment", quantity: 1, cost: 4500 },
-    { id: 5, name: "Procelain Style", quantity: 1, cost: 600 },
-    { id: 6, name: "Procelain Design", quantity: 1, cost: 400 },
-    { id: 7, name: "Procelain Classic", quantity: 1, cost: 400 },
-    { id: 8, name: "Procelain Pro Shofo", quantity: 1, cost: 300 },
-    { id: 9, name: "Procelain Noritake", quantity: 1, cost: 300 },
-    { id: 10, name: "Metal Suprema Cast", quantity: 1, cost: 200 },
-    { id: 11, name: "Golden Pro", quantity: 1, cost: 200 },
-    { id: 12, name: "Full Denture", quantity: 1, cost: 2500 },
-    { id: 13, name: "CC Plate", quantity: 1, cost: 2000 },
-    { id: 14, name: "Full Night Guard", quantity: 1, cost: 700 },
-]);
+// const availableServices = ref([
+//     { id: 1, name: "Cad Cam", quantity: 1, cost: 2200 },
+//     { id: 2, name: "Zarconia", quantity: 1, cost: 2000 },
+//     { id: 3, name: "Veneer", quantity: 1, cost: 2200 },
+//     { id: 4, name: "Attachment", quantity: 1, cost: 4500 },
+//     { id: 5, name: "Procelain Style", quantity: 1, cost: 600 },
+//     { id: 6, name: "Procelain Design", quantity: 1, cost: 400 },
+//     { id: 7, name: "Procelain Classic", quantity: 1, cost: 400 },
+//     { id: 8, name: "Procelain Pro Shofo", quantity: 1, cost: 300 },
+//     { id: 9, name: "Procelain Noritake", quantity: 1, cost: 300 },
+//     { id: 10, name: "Metal Suprema Cast", quantity: 1, cost: 200 },
+//     { id: 11, name: "Golden Pro", quantity: 1, cost: 200 },
+//     { id: 12, name: "Full Denture", quantity: 1, cost: 2500 },
+//     { id: 13, name: "CC Plate", quantity: 1, cost: 2000 },
+//     { id: 14, name: "Full Night Guard", quantity: 1, cost: 700 },
+// ]);
 
 const selectedServices = ref([]);
 
