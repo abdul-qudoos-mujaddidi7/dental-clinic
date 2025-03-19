@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-[#f8f8f8] rounded-xl" rtl>
+    <div class="bg-[#f8f8f8] rounded-xl">
         <AppBar :subTitle="$t('dashboard')" :main-title="$t('dashboard')" class="MenuColor" />
         <v-divider
             :thickness="1"
@@ -19,7 +19,7 @@
                                 />
                             </v-avatar>
                             <div class="pt-1">
-                                <div class="font-weight-black">
+                                <div class="font-weight-black" >
                                     {{
                                         DashboardRepository.dashboardReport
                                             .netProfit
@@ -72,7 +72,7 @@
                                     class="w-6"
                                 />
                             </v-avatar>
-                            <div class="font-weight-black">
+                            <div class="font-weight-black" :dir="dir">
                                 {{
                                     DashboardRepository.dashboardReport
                                         .totalEarnings
@@ -289,12 +289,19 @@
 <!-- ============================================================================================================================= -->
 
 <script setup>
+import {computed} from 'vue';
 import DataBar from "@/components/UI/DashboardCharts/barChart.vue";
 import MoneyAccountChart from "@/components/UI/DashboardCharts/MoneyAccountChart.vue";
 import TotalPayment from "@/components/UI/DashboardCharts/TotalPayment.vue";
 import AppBar from "../../components/AppBar.vue";
 import { useI18n } from "vue-i18n";
-const { t } = useI18n();
+const { t ,locale} = useI18n();
+
+// direction
+const dir = computed(() => {
+    return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
+});
+
 
 import { useDashboardRepository } from "@/store/DashboardRepository";
 import { onMounted, ref } from "vue";

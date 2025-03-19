@@ -153,5 +153,7 @@
     "IRecieveMoney": "I Recieve Money",
     "addedBy": "addedBy",
     "accountName": "Account Name",
-    "roleName": "Role Name"
+    "roleName": "Role Name",
+    "returnDate":"Return Date",
+    "issueAt":"IssueAt"
 }
