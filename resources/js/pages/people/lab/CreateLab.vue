@@ -44,6 +44,19 @@
                         />
                     </div>
                 </div>
+                <v-autocomplete
+                    v-model="formData.supplierId"
+                    :items="PeopleRepository.suppliersFor"
+                    :return-object="false"
+                    variant="outlined"
+                    label="Supplier *"
+                    class="pr-2 pl-2"
+                    style="width: 45%"
+                    item-value="id"
+                    item-title="name"
+                    density="compact"
+                    :rules="[rules.required]"
+                ></v-autocomplete>
 
                 <v-autocomplete
                     v-model="formData.status"
@@ -293,8 +306,8 @@ const createEarning = async () => {
     }
 };
 
-
-
+PeopleRepository.FetchSuppliersFor();
+console.log(PeopleRepository.suppliersFor,'chiqa tyt')
 const deleteItem = async (item) => {
     await PeopleRepository.DeleteLaboratory(item.id);
 };

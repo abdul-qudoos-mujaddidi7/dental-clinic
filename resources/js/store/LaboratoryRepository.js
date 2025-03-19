@@ -31,6 +31,7 @@ export let useLaboratoryRepository = defineStore("LaboratoryRepository", {
             leadStageFor: reactive([]),
             labId: ref(""),
             doctorsFor: reactive([]),
+            customersFor:reactive([]),
         };
     },
     actions: {
@@ -114,6 +115,15 @@ export let useLaboratoryRepository = defineStore("LaboratoryRepository", {
 
             this.loading = false;
             console.log(this.dentalsFor)
+        },
+        async FetchCustomersFor() {
+            this.loading = true;
+
+            const response = await axios.get(
+                `peoples?type=customer`
+            );
+            this.customersFor = response.data.data;
+            this.loading = false;
         },
         // ======================
 

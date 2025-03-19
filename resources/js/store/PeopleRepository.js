@@ -48,6 +48,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             laboratories: reactive([]),
             laboratory: reactive([]),
             dentalsFor: reactive([]),
+            suppliersFor:reactive([]),
             searchFetch: reactive([]),
             cureProduct: reactive([]),
             services: [],
@@ -720,6 +721,15 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             }
         },
         // laboratories
+        async FetchSuppliersFor() {
+            this.loading = true;
+
+            const response = await axios.get(
+                `peoples?type=supplier`
+            );
+            this.suppliersFor = response.data.data;
+            this.loading = false;
+        },
         async leadStagesFor() {
             const response = await axios.get("stages");
             this.leadStageFor = response.data.data;
