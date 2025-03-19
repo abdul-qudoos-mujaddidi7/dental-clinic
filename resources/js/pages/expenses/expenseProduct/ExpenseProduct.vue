@@ -2,7 +2,7 @@
     <CreateProduct v-if="ExpenseRepository.createDialog" />
     <div class="all-expense rounded-xl" :dir="dir">
         <div class="card rounded-xl">
-            <AppBar :mainTitle="t('product')" :sub-title="t('expense')" />
+            <AppBar :mainTitle="t('products')" :sub-title="t('expense')" />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"

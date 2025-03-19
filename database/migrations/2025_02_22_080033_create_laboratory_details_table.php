@@ -20,7 +20,7 @@ return new class extends Migration
         Schema::create((new LaboratoryDetail())->getTable(), function (Blueprint $table) {
             $table->id(); 
             $table->foreignIdFor(Laboratory::class);
-            // $table->foreignIdFor(Tooth::class);
+            $table->foreignIdFor(Tooth::class);
             $table->decimal(LaboratoryDetail::COLUMN_COST, 10, 2);
             $table->integer(LaboratoryDetail::COLUMN_QUANTITY);
             $table->decimal(LaboratoryDetail::COLUMN_TOTAL, 10, 2);

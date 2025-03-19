@@ -2,7 +2,7 @@
     <CreateEmployee v-if="PeopleRepository.createDialog" />
     <div class="all-expense rounded-xl" :dir="dir">
         <div class="card rounded-xl">
-            <AppBar mainTitle="Employee" sub-title="people" />
+            <AppBar :mainTitle="$t('employee')" :sub-title="$t('people')" />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"

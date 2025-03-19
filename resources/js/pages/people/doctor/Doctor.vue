@@ -1,7 +1,7 @@
 <template>
     <CreateDoctor v-if="PeopleRepository.createDialog" />
     <div :dir="dir">
-        <AppBar mainTitle="Doctor" sub-title="people" />
+        <AppBar :mainTitle="$t('doctor')" :sub-title="$t('people')" />
         <v-divider
             :thickness="1"
             class="border-opacity-100"

@@ -1,9 +1,9 @@
 <template>
     <BillExpensePayment v-if="ExpenseRepository.createDialog" />
     <ShowExpensePayment v-if="ExpenseRepository.ShowExpensePayment" />
-    <div class="all-expense rounded-xl">
+    <div class="all-expense rounded-xl" :dir="dir">
         <div class="card rounded-xl">
-            <AppBar mainTitle="Bill Expense" sub-title="expense" />
+            <AppBar :mainTitle="$t('billExpense')" :sub-title="$t('expense')" />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
@@ -17,7 +17,7 @@
                         color="primaryOld"
                         density="compact"
                         variant="outlined"
-                        label="Search ..."
+                        :label="$t('search')"
                         append-inner-icon="mdi-magnify"
                         hide-details
                         v-model="ExpenseRepository.billExpenseSearch"
@@ -25,14 +25,14 @@
                 </div>
                 <div class="btn">
                     <v-btn variant="outlined" color="primaryOld" class="px-6">
-                        Filter
+                        {{ t("filter") }}
                     </v-btn>
                     &nbsp;
                     <router-link to="/createBillExpense">
                         <v-btn
                             color="primaryOld"
                             variant="flat"
-                            text="Create"
+                            :text="$t('create')"
                             class="px-6"
                         >
                         </v-btn>
@@ -42,18 +42,11 @@
             <!-- v-table server  -->
             <div class="overflow-x-hidden">
                 <v-app>
-<<<<<<< HEAD
-                    <v-main class="main" >
-                        <v-row>
-                            <v-col>
-                                <v-data-table-server
-                                    :dir="dir"
-=======
                     <v-main class="main">
                         <v-row>
                             <v-col>
                                 <v-data-table-server
->>>>>>> b7234ca500ce05ca78b3ee9c8eb272ffcaadd758
+                                    :dir="dir"
                                     theme="cursor-pointer"
                                     v-model:items-per-page="
                                         ExpenseRepository.itemsPerPage
@@ -138,7 +131,7 @@
                                                                 color="tealColor"
                                                                 >mdi-square-edit-outline</v-icon
                                                             >
-                                                            Edit
+                                                            {{ t("edit") }}
                                                         </v-list-item-title>
                                                     </router-link>
 
@@ -151,7 +144,7 @@
                                                         <v-icon color="error"
                                                             >mdi-delete-outline</v-icon
                                                         >
-                                                        Delete
+                                                        {{ t("delete") }}
                                                     </v-list-item-title>
                                                 </v-list-item>
                                             </v-list>
@@ -177,15 +170,21 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 import BillExpensePayment from "../bill Expense Payment/BillExpensePayment.vue";
 import ShowExpensePayment from "../bill Expense Payment/ShowExpensePayment.vue";
 //
 import { useExpenseRepository } from "@/store/ExpenseRepository";
 import { useI18n } from "vue-i18n";
-const {t} = useI18n();
+const { t, locale } = useI18n();
 const ExpenseRepository = useExpenseRepository();
+
+// direction
+const dir = computed(() => {
+    return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
+});
+
 // bulk delete
 const selectedIds = ref([]);
 const sendSelectedIds = () => {
@@ -232,7 +231,12 @@ const deleteItem = async (item) => {
 const headers = [
     { title: "", key: "checkbox", align: "start", sortable: false },
     { title: t("date"), key: "date", align: "start", sortable: false },
-    { title: t("reference"), key: "reference", align: "center", sortable: false },
+    {
+        title: t("reference"),
+        key: "reference",
+        align: "center",
+        sortable: false,
+    },
     { title: t("addedBy"), key: "addedBy", align: "center", sortable: false },
     {
         title: t("supplier"),

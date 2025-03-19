@@ -2,7 +2,7 @@
     <CreateExpenseCategory v-if="ExpenseRepository.createDialog" />
     <div class="all-expense rounded-xl" :dir="dir">
         <div class="card rounded-xl">
-            <AppBar :main-title="t('category')" :sub-title="t('expense')" />
+            <AppBar :main-title="t('categories')" :sub-title="t('expense')" />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"

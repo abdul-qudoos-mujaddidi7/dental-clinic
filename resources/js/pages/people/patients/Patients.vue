@@ -2,7 +2,7 @@
     <CreatePatients v-if="PeopleRepository.createDialog" />
     <div class="all-expense rounded-xl" :dir="dir"> 
         <div class="card rounded-xl">
-            <AppBar mainTitle="Patients" sub-title="people" />
+            <AppBar :mainTitle="$t('patients')" :sub-title="$t('people')" />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"

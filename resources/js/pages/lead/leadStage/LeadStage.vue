@@ -2,7 +2,7 @@
     <CreateStage v-if="LeadRepository.createDialog" />
     <div class="all-expense rounded-xl" :dir="dir">
         <div class="card rounded-xl">
-            <AppBar mainTitle="Lead stages" sub-title="lead" />
+            <AppBar :mainTitle="$t('leadStage')" :sub-title="$t('leads')" />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
