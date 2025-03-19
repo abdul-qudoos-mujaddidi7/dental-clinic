@@ -344,7 +344,7 @@ const Duo = computed(() => {
 const saveData = async (id) => {
     await LaboratoryRepository.fetchProduct(id);
 };
-LaboratoryRepository.FetchDentals()
+LaboratoryRepository.FetchDentals();
 
 const deleteItem = async (item) => {
     await LaboratoryRepository.DeleteLaboratory(item.id);
@@ -401,8 +401,6 @@ watch(
 // });
 
 // Computed Duo (remaining balance)
-
-
 
 formData.returnDate = LaboratoryRepository.getTodaysDate();
 formData.issueAt = LaboratoryRepository.getTodaysDate();
