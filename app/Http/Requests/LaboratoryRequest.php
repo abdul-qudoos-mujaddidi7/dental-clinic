@@ -38,7 +38,6 @@ class LaboratoryRequest extends FormRequest
             'paid' => 'nullable|numeric|min:0',
             'type'=>'required| in:in,out',
             'dentist_id' => 'nullable|exists:people,id',
-            'status' => 'required|string',
             'description' => 'nullable|string',
             'tooths' => 'required|array',
             'tooths.*.cost' => 'required|numeric', //te service details
