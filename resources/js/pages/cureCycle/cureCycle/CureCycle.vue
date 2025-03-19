@@ -145,7 +145,7 @@
                                                     </v-list-item-title>
                                                     <router-link
                                                         :to="
-                                                            '/updateCure/' +
+                                                            '/w/' +
                                                             item.id
                                                         "
                                                     >
