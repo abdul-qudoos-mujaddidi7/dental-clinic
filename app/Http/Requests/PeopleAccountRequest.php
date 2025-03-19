@@ -32,8 +32,11 @@ class PeopleAccountRequest extends FormRequest
             PeopleAccount::COLUMN_NAME => [
                 'nullable','string'
             ],
+            PeopleAccount::COLUMN_ACCOUNT_BALANCE => [
+                'nullable','numeric'
+            ],
             
-            PeopleAccount::COLUMN_PEOPLE_ID         => [
+            PeopleAccount::COLUMN_PEOPLE_ID => [
                 'required',
                 'integer',
                 Rule::exists((new People())->getTable(), 'id')

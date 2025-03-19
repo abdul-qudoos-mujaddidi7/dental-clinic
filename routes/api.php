@@ -115,6 +115,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // money account  
     Route::apiResource('/moneyAccount', MoneyAccountController::class);
     Route::apiResource('/moneyTransfer', MoneyTransferController::class);
+    Route::apiResource('/peopleAccount', PeopleAccountController::class);
 
     
     

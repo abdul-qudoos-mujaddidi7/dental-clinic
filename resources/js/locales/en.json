@@ -1,6 +1,8 @@
 {
     "dashboard": "Dashboard",
     "profit": "Profit",
+    "teethType": " Teeth Type",
+    "issueAt": " start Date",
     "expense": "Expense",
     "sales": "Sales",
     "patients": "Patients",
@@ -11,6 +13,9 @@
     "today": "Today",
     "upcomingAppointment": "Upcoming Appointment",
     "view":"View",
+    "allPayment":"All Payments",
+    "accounts":"Accounts",
+    "transfers":"Transfers",
     "leads": "Lead",
     "leadCategory": "Lead Category",
     "leadStage": "Lead Stage",

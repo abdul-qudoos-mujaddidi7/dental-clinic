@@ -1,8 +1,8 @@
 <template>
-    <CreateSupplier v-if="PeopleRepository.createDialog" />
-    <div class="all-expense rounded-xl" :dir="dir">
+    <CreateCustomer v-if="PeopleRepository.createDialog" />
+    <div class="all-expense rounded-xl">
         <div class="card rounded-xl">
-            <AppBar :mainTitle="$t('supplier')" :sub-title="$t('people')" />
+
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
@@ -16,10 +16,10 @@
                         color="primaryOld"
                         density="compact"
                         variant="outlined"
-                        :label="t('search')"
+                         :label="t('search')"
                         append-inner-icon="mdi-magnify"
                         hide-details
-                        v-model="PeopleRepository.supplierSearch"
+                        v-model="PeopleRepository.customerSearch"
                     ></v-text-field>
                 </div>
                 <div class="btn">
@@ -32,6 +32,7 @@
                         color="primaryOld"
                         variant="flat"
                         :text="t('create')"
+
                         class="px-6"
                     >
                     </v-btn>
@@ -44,28 +45,33 @@
                         <v-row>
                             <v-col>
                                 <v-data-table-server
-                                    :dir="dir"
+                                :class="
+                                        dir === 'rtl'
+                                            ? 'rtl-border'
+                                            : 'ltr-border'
+                                    "
                                     theme="cursor-pointer"
+
                                     v-model:items-per-page="
                                         PeopleRepository.itemsPerPage
                                     "
                                     :headers="headers"
                                     :items-length="PeopleRepository.totalItems"
-                                    :items="PeopleRepository.suppliers"
+                                    :items="PeopleRepository.customers"
                                     :loading="PeopleRepository.loading"
-                                    :search="PeopleRepository.supplierSearch"
+                                    :search="PeopleRepository.customerSearch"
                                     @update:options="
-                                        PeopleRepository.FetchSuppliers
+                                        PeopleRepository.FetchCustomers
                                     "
-                                    :item-key="PeopleRepository.suppliers"
+                                    :item-key="PeopleRepository.customers"
                                     hover
                                     class="w-100 mx-auto"
                                 >
-                                    <template v-slot:item.checkbox="{ item }">
+                                <template v-slot:item.checkbox="{ item }">
                                         <v-checkbox
                                             :value="item.id"
                                             v-model="selectedIds"
-                                            class="w-6 d-flex"
+                                            class="w-0 d-flex"
                                         ></v-checkbox>
                                     </template>
                                     <template v-slot:item.action="{ item }">
@@ -81,25 +87,6 @@
                                             </template>
                                             <v-list>
                                                 <v-list-item>
-                                                    <router-link
-                                                        :to="
-                                                            '/viewSupplier/' +
-                                                            item.id
-                                                        "
-                                                    >
-                                                        <v-list-item-title
-                                                            class="cursor-pointer d-flex gap-3 justify-left pb-3"
-                                                            @click="
-                                                                showId(item.id)
-                                                            "
-                                                        >
-                                                            <v-icon
-                                                                color="tealColor"
-                                                                >mdi-eye-outline</v-icon
-                                                            >
-                                                            {{ t("view") }}
-                                                        </v-list-item-title>
-                                                    </router-link>
                                                     <v-list-item-title
                                                         @click="edit(item)"
                                                         class="cursor-pointer d-flex gap-3 justify-left pb-3"
@@ -110,7 +97,6 @@
                                                         >
                                                         {{ t("edit") }}
                                                     </v-list-item-title>
-                                                    <!--  -->
 
                                                     <v-list-item-title
                                                         class="cursor-pointer d-flex gap-3"
@@ -148,11 +134,11 @@
 
 <script setup>
 import { ref, onMounted, computed } from "vue";
-import AppBar from "../../../components/AppBar.vue";
-import CreateSupplier from "./CreateSupplier.vue";
+// import AppBar from "../../../components/AppBar.vue";
+// import CreateCustomer from "./CreateCustomer.vue";
 import { usePeopleRepository } from "@/store/PeopleRepository";
 import { useI18n } from "vue-i18n";
-const { t, locale } = useI18n();
+const {t,locale} = useI18n();
 
 const PeopleRepository = usePeopleRepository();
 // bulk delete
@@ -160,25 +146,23 @@ const selectedIds = ref([]);
 const sendSelectedIds = () => {
     if (selectedIds.value.length > 0) {
         const data = {
-            supplierIds: selectedIds.value,
+            customerIds: selectedIds.value,
         };
 
         console.log("Sending data:", data);
 
-        PeopleRepository.bulkDeleteSupplier(data);
+        PeopleRepository.bulkDeleteCustomer(data);
     } else {
         console.log("No IDs selected.");
     }
 };
-const showId = (id) => {
-    PeopleRepository.idForCreatePayment = id;
-};
+
 const dir = computed(() => {
     return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
 });
 // delete and update Create
 const CreateDialogShow = () => {
-    PeopleRepository.supplier = {};
+    PeopleRepository.customer = {};
     PeopleRepository.setEditMode(false);
     PeopleRepository.createDialog = true;
 };
@@ -186,9 +170,9 @@ const CreateDialogShow = () => {
 const edit = (item) => {
     console.log(item, "me");
     PeopleRepository.setEditMode(true);
-    PeopleRepository.supplier = {};
-    if (Object.keys(PeopleRepository.supplier).length === 0) {
-        PeopleRepository.FetchSupplier(item.id)
+    PeopleRepository.customer = {};
+    if (Object.keys(PeopleRepository.customer).length === 0) {
+        PeopleRepository.FetchCustomer(item.id)
             .then(() => {
                 PeopleRepository.createDialog = true;
             })
@@ -199,7 +183,7 @@ const edit = (item) => {
 };
 
 const deleteItem = async (item) => {
-    await PeopleRepository.DeleteSupplier(item.id);
+    await PeopleRepository.DeleteCustomer(item.id);
 };
 // header
 const headers = [
