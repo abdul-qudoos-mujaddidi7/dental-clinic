@@ -42,7 +42,7 @@ class LaboratoryRequest extends FormRequest
             'description' => 'nullable|string',
             'tooths' => 'required|array',
             'tooths.*.cost' => 'required|numeric', //te service details
-            'tooths.*.name' => 'required|string', //te service details
+            'tooths.*.toothId' => 'required|numeric', //te service details
             'tooths.*.quantity' => 'required|numeric', //ce details
             'tooths.*.total' => 'nullable|numeric', // Validate service details
         ];

@@ -6,7 +6,6 @@
     "patients": "Patients",
     "expensesBasedOnAmountAndPercentage": "Expenses Based on Amount and Percentage",
     "thisYearIncomeVsExpense": "This Year Income Vs Expense",
-
     "thisYear": "This Year",
     "thisMonth": "This Month",
     "today": "Today",
@@ -32,7 +31,6 @@
     "pickup": "Pickup",
     "age": "Age",
     "gender": "Gender",
-    
     "profitLoss": "Profit & Loss",
     "expenseCategory": "Expense Category",
     "expenseProduct": "Expense Product",
@@ -47,7 +45,6 @@
     "companyName": "Company Name",
     "dentalTypes": "Dental Types",
     "rolePermission": "Role Permission",
-
     "paymentStatus": "Payment Status ",
     "paid": "Paid",
     "due": "Due",
@@ -63,6 +60,9 @@
     "client": "Client",
     "employee": "Employee",
     "owner": "Owner",
+    "owners": "Owners",
+    "products": "Products",
+    "categories": "Categories ",
     "supplier": "Supplier",
     "user": "User",
     "systemSetting": "System Setting",
@@ -132,7 +132,6 @@
     "logOut": "Log Out",
     "english": "English",
     "dari": "Dari",
-    "submit": "Submit",
     "unit": "Unit",
     "toothType":" Tooth Type",
     "createBillExpense": "Create Bill Expense",

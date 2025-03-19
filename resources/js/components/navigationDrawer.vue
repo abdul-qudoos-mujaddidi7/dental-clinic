@@ -304,13 +304,13 @@ const navItems = computed(() => [
 
     {
         to: "/expenseProducts",
-        title:  t("product"),
+        title:  t("products"),
         icon: "mdi mdi-circle-medium",
         value: "expense product",
     },
     {
         to: "/expenseCat",
-        title:  t("category"),
+        title:  t("categories"),
         icon: "mdi mdi-circle-medium",
         value: "categories",
     },
@@ -324,7 +324,7 @@ const peopleItems = computed(() =>[
     },
     {
         to: "/patients",
-        title: t("patient"),
+        title: t("patients"),
         icon: "mdi mdi-circle-medium",
         value: "AllExpenses",
     },
@@ -337,7 +337,7 @@ const peopleItems = computed(() =>[
 
     {
         to: "/owners",
-        title: t("owner"),
+        title: t("owners"),
         icon: "mdi mdi-circle-medium",
         value: "owner",
     },

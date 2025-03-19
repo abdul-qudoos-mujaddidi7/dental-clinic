@@ -24,6 +24,7 @@ body{
 }
 .v-table > :nth-child(1) > :nth-child(1) > :nth-child(1) > tr {
     background-color: #ECF1F4;
+    border-left: 4px solid #F4D03F;
     border-bottom: 4px solid #ffff;
     border-width: 4px;
     border-top: none;
@@ -31,23 +32,49 @@ body{
 
 }
 
-.v-table > :nth-child(1) > :nth-child(1) > :nth-child(2) > tr {
+.v-data-table__tr {
     border-bottom: 4px solid #ffff;
+    border-left: 4px solid #F4D03F !important;
+    border-right: none;
     border-width: 4px;
     
 }
-
-
-.ltr-border tr {
-    border-left: 4px solid #F4D03F;
-    border-right: none;
-    border-top: none;
+[dir="rtl"] .v-data-table__tr {
+    border-bottom: 4px solid #ffff;
+    border-right: 4px solid #F4D03F !important;
+    border-left: none !important;
+    border-width: 4px;
+    
 }
-
-.rtl-border tr {
+[dir="rtl"].v-table > :nth-child(1) > :nth-child(1) > :nth-child(1) > tr {
+    background-color: #ECF1F4;
     border-right: 4px solid #F4D03F !important;
     border-left: none;
+    border-bottom: 4px solid #ffff;
+    border-width: 4px;
+    border-top: none;
+
 }
+
+
+
+
+div.v-data-table-footer 
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+[dir="rtl"] div.v-data-table-footer 
+{
+    display: flex;
+    flex-direction: row-reverse;
+    direction: ltr;
+}
+
+
+
 .span {
     background-color: #ecf1f4;
     position: absolute;

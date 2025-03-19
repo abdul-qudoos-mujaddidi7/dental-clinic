@@ -15,6 +15,8 @@ class CreateMoneyTransferTriggers extends Migration
      */
     public function up(): void
     {
+        // Triggers are special SQL scripts that run automatically when certain actions
+        //  (INSERT, UPDATE, DELETE) happen on a table.
 
         $transferTable = (new MoneyTransfer())->getTable();
 

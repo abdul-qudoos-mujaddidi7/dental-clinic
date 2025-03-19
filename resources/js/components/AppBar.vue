@@ -1,5 +1,5 @@
 <template>
-    <v-toolbar density="compact" class="" color="white" :order="order">
+    <v-toolbar density="compact" class="" color="white" :order="order"   :dir="isRtl ? 'rtl' : 'ltr'">
         <v-btn icon="mdi mdi-menu" @click="toggleSidebar"></v-btn>
         <span dir="rtl" class="breadCrumbSub"> {{ subTitle }}</span> &nbsp; -
         &nbsp;
@@ -130,9 +130,13 @@
 <script setup>
 import { useAuthRepository } from "@/store/AuthRepository";
 import { useI18n } from "vue-i18n";
-import { ref ,computed} from "vue";
+import { ref ,computed , watch} from "vue";
 const AuthRepository = useAuthRepository();
-
+const { t, locale } = useI18n();
+const isRtl = ref(locale.value === "fa"); // Assuming 'fa' is the code for Dari
+watch(locale, (newLocale) => {
+    isRtl.value = newLocale === "fa";
+});
 const toggleFullscreen = async () => {
     try {
         if (!document.fullscreenElement) {
@@ -147,12 +151,10 @@ const toggleFullscreen = async () => {
     }
 };
 
-const { t, locale } = useI18n();
 const dir = computed(() => {
     return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
 });
 
-const isRtl = ref(false); // Reactive property for RTL
 
 // Define items with icons for language switcher
 const items = ref([

@@ -1,6 +1,6 @@
 <template>
     <CreateSupplier v-if="PeopleRepository.createDialog" />
-    <div class="all-expense rounded-xl">
+    <div class="all-expense rounded-xl" :dir="dir">
         <div class="card rounded-xl">
             <AppBar :mainTitle="$t('supplier')" :sub-title="$t('people')" />
             <v-divider
@@ -44,11 +44,7 @@
                         <v-row>
                             <v-col>
                                 <v-data-table-server
-                                    :class="
-                                        dir === 'rtl'
-                                            ? 'rtl-border'
-                                            : 'ltr-border'
-                                    "
+                                    :dir="dir"
                                     theme="cursor-pointer"
                                     v-model:items-per-page="
                                         PeopleRepository.itemsPerPage
@@ -69,7 +65,7 @@
                                         <v-checkbox
                                             :value="item.id"
                                             v-model="selectedIds"
-                                            class="w-0 d-flex"
+                                            class="w-6 d-flex"
                                         ></v-checkbox>
                                     </template>
                                     <template v-slot:item.action="{ item }">

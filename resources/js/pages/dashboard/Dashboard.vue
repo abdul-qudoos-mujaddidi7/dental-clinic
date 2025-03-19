@@ -1,6 +1,6 @@
 <template>
     <div class="bg-[#f8f8f8] rounded-xl" rtl>
-        <AppBar subTitle="Dashboard" main-title="dashboard" class="MenuColor" />
+        <AppBar :subTitle="$t('dashboard')" :main-title="$t('dashboard')" class="MenuColor" />
         <v-divider
             :thickness="1"
             class="border-opacity-100"

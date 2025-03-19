@@ -2,7 +2,7 @@
     <CreateExpenseCategory v-if="ExpenseRepository.createDialog" />
     <div class="all-expense rounded-xl" :dir="dir">
         <div class="card rounded-xl">
-            <AppBar :main-title="t('category')" :sub-title="t('expense')" />
+            <AppBar :main-title="t('categories')" :sub-title="t('expense')" />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
@@ -41,15 +41,11 @@
             <!-- v-table server -->
             <div class="overflow-x-hidden">
                 <v-app>
-                    <v-main class="main" :dir="dir">
+                    <v-main class="main" >
                         <v-row>
                             <v-col>
                                 <v-data-table-server
-                                    :class="
-                                        dir === 'rtl'
-                                            ? 'rtl-border'
-                                            : 'ltr-border'
-                                    "
+                                    :dir="dir"
                                     theme="cursor-pointer"
                                     v-model:items-per-page="
                                         ExpenseRepository.itemsPerPage
@@ -193,7 +189,7 @@ const deleteItem = async (item) => {
 };
 
 // Table headers
-const headers = [
+const headers = computed(()=>[
     { title: "", key: "checkbox", align: "start", sortable: false },
     { title: t("name"), key: "name", align: "start", sortable: false },
     {
@@ -202,8 +198,8 @@ const headers = [
         align: "center",
         sortable: false,
     },
-    { title: t("action"), key: "action", align: "center", sortable: false },
-];
+    { title: t("action"), key: "action", align: "end", sortable: false },
+]);
 </script>
 
 <style scoped>

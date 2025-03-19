@@ -2,7 +2,7 @@
     <CreateStage v-if="LeadRepository.createDialog" />
     <div class="all-expense rounded-xl" :dir="dir">
         <div class="card rounded-xl">
-            <AppBar mainTitle="Lead stages" sub-title="lead" />
+            <AppBar :mainTitle="$t('leadStage')" :sub-title="$t('leads')" />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
@@ -40,15 +40,11 @@
             <!-- v-table server  -->
             <div class="overflow-x-hidden" :location="location">
                 <v-app>
-                    <v-main class="main" :dir="dir">
+                    <v-main class="main">
                         <v-row>
                             <v-col>
                                 <v-data-table-server
-                                :class="
-                                        dir === 'rtl'
-                                            ? 'rtl-border'
-                                            : 'ltr-border'
-                                    "
+                                :dir="dir"
                                     theme="cursor-pointer"
                                     v-model:items-per-page="
                                         LeadRepository.itemsPerPage

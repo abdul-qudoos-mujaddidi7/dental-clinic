@@ -41,7 +41,7 @@ class LaboratoryController extends Controller
                 LaboratoryDetail::create([
                     'laboratory_id' => $laboratory->id,
                     'cost' => $tooth['cost'],
-                    'tooth_type' => $tooth['name'],
+                    'tooth_id' => $tooth['toothId'],
                     'quantity' => $tooth['quantity'],
                     'total' => $tooth['total'],
                     'created_at' => now(),
@@ -73,7 +73,7 @@ class LaboratoryController extends Controller
             foreach ($validated['tooths'] as $tooth) {
                 $details[] = [
                     'laboratory_id' => $laboratory->id,
-                    'tooth_type' => $tooth['name'],
+                    'tooth_id' => $tooth['toothId'],
                     'cost' => $tooth['cost'],
                     'quantity' => $tooth['quantity'],
                     'total' => $tooth['total'],

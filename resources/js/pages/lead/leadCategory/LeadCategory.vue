@@ -2,7 +2,7 @@
     <CreateLeadCategory v-if="LeadRepository.createDialog" />
     <div class="all-expense rounded-xl" :dir="dir">
         <div class="card rounded-xl">
-            <AppBar mainTitle="Lead Category" sub-title="Lead" />
+            <AppBar :mainTitle="$t('leadCategory')" :sub-title="$t('leads')" />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
@@ -45,11 +45,7 @@
                         <v-row>
                             <v-col>
                                 <v-data-table-server
-                                :class="
-                                        dir === 'rtl'
-                                            ? 'rtl-border'
-                                            : 'ltr-border'
-                                    "
+                               :dir="dir"
                                     theme="cursor-pointer"
                                     v-model:items-per-page="
                                         LeadRepository.itemsPerPage
