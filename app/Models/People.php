@@ -72,4 +72,10 @@ class People extends Model
     {
         return $this->hasMany(Laboratory::class, 'dentist_id');
     }
+    
+    public function laboratoryOrdersForCustomer()
+    {
+        return $this->hasMany(Laboratory::class, 'customer_id');
+    }
+    
 }

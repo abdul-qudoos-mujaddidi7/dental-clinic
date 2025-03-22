@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create((new Laboratory())->getTable(), function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(People::class, Laboratory::COLUMN_DENTIST_ID)->nullable();
+            $table->foreignIdFor(People::class, Laboratory::COLUMN_DENTIST_ID)->nullable();
             $table->decimal(Laboratory::COLUMN_GRAND_TOTAL, 10, 2);
             $table->date(Laboratory::COLUMN_ISSUED_AT);
             $table->date(Laboratory::COLUMN_RETURN_DATE)->nullable();
