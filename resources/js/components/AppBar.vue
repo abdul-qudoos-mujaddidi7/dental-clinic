@@ -1,10 +1,13 @@
 <template>
-    <v-toolbar density="compact" class="" color="white" :order="order"   :dir="isRtl ? 'rtl' : 'ltr'">
+    <v-toolbar density="compact" class="" color="white" :order="order"   >
+        <div class="tool h-10" :dir="dir">
+        <div>
         <v-btn icon="mdi mdi-menu" @click="toggleSidebar"></v-btn>
         <span dir="rtl" class="breadCrumbSub"> {{ subTitle }}</span> &nbsp; -
         &nbsp;
         <span dir="rtl" class="breadCrumbTitle"> {{ mainTitle }}</span>
-        <v-spacer></v-spacer>
+        <!-- <v-spacer></v-spacer> -->
+    </div>
 
         <div class="icon-bar">
             <!-- Render the icons with button-like styling -->
@@ -124,6 +127,7 @@
                 </svg>
             </div>
         </div>
+    </div>
     </v-toolbar>
 </template>
 
@@ -191,6 +195,13 @@ const order = 0;
     align-items: center;
 }
 
+.tool{
+    display: flex ;
+    width: 100%;
+    justify-content: space-between ;
+    
+    /* background-color: aquamarine; */
+}
 .icon {
     width: 24px;
     height: 24px;

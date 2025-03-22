@@ -58,19 +58,7 @@
                     :rules="[rules.required]"
                 ></v-autocomplete>
 
-                <v-autocomplete
-                    v-model="formData.status"
-                    :items="PeopleRepository.leadStageFor"
-                    :return-object="false"
-                    variant="outlined"
-                    label="Status *"
-                    class="pr-2 pl-2"
-                    style="width: 45%"
-                    item-value="name"
-                    item-title="name"
-                    density="compact"
-                    :rules="[rules.required]"
-                ></v-autocomplete>
+               
             </v-form>
             <v-divider></v-divider>
             <v-row no-gutters class="justify-space-between mt-16">
