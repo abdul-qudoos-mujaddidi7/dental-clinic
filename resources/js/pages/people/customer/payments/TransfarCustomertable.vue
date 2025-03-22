@@ -1,8 +1,7 @@
 <template>
     <CreateCustomer v-if="PeopleRepository.createDialog" />
-    <div class="all-expense rounded-xl" :dir="dir">
+    <div class="all-expense rounded-xl">
         <div class="card rounded-xl">
-            <AppBar :mainTitle="$t('customer')" :sub-title="$t('people')" />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
@@ -16,7 +15,7 @@
                         color="primaryOld"
                         density="compact"
                         variant="outlined"
-                         :label="t('search')"
+                        :label="t('search')"
                         append-inner-icon="mdi-magnify"
                         hide-details
                         v-model="PeopleRepository.customerSearch"
@@ -32,7 +31,6 @@
                         color="primaryOld"
                         variant="flat"
                         :text="t('create')"
-
                         class="px-6"
                     >
                     </v-btn>
@@ -45,9 +43,12 @@
                         <v-row>
                             <v-col>
                                 <v-data-table-server
-                                :dir="dir"
+                                    :class="
+                                        dir === 'rtl'
+                                            ? 'rtl-border'
+                                            : 'ltr-border'
+                                    "
                                     theme="cursor-pointer"
-
                                     v-model:items-per-page="
                                         PeopleRepository.itemsPerPage
                                     "
@@ -63,11 +64,11 @@
                                     hover
                                     class="w-100 mx-auto"
                                 >
-                                <template v-slot:item.checkbox="{ item }">
+                                    <template v-slot:item.checkbox="{ item }">
                                         <v-checkbox
                                             :value="item.id"
                                             v-model="selectedIds"
-                                            class="w-6 d-flex"
+                                            class="w-0 d-flex"
                                         ></v-checkbox>
                                     </template>
                                     <template v-slot:item.action="{ item }">
@@ -83,25 +84,6 @@
                                             </template>
                                             <v-list>
                                                 <v-list-item>
-                                                    <router-link
-                                                        :to="
-                                                            '/viewCustomer/' +
-                                                            item.id
-                                                        "
-                                                    >
-                                                        <v-list-item-title
-                                                            class="cursor-pointer d-flex gap-3 justify-left pb-3"
-                                                            @click="
-                                                                showId(item.id)
-                                                            "
-                                                        >
-                                                            <v-icon
-                                                                color="tealColor"
-                                                                >mdi-eye-outline</v-icon
-                                                            >
-                                                            {{ t("view") }}
-                                                        </v-list-item-title>
-                                                    </router-link>
                                                     <v-list-item-title
                                                         @click="edit(item)"
                                                         class="cursor-pointer d-flex gap-3 justify-left pb-3"
@@ -149,11 +131,9 @@
 
 <script setup>
 import { ref, onMounted, computed } from "vue";
-import AppBar from "../../../components/AppBar.vue";
-import CreateCustomer from "./CreateCustomer.vue";
 import { usePeopleRepository } from "@/store/PeopleRepository";
 import { useI18n } from "vue-i18n";
-const {t,locale} = useI18n();
+const { t, locale } = useI18n();
 
 const PeopleRepository = usePeopleRepository();
 // bulk delete
@@ -175,9 +155,6 @@ const sendSelectedIds = () => {
 const dir = computed(() => {
     return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
 });
-const showId = (id) => {
-    PeopleRepository.idForCreatePayment = id;
-};
 // delete and update Create
 const CreateDialogShow = () => {
     PeopleRepository.customer = {};

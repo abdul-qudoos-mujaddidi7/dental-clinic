@@ -16,6 +16,7 @@ import Doctor from "./pages/people/doctor/Doctor.vue";
 import Supplier from "./pages/people/supplier/Supplier.vue";
 import ShowSupplier from "./pages/people/supplier/ShowSupplier.vue";
 import Customer from  "./pages/people/customer/Customer.vue"
+import ShowCustomer from "./pages/people/customer/ShowCustomer.vue"
 import User from "./pages/people/user/User.vue";
 import Employee from "./pages/people/employee/Employee.vue";
 import Laboratory from "./pages/people/lab/Laboratory.vue";
@@ -96,6 +97,12 @@ const router = createRouter({
                     component: ShowSupplier,
                 },
                 { path: "/customer", component: Customer },
+                
+                {
+                    path: "/viewCustomer/:id",
+                    props: true,
+                    component: ShowCustomer,
+                },
                 { path: "/user", component: User },
                 { path: "/employee", component: Employee },
                 { path: "/laboratory", component: Laboratory },
