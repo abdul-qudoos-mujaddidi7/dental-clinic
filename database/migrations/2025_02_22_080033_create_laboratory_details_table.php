@@ -21,8 +21,8 @@ return new class extends Migration
     {
         Schema::create((new LaboratoryDetail())->getTable(), function (Blueprint $table) {
             $table->id(); 
-            $table->foreignIdFor(InboundLab::class)->nullable;
-            $table->foreignIdFor(OutboundLab::class)->nullable;
+            $table->foreignIdFor(InboundLab::class)->nullable();
+            $table->foreignIdFor(OutboundLab::class)->nullable();
             $table->foreignIdFor(Tooth::class);
             $table->decimal(LaboratoryDetail::COLUMN_COST, 10, 2);
             $table->integer(LaboratoryDetail::COLUMN_QUANTITY);

@@ -10,7 +10,8 @@ class LaboratoryDetail extends Model
     use HasFactory;
 
     public const COLUMN_ID = 'id';
-    public const COLUMN_LABORATORY_ID = 'laboratory_id';
+    public const COLUMN_INBOUND_LAB_ID = 'inbound_lab_id';
+    public const COLUMN_OUTBOUND_LAB_ID = 'outbound_lab_id';
     public const COLUMN_TOOTH_ID = 'tooth_id';
     public const COLUMN_TOOTH_TYPE = 'tooth_type';
     public const COLUMN_COST = 'cost';
@@ -20,7 +21,8 @@ class LaboratoryDetail extends Model
     protected $table = 'laboratory_details';
 
     protected $fillable = [
-        self::COLUMN_LABORATORY_ID,
+        self::COLUMN_INBOUND_LAB_ID,
+        self::COLUMN_OUTBOUND_LAB_ID,
         self::COLUMN_TOOTH_ID ,
         self::COLUMN_TOOTH_TYPE,
         self::COLUMN_COST,
