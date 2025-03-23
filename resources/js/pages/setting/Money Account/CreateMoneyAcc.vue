@@ -35,7 +35,7 @@
                                 :rules="[rules.required, rules.name]"
                             ></v-text-field>
 
-                            <v-text-field
+                            <!-- <v-text-field
                                 v-model="formData.balance"
                                 variant="outlined"
                                 :label="$t('balance') "
@@ -43,7 +43,7 @@
                                 class="pb-4"
                                 type="number"
                                 :rules="[rules.required]"
-                            ></v-text-field>
+                            ></v-text-field> -->
                         </v-form>
                     </v-card-text>
 
