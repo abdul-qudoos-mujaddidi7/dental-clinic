@@ -19,26 +19,22 @@ class InboundLabController extends Controller
     public function index(Request $request)
     {
 
-        $perPage = $request->input("perPage", 10);
-        $search = $request->input("search");
-        $type = $request->input("type");
+        $InboundLab = $this->listRecord($request, $this->model, ['name']);
 
-        $laboratories = $this->model::where('type',$type)->search($search)->latest()->paginate($perPage);
-
-        return $this->resource::collection($laboratories);
+        return $this->resource::collection($InboundLab);
     }
 
     public function store(Request $request)
     {
         
         $validated = app($this->request)->validated();
-        $laboratory = $this->model::create($validated);
+        $InboundLab = $this->model::create($validated);
 
         // Handle services if provided
         if ($request->has('tooths')) {
             foreach ($validated['tooths'] as $tooth) {
                 LaboratoryDetail::create([
-                    'laboratory_id' => $laboratory->id,
+                    'laboratory_id' => $InboundLab->id,
                     'cost' => $tooth['cost'],
                     'tooth_id' => $tooth['toothId'],
                     'quantity' => $tooth['quantity'],
@@ -50,28 +46,28 @@ class InboundLabController extends Controller
         }
 
 
-        return new $this->resource($laboratory->load('laboratoryDetails'));
+        return new $this->resource($InboundLab->load('laboratoryDetails'));
     }
 
-    public function show(InboundLab $laboratory)
+    public function show(InboundLab $InboundLab)
     {
-        $laboratory->load(['laboratoryDetails']);
-        return new $this->resource($laboratory);
+        $InboundLab->load(['laboratoryDetails']);
+        return new $this->resource($InboundLab);
     }
 
-    public function update(Request $request, InboundLab $laboratory)
+    public function update(Request $request, InboundLab $InboundLab)
     {
         $validated = app($this->request)->validated();
 
         // Delete old services
-        $laboratory->laboratoryDetails()->delete();
+        $InboundLab->laboratoryDetails()->delete();
 
         // Update services (if provided)
         if ($request->has('tooths')) {
             $details = [];
             foreach ($validated['tooths'] as $tooth) {
                 $details[] = [
-                    'laboratory_id' => $laboratory->id,
+                    'laboratory_id' => $InboundLab->id,
                     'tooth_id' => $tooth['toothId'],
                     'cost' => $tooth['cost'],
                     'quantity' => $tooth['quantity'],
@@ -82,7 +78,7 @@ class InboundLabController extends Controller
             LaboratoryDetail::insert($details);
         }
 
-        $laboratory->update($validated);
+        $InboundLab->update($validated);
 
         // Update or create payment information
         // CurePayment::updateOrCreate(
@@ -93,13 +89,13 @@ class InboundLabController extends Controller
         return response()->json(['message' => 'Record Updated successfully!'], 204);
     }
 
-    public function destroy(InboundLab $laboratory)
+    public function destroy(InboundLab $InboundLab)
     {
         // Delete the related services first
-        $laboratory->laboratoryDetails()->delete();
+        $InboundLab->laboratoryDetails()->delete();
 
         // Delete the Cure itself
-        $laboratory->delete();
+        $InboundLab->delete();
 
         return response()->json(['message' => 'Record deleted successfully!'], 204);
     }

@@ -28,13 +28,13 @@ class OutboundLabController extends Controller
     {
         
         $validated = app($this->request)->validated();
-        $laboratory = $this->model::create($validated);
+        $outboundLab = $this->model::create($validated);
 
         // Handle services if provided
         if ($request->has('tooths')) {
             foreach ($validated['tooths'] as $tooth) {
                 LaboratoryDetail::create([
-                    'laboratory_id' => $laboratory->id,
+                    'laboratory_id' => $outboundLab->id,
                     'cost' => $tooth['cost'],
                     'tooth_id' => $tooth['toothId'],
                     'quantity' => $tooth['quantity'],
@@ -46,28 +46,28 @@ class OutboundLabController extends Controller
         }
 
 
-        return new $this->resource($laboratory->load('laboratoryDetails'));
+        return new $this->resource($outboundLab->load('laboratoryDetails'));
     }
 
-    public function show(OutboundLab $laboratory)
+    public function show(OutboundLab $outboundLab)
     {
-        $laboratory->load(['laboratoryDetails']);
-        return new $this->resource($laboratory);
+        $outboundLab->load(['laboratoryDetails']);
+        return new $this->resource($outboundLab);
     }
 
-    public function update(Request $request, OutboundLab $laboratory)
+    public function update(Request $request, OutboundLab $outboundLab)
     {
         $validated = app($this->request)->validated();
 
         // Delete old services
-        $laboratory->laboratoryDetails()->delete();
+        $outboundLab->laboratoryDetails()->delete();
 
         // Update services (if provided)
         if ($request->has('tooths')) {
             $details = [];
             foreach ($validated['tooths'] as $tooth) {
                 $details[] = [
-                    'laboratory_id' => $laboratory->id,
+                    'laboratory_id' => $outboundLab->id,
                     'tooth_id' => $tooth['toothId'],
                     'cost' => $tooth['cost'],
                     'quantity' => $tooth['quantity'],
@@ -78,7 +78,7 @@ class OutboundLabController extends Controller
             LaboratoryDetail::insert($details);
         }
 
-        $laboratory->update($validated);
+        $outboundLab->update($validated);
 
         // Update or create payment information
         // CurePayment::updateOrCreate(
@@ -89,13 +89,13 @@ class OutboundLabController extends Controller
         return response()->json(['message' => 'Record Updated successfully!'], 204);
     }
 
-    public function destroy(OutboundLab $laboratory)
+    public function destroy(OutboundLab $outboundLab)
     {
         // Delete the related services first
-        $laboratory->laboratoryDetails()->delete();
+        $outboundLab->laboratoryDetails()->delete();
 
         // Delete the Cure itself
-        $laboratory->delete();
+        $outboundLab->delete();
 
         return response()->json(['message' => 'Record deleted successfully!'], 204);
     }
