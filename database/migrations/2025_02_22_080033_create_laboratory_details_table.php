@@ -2,8 +2,10 @@
 
 use App\Enums\LabStatus;
 use App\Enums\TeethTypes;
+use App\Models\InboundLab;
 use App\Models\Laboratory;
 use App\Models\LaboratoryDetail;
+use App\Models\OutboundLab;
 use App\Models\Tooth;
 use App\Models\ToothType;
 use Illuminate\Database\Migrations\Migration;
@@ -19,7 +21,8 @@ return new class extends Migration
     {
         Schema::create((new LaboratoryDetail())->getTable(), function (Blueprint $table) {
             $table->id(); 
-            $table->foreignIdFor(Laboratory::class);
+            $table->foreignIdFor(InboundLab::class)->nullable;
+            $table->foreignIdFor(OutboundLab::class)->nullable;
             $table->foreignIdFor(Tooth::class);
             $table->decimal(LaboratoryDetail::COLUMN_COST, 10, 2);
             $table->integer(LaboratoryDetail::COLUMN_QUANTITY);

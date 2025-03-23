@@ -2,31 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\LaboratoryRequest;
-use App\Http\Resources\LaboratoryResource;
-use App\Models\Laboratory;
+use App\Http\Requests\OutboundLabRequest;
+use App\Http\Resources\outboundLabResource;
 use App\Models\LaboratoryDetail;
+use App\Models\OutboundLab;
 use Illuminate\Http\Request;
 
-class LaboratoryController extends Controller
+class OutboundLabController extends Controller
 {
-
-    private $model=Laboratory::class;
-    private $request=LaboratoryRequest::class;
-    private $resource=LaboratoryResource::class;
+    private $model=OutboundLab::class;
+    private $request=OutboundLabRequest::class;
+    private $resource=outboundLabResource::class;
 
     
 
     public function index(Request $request)
     {
 
-        $perPage = $request->input("perPage", 10);
-        $search = $request->input("search");
-        $type = $request->input("type");
+        $outboundLab = $this->listRecord($request, $this->model, ['name']);
 
-        $laboratories = $this->model::where('type',$type)->search($search)->latest()->paginate($perPage);
-
-        return $this->resource::collection($laboratories);
+        return $this->resource::collection($outboundLab);
     }
 
     public function store(Request $request)
@@ -54,13 +49,13 @@ class LaboratoryController extends Controller
         return new $this->resource($laboratory->load('laboratoryDetails'));
     }
 
-    public function show(Laboratory $laboratory)
+    public function show(OutboundLab $laboratory)
     {
         $laboratory->load(['laboratoryDetails']);
         return new $this->resource($laboratory);
     }
 
-    public function update(Request $request, Laboratory $laboratory)
+    public function update(Request $request, OutboundLab $laboratory)
     {
         $validated = app($this->request)->validated();
 
@@ -94,7 +89,7 @@ class LaboratoryController extends Controller
         return response()->json(['message' => 'Record Updated successfully!'], 204);
     }
 
-    public function destroy(Laboratory $laboratory)
+    public function destroy(OutboundLab $laboratory)
     {
         // Delete the related services first
         $laboratory->laboratoryDetails()->delete();
