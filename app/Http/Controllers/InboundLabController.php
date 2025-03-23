@@ -34,7 +34,7 @@ class InboundLabController extends Controller
         if ($request->has('tooths')) {
             foreach ($validated['tooths'] as $tooth) {
                 LaboratoryDetail::create([
-                    'laboratory_id' => $InboundLab->id,
+                    'inbound_lab_id' => $InboundLab->id,
                     'cost' => $tooth['cost'],
                     'tooth_id' => $tooth['toothId'],
                     'quantity' => $tooth['quantity'],
@@ -67,7 +67,7 @@ class InboundLabController extends Controller
             $details = [];
             foreach ($validated['tooths'] as $tooth) {
                 $details[] = [
-                    'laboratory_id' => $InboundLab->id,
+                    'inbound_lab_id' => $InboundLab->id,
                     'tooth_id' => $tooth['toothId'],
                     'cost' => $tooth['cost'],
                     'quantity' => $tooth['quantity'],
