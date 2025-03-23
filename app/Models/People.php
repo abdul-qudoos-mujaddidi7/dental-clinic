@@ -70,12 +70,16 @@ class People extends Model
 
     public function laboratoryOrders()
     {
-        return $this->hasMany(Laboratory::class, 'dentist_id');
+        return $this->hasMany(InboundLab::class, 'dentist_id');
     }
     
     public function laboratoryOrdersForCustomer()
     {
-        return $this->hasMany(Laboratory::class, 'customer_id');
+        return $this->hasMany(InboundLab::class, 'customer_id');
+    }
+    public function laboratoryOrdersForSupplier()
+    {
+        return $this->hasMany(OutboundLab::class, 'supplier_id');
     }
     
 }
