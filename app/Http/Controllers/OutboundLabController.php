@@ -2,44 +2,39 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\LaboratoryRequest;
-use App\Http\Resources\LaboratoryResource;
-use App\Models\Laboratory;
+use App\Http\Requests\OutboundLabRequest;
+use App\Http\Resources\outboundLabResource;
 use App\Models\LaboratoryDetail;
+use App\Models\OutboundLab;
 use Illuminate\Http\Request;
 
-class LaboratoryController extends Controller
+class OutboundLabController extends Controller
 {
-
-    private $model=Laboratory::class;
-    private $request=LaboratoryRequest::class;
-    private $resource=LaboratoryResource::class;
+    private $model=OutboundLab::class;
+    private $request=OutboundLabRequest::class;
+    private $resource=outboundLabResource::class;
 
     
 
     public function index(Request $request)
     {
 
-        $perPage = $request->input("perPage", 10);
-        $search = $request->input("search");
-        $type = $request->input("type");
+        $outboundLab = $this->listRecord($request, $this->model, ['name']);
 
-        $laboratories = $this->model::where('type',$type)->search($search)->latest()->paginate($perPage);
-
-        return $this->resource::collection($laboratories);
+        return $this->resource::collection($outboundLab);
     }
 
     public function store(Request $request)
     {
         
         $validated = app($this->request)->validated();
-        $laboratory = $this->model::create($validated);
+        $outboundLab = $this->model::create($validated);
 
         // Handle services if provided
         if ($request->has('tooths')) {
             foreach ($validated['tooths'] as $tooth) {
                 LaboratoryDetail::create([
-                    'laboratory_id' => $laboratory->id,
+                    'laboratory_id' => $outboundLab->id,
                     'cost' => $tooth['cost'],
                     'tooth_id' => $tooth['toothId'],
                     'quantity' => $tooth['quantity'],
@@ -51,28 +46,28 @@ class LaboratoryController extends Controller
         }
 
 
-        return new $this->resource($laboratory->load('laboratoryDetails'));
+        return new $this->resource($outboundLab->load('laboratoryDetails'));
     }
 
-    public function show(Laboratory $laboratory)
+    public function show(OutboundLab $outboundLab)
     {
-        $laboratory->load(['laboratoryDetails']);
-        return new $this->resource($laboratory);
+        $outboundLab->load(['laboratoryDetails']);
+        return new $this->resource($outboundLab);
     }
 
-    public function update(Request $request, Laboratory $laboratory)
+    public function update(Request $request, OutboundLab $outboundLab)
     {
         $validated = app($this->request)->validated();
 
         // Delete old services
-        $laboratory->laboratoryDetails()->delete();
+        $outboundLab->laboratoryDetails()->delete();
 
         // Update services (if provided)
         if ($request->has('tooths')) {
             $details = [];
             foreach ($validated['tooths'] as $tooth) {
                 $details[] = [
-                    'laboratory_id' => $laboratory->id,
+                    'laboratory_id' => $outboundLab->id,
                     'tooth_id' => $tooth['toothId'],
                     'cost' => $tooth['cost'],
                     'quantity' => $tooth['quantity'],
@@ -83,7 +78,7 @@ class LaboratoryController extends Controller
             LaboratoryDetail::insert($details);
         }
 
-        $laboratory->update($validated);
+        $outboundLab->update($validated);
 
         // Update or create payment information
         // CurePayment::updateOrCreate(
@@ -94,13 +89,13 @@ class LaboratoryController extends Controller
         return response()->json(['message' => 'Record Updated successfully!'], 204);
     }
 
-    public function destroy(Laboratory $laboratory)
+    public function destroy(OutboundLab $outboundLab)
     {
         // Delete the related services first
-        $laboratory->laboratoryDetails()->delete();
+        $outboundLab->laboratoryDetails()->delete();
 
         // Delete the Cure itself
-        $laboratory->delete();
+        $outboundLab->delete();
 
         return response()->json(['message' => 'Record deleted successfully!'], 204);
     }

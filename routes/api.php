@@ -38,9 +38,12 @@ use App\Http\Controllers\OwnerPickupReportController;
 use App\Http\Controllers\ExpenseProductReportController;
 use App\Http\Controllers\PatientPaymentReportController;
 use App\Http\Controllers\ExpenseCategoryReportController;
+use App\Http\Controllers\InboundLabController;
 use App\Http\Controllers\PeopleAccountTransactionController;
 use App\Http\Controllers\MoneyAccountController;
 use App\Http\Controllers\MoneyTransferController;
+use App\Http\Controllers\OutboundLabController;
+use App\Models\InboundLab;
 
 // Authentication routes
 Route::post('/login', [AuthController::class, 'login']);
@@ -78,7 +81,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/users/status/{user}', [UserController::class, 'updateStatus'])->name('users.updateStatus');
 
     Route::apiResource('/patients', PatientController::class);
-    Route::apiResource('/laboratories', LaboratoryController::class);
+    Route::apiResource('/inboundLab', InboundLabController::class);
+    Route::apiResource('/outboundLab', OutboundLabController::class);
     Route::apiResource('/tooths', ToothController::class);
     Route::apiResource('/peoples', PeopleController::class);
     Route::delete('/patientBulkDelete', [PatientController::class,'bulkDelete']);

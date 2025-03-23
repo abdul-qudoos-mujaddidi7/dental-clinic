@@ -6,7 +6,7 @@ use App\Models\LaboratoryDetail;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class LaboratoryResource extends JsonResource
+class InboundLabResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

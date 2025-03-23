@@ -28,14 +28,14 @@
                 active-class="bg-primaryOld text-white"
                 prepend-icon="mdi mdi-gauge"
                 value="lead"
-                @click="toggleLead"
+                @click="toggleMenu('lead')"
                 class="transition-all duration-300 cursor-pointer py-3 borderRadius"
             >
                 {{ t("leads") }}
             </v-list-item>
 
             <transition name="slide-fade">
-                <v-list v-if="isLeadVisible" class="pl-4">
+                <v-list v-show="activeMenu === 'lead'" class="pl-4">
                     <router-link
                         v-for="item in leadItems"
                         :key="item.to"
@@ -54,6 +54,7 @@
             <!-- appointment -->
             <router-link to="appointments">
                 <v-list-item
+                    @click="toggleMenu('appointment')"
                     active-class="bg-primaryOld text-white"
                     prepend-icon="mdi mdi-calendar-clock"
                     value="appointment"
@@ -65,6 +66,7 @@
             <!-- cure cycle  -->
             <router-link to="cure">
                 <v-list-item
+                    @click="toggleMenu('cureCycle')"
                     active-class="bg-primaryOld text-white"
                     prepend-icon="mdi-tooth-outline"
                     value="cure"
@@ -77,6 +79,7 @@
             <!-- main lab -->
             <router-link to="mainLaboratory">
                 <v-list-item
+                    @click="toggleMenu('inboundLaboratory')"
                     active-class="bg-primaryOld text-white"
                     prepend-icon="mdi-microscope"
                     value="in lab"
@@ -87,6 +90,7 @@
             </router-link>
             <router-link to="laboratory">
                 <v-list-item
+                    @click="toggleMenu('outboundLaboratory')"
                     active-class="bg-primaryOld text-white"
                     prepend-icon="mdi-microscope"
                     value="out lab"
@@ -100,14 +104,14 @@
                 active-class="bg-primaryOld text-white"
                 prepend-icon="mdi mdi-cash-marker"
                 value="expenses"
-                @click="toggleList"
+                @click="toggleMenu('expense')"
                 class="transition-all duration-300 cursor-pointer py-3 borderRadius"
             >
                 {{ t("expense") }}
             </v-list-item>
 
             <transition name="slide-fade">
-                <v-list v-if="isListVisible" class="pl-4">
+                <v-list v-if="activeMenu === 'expense'" class="pl-4">
                     <router-link
                         v-for="item in navItems"
                         :key="item.to"
@@ -128,13 +132,13 @@
                 active-class="bg-primaryOld text-white"
                 prepend-icon="mdi mdi-card-account-details-outline"
                 value="people"
-                @click="togglePeople"
+                @click="toggleMenu('people')"
                 class="transition-all duration-300 cursor-pointer py-3 borderRadius"
             >
                 {{ t("people") }}
             </v-list-item>
             <transition name="slide-fade">
-                <v-list v-if="isPeopleVisible" class="pl-4">
+                <v-list v-if="activeMenu === 'people'" class="pl-4">
                     <router-link
                         v-for="item in peopleItems"
                         :key="item.to"
@@ -155,13 +159,13 @@
                 active-class="bg-primaryOld text-white"
                 prepend-icon="mdi-finance"
                 value="Reports"
-                @click="toggleReports"
+                @click="toggleMenu('reports')"
                 class="transition-all duration-300 cursor-pointer py-3 borderRadius"
             >
                 {{ t("reports") }}
             </v-list-item>
             <transition name="slide-fade">
-                <v-list v-if="isReportVisible" class="pl-4">
+                <v-list v-if="activeMenu === 'reports'" class="pl-4">
                     <router-link
                         v-for="item in reportItems"
                         :key="item.to"
@@ -182,13 +186,13 @@
                 active-class="bg-primaryOld text-white"
                 prepend-icon="mdi-cog-outline"
                 value="Setting"
-                @click="toggleSetting"
+                @click="toggleMenu('setting')"
                 class="transition-all duration-300 cursor-pointer py-3 borderRadius"
             >
                 {{ t("setting") }}
             </v-list-item>
             <transition name="slide-fade">
-                <v-list v-if="isSettingVisible" class="pl-4">
+                <v-list v-if="activeMenu === 'setting'" class="pl-4">
                     <router-link
                         v-for="item in settingItems"
                         :key="item.to"
@@ -260,31 +264,11 @@ const logout = () => {
 
     // Implement your logout logic here
 };
-// State for list visibility
-const isListVisible = ref(false);
-const isPeopleVisible = ref(false);
-const isLeadVisible = ref(false);
-const isLabVisible = ref(false);
-const isSettingVisible = ref(false);
-const isReportVisible = ref(false);
 
-//
-// Toggle for list items
-const toggleList = () => {
-    isListVisible.value = !isListVisible.value;
-};
-const togglePeople = () => {
-    isPeopleVisible.value = !isPeopleVisible.value;
-};
-const toggleLead = () => {
-    isLeadVisible.value = !isLeadVisible.value;
-};
+const activeMenu = ref(null);
 
-const toggleSetting = () => {
-    isSettingVisible.value = !isSettingVisible.value;
-};
-const toggleReports = () => {
-    isReportVisible.value = !isReportVisible.value;
+const toggleMenu = (menu) => {
+    activeMenu.value = activeMenu.value === menu ? null : menu;
 };
 
 // Define navigation items in a structured list for cleaner handling
@@ -297,25 +281,25 @@ const navItems = computed(() => [
     },
     {
         to: "/billExpense",
-        title:  t("billExpense"),
+        title: t("billExpense"),
         icon: "mdi mdi-circle-medium",
         value: "billExpense",
     },
 
     {
         to: "/expenseProducts",
-        title:  t("products"),
+        title: t("products"),
         icon: "mdi mdi-circle-medium",
         value: "expense product",
     },
     {
         to: "/expenseCat",
-        title:  t("categories"),
+        title: t("categories"),
         icon: "mdi mdi-circle-medium",
         value: "categories",
     },
 ]);
-const peopleItems = computed(() =>[
+const peopleItems = computed(() => [
     {
         to: "/employee",
         title: t("employee"),
@@ -354,7 +338,7 @@ const peopleItems = computed(() =>[
         icon: "mdi mdi-circle-medium",
         value: "customer",
     },
-    
+
     {
         to: "/doctors",
         title: t("doctor"),
@@ -417,7 +401,7 @@ const leadItems = computed(() => [
     // },
 ]);
 
-const settingItems =computed(() => [
+const settingItems = computed(() => [
     {
         to: "/systemSetting",
         title: t("systemSetting"),
@@ -457,7 +441,7 @@ const settingItems =computed(() => [
         value: "Dental   ",
     },
 ]);
-const reportItems = computed(() =>[
+const reportItems = computed(() => [
     {
         to: "/profitLoss",
         title: t("profitLoss"),

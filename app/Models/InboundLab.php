@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Laboratory extends Model
+class InboundLab extends Model
 {
     use HasFactory;
 
@@ -16,18 +16,16 @@ class Laboratory extends Model
     public const COLUMN_GRAND_TOTAL = 'grand_total';
     public const COLUMN_RETURN_DATE = 'return_date';
     public const COLUMN_ISSUED_AT = 'issue_at';
-    public const COLUMN_TYPE = 'type';
     public const COLUMN_DESCRIPTION = 'description';
 
 
-    protected $table = 'laboratories';
+    protected $table = 'inbound_labs';
 
     protected $fillable = [
         self::COLUMN_GRAND_TOTAL,
         self::COLUMN_DESCRIPTION,
         self::COLUMN_ISSUED_AT,
         self::COLUMN_PAID,
-        self::COLUMN_TYPE,
         self::COLUMN_DENTIST_ID,
         self::COLUMN_CUSTOMER_ID,
         self::COLUMN_RETURN_DATE
