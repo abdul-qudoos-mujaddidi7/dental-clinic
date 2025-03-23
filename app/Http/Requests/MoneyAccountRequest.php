@@ -24,7 +24,7 @@ class MoneyAccountRequest extends FormRequest
     {
         return [
             MoneyAccount::COLUMN_NAME => 'required|string',
-            MoneyAccount::COLUMN_BALANCE => 'required|numeric',
+            MoneyAccount::COLUMN_BALANCE => 'nullable|numeric',
         ];
     }
 }
