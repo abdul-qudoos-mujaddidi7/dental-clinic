@@ -28,6 +28,8 @@ class Expense extends Model
         self::COLUMN_MONEY_ACCOUNT_ID
     ];
 
+    protected $table='expenses';
+
     protected static function boot()
     {
         parent::boot();

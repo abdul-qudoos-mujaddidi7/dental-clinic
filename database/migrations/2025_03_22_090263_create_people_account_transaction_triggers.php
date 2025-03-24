@@ -2,6 +2,7 @@
 
 
 use App\Enums\TransactionType;
+use App\Models\Cure;
 use Illuminate\Support\Facades\DB;
 use App\Models\PeopleAccountTransaction;
 use Illuminate\Database\Migrations\Migration;
@@ -26,6 +27,7 @@ class CreatePeopleAccountTransactionTriggers extends Migration
                 FOR EACH ROW
                 BEGIN
                     CALL UpdatePeopleAccountBalance(NEW.people_account_id);
+                    
 
                     IF NEW." . PeopleAccountTransaction::COLUMN_TRANSACTION_TYPE . " <> '" . TransactionType::OPERATION . "' THEN
                         CALL InsertMoneyAccountTransaction(
@@ -98,3 +100,5 @@ class CreatePeopleAccountTransactionTriggers extends Migration
         DB::unprepared("DROP TRIGGER IF EXISTS after_people_account_transaction_delete");
     }
 }
+
+// NEW  refers to columns of the table where the trigger is created.
