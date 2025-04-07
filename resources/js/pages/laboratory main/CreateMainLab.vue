@@ -193,6 +193,12 @@
                         type="number"
                         density="compact"
                     >
+                    <div @click="changeCurrency" style="cursor: pointer">
+                            <span class="span">
+                                {{ currenctAccountName.name }}
+                            </span>
+                        </div>
+                        {{ grandTotal }}
                     </v-text-field>
                 </div>
             </div>
@@ -362,6 +368,38 @@ const removeProduct = (index) => {
     );
 };
 // ================================
+// const account = LaboratoryRepository.account.name;
+
+const accountIndex = ref(0);
+
+const currenctAccountName = computed(() => {
+    const accounts = LaboratoryRepository.account;
+
+    if (!accounts || accounts.length === 0) {
+        return { name: "...", id: null };
+    }
+
+    if (accountIndex.value >= accounts.length) {
+        accountIndex.value = 0;
+    }
+
+    formData.name = accounts[accountIndex.value].id;
+
+    return {
+        name: accounts[accountIndex.value].name,
+        id: accounts[accountIndex.value].id,
+    };
+});
+//====================================
+const changeCurrency = () => {
+    const accounts = LaboratoryRepository.account;
+    if (!accounts || accounts.length === 0) return;
+    accountIndex.value = (accountIndex.value + 1) % accounts.length;
+};
+
+LaboratoryRepository.fetchAccountDataForCreate();
+console.log(LaboratoryRepository.account, "na");
+
 // =====================================
 </script>
 

@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { ref, reactive } from "vue";
+import { ref, reactive, resolveComponent } from "vue";
 import { axios } from "../axios";
 import { useRouter } from "vue-router";
 
@@ -32,6 +32,9 @@ export let useLaboratoryRepository = defineStore("LaboratoryRepository", {
             labId: ref(""),
             doctorsFor: reactive([]),
             customersFor:reactive([]),
+            //money acc
+            account:reactive([]),
+            
         };
     },
     actions: {
@@ -245,6 +248,11 @@ export let useLaboratoryRepository = defineStore("LaboratoryRepository", {
                 this.error = err;
                 // If there's an error, set the error in the stor
             }
+        },
+        async fetchAccountDataForCreate() {
+            const response = await axios.get('/moneyAccount');
+            this.account = response.data.data;
+            console.log(this.account);
         },
     },
 });

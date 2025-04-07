@@ -66,6 +66,7 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
             billExpensesPayments: reactive([]),
             billExpensePaymentUpdate: reactive([]),
             moneyAccsFor:reactive([]),
+            account:reactive([]),
 
           
         };
@@ -833,5 +834,11 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
                 this.error = err;
             }
         },
+               // part for the change account
+               async fetchAccountDataForCreate() {
+                const response = await axios.get('/moneyAccount');
+                this.account = response.data.data;
+                console.log(this.account);
+            },
     },
 });
