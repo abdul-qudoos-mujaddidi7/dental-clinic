@@ -1,6 +1,6 @@
 <?php
 
-
+use App\Enums\PaymentType;
 use App\Enums\TransactionType;
 use App\Models\Cure;
 use Illuminate\Support\Facades\DB;

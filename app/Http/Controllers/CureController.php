@@ -75,7 +75,7 @@ class CureController extends Controller
         };
 
         $validated['people_account_id'] = $peopleAccount->id ;
-        $validated['money_account_id'] =  $validated['money_account_id']  ?? 1;
+       
 
         $cure = Cure::create($validated);
 
