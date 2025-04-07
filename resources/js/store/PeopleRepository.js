@@ -63,7 +63,8 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             peopleAccounts:reactive([]),
             peopleAccount:reactive([]),
             moneyAccsFor:reactive([]),
-            idForCreatePayment:ref("")
+            idForCreatePayment:ref(""),
+            account:reactive([]),
         };
     },
     actions: {
@@ -796,7 +797,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             this.loading = true;
 
             const response = await axios.get(
-                `laboratories?page=${page}&perPage=${itemsPerPage}&search=${this.laboratorySearch}&type=out`
+                `outboundLab?page=${page}&perPage=${itemsPerPage}&search=${this.laboratorySearch}&type=out`
             );
             this.laboratories = response.data.data;
             this.totalItems = response.data.meta.total;
@@ -805,7 +806,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
         async FetchLaboratory(id) {
             // this.error = null;
             try {
-                const response = await axios.get(`laboratories/${id}`);
+                const response = await axios.get(`outboundLab/${id}`);
 
                 this.laboratory = response.data.data;
                 console.log(this.laboratory);
@@ -839,7 +840,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
                 // Adding a custom header to the Axios request
                 const config = {
                     method: "POST",
-                    url: "laboratories",
+                    url: "outboundLab",
 
                     data: formData,
                 };
@@ -860,7 +861,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             try {
                 const config = {
                     method: "PUT",
-                    url: `laboratories/${id}`,
+                    url: `outboundLab/${id}`,
 
                     data: data,
                 };
@@ -885,7 +886,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             try {
                 const config = {
                     method: "DELETE",
-                    url: "laboratories/" + id,
+                    url: "outboundLab/" + id,
                 };
 
                 const response = await axios(config);
@@ -1080,6 +1081,12 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             } catch (err) {
                 this.error = err;
             }
+        },
+          // part for the change account
+          async fetchAccountDataForCreate() {
+            const response = await axios.get('/moneyAccount');
+            this.account = response.data.data;
+            console.log(this.account);
         },
 
     },

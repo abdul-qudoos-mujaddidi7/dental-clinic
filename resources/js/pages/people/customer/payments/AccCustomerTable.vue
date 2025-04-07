@@ -1,8 +1,8 @@
 <template>
-    <CreateCustomer v-if="PeopleRepository.createDialog" />
-    <div class="all-expense rounded-xl" :dir="dir">
+    <CreateCustomerAccount v-if="PeopleRepository.createDialog" />
+    <div class="all-expense rounded-xl">
         <div class="card rounded-xl">
-            <AppBar :mainTitle="$t('customer')" :sub-title="$t('people')" />
+
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
@@ -19,7 +19,7 @@
                          :label="t('search')"
                         append-inner-icon="mdi-magnify"
                         hide-details
-                        v-model="PeopleRepository.customerSearch"
+                        v-model="PeopleRepository.peopleAccSearch"
                     ></v-text-field>
                 </div>
                 <div class="btn">
@@ -45,7 +45,11 @@
                         <v-row>
                             <v-col>
                                 <v-data-table-server
-                                :dir="dir"
+                                :class="
+                                        dir === 'rtl'
+                                            ? 'rtl-border'
+                                            : 'ltr-border'
+                                    "
                                     theme="cursor-pointer"
 
                                     v-model:items-per-page="
@@ -53,13 +57,13 @@
                                     "
                                     :headers="headers"
                                     :items-length="PeopleRepository.totalItems"
-                                    :items="PeopleRepository.customers"
+                                    :items="PeopleRepository.peopleAccounts"
                                     :loading="PeopleRepository.loading"
-                                    :search="PeopleRepository.customerSearch"
+                                    :search="PeopleRepository.peopleAccSearch"
                                     @update:options="
-                                        PeopleRepository.FetchCustomers
+                                        PeopleRepository.FetchPeopleAccounts
                                     "
-                                    :item-key="PeopleRepository.customers"
+                                    :item-key="PeopleRepository.peopleAccounts"
                                     hover
                                     class="w-100 mx-auto"
                                 >
@@ -67,7 +71,7 @@
                                         <v-checkbox
                                             :value="item.id"
                                             v-model="selectedIds"
-                                            class="w-6 d-flex"
+                                            class="w-0 d-flex"
                                         ></v-checkbox>
                                     </template>
                                     <template v-slot:item.action="{ item }">
@@ -83,25 +87,6 @@
                                             </template>
                                             <v-list>
                                                 <v-list-item>
-                                                    <router-link
-                                                        :to="
-                                                            '/viewCustomer/' +
-                                                            item.id
-                                                        "
-                                                    >
-                                                        <v-list-item-title
-                                                            class="cursor-pointer d-flex gap-3 justify-left pb-3"
-                                                            @click="
-                                                                showId(item.id)
-                                                            "
-                                                        >
-                                                            <v-icon
-                                                                color="tealColor"
-                                                                >mdi-eye-outline</v-icon
-                                                            >
-                                                            {{ t("view") }}
-                                                        </v-list-item-title>
-                                                    </router-link>
                                                     <v-list-item-title
                                                         @click="edit(item)"
                                                         class="cursor-pointer d-flex gap-3 justify-left pb-3"
@@ -149,10 +134,9 @@
 
 <script setup>
 import { ref, onMounted, computed } from "vue";
-import AppBar from "../../../components/AppBar.vue";
-import CreateCustomer from "./CreateCustomer.vue";
 import { usePeopleRepository } from "@/store/PeopleRepository";
 import { useI18n } from "vue-i18n";
+import CreateCustomerAccount from './CreateCustomerAccount.vue'
 const {t,locale} = useI18n();
 
 const PeopleRepository = usePeopleRepository();
@@ -175,9 +159,6 @@ const sendSelectedIds = () => {
 const dir = computed(() => {
     return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
 });
-const showId = (id) => {
-    PeopleRepository.idForCreatePayment = id;
-};
 // delete and update Create
 const CreateDialogShow = () => {
     PeopleRepository.customer = {};
@@ -207,8 +188,8 @@ const deleteItem = async (item) => {
 const headers = [
     { title: "", key: "checkbox", align: "start", sortable: false },
     { title: t("name"), key: "name", align: "start", sortable: false },
-    { title: t("phone"), key: "phone", align: "start", sortable: false },
-    // { title: t("type"), key: "type", align: "start", sortable: false },
+    { title: t("account"), key: "people.name", align: "start", sortable: false },
+    { title: t("balance"), key: "balance", align: "start", sortable: false },
     { title: t("action"), key: "action", align: "center", sortable: false },
 ];
 </script>

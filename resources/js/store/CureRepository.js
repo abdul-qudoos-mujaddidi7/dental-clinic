@@ -32,6 +32,8 @@ export let useCureRepository = defineStore("CureRepository", {
             searchFetch: reactive([]),
             cureProduct: reactive([]),
             leadStageFor: reactive([]),
+            // money account 
+            account:reactive([]),
         };
     },
     actions: {
@@ -357,5 +359,11 @@ export let useCureRepository = defineStore("CureRepository", {
                 this.error = err;
             }
         },
+               // part for the change account
+               async fetchAccountDataForCreate() {
+                const response = await axios.get('/moneyAccount');
+                this.account = response.data.data;
+                console.log(this.account);
+            },
     },
 });

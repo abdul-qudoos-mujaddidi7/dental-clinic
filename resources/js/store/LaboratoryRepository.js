@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { ref, reactive } from "vue";
+import { ref, reactive, resolveComponent } from "vue";
 import { axios } from "../axios";
 import { useRouter } from "vue-router";
 
@@ -32,6 +32,9 @@ export let useLaboratoryRepository = defineStore("LaboratoryRepository", {
             labId: ref(""),
             doctorsFor: reactive([]),
             customersFor:reactive([]),
+            //money acc
+            account:reactive([]),
+            
         };
     },
     actions: {
@@ -144,7 +147,7 @@ export let useLaboratoryRepository = defineStore("LaboratoryRepository", {
             this.loading = true;
 
             const response = await axios.get(
-                `laboratories?page=${page}&perPage=${itemsPerPage}&search=${this.laboratorySearch}&type=in`
+                `inboundLab?page=${page}&perPage=${itemsPerPage}&search=${this.laboratorySearch}&type=in`
             );
             this.laboratories = response.data.data;
             this.totalItems = response.data.meta.total;
@@ -153,7 +156,7 @@ export let useLaboratoryRepository = defineStore("LaboratoryRepository", {
         async FetchLaboratory(id) {
             // this.error = null;
             try {
-                const response = await axios.get(`laboratories/${id}`);
+                const response = await axios.get(`inboundLab/${id}`);
 
                 this.laboratory = response.data.data;
                 console.log(this.laboratory);
@@ -187,7 +190,7 @@ export let useLaboratoryRepository = defineStore("LaboratoryRepository", {
                 // Adding a custom header to the Axios request
                 const config = {
                     method: "POST",
-                    url: "laboratories",
+                    url: "inboundLab",
 
                     data: formData,
                 };
@@ -208,7 +211,7 @@ export let useLaboratoryRepository = defineStore("LaboratoryRepository", {
             try {
                 const config = {
                     method: "PUT",
-                    url: `laboratories/${id}`,
+                    url: `inboundLab/${id}`,
 
                     data: data,
                 };
@@ -233,7 +236,7 @@ export let useLaboratoryRepository = defineStore("LaboratoryRepository", {
             try {
                 const config = {
                     method: "DELETE",
-                    url: "laboratories/" + id,
+                    url: "inboundLab/" + id,
                 };
 
                 const response = await axios(config);
@@ -245,6 +248,11 @@ export let useLaboratoryRepository = defineStore("LaboratoryRepository", {
                 this.error = err;
                 // If there's an error, set the error in the stor
             }
+        },
+        async fetchAccountDataForCreate() {
+            const response = await axios.get('/moneyAccount');
+            this.account = response.data.data;
+            console.log(this.account);
         },
     },
 });

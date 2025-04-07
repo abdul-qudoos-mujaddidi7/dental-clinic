@@ -57,8 +57,6 @@
                     density="compact"
                     :rules="[rules.required]"
                 ></v-autocomplete>
-
-               
             </v-form>
             <v-divider></v-divider>
             <v-row no-gutters class="justify-space-between mt-16">
@@ -112,9 +110,7 @@
                     <tbody class="space">
                         <tr
                             class="product-table h-[3.4rem] text-xs"
-                            v-for="(
-                                pro, index
-                            ) in PeopleRepository.services"
+                            v-for="(pro, index) in PeopleRepository.services"
                             :key="index"
                         >
                             <td class="pl-3 text-start">{{ index + 1 }}</td>
@@ -180,6 +176,12 @@
                         type="number"
                         density="compact"
                     >
+                        <div @click="changeCurrency" style="cursor: pointer">
+                            <span class="span">
+                                {{ currenctAccountName.name }}
+                            </span>
+                        </div>
+                        {{ grandTotal }}
                     </v-text-field>
                 </div>
             </div>
@@ -209,7 +211,6 @@ import { usePeopleRepository } from "@/store/PeopleRepository";
 
 const PeopleRepository = usePeopleRepository();
 
-
 const formData = reactive({
     tooths: PeopleRepository.services || [],
     grandTotal: "",
@@ -234,7 +235,7 @@ const multiple = (pro) => {
     console.log(add);
     return add || 0;
 };
-PeopleRepository.FetchDentals()
+PeopleRepository.FetchDentals();
 watch(
     () => PeopleRepository.services,
     () => {
@@ -295,7 +296,7 @@ const createEarning = async () => {
 };
 
 PeopleRepository.FetchSuppliersFor();
-console.log(PeopleRepository.suppliersFor,'chiqa tyt')
+console.log(PeopleRepository.suppliersFor, "chiqa tyt");
 const deleteItem = async (item) => {
     await PeopleRepository.DeleteLaboratory(item.id);
 };
@@ -355,7 +356,37 @@ const removeProduct = (index) => {
 };
 
 // =====================================
-// =====================================
+const account = PeopleRepository.account.name;
+
+const accountIndex = ref(0);
+
+const currenctAccountName = computed(() => {
+    const accounts = PeopleRepository.account;
+
+    if (!accounts || accounts.length === 0) {
+        return { name: "...", id: null };
+    }
+
+    if (accountIndex.value >= accounts.length) {
+        accountIndex.value = 0;
+    }
+
+    formData.name = accounts[accountIndex.value].id;
+
+    return {
+        name: accounts[accountIndex.value].name,
+        id: accounts[accountIndex.value].id,
+    };
+});
+//====================================
+const changeCurrency = () => {
+    const accounts = PeopleRepository.account;
+    if (!accounts || accounts.length === 0) return;
+    accountIndex.value = (accountIndex.value + 1) % accounts.length;
+};
+
+PeopleRepository.fetchAccountDataForCreate();
+console.log(PeopleRepository.account, "na");
 </script>
 
 <style scoped>

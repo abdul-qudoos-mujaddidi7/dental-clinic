@@ -42,7 +42,7 @@
                                     >
                                         Date Of Birth
                                     </h4>
-                                    <div class="pb-4 pl-2">
+                                    <div class="pb-2 pl-2">
                                         <date-picker
                                             mode="single"
                                             :column="1"
@@ -65,7 +65,7 @@
                                     density="compact"
                                     :counter="10"
                                     type="tel"
-                                    class="w-50 pr-2 pb-4"
+                                    class="w-50 pr-2 pb-2"
                                     :rules="[rules.required]"
                                 ></v-text-field>
                                 <div class="w-50">
@@ -106,11 +106,26 @@
                                     </div>
                                 </div>
                             </div>
+                            <h4 class="text-base font-medium ">
+                                     Sicknesses
+                                </h4>
+                            <div class=" flex  gap-2 align-center mb-4 ">
+                               
+                                <v-checkbox
+                                    v-for="sickness in sicknessOptions"
+                                    :key="sickness"
+                                    :label="sickness"
+                                    :value="sickness"
+                                    v-model="formData.sicknesses"
+                                    hide-details
+                                    density="compact"
+                                />
+                            </div>
 
                             <v-textarea
                                 v-model="formData.address"
                                 variant="outlined"
-                                :label="$t('address')  "
+                                :label="$t('address')"
                                 density="compact"
                             >
                             </v-textarea>
@@ -143,12 +158,21 @@ const formRef = ref(null);
 const selectGender = (gender) => {
     formData.gender = gender;
 };
+const sicknessOptions = [
+  'Diabetes',
+  'blood pressure',
+  'Heart Disease',
+  'Asthma',
+  'Allergies',
+  'Others'
+]
 const formData = reactive({
     id: PeopleRepository.patient.id,
     name: PeopleRepository.patient.name,
     phone: PeopleRepository.patient.phone,
     address: PeopleRepository.patient.address,
     last_name: "nadeem",
+    sicknesses: [],
     type: "patient",
     gender: PeopleRepository.patient.gender || "Male", // Default to 'Male'
     dateOfBirth: PeopleRepository.patient.dateOfBirth,

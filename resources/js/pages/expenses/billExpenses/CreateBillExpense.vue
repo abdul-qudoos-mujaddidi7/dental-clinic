@@ -181,7 +181,14 @@
                         :label="t('paid')"
                         type="number"
                         density="compact"
-                    ></v-text-field>
+                    >
+                        <div @click="changeCurrency" style="cursor: pointer">
+                            <span class="span">
+                                {{ currenctAccountName.name }}
+                            </span>
+                        </div>
+                        {{ grandTotal }}</v-text-field
+                    >
                 </div>
             </div>
             <div class="pt-16">
@@ -295,6 +302,37 @@ const deleteItem = async (item) => {
 };
 formData.billDate = ExpenseRepository.getTodaysDate();
 
+// =====================================
+const account = ExpenseRepository.account.name;
+
+const accountIndex = ref(0);
+
+const currenctAccountName = computed(() => {
+    const accounts = ExpenseRepository.account;
+
+    if (!accounts || accounts.length === 0) {
+        return { name: "...", id: null };
+    }
+
+    if (accountIndex.value >= accounts.length) {
+        accountIndex.value = 0;
+    }
+
+    formData.name = accounts[accountIndex.value].id;
+
+    return {
+        name: accounts[accountIndex.value].name,
+        id: accounts[accountIndex.value].id,
+    };
+});
+//====================================
+const changeCurrency = () => {
+    const accounts = ExpenseRepository.account;
+    if (!accounts || accounts.length === 0) return;
+    accountIndex.value = (accountIndex.value + 1) % accounts.length;
+};
+
+ExpenseRepository.fetchAccountDataForCreate();
 ExpenseRepository.Suppliers();
 // ====================
 // =====================================

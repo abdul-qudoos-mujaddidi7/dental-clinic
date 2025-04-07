@@ -1,8 +1,8 @@
 <template>
-    <CreateCustomer v-if="PeopleRepository.createDialog" />
+    <CreateSalary v-if="LeadRepository.createDialog" />
     <div class="all-expense rounded-xl" :dir="dir">
         <div class="card rounded-xl">
-            <AppBar :mainTitle="$t('customer')" :sub-title="$t('people')" />
+            <AppBar :mainTitle="$t('Salary')" :sub-title="$t('Salary Info')" />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
@@ -19,7 +19,7 @@
                          :label="t('search')"
                         append-inner-icon="mdi-magnify"
                         hide-details
-                        v-model="PeopleRepository.customerSearch"
+                        v-model="LeadRepository.paySalarySearch"
                     ></v-text-field>
                 </div>
                 <div class="btn">
@@ -49,17 +49,17 @@
                                     theme="cursor-pointer"
 
                                     v-model:items-per-page="
-                                        PeopleRepository.itemsPerPage
+                                        LeadRepository.itemsPerPage
                                     "
                                     :headers="headers"
-                                    :items-length="PeopleRepository.totalItems"
-                                    :items="PeopleRepository.customers"
-                                    :loading="PeopleRepository.loading"
-                                    :search="PeopleRepository.customerSearch"
+                                    :items-length="LeadRepository.totalItems"
+                                    :items="LeadRepository.paySalaries"
+                                    :loading="LeadRepository.loading"
+                                    :search="LeadRepository.paySalarySearch"
                                     @update:options="
-                                        PeopleRepository.FetchCustomers
+                                        LeadRepository.FetchPaySalaries
                                     "
-                                    :item-key="PeopleRepository.customers"
+                                    :item-key="LeadRepository.paySalaries"
                                     hover
                                     class="w-100 mx-auto"
                                 >
@@ -149,13 +149,13 @@
 
 <script setup>
 import { ref, onMounted, computed } from "vue";
-import AppBar from "../../../components/AppBar.vue";
-import CreateCustomer from "./CreateCustomer.vue";
-import { usePeopleRepository } from "@/store/PeopleRepository";
+import AppBar from "../../components/AppBar.vue";
+import CreateSalary from "./CreateSalary.vue";
+import { useLeadRepository } from "@/store/LeadRepository";
 import { useI18n } from "vue-i18n";
 const {t,locale} = useI18n();
 
-const PeopleRepository = usePeopleRepository();
+const LeadRepository = useLeadRepository();
 // bulk delete
 const selectedIds = ref([]);
 const sendSelectedIds = () => {
@@ -166,7 +166,7 @@ const sendSelectedIds = () => {
 
         console.log("Sending data:", data);
 
-        PeopleRepository.bulkDeleteCustomer(data);
+        LeadRepository.bulkDeleteCustomer(data);
     } else {
         console.log("No IDs selected.");
     }
@@ -176,23 +176,23 @@ const dir = computed(() => {
     return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
 });
 const showId = (id) => {
-    PeopleRepository.idForCreatePayment = id;
+    LeadRepository.idForCreatePayment = id;
 };
 // delete and update Create
 const CreateDialogShow = () => {
-    PeopleRepository.customer = {};
-    PeopleRepository.setEditMode(false);
-    PeopleRepository.createDialog = true;
+    LeadRepository.customer = {};
+    LeadRepository.setEditMode(false);
+    LeadRepository.createDialog = true;
 };
 
 const edit = (item) => {
     console.log(item, "me");
-    PeopleRepository.setEditMode(true);
-    PeopleRepository.customer = {};
-    if (Object.keys(PeopleRepository.customer).length === 0) {
-        PeopleRepository.FetchCustomer(item.id)
+    LeadRepository.setEditMode(true);
+    LeadRepository.customer = {};
+    if (Object.keys(LeadRepository.customer).length === 0) {
+        LeadRepository.FetchCustomer(item.id)
             .then(() => {
-                PeopleRepository.createDialog = true;
+                LeadRepository.createDialog = true;
             })
             .catch((error) => {
                 console.error("Error fetching data:", error);
@@ -201,7 +201,7 @@ const edit = (item) => {
 };
 
 const deleteItem = async (item) => {
-    await PeopleRepository.DeleteCustomer(item.id);
+    await LeadRepository.DeleteCustomer(item.id);
 };
 // header
 const headers = [
