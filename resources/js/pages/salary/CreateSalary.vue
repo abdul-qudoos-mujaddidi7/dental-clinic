@@ -52,12 +52,12 @@
                             </div>
 
                             <v-text-field
-                                v-model="formData.phone"
+                                v-model="formData.salary"
                                 variant="outlined"
-                                :label="$t('phone')"
+                                :label="$t('salary')"
                                 density="compact"
-                                :counter="10"
-                                type="tel"
+                             
+                                type="number"
                                 class="pb-4"
                                 :rules="[rules.required]"
                             ></v-text-field>
