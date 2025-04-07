@@ -2,7 +2,7 @@
     <CreateSalary v-if="LeadRepository.createDialog" />
     <div class="all-expense rounded-xl" :dir="dir">
         <div class="card rounded-xl">
-            <AppBar :mainTitle="$t('Salary')" :sub-title="$t('Salary Info')" />
+            <AppBar :mainTitle="$t('salary')" :sub-title="$t('salaries')" />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"

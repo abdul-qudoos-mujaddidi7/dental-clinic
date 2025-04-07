@@ -73,16 +73,27 @@ div.v-data-table-footer
     direction: ltr;
 }
 
-
-
-.span {
+.span{
     background-color: #ecf1f4;
     position: absolute;
-    right: 0px; 
+    right: 0px;
+     
     top: 100%;
     transform: translateY(-100%);
     padding: .4rem 0rem 0rem .2rem;
     width: 3rem;
+    height: 2.5rem;
+}
+
+.paidSpan {
+    background-color: #ecf1f4;
+    position: absolute;
+    right: 0px;
+     
+    top: 100%;
+    transform: translateY(-100%);
+    padding: .4rem 0rem 0rem .2rem;
+    width: 8rem;
     height: 2.5rem;
 }
 

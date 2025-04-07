@@ -174,16 +174,16 @@
                     <span>{{ totalSum }}</span>
                     <span>{{ t("total") }}</span>
                 </div>
-                <div>
+                <div class="w-[25rem]">
                     <v-text-field
                         v-model="formData.paid"
                         variant="outlined"
                         :label="t('paid')"
-                        type="number"
+                     class="w-100"
                         density="compact"
                     >
                         <div @click="changeCurrency" style="cursor: pointer">
-                            <span class="span">
+                            <span class="paidSpan">
                                 {{ currenctAccountName.name }}
                             </span>
                         </div>
@@ -311,7 +311,7 @@ const currenctAccountName = computed(() => {
     const accounts = ExpenseRepository.account;
 
     if (!accounts || accounts.length === 0) {
-        return { name: "...", id: null };
+        return { moneyAccountId: "...", id: null };
     }
 
     if (accountIndex.value >= accounts.length) {
