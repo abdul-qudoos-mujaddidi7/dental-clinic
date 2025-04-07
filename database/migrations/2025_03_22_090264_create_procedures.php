@@ -46,8 +46,8 @@ class CreateProcedures extends Migration
                 DECLARE new_balance DECIMAL(15,2);
 
                 SELECT
-                    COALESCE(SUM(CASE WHEN " . MoneyAccountTransaction::COLUMN_PAYMENT_TYPE . " = '" . PaymentType::RECEIVED . "' THEN " . PeopleAccountTransaction::COLUMN_AMOUNT . " ELSE 0 END), 0),
-                    COALESCE(SUM(CASE WHEN " . MoneyAccountTransaction::COLUMN_PAYMENT_TYPE . " = '" . PaymentType::PAID . "' THEN " . PeopleAccountTransaction::COLUMN_AMOUNT . " ELSE 0 END), 0)
+                    COALESCE(SUM(CASE WHEN " . MoneyAccountTransaction::COLUMN_PAYMENT_TYPE . " = '" . PaymentType::RECEIVED . "' THEN " . MoneyAccountTransaction::COLUMN_AMOUNT . " ELSE 0 END), 0),
+                    COALESCE(SUM(CASE WHEN " . MoneyAccountTransaction::COLUMN_PAYMENT_TYPE . " = '" . PaymentType::PAID . "' THEN " . MoneyAccountTransaction::COLUMN_AMOUNT . " ELSE 0 END), 0)
                 INTO received_total, paid_total
                 FROM $moneyAccountTransactionTable
                 WHERE " . MoneyAccountTransaction::COLUMN_MONEY_ACCOUNT_ID . " = account_id AND deleted_at IS NULL;

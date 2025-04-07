@@ -10,15 +10,21 @@ class Cure extends Model
 {
     use HasFactory;
     use SoftDeletes;
+
+    public const COLUMN_PAID = 'paid';
     protected $fillable = [
         'patient_id',
         'dentist_id',
         'start_date',
         'grand_total',
-        'paid',
+        'people_account_id',
+        'money_account_id',
+        self::COLUMN_PAID,
         'status',
         'description',
     ];
+
+    protected $table='cures';
 
     protected static function boot()
     {
@@ -38,10 +44,6 @@ class Cure extends Model
     return $this->belongsTo(People::class,'dentist_id');
 }
 
-    public function cureCycles()
-    {
-        return $this->hasMany(CureCycle::class);
-    }
     public function payments()
     {
         return $this->hasMany(CurePayment::class);

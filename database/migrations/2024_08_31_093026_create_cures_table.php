@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Cure;
 use App\Models\Dentist;
 use App\Models\Patient;
 use App\Models\People;
@@ -22,7 +23,7 @@ return new class extends Migration
             $table->integer('money_account_id');
             $table->date('start_date');
             $table->decimal('grand_total',10,2);
-            $table->decimal('paid',10,2)->default(0);
+            $table->decimal(Cure::COLUMN_PAID,10,2)->default(0);
             $table->string('status');
             $table->string('reference',20);
             $table->text('description')->nullable();

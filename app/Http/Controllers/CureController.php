@@ -7,6 +7,8 @@ use App\Http\Resources\CureResource;
 use App\Models\Cure;
 use App\Models\CurePayment;
 use App\Models\CureService;
+use App\Models\People;
+use App\Models\PeopleAccount;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -60,7 +62,23 @@ class CureController extends Controller
         // }
 
 
+
+        $patient = $validated['patient_id'];
+
+        $peopleAccount = PeopleAccount::where('people_id', $patient)->first();
+        if(!$peopleAccount){
+           $peopleAccount = PeopleAccount::create([
+                'name' => 'حساب افغانی',
+                'people_id' => $patient,
+                'balance' => 0,
+            ]);
+        };
+
+        $validated['people_account_id'] = $peopleAccount->id ;
+       
+
         $cure = Cure::create($validated);
+
 
         if ($request->has('services')) {
             foreach ($validated['services'] as $service) {
