@@ -45,6 +45,8 @@ import PickupReport from "./pages/reports/pickup report/PickupReport.vue";
 import Services from "./pages/reports/services/Services.vue";
 //dashboard
 import Dashboard from "./pages/dashboard/Dashboard.vue";
+// salary info 
+import SalaryInfo from "./pages/salary/SalaryInfo.vue"
 // cure cycle
 import CureCycle from "./pages/cureCycle/cureCycle/CureCycle.vue";
 import CreateCureCycle from "./pages/cureCycle/cureCycle/CreateCureCycle.vue";
@@ -140,6 +142,10 @@ const router = createRouter({
                 { path: "/productReport", component: ExpenseProductReport },
                 { path: "/serviceReport", component: Services },
                 // Dashboard
+                // SalaryInfo
+                { path: "/salary", component: SalaryInfo },
+
+
                 // main lab 
                 { path: "/mainLaboratory", component: MainLab },
                 { path: "/createMainLab", component: CreateMainLab },

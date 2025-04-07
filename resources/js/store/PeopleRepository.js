@@ -63,7 +63,8 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             peopleAccounts:reactive([]),
             peopleAccount:reactive([]),
             moneyAccsFor:reactive([]),
-            idForCreatePayment:ref("")
+            idForCreatePayment:ref(""),
+            account:reactive([]),
         };
     },
     actions: {
@@ -1080,6 +1081,12 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             } catch (err) {
                 this.error = err;
             }
+        },
+          // part for the change account
+          async fetchAccountDataForCreate() {
+            const response = await axios.get('/moneyAccount');
+            this.account = response.data.data;
+            console.log(this.account);
         },
 
     },
