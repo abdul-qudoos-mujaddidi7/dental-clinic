@@ -106,16 +106,18 @@
                                     </div>
                                 </div>
                             </div>
-                            <h4 class="text-base font-medium ">
+                            <h4 class="text-base text-xm text-[#666] ">
                                      Sicknesses
                                 </h4>
-                            <div class=" flex  gap-2 align-center mb-4 ">
+                            <div class=" flex  gap-5 align-center mb-4  text-xm text-[#666]" :style="sicknessOptions ? '#000' :'#666'">
                                
                                 <v-checkbox
                                     v-for="sickness in sicknessOptions"
                                     :key="sickness"
                                     :label="sickness"
                                     :value="sickness"
+                                    :color="sicknessOptions ? '#000' :'#666'"
+                                    class="text-xs"
                                     v-model="formData.sicknesses"
                                     hide-details
                                     density="compact"
