@@ -1,5 +1,5 @@
 <template>
-    <CreateAccSupp v-if="PeopleRepository.createDialog" />
+
     <div class="all-expense rounded-xl">
         <div class="card rounded-xl">
 
@@ -134,8 +134,6 @@
 
 <script setup>
 import { ref, onMounted, computed } from "vue";
-// import AppBar from "../../../components/AppBar.vue";
-import CreateAccSupp from "./CreateAccSupp.vue";
 import { usePeopleRepository } from "@/store/PeopleRepository";
 import { useI18n } from "vue-i18n";
 const {t,locale} = useI18n();
