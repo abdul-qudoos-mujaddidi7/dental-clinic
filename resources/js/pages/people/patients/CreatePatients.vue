@@ -215,14 +215,35 @@ const rules = {
 
 const save = async () => {
     const isValid = await formRef.value.validate();
+
     if (isValid) {
+        // Convert arrays to JSON objects
+        const medicalRecordObj = {};
+        formData.medicalRecord.forEach((item) => {
+            medicalRecordObj[item.replace(/\s+/g, "_").toLowerCase()] = true;
+        });
+
+        const dentalRecordObj = {};
+        formData.dentalRecord.forEach((item) => {
+            dentalRecordObj[item.replace(/\s+/g, "_").toLowerCase()] = true;
+        });
+
+        // Attach the transformed values
+        const payload = {
+            ...formData,
+            medicalRecord: JSON.stringify(medicalRecordObj),
+            dentalRecord: JSON.stringify(dentalRecordObj),
+        };
+
+        // Send to backend
         if (PeopleRepository.isEditMode) {
-            await PeopleRepository.UpdatePatient(formData.id, formData);
+            await PeopleRepository.UpdatePatient(formData.id, payload);
         } else {
-            await PeopleRepository.CreatePatient(formData);
+            await PeopleRepository.CreatePatient(payload);
         }
     }
 };
+
 formData.dateOfBirth = PeopleRepository.getTodaysDate();
 </script>
 
