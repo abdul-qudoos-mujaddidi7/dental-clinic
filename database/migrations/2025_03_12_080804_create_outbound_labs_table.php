@@ -16,11 +16,14 @@ return new class extends Migration
         Schema::create((new OutboundLab())->getTable(), function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(People::class, OutboundLab::COLUMN_SUPPLIER_ID);
+            $table->integer('people_account_id');
+            $table->integer('money_account_id');
             $table->decimal(OutboundLab::COLUMN_GRAND_TOTAL, 10, 2);
             $table->date(OutboundLab::COLUMN_ISSUED_AT);
             $table->date(OutboundLab::COLUMN_RETURN_DATE)->nullable();
             $table->decimal(OutboundLab::COLUMN_PAID,10,2)->default(0);
             $table->text(OutboundLab::COLUMN_DESCRIPTION)->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

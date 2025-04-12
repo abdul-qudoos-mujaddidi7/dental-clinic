@@ -22,6 +22,7 @@ class PeopleRequest extends FormRequest
     {
         $this->merge([
             People::COLUMN_DATE_OF_BIRTH => $this->input('dateOfBirth'),
+            People::COLUMN_MEDICAL_RECORD => $this->input('medicalRecord'),
         ]);
     }
 

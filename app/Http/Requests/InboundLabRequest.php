@@ -20,6 +20,7 @@ class InboundLabRequest extends FormRequest
             "grand_total" => $this->input("grandTotal"),
             "issue_at" => $this->input("issueAt"),
             "dentist_id" => $this->input("dentistId"),
+            "customer_id" => $this->input("customerId"),
 
         ]);
     }
@@ -37,7 +38,8 @@ class InboundLabRequest extends FormRequest
             'grand_total' => 'required|numeric|min:0',
             'paid' => 'nullable|numeric|min:0',
             'type'=>'required| in:in,out',
-            'dentist_id' => 'nullable|exists:people,id',
+            'dentist_id' => 'required|exists:people,id',
+            'customer_id' => 'required|exists:people,id',
             'description' => 'nullable|string',
             'tooths' => 'required|array',
             'tooths.*.cost' => 'required|numeric', //te service details
