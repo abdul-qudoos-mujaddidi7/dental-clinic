@@ -81,9 +81,23 @@
                                                     v-bind="props"
                                                     variant="text"
                                                 ></v-btn>
-                                            </template>
+                                            </template> 
+                                            <!--  -->
                                             <v-list>
                                                 <v-list-item>
+                                                    <router-link :to="
+                                                        '/viewPatients/' + item.id">
+                                                    <v-list-item-title
+                                                       
+                                                        class="cursor-pointer d-flex gap-3 justify-left pb-3"
+                                                    >
+                                                        <v-icon
+                                                            color="tealColor"
+                                                            >mdi-eye-outline</v-icon
+                                                        >
+                                                        {{ t("view") }}
+                                                    </v-list-item-title>
+                                                </router-link>
                                                     <v-list-item-title
                                                         @click="edit(item)"
                                                         class="cursor-pointer d-flex gap-3 justify-left pb-3"

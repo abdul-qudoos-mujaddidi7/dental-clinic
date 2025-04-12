@@ -118,7 +118,24 @@
                                     :value="sickness"
                                     :color="sicknessOptions ? '#000' :'#666'"
                                     class="text-xs"
-                                    v-model="formData.sicknesses"
+                                    v-model="formData.medicalRecord"
+                                    hide-details
+                                    density="compact"
+                                />
+                            </div>
+                            <h4 class="text-base text-xm text-[#666] ">
+                                Dental Records
+                                </h4>
+                            <div class=" flex  gap-5 align-center mb-4  text-xm text-[#666]" :style="dentalRecords ? '#000' :'#666'">
+                               
+                                <v-checkbox
+                                    v-for="sickness in dentalRecords"
+                                    :key="sickness"
+                                    :label="sickness"
+                                    :value="sickness"
+                                    :color="dentalRecords ? '#000' :'#666'"
+                                    class="text-xs"
+                                    v-model="formData.dentalRecord"
                                     hide-details
                                     density="compact"
                                 />
@@ -168,13 +185,18 @@ const sicknessOptions = [
   'Allergies',
   'Others'
 ]
+const dentalRecords =[
+    'Have a toothache?',
+    'Bleeding gums?'
+]
 const formData = reactive({
     id: PeopleRepository.patient.id,
     name: PeopleRepository.patient.name,
     phone: PeopleRepository.patient.phone,
     address: PeopleRepository.patient.address,
     last_name: "nadeem",
-    sicknesses: [],
+    medicalRecord: [],
+    dentalRecord:[],
     type: "patient",
     gender: PeopleRepository.patient.gender || "Male", // Default to 'Male'
     dateOfBirth: PeopleRepository.patient.dateOfBirth,

@@ -11,6 +11,7 @@ import ExpenseCategory from "./pages/expenses/expenseCategory/ExpenseCategory.vu
 // people
 import OwnerPickup from "./pages/expenses/ownerPickup/OwnerPickup.vue";
 import Patients from "./pages/people/patients/Patients.vue";
+import ShowPatients from "./pages/people/patients/ShowPatients.vue"
 import Owner from "./pages/people/owner/Owner.vue";
 import Doctor from "./pages/people/doctor/Doctor.vue";
 import Supplier from "./pages/people/supplier/Supplier.vue";
@@ -88,8 +89,13 @@ const router = createRouter({
                 },
                 { path: "/expenseProducts", component: ExpenseProduct },
                 { path: "/expenseCat", component: ExpenseCategory },
-                // people
+                // people 
                 { path: "/patients", component: Patients },
+                {
+                    path: "/viewPatients/:id",
+                    props: true,
+                    component: ShowPatients,
+                },
                 { path: "/owners", component: Owner },
                 { path: "/doctors", component: Doctor },
                 { path: "/supplier", component: Supplier },

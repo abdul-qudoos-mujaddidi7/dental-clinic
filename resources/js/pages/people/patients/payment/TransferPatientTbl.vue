@@ -1,5 +1,5 @@
 <template>
-
+    <CreateCustomer v-if="PeopleRepository.createDialog" />
     <div class="all-expense rounded-xl">
         <div class="card rounded-xl">
 
@@ -22,21 +22,6 @@
                         v-model="PeopleRepository.customerSearch"
                     ></v-text-field>
                 </div>
-                <!-- <div class="btn">
-                    <v-btn variant="outlined" color="primaryOld" class="px-6">
-                        {{ t("filter") }}
-                    </v-btn>
-                    &nbsp;
-                    <v-btn
-                        @click="CreateDialogShow"
-                        color="primaryOld"
-                        variant="flat"
-                        :text="t('create')"
-
-                        class="px-6"
-                    >
-                    </v-btn>
-                </div> -->
             </div>
             <!-- v-table server  -->
             <div class="overflow-x-hidden">
