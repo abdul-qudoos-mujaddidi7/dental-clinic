@@ -162,7 +162,7 @@
                 @click="toggleMenu('salary')"
                 class="transition-all duration-300 cursor-pointer py-3 borderRadius"
             >
-                {{ t("Salary") }}
+                {{ t("salaries") }}
             </v-list-item>
             <transition name="slide-fade">
                 <v-list v-if="activeMenu === 'salary'" class="pl-4">
@@ -327,32 +327,21 @@ const navItems = computed(() => [
     },
 ]);
 // salary
-const salaryItems = [
+const salaryItems = computed(() => [
     {
         to: "/salary",
-        title: "Salary",
+        title: t( "salary"),
         icon: "mdi mdi-circle-medium",
         value: "salary",
     },
-    {
-        to: "/leadCategory",
-        title: "Lead Category",
-        icon: "mdi mdi-circle-medium",
-        value: "user",
-    },
-    {
-        to: "/leadStage",
-        title: "Lead Stage",
-        icon: "mdi mdi-circle-medium",
-        value: "stage",
-    },
+
     // {
     //     to: "/appointments",
     //     title: "Appointments",
     //     icon: "mdi mdi-circle-medium",
     //     value: "appointments",
     // },
-];
+]);
 const peopleItems = computed(() => [
     {
         to: "/employee",

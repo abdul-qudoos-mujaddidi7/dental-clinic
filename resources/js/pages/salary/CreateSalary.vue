@@ -89,7 +89,7 @@ const formRef = ref(null);
 const formData = reactive({
     id: LeadRepository.paySalary.id,
     name: LeadRepository.paySalary.name,
-    phone: LeadRepository.paySalary.phone,
+    salary: LeadRepository.paySalary.salary,
  
 });
 const rules = {

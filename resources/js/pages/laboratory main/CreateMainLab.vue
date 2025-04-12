@@ -73,106 +73,114 @@
             </v-form>
             <v-divider></v-divider>
             <keep-alive>
-            <v-row no-gutters class="justify-space-between mt-16">
-                <div class="d-flex gap-2 pb-6 flex flex-wrap">
-                    <v-chip
-                        v-for="(service, i) in LaboratoryRepository.dentalsFor"
-                        :key="i"
-                        :variant="
-                            selectedServices.some((s) => s.id === service.id)
-                                ? 'flat'
-                                : 'outlined'
-                        "
-                        :color="
-                            selectedServices.some((s) => s.id === service.id)
-                                ? 'primaryOld'
-                                : 'gray'
-                        "
-                        @click="toggleService(service)"
-                        class="cursor-pointer"
-                    >
-                        {{ service.name }}
-                    </v-chip>
-                </div>
-
-                <table
-                    class="text-sm text-center custom"
-                    density="compact"
-                    style="width: 150rem"
-                >
-                    <thead class="text-xs text-gray-700 uppercase thead">
-                        <tr class="border-gray-300">
-                            <th scope="col" class="px-3 py-3 text-start">#</th>
-                            <th scope="col" class="px-3 py-3 text-start">
-                                Service
-                            </th>
-                            <th scope="col" class="px-3 py-3 text-start">
-                                Qty
-                            </th>
-                            <th scope="col" class="px-3 py-3 text-start">
-                                Cost
-                            </th>
-                            <th scope="col" class="px-3 py-3 text-center">
-                                Sub Total
-                            </th>
-                            <th scope="col" class="px-3 py-3 text-end">
-                                Action
-                            </th>
-                        </tr>
-                    </thead>
-
-                    <tbody class="space">
-                        <tr
-                            class="product-table h-[3.4rem] text-xs"
+                <v-row no-gutters class="justify-space-between mt-16">
+                    <div class="d-flex gap-2 pb-6 flex flex-wrap">
+                        <v-chip
                             v-for="(
-                                pro, index
-                            ) in LaboratoryRepository.services"
-                            :key="index"
+                                service, i
+                            ) in LaboratoryRepository.dentalsFor"
+                            :key="i"
+                            :variant="
+                                selectedServices.some(
+                                    (s) => s.id === service.id
+                                )
+                                    ? 'flat'
+                                    : 'outlined'
+                            "
+                            :color="
+                                selectedServices.some(
+                                    (s) => s.id === service.id
+                                )
+                                    ? 'primaryOld'
+                                    : 'gray'
+                            "
+                            @click="toggleService(service)"
+                            class="cursor-pointer"
                         >
-                            <td class="pl-3 text-start">{{ index + 1 }}</td>
-                            <td class="pl-3 text-start">{{ pro.name }}</td>
-                            <td class="text-center w-[14rem]">
-                                <v-text-field
-                                    v-model="pro.quantity"
-                                    variant="outlined"
-                                    type="number"
-                                    density="compact"
-                                    class="w-75"
-                                    hide-details
-                                    single-line
-                                ></v-text-field>
-                            </td>
-                            <td class="pb-0 text-center w-[14rem]">
-                                <v-text-field
-                                    v-if="formData.peopleId !== null"
-                                    v-model="pro.cost"
-                                    variant="outlined"
-                                    density="compact"
-                                    class="w-75"
-                                    hide-details
-                                    single-line
-                                >
-                                    <span
-                                        class="span text-xs flex items-center justify-center pb-2"
-                                        >AFG</span
+                            {{ service.name }}
+                        </v-chip>
+                    </div>
+
+                    <table
+                        class="text-sm text-center custom"
+                        density="compact"
+                        style="width: 150rem"
+                    >
+                        <thead class="text-xs text-gray-700 uppercase thead">
+                            <tr class="border-gray-300">
+                                <th scope="col" class="px-3 py-3 text-start">
+                                    #
+                                </th>
+                                <th scope="col" class="px-3 py-3 text-start">
+                                    Service
+                                </th>
+                                <th scope="col" class="px-3 py-3 text-start">
+                                    Qty
+                                </th>
+                                <th scope="col" class="px-3 py-3 text-start">
+                                    Cost
+                                </th>
+                                <th scope="col" class="px-3 py-3 text-center">
+                                    Sub Total
+                                </th>
+                                <th scope="col" class="px-3 py-3 text-end">
+                                    Action
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody class="space">
+                            <tr
+                                class="product-table h-[3.4rem] text-xs"
+                                v-for="(
+                                    pro, index
+                                ) in LaboratoryRepository.services"
+                                :key="index"
+                            >
+                                <td class="pl-3 text-start">{{ index + 1 }}</td>
+                                <td class="pl-3 text-start">{{ pro.name }}</td>
+                                <td class="text-center w-[14rem]">
+                                    <v-text-field
+                                        v-model="pro.quantity"
+                                        variant="outlined"
+                                        type="number"
+                                        density="compact"
+                                        class="w-75"
+                                        hide-details
+                                        single-line
+                                    ></v-text-field>
+                                </td>
+                                <td class="pb-0 text-center w-[14rem]">
+                                    <v-text-field
+                                        v-if="formData.peopleId !== null"
+                                        v-model="pro.cost"
+                                        variant="outlined"
+                                        density="compact"
+                                        class="w-75"
+                                        hide-details
+                                        single-line
                                     >
-                                </v-text-field>
-                            </td>
-                            <td class="text-center align-middle">
-                                <span>{{ multiple(pro) }}</span>
-                            </td>
-                            <td class="px-3 text-end align-middle">
-                                <v-icon
-                                    color="red"
-                                    @click="removeProduct(index)"
-                                    class="mdi mdi-trash-can-outline"
-                                ></v-icon>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </v-row>
-        </keep-alive>
+                                        <span
+                                            class="span text-xs flex items-center justify-center pb-2"
+                                            >AFG</span
+                                        >
+                                    </v-text-field>
+                                </td>
+                                <td class="text-center align-middle">
+                                    <span>{{ multiple(pro) }}</span>
+                                </td>
+                                <td class="px-3 text-end align-middle">
+                                    <v-icon
+                                        color="red"
+                                        @click="removeProduct(index)"
+                                        class="mdi mdi-trash-can-outline"
+                                    ></v-icon>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </v-row>
+            </keep-alive>
 
             <div
                 class="pt-12 w-100 flex justify-space-between items-center"
@@ -185,16 +193,16 @@
                     <span>Total</span>
                 </div>
 
-                <div>
+                <div class="w-[25rem]">
                     <v-text-field
                         v-model="formData.paid"
                         variant="outlined"
                         label="Paid"
-                        type="number"
+                        class="w-100"
                         density="compact"
                     >
-                    <div @click="changeCurrency" style="cursor: pointer">
-                            <span class="span">
+                        <div @click="changeCurrency" style="cursor: pointer">
+                            <span class="paidSpan">
                                 {{ currenctAccountName.name }}
                             </span>
                         </div>
@@ -228,7 +236,7 @@ import { useLaboratoryRepository } from "@/store/LaboratoryRepository";
 
 const LaboratoryRepository = useLaboratoryRepository();
 const formData = reactive({
-    tooths: LaboratoryRepository.services ||[] ,
+    tooths: LaboratoryRepository.services || [],
     grandTotal: "",
     toothId: "",
     returnDate: "",
@@ -340,7 +348,7 @@ const availableServices = ref([
     { id: 13, name: "CC Plate", quantity: 1, cost: 2000 },
     { id: 14, name: "Full Night Guard", quantity: 1, cost: 700 },
 ]);
-LaboratoryRepository.FetchDentals()
+LaboratoryRepository.FetchDentals();
 const selectedServices = ref([]);
 const toggleService = (service) => {
     const index = LaboratoryRepository.services.findIndex(
@@ -376,7 +384,7 @@ const currenctAccountName = computed(() => {
     const accounts = LaboratoryRepository.account;
 
     if (!accounts || accounts.length === 0) {
-        return { name: "...", id: null };
+        return { moneyAccountId: "...", id: null };
     }
 
     if (accountIndex.value >= accounts.length) {
