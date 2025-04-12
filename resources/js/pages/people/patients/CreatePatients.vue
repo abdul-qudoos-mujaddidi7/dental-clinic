@@ -195,8 +195,8 @@ const formData = reactive({
     phone: PeopleRepository.patient.phone,
     address: PeopleRepository.patient.address,
     last_name: "nadeem",
-    medicalRecord: [],
-    dentalRecord:[],
+    medicalRecord: PeopleRepository.patient.medicalRecord,
+    dentalRecord:PeopleRepository.patient.dentalRecord,
     type: "patient",
     gender: PeopleRepository.patient.gender || "Male", // Default to 'Male'
     dateOfBirth: PeopleRepository.patient.dateOfBirth,
