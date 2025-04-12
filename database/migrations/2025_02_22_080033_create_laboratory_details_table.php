@@ -20,7 +20,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create((new LaboratoryDetail())->getTable(), function (Blueprint $table) {
-            $table->id(); 
+            $table->id();
             $table->foreignIdFor(InboundLab::class)->nullable();
             $table->foreignIdFor(OutboundLab::class)->nullable();
             $table->foreignIdFor(Tooth::class);

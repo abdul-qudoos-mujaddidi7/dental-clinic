@@ -5,6 +5,7 @@ use App\Http\Requests\InboundLabRequest;
 use App\Http\Resources\InboundLabResource;
 use App\Models\InboundLab;
 use App\Models\LaboratoryDetail;
+use App\Models\PeopleAccount;
 use Illuminate\Http\Request;
 
 class InboundLabController extends Controller
@@ -28,6 +29,18 @@ class InboundLabController extends Controller
     {
         
         $validated = app($this->request)->validated();
+        $customer = $validated['customer_id'];
+
+        $peopleAccount = PeopleAccount::where('people_id', $customer)->first();
+        if(!$peopleAccount){
+           $peopleAccount = PeopleAccount::create([
+                'name' => 'حساب افغانی',
+                'people_id' => $customer,
+                'balance' => 0,
+            ]);
+        };
+
+        $validated['people_account_id'] = $peopleAccount->id ;
         $InboundLab = $this->model::create($validated);
 
         // Handle services if provided

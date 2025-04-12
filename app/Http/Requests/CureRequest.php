@@ -20,6 +20,7 @@ class CureRequest extends FormRequest
             "dentist_id"=>$this->input("dentistId"),
             "start_date"=> $this->input("startDate"),
             "grand_total"=> $this->input("grandTotal"),
+            "money_account_id"=> $this->input("moneyAccountId"),
         ]);
     }
 
@@ -33,6 +34,7 @@ class CureRequest extends FormRequest
 {
     return [
         'patient_id' => 'required|exists:people,id',
+        'money_account_id' => 'required|exists:money_accounts,id',
         'dentist_id' => 'required|exists:people,id',
         'start_date' => 'required|date',
         'grand_total' => 'required|numeric|min:0',

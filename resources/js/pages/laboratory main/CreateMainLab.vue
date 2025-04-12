@@ -52,7 +52,7 @@
                     label="Customer *"
                     class="pr-2 pl-2"
                     style="width: 45%"
-                    item-value="name"
+                    item-value="id"
                     item-title="name"
                     density="compact"
                     :rules="[rules.required]"

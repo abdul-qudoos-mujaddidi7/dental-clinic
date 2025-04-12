@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class OutboundLab extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     public const COLUMN_ID = 'id';
     public const COLUMN_PAID = 'paid';
@@ -16,6 +18,9 @@ class OutboundLab extends Model
     public const COLUMN_RETURN_DATE = 'return_date';
     public const COLUMN_ISSUED_AT = 'issue_at';
     public const COLUMN_DESCRIPTION = 'description';
+    public const COLUMN_PEOPLE_ACCOUNT_ID='people_account_id';
+    public const COLUMN_MONEY_ACCOUNT_ID='money_account_id';
+
 
 
     protected $table = 'outbound_labs';
@@ -26,7 +31,9 @@ class OutboundLab extends Model
         self::COLUMN_ISSUED_AT,
         self::COLUMN_PAID,
         self::COLUMN_SUPPLIER_ID,
-        self::COLUMN_RETURN_DATE
+        self::COLUMN_RETURN_DATE,
+        self::COLUMN_MONEY_ACCOUNT_ID,
+        self::COLUMN_PEOPLE_ACCOUNT_ID
     ];
 
     protected $casts = [

@@ -54,7 +54,7 @@ class CreateCureCycleTriggers extends Migration
                     NEW.patient_id,
                     '" . TransactionType::PAYMENT . "', 
                     '" . OperationType::CURE_CYLCE . "',
-                    '" . PaymentType::PAID . "',
+                    '" . PaymentType::RECEIVED . "',
                     NEW.paid,
                     NEW.description,
                     NEW.start_date
