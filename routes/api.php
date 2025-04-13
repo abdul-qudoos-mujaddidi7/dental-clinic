@@ -43,6 +43,7 @@ use App\Http\Controllers\PeopleAccountTransactionController;
 use App\Http\Controllers\MoneyAccountController;
 use App\Http\Controllers\MoneyTransferController;
 use App\Http\Controllers\OutboundLabController;
+use App\Http\Controllers\SalaryController;
 use App\Models\InboundLab;
 use App\Models\Salary;
 
@@ -121,7 +122,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/moneyAccount', MoneyAccountController::class);
     Route::apiResource('/moneyTransfer', MoneyTransferController::class);
     Route::apiResource('/peopleAccount', PeopleAccountController::class);
-    Route::apiResource('/salary', Salary::class);
+    Route::apiResource('/salary', SalaryController::class);
 
     
     

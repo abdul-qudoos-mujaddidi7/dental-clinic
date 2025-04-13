@@ -17,7 +17,7 @@ class Salary extends Model
 
 
 
-    protected $table = 'outbound_labs';
+    // protected $table = 'salaries';
 
     protected $fillable = [
         self::COLUMN_PEOPLE_ID,

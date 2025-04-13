@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SalaryRequest;
-use App\Models\Salary;
 use App\Http\Resources\SalaryResource;
+use App\Models\Salary;
 use Illuminate\Http\Request;
 
 class SalaryController extends Controller
