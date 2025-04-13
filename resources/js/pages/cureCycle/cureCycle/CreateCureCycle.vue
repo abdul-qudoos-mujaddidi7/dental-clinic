@@ -377,7 +377,7 @@ const currenctAccountName = computed(() => {
         accountIndex.value = 0;
     }
 
-    formData.myAccountId = accounts[accountIndex.value].id;
+    formData.moneyAccountId = accounts[accountIndex.value].id;
 
     return {
         name: accounts[accountIndex.value].name,
