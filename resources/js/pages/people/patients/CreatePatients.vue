@@ -106,36 +106,40 @@
                                     </div>
                                 </div>
                             </div>
-                            <h4 class="text-base text-xm text-[#666] ">
-                                     Sicknesses
-                                </h4>
-                            <div class=" flex  gap-5 align-center mb-4  text-xm text-[#666]" :style="sicknessOptions ? '#000' :'#666'">
-                               
+                            <h4 class="text-base text-xm text-[#666]">
+                                Sicknesses
+                            </h4>
+                            <div
+                                class="flex gap-5 align-center mb-4 text-xm text-[#666]"
+                                :style="sicknessOptions ? '#000' : '#666'"
+                            >
                                 <v-checkbox
                                     v-for="sickness in sicknessOptions"
                                     :key="sickness"
                                     :label="sickness"
                                     :value="sickness"
-                                    :color="sicknessOptions ? '#000' :'#666'"
+                                    :color="sicknessOptions ? '#000' : '#666'"
                                     class="text-xs"
                                     v-model="formData.medicalRecord"
                                     hide-details
                                     density="compact"
                                 />
                             </div>
-                            <h4 class="text-base text-xm text-[#666] ">
+                            <h4 class="text-base text-xm text-[#666]">
                                 Dental Records
-                                </h4>
-                            <div class=" flex  gap-5 align-center mb-4  text-xm text-[#666]" :style="dentalRecords ? '#000' :'#666'">
-                               
+                            </h4>
+                            <div
+                                class="flex gap-5 align-center mb-4 text-xm text-[#666]"
+                                :style="dentalRecords ? '#000' : '#666'"
+                            >
                                 <v-checkbox
-                                    v-for="sickness in dentalRecords"
-                                    :key="sickness"
-                                    :label="sickness"
-                                    :value="sickness"
-                                    :color="dentalRecords ? '#000' :'#666'"
+                                    v-for="dental in dentalRecords"
+                                    :key="dental"
+                                    :label="dental"
+                                    :value="dental"
+                                    :color="dentalRecords ? '#000' : '#666'"
                                     class="text-xs"
-                                    v-model="formData.dentalRecord"
+                                    v-model="formData.dentalRecords"
                                     hide-details
                                     density="compact"
                                 />
@@ -178,18 +182,14 @@ const selectGender = (gender) => {
     formData.gender = gender;
 };
 const sicknessOptions = [
-  'Diabetes',
-  'blood pressure',
-  'Heart Disease',
-  'Asthma',
-  'Allergies',
-  'Others'
-]
-const dentalRecords =[
-    'Have a toothache?',
-    'Bleeding gums?'
-]
-
+    "Diabetes",
+    "blood pressure",
+    "Heart Disease",
+    "Asthma",
+    "Allergies",
+    "Others",
+];
+const dentalRecords = ["Have a toothache?", "Bleeding gums?"];
 
 const formData = reactive({
     id: PeopleRepository.patient.id,
@@ -197,28 +197,54 @@ const formData = reactive({
     phone: PeopleRepository.patient.phone,
     address: PeopleRepository.patient.address,
     last_name: "nadeem",
-   medicalRecord: convertJsonToArray(PeopleRepository.patient.medicalRecord, sicknessOptions),
-  dentalRecord: convertJsonToArray(PeopleRepository.patient.dentalRecord, dentalRecords),
+    medicalRecord: convertJsonToArray(
+        PeopleRepository.patient.medicalRecord,
+        sicknessOptions
+    ),
+    dentalRecords: convertJsonToArray(
+        PeopleRepository.patient.dentalRecord,
+        dentalRecords
+    ),
     type: "patient",
     gender: PeopleRepository.patient.gender || "Male", // Default to 'Male'
     dateOfBirth: PeopleRepository.patient.dateOfBirth,
 });
+// function convertJsonToArray(json, options) {
+//     if (!json) return [];
+//     try {
+//         const data = typeof json === "string" ? JSON.parse(json) : json;
+//         const selected = [];
+
+//         for (const label of options) {
+//             const key = label
+//                 .replace(/\s+/g, "_")
+//                 .toLowerCase()
+//                 .replace("?", "");
+//             if (data[key]) selected.push(label);
+//         }
+
+//         return selected;
+//     } catch (e) {
+//         console.error("Invalid JSON:", e);
+//         return [];
+//     }
+// }
 function convertJsonToArray(json, options) {
-  if (!json) return [];
-  try {
-    const data = typeof json === "string" ? JSON.parse(json) : json;
-    const selected = [];
+    if (!json) return [];
+    try {
+        const data = typeof json === "string" ? JSON.parse(json) : json;
+        const selected = [];
 
-    for (const label of options) {
-      const key = label.replace(/\s+/g, "_").toLowerCase().replace("?", "");
-      if (data[key]) selected.push(label);
+        for (const label of options) {
+            const key = label.replace(/\s+/g, "_").toLowerCase(); // DO NOT remove "?"
+            if (data[key]) selected.push(label);
+        }
+
+        return selected;
+    } catch (e) {
+        console.error("Invalid JSON:", e);
+        return [];
     }
-
-    return selected;
-  } catch (e) {
-    console.error("Invalid JSON:", e);
-    return [];
-  }
 }
 
 // Computed properties for cleaner styling logic
@@ -244,8 +270,8 @@ const save = async () => {
         });
 
         const dentalRecordObj = {};
-        formData.dentalRecord.forEach((item) => {
-            dentalRecordObj[item.replace(/\s+/g, "_").toLowerCase()] = true;
+        formData.dentalRecords.forEach((item) => {
+            dentalRecordObj[item.replace(/\s+/g, "_").toLowerCase()] = true; // KEEP the question mark
         });
 
         // Attach the transformed values
