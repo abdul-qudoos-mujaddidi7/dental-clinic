@@ -35,24 +35,11 @@
                                     density="compact"
                                     :rules="[rules.required]"
                                 ></v-text-field>
-                                <!-- <v-autocomplete
-                                    v-model="formData.type"
-                                    :items="selectType"
-                                    :return-object="false"
-                                    variant="outlined"
-                                    :label="$t('type')"
-
-                                    class="pr-2 pl-2 pb-4 w-50"
-                                    style="width: 45%"
-                                    item-value="id"
-                                    item-title="name"
-                                    density="compact"
-                                    :rules="[rules.required]"
-                                ></v-autocomplete> -->
+                        
                             </div>
 
                             <v-text-field
-                                v-model="formData.salary"
+                                v-model="formData.amount"
                                 variant="outlined"
                                 :label="$t('salary')"
                                 density="compact"
@@ -85,11 +72,11 @@ import { useLeadRepository } from "@/store/LeadRepository";
 
 const LeadRepository = useLeadRepository();
 const formRef = ref(null);
-
+console.log(LeadRepository.paySalary,'manmmm' )
 const formData = reactive({
-    id: LeadRepository.paySalary.id,
-    name: LeadRepository.paySalary.name,
-    salary: LeadRepository.paySalary.salary,
+    peopleId: LeadRepository.paySalary?.people?.id,
+    // name: LeadRepository.paySalary.name,
+    amount: LeadRepository.paySalary.amount,
  
 });
 const rules = {

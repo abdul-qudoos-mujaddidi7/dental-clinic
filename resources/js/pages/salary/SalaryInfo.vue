@@ -180,7 +180,7 @@ const showId = (id) => {
 };
 // delete and update Create
 const CreateDialogShow = () => {
-    LeadRepository.customer = {};
+    LeadRepository.paySalary = {};
     LeadRepository.setEditMode(false);
     LeadRepository.createDialog = true;
 };
@@ -188,9 +188,9 @@ const CreateDialogShow = () => {
 const edit = (item) => {
     console.log(item, "me");
     LeadRepository.setEditMode(true);
-    LeadRepository.customer = {};
-    if (Object.keys(LeadRepository.customer).length === 0) {
-        LeadRepository.FetchCustomer(item.id)
+    LeadRepository.paySalary = {};
+    if (Object.keys(LeadRepository.paySalary).length === 0) {
+        LeadRepository.fetchPaySalary(item.id)
             .then(() => {
                 LeadRepository.createDialog = true;
             })
