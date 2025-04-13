@@ -408,7 +408,7 @@ export let useLeadRepository = defineStore("LeadRepository", {
         async FetchPaySalaries({ page, itemsPerPage }) {
             this.loading = true;
             const response = await axios.get(
-                `paySalary?page=${page}&perPage=${itemsPerPage}&${this.paySalarySearch}`
+                `salary?page=${page}&perPage=${itemsPerPage}&${this.paySalarySearch}`
             );
             this.paySalaries = response.data.data;
             // this.totalItems = response.data.meta.total;
@@ -418,7 +418,7 @@ export let useLeadRepository = defineStore("LeadRepository", {
             // this.loading = true;
             console.log(id);
             try {
-                const response = await axios.get(`paySalary/${id}`);
+                const response = await axios.get(`salary/${id}`);
                 this.paySalary = response.data.data;
                 console.log(this.lead);
             } catch (err) {
@@ -430,7 +430,7 @@ export let useLeadRepository = defineStore("LeadRepository", {
             try {
                 const config = {
                     method: "POST",
-                    url: "paySalary",
+                    url: "salary",
                     data: formData,
                 };
                 const response = await axios(config);
@@ -448,7 +448,7 @@ export let useLeadRepository = defineStore("LeadRepository", {
             try {
                 const config = {
                     method: "PUT",
-                    url: `paySalary/${id}`,
+                    url: `salary/${id}`,
                     data: formData,
                 };
                 const response = await axios(config);
@@ -468,7 +468,7 @@ export let useLeadRepository = defineStore("LeadRepository", {
             try {
                 const config = {
                     method: "DELETE",
-                    url: `paySalary/${id}`,
+                    url: `salary/${id}`,
                 };
                 const response = await axios(config);
                 this.FetchPaySalaries({

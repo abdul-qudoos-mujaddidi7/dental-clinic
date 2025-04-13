@@ -189,18 +189,38 @@ const dentalRecords =[
     'Have a toothache?',
     'Bleeding gums?'
 ]
+
+
 const formData = reactive({
     id: PeopleRepository.patient.id,
     name: PeopleRepository.patient.name,
     phone: PeopleRepository.patient.phone,
     address: PeopleRepository.patient.address,
     last_name: "nadeem",
-    medicalRecord: PeopleRepository.patient.medicalRecord || [],
-    dentalRecord:PeopleRepository.patient.dentalRecord ||[],
+   medicalRecord: convertJsonToArray(PeopleRepository.patient.medicalRecord, sicknessOptions),
+  dentalRecord: convertJsonToArray(PeopleRepository.patient.dentalRecord, dentalRecords),
     type: "patient",
     gender: PeopleRepository.patient.gender || "Male", // Default to 'Male'
     dateOfBirth: PeopleRepository.patient.dateOfBirth,
 });
+function convertJsonToArray(json, options) {
+  if (!json) return [];
+  try {
+    const data = typeof json === "string" ? JSON.parse(json) : json;
+    const selected = [];
+
+    for (const label of options) {
+      const key = label.replace(/\s+/g, "_").toLowerCase().replace("?", "");
+      if (data[key]) selected.push(label);
+    }
+
+    return selected;
+  } catch (e) {
+    console.error("Invalid JSON:", e);
+    return [];
+  }
+}
+
 // Computed properties for cleaner styling logic
 const isMaleSelected = computed(() => formData.gender === "Male");
 const isFemaleSelected = computed(() => formData.gender === "Female");

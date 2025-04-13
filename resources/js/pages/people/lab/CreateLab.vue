@@ -173,7 +173,7 @@
                         v-model="formData.paid"
                         variant="outlined"
                         label="Paid"
-                      class="w-100"
+                        class="w-100"
                         density="compact"
                     >
                         <div @click="changeCurrency" style="cursor: pointer">
@@ -371,7 +371,7 @@ const currenctAccountName = computed(() => {
         accountIndex.value = 0;
     }
 
-    formData.name = accounts[accountIndex.value].id;
+    formData.moneyAccountId = accounts[accountIndex.value].id;
 
     return {
         name: accounts[accountIndex.value].name,
