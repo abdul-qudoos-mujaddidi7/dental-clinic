@@ -44,6 +44,7 @@ use App\Http\Controllers\MoneyAccountController;
 use App\Http\Controllers\MoneyTransferController;
 use App\Http\Controllers\OutboundLabController;
 use App\Models\InboundLab;
+use App\Models\Salary;
 
 // Authentication routes
 Route::post('/login', [AuthController::class, 'login']);
@@ -120,6 +121,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/moneyAccount', MoneyAccountController::class);
     Route::apiResource('/moneyTransfer', MoneyTransferController::class);
     Route::apiResource('/peopleAccount', PeopleAccountController::class);
+    Route::apiResource('/Salary', Salary::class);
 
     
     

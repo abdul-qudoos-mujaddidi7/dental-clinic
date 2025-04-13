@@ -14,6 +14,15 @@ class SalaryResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'people' => [
+                'id'=> $this->people->id,
+                'name'=> $this->people->name,
+            ],
+            'amount' => $this->amount,
+            // 'paid_at' => $this->paid_at,
+            // 'description' => $this->description,
+        ];
     }
 }
