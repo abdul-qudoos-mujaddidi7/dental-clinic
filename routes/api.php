@@ -121,7 +121,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/moneyAccount', MoneyAccountController::class);
     Route::apiResource('/moneyTransfer', MoneyTransferController::class);
     Route::apiResource('/peopleAccount', PeopleAccountController::class);
-    Route::apiResource('/Salary', Salary::class);
+    Route::apiResource('/salary', Salary::class);
 
     
     

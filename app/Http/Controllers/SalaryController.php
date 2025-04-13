@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SalaryRequest;
+use App\Http\Resources\SalaryResource;
 use App\Models\Salary;
 use Illuminate\Http\Request;
 
 class SalaryController extends Controller
 {
     private $model = Salary::class;
-    private $resource = SalaryRequest::class;
+    private $resource = SalaryResource::class;
     /**
      * Display a listing of the resource.
      */
