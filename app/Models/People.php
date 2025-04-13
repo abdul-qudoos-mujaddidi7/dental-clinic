@@ -81,5 +81,10 @@ class People extends Model
     {
         return $this->hasMany(OutboundLab::class, 'supplier_id');
     }
+
+    public function salaries()
+    {
+        return $this->hasMany(Salary::class, 'people_id');
+    }
     
 }

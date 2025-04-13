@@ -22,7 +22,10 @@ class SalaryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'people_id' => 'required|exists:people,id',
+            'amount' => 'required|numeric|min:0',
+            // 'paid_at' => 'nullable|date',
+            // 'description' => 'nullable|string|max:255',
         ];
     }
 }
