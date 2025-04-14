@@ -169,14 +169,22 @@
                     <span>Total</span>
                 </div>
 
-                <div>
+                <div class="w-[25rem]">
                     <v-text-field
                         v-model="formData.paid"
                         variant="outlined"
-                        label="Paid"
-                        type="number"
+                        :label="$t('paid')"
+                    
+                        class="w-100"
                         density="compact"
                     >
+                        <div @click="changeCurrency" style="cursor: pointer">
+                            <span class="paidSpan">
+                                {{ currenctAccountName.name }}
+                            </span>
+                        </div>
+                        {{ grandTotal }}
+
                     </v-text-field>
                 </div>
             </div>
@@ -371,6 +379,33 @@ watch(
 
 // Computed Duo (remaining balance)
 
+const accountIndex = ref(0);
+
+const currenctAccountName = computed(() => {
+    const accounts = CureRepository.account;
+
+    if (!accounts || accounts.length === 0) {
+        return { moneyAccountId: "...", id: null };
+    }
+
+    if (accountIndex.value >= accounts.length) {
+        accountIndex.value = 0;
+    }
+
+    formData.moneyAccountId = accounts[accountIndex.value].id;
+
+    return {
+        name: accounts[accountIndex.value].name,
+        id: accounts[accountIndex.value].id,
+    };
+});
+//====================================
+const changeCurrency = () => {
+    const accounts = CureRepository.account;
+    if (!accounts || accounts.length === 0) return;
+    accountIndex.value = (accountIndex.value + 1) % accounts.length;
+};
+CureRepository.fetchAccountDataForCreate();
 formData.returnDate = PeopleRepository.getTodaysDate();
 formData.issueAt = PeopleRepository.getTodaysDate();
 
