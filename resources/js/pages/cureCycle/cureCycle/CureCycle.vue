@@ -42,11 +42,11 @@
             <!-- v-table server  -->
             <div class="overflow-x-hidden">
                 <v-app>
-                    <v-main class="main" >
+                    <v-main class="main">
                         <v-row>
                             <v-col>
                                 <v-data-table-server
-                                :dir="dir"
+                                    :dir="dir"
                                     theme="cursor-pointer"
                                     v-model:items-per-page="
                                         CureRepository.itemsPerPage
@@ -141,7 +141,7 @@
                                                     </v-list-item-title>
                                                     <router-link
                                                         :to="
-                                                            '/w/' +
+                                                            '/updateCure/' +
                                                             item.id
                                                         "
                                                     >
@@ -168,7 +168,7 @@
                                                                 color="tealColor"
                                                                 >mdi-square-edit-outline</v-icon
                                                             >
-                                                            {{$t('show')}}
+                                                            {{ $t("show") }}
                                                         </v-list-item-title>
                                                     </router-link>
 
@@ -207,12 +207,12 @@
 </template>
 
 <script setup>
-import { ref,computed } from "vue";
+import { ref, computed } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 import CurePyament from "../cure payment/CurePyament.vue";
 import ShowCurePayment from "../cure payment/ShowCurePayment.vue";
 import { useI18n } from "vue-i18n";
-const { t,locale } = useI18n();
+const { t, locale } = useI18n();
 import { useCureRepository } from "@/store/CureRepository";
 const CureRepository = useCureRepository();
 

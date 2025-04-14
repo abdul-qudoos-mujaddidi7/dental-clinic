@@ -1,8 +1,25 @@
 {
+
+    "diabetes": "شکر",
+    "bloodPressure": "فشار خون",
+    "heartDisease": "بیماری قلبی",
+    "asthma": "حساسیت نفس (آسم)",
+    "allergies": "حساسیت‌ها",
+    "others": "سایر",
+
+    "toothache": "دندان‌درد دارید؟",
+    "bleedingGums": "لثه‌های تان خون‌ریزی دارد؟",
+
+    "medicalRecord":" سوابق پزشکی",
+    "dentalRecords":"سوابق دندانپزشکی",
+
+    "dateOfBirth":"تاریخ تولد",
+
+
     "expenses": "مصارفات",
     "billExpense": " مصارف با بل ",
     "people": "اشخاص",
-    "user":"کاربران",
+    "user": "کاربران",
     "reports": "گزارشات",
     "setting": "تنظیمات",
     "reference": "کد مرجع",
@@ -12,7 +29,7 @@
     "paid": "پرداخت شده ",
     "salaries": "معاشات",
     "due": "باقی",
-    "category":"دسته‌ بندی",
+    "category": "دسته‌ بندی",
     "qty": "مقدار",
     "subTotal": "زیر مجموع",
     "total": "مجموع",
@@ -32,7 +49,7 @@
     "product": "محصول",
     "products": "محصولات",
     "categories": "دسته‌بندی ها",
-    "supplier":"تامین کننده",
+    "supplier": "تامین کننده",
     "dashboard": "داشبورد",
     "leads": "متقاضیان درمان",
     "leadCategory": "دسته‌بندی متقاضیان درمان",
@@ -77,9 +94,9 @@
     "reason": "دلیل",
     "status": "وضعیت",
     "clientType": "نوع مشتری",
-    "allPayment":"همه پرداخت ها",
-    "accounts":" حساب ها",
-    "transfers":"انتقالات",
+    "allPayment": "همه پرداخت ها",
+    "accounts": " حساب ها",
+    "transfers": "انتقالات",
     "details": "توضیحات",
     "filter": "فیلتر",
     "email": "ایمیل",
@@ -157,5 +174,5 @@
     "today": "امروز",
     "upcomingAppointment": "ملاقات های آینده",
     "thisYearIncomeVsExpense": "درآمد در مقابل مخارج سال جاری",
-    "systemSetting":"تنظیمات سیستم"
+    "systemSetting": "تنظیمات سیستم"
 }

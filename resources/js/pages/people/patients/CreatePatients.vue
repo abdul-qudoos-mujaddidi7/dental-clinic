@@ -40,7 +40,7 @@
                                     <h4
                                         class="absolute bottom-20 left-5 text-gray-500 text-sm"
                                     >
-                                        Date Of Birth
+                                       {{ t("dateOfBirth")}}
                                     </h4>
                                     <div class="pb-2 pl-2">
                                         <date-picker
@@ -107,7 +107,7 @@
                                 </div>
                             </div>
                             <h4 class="text-base text-xm text-[#666]">
-                                Sicknesses
+                                {{ t("medicalRecord") }}
                             </h4>
                             <div
                                 class="flex gap-5 align-center mb-4 text-xm text-[#666]"
@@ -126,8 +126,9 @@
                                 />
                             </div>
                             <h4 class="text-base text-xm text-[#666]">
-                                Dental Records
+                                {{ t("dentalRecords") }}
                             </h4>
+
                             <div
                                 class="flex gap-5 align-center mb-4 text-xm text-[#666]"
                                 :style="dentalRecords ? '#000' : '#666'"
@@ -182,14 +183,15 @@ const selectGender = (gender) => {
     formData.gender = gender;
 };
 const sicknessOptions = [
-    "Diabetes",
-    "blood pressure",
-    "Heart Disease",
-    "Asthma",
-    "Allergies",
-    "Others",
+    t("diabetes"),
+    t("bloodPressure"),
+    t("heartDisease"),
+    t("asthma"),
+    t("allergies"),
+    t("others"),
 ];
-const dentalRecords = ["Have a toothache?", "Bleeding gums?"];
+
+const dentalRecords = [t("toothache"), t("bleedingGums")];
 
 const formData = reactive({
     id: PeopleRepository.patient.id,

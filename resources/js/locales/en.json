@@ -1,4 +1,17 @@
 {
+    "diabetes": "Diabetes",
+    "bloodPressure": "Blood Pressure",
+    "heartDisease": "Heart Disease",
+    "asthma": "Asthma",
+    "allergies": "Allergies",
+    "others": "Others",
+
+    "toothache": "Have a toothache?",
+    "bleedingGums": "Bleeding gums?",
+    "medicalRecord":"Medical Record",
+    "dentalRecords":"Dental Records",
+    "dateOfBirth":"Date Of Birth",
+
     "dashboard": "Dashboard",
     "profit": "Profit",
     "teethType": " Teeth Type",
