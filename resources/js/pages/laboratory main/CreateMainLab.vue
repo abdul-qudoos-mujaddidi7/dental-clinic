@@ -406,7 +406,6 @@ const changeCurrency = () => {
 };
 
 LaboratoryRepository.fetchAccountDataForCreate();
-console.log(LaboratoryRepository.account, "na");
 
 // =====================================
 </script>

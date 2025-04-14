@@ -175,15 +175,21 @@
                     <span>Total</span>
                 </div>
 
-                <div>
+                <div class="w-[25rem]">
                     <v-text-field
                         v-model="formData.paid"
                         variant="outlined"
                         :label="t('paid')"
-                        type="number"
+                     class="w-100"
                         density="compact"
                     >
-                    </v-text-field>
+                        <div @click="changeCurrency" style="cursor: pointer">
+                            <span class="paidSpan">
+                                {{ currenctAccountName.name }}
+                            </span>
+                        </div>
+                        {{ grandTotal }}</v-text-field
+                    >
                 </div>
             </div>
 
@@ -323,6 +329,34 @@ const update = async () => {
     }
 };
 
+const accountIndex = ref(0);
+
+const currenctAccountName = computed(() => {
+    const accounts = ExpenseRepository.account;
+
+    if (!accounts || accounts.length === 0) {
+        return { moneyAccountId: "...", id: null };
+    }
+
+    if (accountIndex.value >= accounts.length) {
+        accountIndex.value = 0;
+    }
+
+    formData.moneyAccountId = accounts[accountIndex.value].id;
+
+    return {
+        name: accounts[accountIndex.value].name,
+        id: accounts[accountIndex.value].id,
+    };
+});
+//====================================
+const changeCurrency = () => {
+    const accounts = ExpenseRepository.account;
+    if (!accounts || accounts.length === 0) return;
+    accountIndex.value = (accountIndex.value + 1) % accounts.length;
+};
+
+ExpenseRepository.fetchAccountDataForCreate();
 // Fetch suppliers for dropdown
 ExpenseRepository.Suppliers();
 </script>
