@@ -21,6 +21,7 @@ class OutboundLabRequest extends FormRequest
             "grand_total" => $this->input("grandTotal"),
             "issue_at" => $this->input("issueAt"),
             "supplier_id" => $this->input("supplierId"),
+            "money_account_id" => $this->input("moneyAccountId"),
 
         ]);
     }
@@ -38,6 +39,7 @@ class OutboundLabRequest extends FormRequest
             'grand_total' => 'required|numeric|min:0',
             'paid' => 'nullable|numeric|min:0',
             'supplier_id' => 'nullable|exists:people,id',
+            'money_account_id' => 'required|exists:money_accounts,id',
             'description' => 'nullable|string',
             'tooths' => 'required|array',
             'tooths.*.cost' => 'required|numeric', //te service details
