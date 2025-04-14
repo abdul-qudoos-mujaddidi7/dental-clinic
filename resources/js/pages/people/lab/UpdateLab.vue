@@ -52,7 +52,7 @@
                     label="Supplier *"
                     class="pr-2 pl-2"
                     style="width: 45%"
-                    item-value="name"
+                    item-value="id"
                     item-title="name"
                     density="compact"
                     :rules="[rules.required]"
@@ -382,7 +382,7 @@ watch(
 const accountIndex = ref(0);
 
 const currenctAccountName = computed(() => {
-    const accounts = CureRepository.account;
+    const accounts = PeopleRepository.account;
 
     if (!accounts || accounts.length === 0) {
         return { moneyAccountId: "...", id: null };
@@ -401,11 +401,11 @@ const currenctAccountName = computed(() => {
 });
 //====================================
 const changeCurrency = () => {
-    const accounts = CureRepository.account;
+    const accounts = PeopleRepository.account;
     if (!accounts || accounts.length === 0) return;
     accountIndex.value = (accountIndex.value + 1) % accounts.length;
 };
-CureRepository.fetchAccountDataForCreate();
+PeopleRepository.fetchAccountDataForCreate();
 formData.returnDate = PeopleRepository.getTodaysDate();
 formData.issueAt = PeopleRepository.getTodaysDate();
 

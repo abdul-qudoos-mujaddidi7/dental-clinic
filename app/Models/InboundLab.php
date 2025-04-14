@@ -42,7 +42,7 @@ class InboundLab extends Model
     ];
 
    
-    public function laboratoryDetails()
+    public function mainLaboratoryDetails()
     {
         return $this->hasMany(LaboratoryDetail::class);
     }

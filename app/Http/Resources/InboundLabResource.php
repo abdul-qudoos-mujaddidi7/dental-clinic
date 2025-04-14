@@ -29,7 +29,7 @@ class InboundLabResource extends JsonResource
             // 'paymentStatus' => $this->getPaymentStatus(),
             'status' => $this->status,
             'description' => $this->description,
-            'details' => LaboratoryDetailResource::collection($this->whenLoaded('laboratoryDetails')),
+            'details' => LaboratoryDetailResource::collection($this->whenLoaded('mainLaboratoryDetails')),
         ];
     
 }

@@ -59,12 +59,12 @@ class InboundLabController extends Controller
         }
 
 
-        return new $this->resource($InboundLab->load('laboratoryDetails'));
+        return new $this->resource($InboundLab->load('mainLaboratoryDetails'));
     }
 
     public function show(InboundLab $InboundLab)
     {
-        $InboundLab->load(['laboratoryDetails']);
+        $InboundLab->load(['mainLaboratoryDetails']);
         return new $this->resource($InboundLab);
     }
 
@@ -73,7 +73,7 @@ class InboundLabController extends Controller
         $validated = app($this->request)->validated();
 
         // Delete old services
-        $InboundLab->laboratoryDetails()->delete();
+        $InboundLab->mainLaboratoryDetails()->delete();
 
         // Update services (if provided)
         if ($request->has('tooths')) {
@@ -105,7 +105,7 @@ class InboundLabController extends Controller
     public function destroy(InboundLab $InboundLab)
     {
         // Delete the related services first
-        $InboundLab->laboratoryDetails()->delete();
+        $InboundLab->mainLaboratoryDetails()->delete();
 
         // Delete the Cure itself
         $InboundLab->delete();

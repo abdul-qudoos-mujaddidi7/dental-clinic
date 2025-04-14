@@ -14,6 +14,21 @@ class OutboundLabResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'returnDate' => $this->return_date,
+            'issueAt' => $this->issue_at,
+            'grandTotal' => $this->grand_total,
+            'paid' => $this->paid,
+            'dentist'=>[
+                'id'=>$this->dentist?->id,
+                'name'=>$this->dentist?->name
+            ],
+            // 'due'=> $due,
+            // 'paymentStatus' => $this->getPaymentStatus(),
+            'status' => $this->status,
+            'description' => $this->description,
+            'details' => LaboratoryDetailResource::collection($this->whenLoaded('laboratoryDetails')),
+        ];
     }
 }
