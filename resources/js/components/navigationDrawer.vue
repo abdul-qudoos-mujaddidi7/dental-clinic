@@ -154,34 +154,6 @@
                     </router-link>
                 </v-list>
             </transition>
-            <!-- salary info  -->
-            <v-list-item
-                active-class="bg-primaryOld text-white"
-                prepend-icon="mdi mdi-account-cash-outline"
-                value="salary"
-                @click="toggleMenu('salary')"
-                class="transition-all duration-300 cursor-pointer py-3 borderRadius"
-            >
-                {{ t("salaries") }}
-            </v-list-item>
-            <transition name="slide-fade">
-                <v-list v-if="activeMenu === 'salary'" class="pl-4">
-                    <router-link
-                        v-for="item in salaryItems"
-                        :key="item.to"
-                        :to="item.to"
-                    >
-                        <v-list-item
-                            :title="item.title"
-                            :prepend-icon="item.icon"
-                            :value="item.value"
-                            color="primaryOld"
-                            class="child rounded-lg"
-                        />
-                    </router-link>
-                </v-list>
-            </transition>
-            <!-- reports -->
             <v-list-item
                 active-class="bg-primaryOld text-white"
                 prepend-icon="mdi-finance"
