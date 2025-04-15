@@ -15,7 +15,7 @@
                             {{
                                 PeopleRepository.isEditMode
                                     ? "Update"
-                                    : "generate Payslip"
+                                    : "Pay Salary"
                             }}
                         </h2>
                         <v-btn variant="text" @click="isActive.value = false">

@@ -77,7 +77,7 @@
                                             <v-list>
                                                 <v-list-item>
                                                     <v-list-item-title
-                                                        @click="edit(item)"
+                                                        @click="PaySalaryFunc(item)"
                                                         class="cursor-pointer d-flex gap-3 justify-left pb-3"
                                                     >
                                                         <v-icon
@@ -162,7 +162,7 @@ const CreateDialogShow = () => {
 const generatePayslipFunc =(item)=>{
     PeopleRepository.generatePayslipDialog=true;
 }
-const PaySalary =(item)=>{
+const PaySalaryFunc =(item)=>{
     PeopleRepository.PaySalaryDialog=true;
 }
 const edit = (item) => {
