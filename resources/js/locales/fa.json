@@ -1,5 +1,6 @@
 {
-
+    "paySalary":"پرداخت معاش",
+"generatePayslip":" ایجاد معاش",
     "diabetes": "شکر",
     "bloodPressure": "فشار خون",
     "heartDisease": "بیماری قلبی",

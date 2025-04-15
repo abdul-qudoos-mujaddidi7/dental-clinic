@@ -1,4 +1,6 @@
 {
+    "paySalary":"Pay Salary",
+    "generatePayslip":"Generate Payslip ",
     "diabetes": "Diabetes",
     "bloodPressure": "Blood Pressure",
     "heartDisease": "Heart Disease",

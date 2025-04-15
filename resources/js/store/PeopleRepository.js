@@ -18,6 +18,8 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             selectedItems: ref([]),
             itemsPerPage: ref(5),
             createDialog: ref(false),
+            generatePayslipDialog:ref(false),
+            PaySalaryDialog:ref(false),
             // patents
             patients: reactive([]),
             patient: reactive([]),
@@ -65,6 +67,15 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             moneyAccsFor:reactive([]),
             idForCreatePayment:ref(""),
             account:reactive([]),
+            // pay salary 
+            paySalarySearch:ref(""),
+            paySalaries:reactive([]),
+            paySalary:reactive([]),
+            // generate pay slip
+            generatePayslipSearch:ref(""),
+            generatePayslips:reactive([]),
+            generatePayslip:reactive([]),
+            
         };
     },
     actions: {
@@ -1087,6 +1098,159 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             const response = await axios.get('/moneyAccount');
             this.account = response.data.data;
             console.log(this.account);
+        },
+        // ============
+               // paySalary
+               async FetchPaySalaries({ page, itemsPerPage }) {
+                this.loading = true;
+                const response = await axios.get(
+                    `paySalary?page=${page}&perPage=${itemsPerPage}&${this.paySalarySearch}`
+                );
+                this.paySalaries = response.data.data;
+                // this.totalItems = response.data.meta.total;
+                this.loading = false;
+            },
+            async fetchPaySalary(id) {
+                // this.loading = true;
+                console.log(id);
+                try {
+                    const response = await axios.get(`paySalary/${id}`);
+                    this.paySalary = response.data.data;
+                    console.log(this.lead);
+                } catch (err) {
+                    this.error = err;
+                }
+            },
+            async CreatePaySalary(formData) {
+                console.log(formData);
+                try {
+                    const config = {
+                        method: "POST",
+                        url: "paySalary",
+                        data: formData,
+                    };
+                    const response = await axios(config);
+                    this.createDialog = false;
+                    this.FetchPaySalaries({
+                        page: this.page,
+                        itemsPerPage: this.itemsPerPage,
+                    });
+                } catch (err) {
+                    this.error = err;
+                }
+            },
+            async UpdatePaySalary(id, formData) {
+                console.log(formData, id, "Update ");
+                try {
+                    const config = {
+                        method: "PUT",
+                        url: `paySalary/${id}`,
+                        data: formData,
+                    };
+                    const response = await axios(config);
+                    this.createDialog = false;
+                    this.FetchPaySalaries({
+                        page: this.page,
+                        itemsPerPage: this.itemsPerPage,
+                    });
+    
+                    this.isEditMode = false;
+                    
+                } catch (err) {
+                    this.error = err;
+                }
+            },
+            async DeletePaySalary(id) {
+                try {
+                    const config = {
+                        method: "DELETE",
+                        url: `paySalary/${id}`,
+                    };
+                    const response = await axios(config);
+                    this.FetchPaySalaries({
+                        page: this.page,
+                        itemsPerPage: this.itemsPerPage,
+                    });
+                } catch (err) {
+                    this.error = err;
+                }
+            },
+          
+        // ============
+        // generate payslip 
+        async FetchGeneratePayslips({ page, itemsPerPage }) {
+            this.loading = true;
+            const response = await axios.get(
+                `generatePaySlip?page=${page}&perPage=${itemsPerPage}&${this.generatePayslipSearch}`
+            );
+            this.generatePayslips = response.data.data;
+            // this.totalItems = response.data.meta.total;
+            this.loading = false;
+        },
+        async fetchPaySalary(id) {
+            // this.loading = true;
+            console.log(id);
+            try {
+                const response = await axios.get(`generatePaySlip/${id}`);
+                this.generatePayslip = response.data.data;
+                console.log(this.lead);
+            } catch (err) {
+                this.error = err;
+            }
+        },
+        async CreateGeneratePayslip(formData) {
+            console.log(formData);
+            try {
+                const config = {
+                    method: "POST",
+                    url: "generatePaySlip",
+                    data: formData,
+                };
+                const response = await axios(config);
+                this.createDialog = false;
+                this.FetchGeneratePayslips({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                this.error = err;
+            }
+        },
+        async UpdateGeneratePayslip(id, formData) {
+            console.log(formData, id, "Update ");
+            try {
+                const config = {
+                    method: "PUT",
+                    url: `generatePaySlip/${id}`,
+                    data: formData,
+                };
+                const response = await axios(config);
+                this.createDialog = false;
+                this.FetchGeneratePayslips({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+
+                this.isEditMode = false;
+                
+            } catch (err) {
+                this.error = err;
+            }
+        },
+        async DeleteGeneratePayslip(id) {
+            try {
+                const config = {
+                    method: "DELETE",
+                    url: `generatePaySlip/${id}`,
+                };
+                const response = await axios(config);
+                this.FetchGeneratePayslips({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                this.error = err;
+            }
         },
 
     },

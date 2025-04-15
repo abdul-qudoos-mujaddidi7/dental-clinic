@@ -1,5 +1,7 @@
 <template>
     <CreateEmployee v-if="PeopleRepository.createDialog" />
+    <GeneratePayslip v-if="PeopleRepository.generatePayslipDialog"/>
+    <PaySalary v-if="PeopleRepository.PaySalaryDialog" />
     <div class="all-expense rounded-xl" :dir="dir">
         <div class="card rounded-xl">
             <AppBar :mainTitle="$t('employee')" :sub-title="$t('people')" />
@@ -44,7 +46,7 @@
                         <v-row>
                             <v-col>
                                 <v-data-table-server
-                                :dir="dir"
+                                    :dir="dir"
                                     theme="cursor-pointer"
                                     v-model:items-per-page="
                                         PeopleRepository.itemsPerPage
@@ -74,6 +76,29 @@
                                             </template>
                                             <v-list>
                                                 <v-list-item>
+                                                    <v-list-item-title
+                                                        @click="edit(item)"
+                                                        class="cursor-pointer d-flex gap-3 justify-left pb-3"
+                                                    >
+                                                        <v-icon
+                                                            color="tealColor"
+                                                            >mdi mdi-cash-check</v-icon
+                                                        >
+                                                        {{ t("paySalary") }}
+                                                    </v-list-item-title>
+
+                                                    <v-list-item-title
+                                                        @click="generatePayslipFunc(item)"
+                                                        class="cursor-pointer d-flex gap-3 justify-left pb-3"
+                                                    >
+                                                        <v-icon
+                                                            color="tealColor"
+                                                            >mdi-file-document-outline</v-icon
+                                                        >
+                                                        {{
+                                                            t("generatePayslip")
+                                                        }}
+                                                    </v-list-item-title>
                                                     <v-list-item-title
                                                         @click="edit(item)"
                                                         class="cursor-pointer d-flex gap-3 justify-left pb-3"
@@ -111,11 +136,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted,computed } from "vue";
+import { ref, onMounted, computed } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 import CreateEmployee from "./CreateEmployee.vue";
+import GeneratePayslip from "./salary payment/GeneratePayslip.vue"
+import PaySalary from "./salary payment/PaySalary.vue";
 import { useI18n } from "vue-i18n";
-const { t ,locale} = useI18n();
+const { t, locale } = useI18n();
 import { usePeopleRepository } from "@/store/PeopleRepository";
 const PeopleRepository = usePeopleRepository();
 
@@ -132,6 +159,12 @@ const CreateDialogShow = () => {
     PeopleRepository.createDialog = true;
 };
 
+const generatePayslipFunc =(item)=>{
+    PeopleRepository.generatePayslipDialog=true;
+}
+const PaySalary =(item)=>{
+    PeopleRepository.PaySalaryDialog=true;
+}
 const edit = (item) => {
     console.log(item, "me");
     PeopleRepository.setEditMode(true);
