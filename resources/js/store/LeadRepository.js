@@ -16,6 +16,11 @@ export let useLeadRepository = defineStore("LeadRepository", {
             selectedItems: ref([]),
             itemsPerPage: ref(5),
             createDialog: ref(false),
+            // lab payment
+            mainLabCreatePaymentDialog:ref(false),
+            labIdForPayment:ref(""),
+
+
 
             // lead
             leads: reactive([]),

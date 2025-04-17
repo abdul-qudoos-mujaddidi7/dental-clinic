@@ -1,5 +1,6 @@
 <template>
     <outLabCreatePayment v-if="PeopleRepository.labCreatePaymentDialog"/>
+    <ShowOutLabPayment v-if="PeopleRepository.createDialog"/>
     <div class="all-expense rounded-xl">
         <div class="card rounded-xl" :dir="dir">
             <AppBar
@@ -167,6 +168,7 @@
 import { ref, onMounted, computed } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 import outLabCreatePayment from "./payment/outLabCreatePayment.vue";
+import ShowOutLabPayment from "./payment/ShowOutLabPayment.vue";
 import { useI18n } from "vue-i18n";
 const { t, locale } = useI18n();
 
@@ -186,9 +188,9 @@ const ViewPaymentDialog = (item) => {
     PeopleRepository.paymentId = item.id;
     // PeopleRepository.billExpensesPayments = {};
     // if (Object.keys(PeopleRepository.billExpensesPayments).length === 0) {
-    PeopleRepository.FetchBillExpensesPayments(expenseId)
+    PeopleRepository.FetchLabPayment(expenseId)
         .then(() => {
-            PeopleRepository.ShowExpensePayment = true;
+            PeopleRepository.createDialog = true;
         })
         .catch((error) => {
             console.error("Error fetching data: ", error);
