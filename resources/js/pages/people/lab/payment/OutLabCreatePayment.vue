@@ -3,7 +3,7 @@
         <v-dialog
             transition="dialog-top-transition"
             width="50rem"
-            v-model="PeopleRepository.PaySalaryDialog"
+            v-model="PeopleRepository.labCreatePaymentDialog"
             class="rtl-dialog"
         >
             <template v-slot:default="{ isActive }">
@@ -15,7 +15,7 @@
                             {{
                                 PeopleRepository.isEditMode
                                     ? "Update"
-                                    : "Pay Salary"
+                                    : "Create"
                             }}
                         </h2>
                         <v-btn variant="text" @click="isActive.value = false">
@@ -30,19 +30,15 @@
                     <v-card-text>
                         <v-form ref="formRef" class="pt-4">
                             <div class="flex w-100">
-                                <div class="pb-4 w-50">
-                                    <date-picker
-                                        mode="single"
-                                        :column="1"
-                                        v-model="formData.date"
-                                        :styles="styles"
-                                        locale="fa"
-                                        type="date"
-                                        :locale-config="LocaleConfigs"
-                                        input-format="jYYYY/jMM/jDD"
-                                        format="jYYYY/jMM/jDD"
-                                    />
-                                </div>
+                                <v-text-field
+                                    v-model="formData.date"
+                                    type="date"
+                                    variant="outlined"
+                                    label="Date"
+                                    class="pb-4 pr-2 w-50"
+                                    density="compact"
+                                    :rules="[rules.required]"
+                                ></v-text-field>
                                 <v-autocomplete
                                     :items="PeopleRepository.moneyAccsFor"
                                     v-model="formData.accountId"
@@ -94,21 +90,18 @@
 <script setup>
 import { ref, reactive } from "vue";
 import { usePeopleRepository } from "@/store/PeopleRepository";
-import { LocaleConfigs, styles } from "../../../../LocaleConfigs";
-
 import { useI18n } from "vue-i18n";
-
 const { t } = useI18n();
 const PeopleRepository = usePeopleRepository();
 const formRef = ref(null);
 
 const formData = reactive({
-    people_id: PeopleRepository.peopleIDForSalary,
-    id: PeopleRepository.paySalary.id,
-    amount: PeopleRepository.paySalary.amount,
-    accountId: PeopleRepository.paySalary.accountId,
-    date: PeopleRepository.paySalary.date,
-    note: PeopleRepository.paySalary.note,
+    billExpenseId: PeopleRepository.billExpenseId,
+    id: PeopleRepository.paymentLab,
+    amount: PeopleRepository.paymentLab.amount,
+    accountId: PeopleRepository.paymentLab.accountId,
+    date: PeopleRepository.paymentLab.date,
+    note: PeopleRepository.paymentLab.note,
 });
 const rules = {
     required: (value) => !!value || "This field is required.",
@@ -117,14 +110,17 @@ const rules = {
         /^[a-zA-Z\u0600-\u06FF\s]*$/.test(value) ||
         "Please enter a valid name.",
 };
-
+console.log(PeopleRepository.Expense, "man");
 const save = async () => {
     const isValid = await formRef.value.validate();
     if (isValid) {
         if (PeopleRepository.isEditMode) {
-            await PeopleRepository.UpdatePaySalary(formData.id, formData);
+            await PeopleRepository.UpdateLabPayment(
+                formData.id,
+                formData
+            );
         } else {
-            await PeopleRepository.CreatePaySalary(formData);
+            await PeopleRepository.CreateLabPayment(formData);
         }
     }
 };

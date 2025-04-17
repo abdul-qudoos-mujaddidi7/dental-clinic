@@ -1,6 +1,8 @@
 {
-    "paySalary":"Pay Salary",
-    "generatePayslip":"Generate Payslip ",
+    "createPayment":"Create Payment",
+    "showPayment":"Show Payment",
+    "paySalary": "Pay Salary",
+    "generatePayslip": "Generate Payslip ",
     "diabetes": "Diabetes",
     "bloodPressure": "Blood Pressure",
     "heartDisease": "Heart Disease",
@@ -10,9 +12,9 @@
 
     "toothache": "Have a toothache?",
     "bleedingGums": "Bleeding gums?",
-    "medicalRecord":"Medical Record",
-    "dentalRecords":"Dental Records",
-    "dateOfBirth":"Date Of Birth",
+    "medicalRecord": "Medical Record",
+    "dentalRecords": "Dental Records",
+    "dateOfBirth": "Date Of Birth",
 
     "dashboard": "Dashboard",
     "profit": "Profit",

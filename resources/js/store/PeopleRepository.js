@@ -9,6 +9,8 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             isEditMode: ref(false),
 
             router: useRouter(),
+            peopleIDForSalary: ref(""),
+            labIdForPayment: ref(""),
 
             search: ref(""),
             serverItems: ref([]),
@@ -18,8 +20,10 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             selectedItems: ref([]),
             itemsPerPage: ref(5),
             createDialog: ref(false),
-            generatePayslipDialog:ref(false),
-            PaySalaryDialog:ref(false),
+            generatePayslipDialog: ref(false),
+            PaySalaryDialog: ref(false),
+            // lab payments 
+            labCreatePaymentDialog:ref(false),
             // patents
             patients: reactive([]),
             patient: reactive([]),
@@ -50,7 +54,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             laboratories: reactive([]),
             laboratory: reactive([]),
             dentalsFor: reactive([]),
-            suppliersFor:reactive([]),
+            suppliersFor: reactive([]),
             searchFetch: reactive([]),
             cureProduct: reactive([]),
             services: [],
@@ -60,22 +64,25 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             customerSearch: ref(""),
             customers: reactive([]),
             customer: reactive([]),
-            // people account 
-            peopleAccSearch:ref(""),
-            peopleAccounts:reactive([]),
-            peopleAccount:reactive([]),
-            moneyAccsFor:reactive([]),
-            idForCreatePayment:ref(""),
-            account:reactive([]),
-            // pay salary 
-            paySalarySearch:ref(""),
-            paySalaries:reactive([]),
-            paySalary:reactive([]),
+            // people account
+            peopleAccSearch: ref(""),
+            peopleAccounts: reactive([]),
+            peopleAccount: reactive([]),
+            moneyAccsFor: reactive([]),
+            idForCreatePayment: ref(""),
+            account: reactive([]),
+            // pay salary
+            paySalarySearch: ref(""),
+            paySalaries: reactive([]),
+            paySalary: reactive([]),
             // generate pay slip
-            generatePayslipSearch:ref(""),
-            generatePayslips:reactive([]),
-            generatePayslip:reactive([]),
-            
+            generatePayslipSearch: ref(""),
+            generatePayslips: reactive([]),
+            generatePayslip: reactive([]),
+            // payment lab 
+            PaymentLabSearch:ref(""),
+            paymentLabs:reactive([]),
+            paymentLab:reactive([]),
         };
     },
     actions: {
@@ -736,9 +743,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
         async FetchSuppliersFor() {
             this.loading = true;
 
-            const response = await axios.get(
-                `peoples?type=supplier`
-            );
+            const response = await axios.get(`peoples?type=supplier`);
             this.suppliersFor = response.data.data;
             this.loading = false;
         },
@@ -998,12 +1003,10 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             }
         },
         // peopleAccount
-        async fetchMoneyAccountsFor( ) {
+        async fetchMoneyAccountsFor() {
             this.loading = true;
 
-            const response = await axios.get(
-                `moneyAccount`
-            );
+            const response = await axios.get(`moneyAccount`);
             this.moneyAccsFor = response.data.data;
             this.loading = false;
         },
@@ -1022,7 +1025,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             try {
                 const response = await axios.get(`peopleAccount/${id}`);
 
-                this.peopleAccount= response.data.data;
+                this.peopleAccount = response.data.data;
                 console.log(this.customer);
             } catch (err) {
                 // this.error = err.message;
@@ -1093,91 +1096,90 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
                 this.error = err;
             }
         },
-          // part for the change account
-          async fetchAccountDataForCreate() {
-            const response = await axios.get('/moneyAccount');
+        // part for the change account
+        async fetchAccountDataForCreate() {
+            const response = await axios.get("/moneyAccount");
             this.account = response.data.data;
             console.log(this.account);
         },
         // ============
-               // paySalary
-               async FetchPaySalaries({ page, itemsPerPage }) {
-                this.loading = true;
-                const response = await axios.get(
-                    `paySalary?page=${page}&perPage=${itemsPerPage}&${this.paySalarySearch}`
-                );
-                this.paySalaries = response.data.data;
-                // this.totalItems = response.data.meta.total;
-                this.loading = false;
-            },
-            async fetchPaySalary(id) {
-                // this.loading = true;
-                console.log(id);
-                try {
-                    const response = await axios.get(`paySalary/${id}`);
-                    this.paySalary = response.data.data;
-                    console.log(this.lead);
-                } catch (err) {
-                    this.error = err;
-                }
-            },
-            async CreatePaySalary(formData) {
-                console.log(formData);
-                try {
-                    const config = {
-                        method: "POST",
-                        url: "paySalary",
-                        data: formData,
-                    };
-                    const response = await axios(config);
-                    this.createDialog = false;
-                    this.FetchPaySalaries({
-                        page: this.page,
-                        itemsPerPage: this.itemsPerPage,
-                    });
-                } catch (err) {
-                    this.error = err;
-                }
-            },
-            async UpdatePaySalary(id, formData) {
-                console.log(formData, id, "Update ");
-                try {
-                    const config = {
-                        method: "PUT",
-                        url: `paySalary/${id}`,
-                        data: formData,
-                    };
-                    const response = await axios(config);
-                    this.createDialog = false;
-                    this.FetchPaySalaries({
-                        page: this.page,
-                        itemsPerPage: this.itemsPerPage,
-                    });
-    
-                    this.isEditMode = false;
-                    
-                } catch (err) {
-                    this.error = err;
-                }
-            },
-            async DeletePaySalary(id) {
-                try {
-                    const config = {
-                        method: "DELETE",
-                        url: `paySalary/${id}`,
-                    };
-                    const response = await axios(config);
-                    this.FetchPaySalaries({
-                        page: this.page,
-                        itemsPerPage: this.itemsPerPage,
-                    });
-                } catch (err) {
-                    this.error = err;
-                }
-            },
-          
+        // paySalary
+        async FetchPaySalaries({ page, itemsPerPage }) {
+            this.loading = true;
+            const response = await axios.get(
+                `paySalary?page=${page}&perPage=${itemsPerPage}&${this.paySalarySearch}`
+            );
+            this.paySalaries = response.data.data;
+            // this.totalItems = response.data.meta.total;
+            this.loading = false;
+        },
+        async fetchPaySalary(id) {
+            // this.loading = true;
+            console.log(id);
+            try {
+                const response = await axios.get(`paySalary/${id}`);
+                this.paySalary = response.data.data;
+                console.log(this.lead);
+            } catch (err) {
+                this.error = err;
+            }
+        },
+        async CreatePaySalary(formData) {
+            console.log(formData);
+            try {
+                const config = {
+                    method: "POST",
+                    url: "paySalary",
+                    data: formData,
+                };
+                const response = await axios(config);
+                this.PaySalaryDialog = false;
+                this.FetchPaySalaries({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                this.error = err;
+            }
+        },
+        async UpdatePaySalary(id, formData) {
+            console.log(formData, id, "Update ");
+            try {
+                const config = {
+                    method: "PUT",
+                    url: `paySalary/${id}`,
+                    data: formData,
+                };
+                const response = await axios(config);
+                this.PaySalaryDialog = false;
+                this.FetchPaySalaries({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+
+                this.isEditMode = false;
+            } catch (err) {
+                this.error = err;
+            }
+        },
+        async DeletePaySalary(id) {
+            try {
+                const config = {
+                    method: "DELETE",
+                    url: `paySalary/${id}`,
+                };
+                const response = await axios(config);
+                this.FetchPaySalaries({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                this.error = err;
+            }
+        },
+
         // ============
-        // generate payslip 
+        // generate payslip
         async FetchGeneratePayslips({ page, itemsPerPage }) {
             this.loading = true;
             const response = await axios.get(
@@ -1207,7 +1209,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
                     data: formData,
                 };
                 const response = await axios(config);
-                this.createDialog = false;
+                this.generatePayslipDialog = false;
                 this.FetchGeneratePayslips({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
@@ -1225,14 +1227,13 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
                     data: formData,
                 };
                 const response = await axios(config);
-                this.createDialog = false;
+                this.generatePayslipDialog = false;
                 this.FetchGeneratePayslips({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });
 
                 this.isEditMode = false;
-                
             } catch (err) {
                 this.error = err;
             }
@@ -1245,6 +1246,80 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
                 };
                 const response = await axios(config);
                 this.FetchGeneratePayslips({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                this.error = err;
+            }
+        },
+        // create Lab Payment
+        async FetchLabPayments({ page, itemsPerPage }) {
+            this.loading = true;
+            const response = await axios.get(
+                `generatePaySlip?page=${page}&perPage=${itemsPerPage}&${this.PaymentLabSearch}`
+            );
+            this.paymentLabs = response.data.data;
+            // this.totalItems = response.data.meta.total;
+            this.loading = false;
+        },
+        async FetchLabPayment(id) {
+            // this.loading = true;
+            console.log(id);
+            try {
+                const response = await axios.get(`generatePaySlip/${id}`);
+                this.paymentLab= response.data.data;
+                console.log(this.lead);
+            } catch (err) {
+                this.error = err;
+            }
+        },
+        async CreateLabPayment(formData) {
+            console.log(formData);
+            try {
+                const config = {
+                    method: "POST",
+                    url: "generatePaySlip",
+                    data: formData,
+                };
+                const response = await axios(config);
+                this.labCreatePaymentDialog = false;
+                this.FetchLabPayments({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                this.error = err;
+            }
+        },
+        async UpdateLabPayment(id, formData) {
+            console.log(formData, id, "Update ");
+            try {
+                const config = {
+                    method: "PUT",
+                    url: `generatePaySlip/${id}`,
+                    data: formData,
+                };
+                const response = await axios(config);
+                this.labCreatePaymentDialog = false;
+                this.FetchLabPayments({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+
+                this.isEditMode = false;
+            } catch (err) {
+                this.error = err;
+            }
+        },
+        async DeleteLabPayment(id) {
+            try {
+                const config = {
+                    method: "DELETE",
+                    url: `generatePaySlip/${id}`,
+                };
+                const response = await axios(config);
+                this.FetchLabPayments({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });

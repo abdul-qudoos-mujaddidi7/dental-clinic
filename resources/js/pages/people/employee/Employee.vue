@@ -1,6 +1,6 @@
 <template>
     <CreateEmployee v-if="PeopleRepository.createDialog" />
-    <GeneratePayslip v-if="PeopleRepository.generatePayslipDialog"/>
+    <GeneratePayslip v-if="PeopleRepository.generatePayslipDialog" />
     <PaySalary v-if="PeopleRepository.PaySalaryDialog" />
     <div class="all-expense rounded-xl" :dir="dir">
         <div class="card rounded-xl">
@@ -77,18 +77,25 @@
                                             <v-list>
                                                 <v-list-item>
                                                     <v-list-item-title
-                                                        @click="PaySalaryFunc(item)"
+                                                        @click="
+                                                            PaySalaryFunc(item)
+                                                        "
                                                         class="cursor-pointer d-flex gap-3 justify-left pb-3"
                                                     >
                                                         <v-icon
                                                             color="tealColor"
-                                                            >mdi mdi-cash-check</v-icon
+                                                            >mdi
+                                                            mdi-cash-check</v-icon
                                                         >
                                                         {{ t("paySalary") }}
                                                     </v-list-item-title>
 
                                                     <v-list-item-title
-                                                        @click="generatePayslipFunc(item)"
+                                                        @click="
+                                                            generatePayslipFunc(
+                                                                item
+                                                            )
+                                                        "
                                                         class="cursor-pointer d-flex gap-3 justify-left pb-3"
                                                     >
                                                         <v-icon
@@ -139,7 +146,7 @@
 import { ref, onMounted, computed } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 import CreateEmployee from "./CreateEmployee.vue";
-import GeneratePayslip from "./salary payment/GeneratePayslip.vue"
+import GeneratePayslip from "./salary payment/GeneratePayslip.vue";
 import PaySalary from "./salary payment/PaySalary.vue";
 import { useI18n } from "vue-i18n";
 const { t, locale } = useI18n();
@@ -159,12 +166,14 @@ const CreateDialogShow = () => {
     PeopleRepository.createDialog = true;
 };
 
-const generatePayslipFunc =(item)=>{
-    PeopleRepository.generatePayslipDialog=true;
-}
-const PaySalaryFunc =(item)=>{
-    PeopleRepository.PaySalaryDialog=true;
-}
+const generatePayslipFunc = (item) => {
+    PeopleRepository.peopleIDForSalary =item.id;
+    PeopleRepository.generatePayslipDialog = true;
+};
+const PaySalaryFunc = (item) => {
+    PeopleRepository.peopleIDForSalary =item.id;
+    PeopleRepository.PaySalaryDialog = true;
+};
 const edit = (item) => {
     console.log(item, "me");
     PeopleRepository.setEditMode(true);

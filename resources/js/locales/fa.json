@@ -1,6 +1,8 @@
 {
-    "paySalary":"پرداخت معاش",
-"generatePayslip":" ایجاد معاش",
+    "createPayment": "ایجاد پرداخت",
+    "showPayment": "نمایش پرداخت",
+    "paySalary": "پرداخت معاش",
+    "generatePayslip": " ایجاد معاش",
     "diabetes": "شکر",
     "bloodPressure": "فشار خون",
     "heartDisease": "بیماری قلبی",
@@ -11,11 +13,10 @@
     "toothache": "دندان‌درد دارید؟",
     "bleedingGums": "لثه‌های تان خون‌ریزی دارد؟",
 
-    "medicalRecord":" سوابق پزشکی",
-    "dentalRecords":"سوابق دندانپزشکی",
+    "medicalRecord": " سوابق پزشکی",
+    "dentalRecords": "سوابق دندانپزشکی",
 
-    "dateOfBirth":"تاریخ تولد",
-
+    "dateOfBirth": "تاریخ تولد",
 
     "expenses": "مصارفات",
     "billExpense": " مصارف با بل ",

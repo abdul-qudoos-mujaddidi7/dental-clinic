@@ -104,6 +104,7 @@ const formRef = ref(null);
 
 const formData = reactive({
     // billExpenseId: PeopleRepository.billExpenseId,
+    people_id :PeopleRepository.peopleIDForSalary,
     id: PeopleRepository.generatePayslip.id,
     amount: PeopleRepository.generatePayslip.amount,
     accountId: PeopleRepository.generatePayslip.accountId,

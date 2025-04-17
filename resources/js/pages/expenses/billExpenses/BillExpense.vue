@@ -101,7 +101,7 @@
                                                             >mdi
                                                             mdi-cash-edit</v-icon
                                                         >
-                                                        Create Payment
+                                                        {{ t("createPayment") }}
                                                     </v-list-item-title>
                                                     <v-list-item-title
                                                         class="cursor-pointer d-flex gap-3 justify-left pb-3"
@@ -116,7 +116,7 @@
                                                             >mdi
                                                             mdi-cash-sync</v-icon
                                                         >
-                                                        Show Payment
+                                                        {{ t("showPayment") }}
                                                     </v-list-item-title>
                                                     <router-link
                                                         :to="

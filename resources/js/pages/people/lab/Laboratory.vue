@@ -1,8 +1,11 @@
 <template>
+    <outLabCreatePayment v-if="PeopleRepository.labCreatePaymentDialog"/>
     <div class="all-expense rounded-xl">
         <div class="card rounded-xl" :dir="dir">
-          
-            <AppBar :mainTitle="$t('outboundLaboratory')" :sub-title="$t('outboundLaboratory')" />
+            <AppBar
+                :mainTitle="$t('outboundLaboratory')"
+                :sub-title="$t('outboundLaboratory')"
+            />
 
             <v-divider
                 :thickness="1"
@@ -18,7 +21,6 @@
                         density="compact"
                         variant="outlined"
                         :label="t('search')"
-
                         append-inner-icon="mdi-magnify"
                         hide-details
                         v-model="PeopleRepository.laboratorySearch"
@@ -34,7 +36,6 @@
                             color="primaryOld"
                             variant="flat"
                             :text="t('create')"
-
                             class="px-6"
                         >
                         </v-btn>
@@ -48,7 +49,7 @@
                         <v-row>
                             <v-col>
                                 <v-data-table-server
-                                :dir="dir"
+                                    :dir="dir"
                                     theme="cursor-pointer"
                                     v-model:items-per-page="
                                         PeopleRepository.itemsPerPage
@@ -65,8 +66,16 @@
                                     hover
                                     class="w-100 mx-auto"
                                 >
-                                <template v-slot:item.details="{ item }">
-                                        <span v-if="item.details && item.details.length">{{ item.details[0].toothName }}</span>
+                                    <template v-slot:item.details="{ item }">
+                                        <span
+                                            v-if="
+                                                item.details &&
+                                                item.details.length
+                                            "
+                                            >{{
+                                                item.details[0].toothName
+                                            }}</span
+                                        >
                                         <span v-else>N/A</span>
                                     </template>
                                     <template v-slot:item.action="{ item }">
@@ -82,6 +91,36 @@
                                             </template>
                                             <v-list>
                                                 <v-list-item>
+                                                    <v-list-item-title
+                                                        class="cursor-pointer d-flex gap-3 justify-left pb-3"
+                                                        @click="
+                                                            CreateDialog(
+                                                                item.id
+                                                            )
+                                                        "
+                                                    >
+                                                        <v-icon
+                                                            color="tealColor"
+                                                            >mdi
+                                                            mdi-cash-edit</v-icon
+                                                        >
+                                                        {{ t("createPayment") }}
+                                                    </v-list-item-title>
+                                                    <v-list-item-title
+                                                        class="cursor-pointer d-flex gap-3 justify-left pb-3"
+                                                        @click="
+                                                            ViewPaymentDialog(
+                                                                item.id
+                                                            )
+                                                        "
+                                                    >
+                                                        <v-icon
+                                                            color="tealColor"
+                                                            >mdi
+                                                            mdi-cash-sync</v-icon
+                                                        >
+                                                        {{ t("showPayment") }}
+                                                    </v-list-item-title>
                                                     <router-link
                                                         :to="
                                                             '/updateLab/' +
@@ -89,7 +128,6 @@
                                                         "
                                                     >
                                                         <v-list-item-title
-                                                      
                                                             class="cursor-pointer d-flex gap-3 justify-left pb-3"
                                                         >
                                                             <v-icon
@@ -126,15 +164,37 @@
 </template>
 
 <script setup>
-import { ref, onMounted,computed } from "vue";
+import { ref, onMounted, computed } from "vue";
 import AppBar from "../../../components/AppBar.vue";
+import outLabCreatePayment from "./payment/outLabCreatePayment.vue";
 import { useI18n } from "vue-i18n";
-const { t,locale } = useI18n();
+const { t, locale } = useI18n();
 
 import { usePeopleRepository } from "@/store/PeopleRepository";
 const PeopleRepository = usePeopleRepository();
 // bulk delete
 
+const CreateDialog = (id) => {
+    PeopleRepository.labIdForPayment = id;
+    PeopleRepository.billExpensesPayments = {};
+    PeopleRepository.setEditMode(false);
+    PeopleRepository.labCreatePaymentDialog = true;
+};
+const ViewPaymentDialog = (item) => {
+    console.log(item.id, "payment id");
+    const expenseId = item.id;
+    PeopleRepository.paymentId = item.id;
+    // PeopleRepository.billExpensesPayments = {};
+    // if (Object.keys(PeopleRepository.billExpensesPayments).length === 0) {
+    PeopleRepository.FetchBillExpensesPayments(expenseId)
+        .then(() => {
+            PeopleRepository.ShowExpensePayment = true;
+        })
+        .catch((error) => {
+            console.error("Error fetching data: ", error);
+        });
+    // }
+};
 // delete and update Create
 const CreateDialogShow = () => {
     (PeopleRepository.laboratory = {}), PeopleRepository.setEditMode(false);
@@ -146,7 +206,6 @@ const CreateDialogShow = () => {
 const dir = computed(() => {
     return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
 });
-
 
 // const edit = (item) => {
 //     console.log(item, "me");
@@ -168,7 +227,6 @@ const deleteItem = async (item) => {
 };
 // header
 const headers = [
-
     { title: t("issueAt"), key: "issueAt", align: "start", sortable: false },
 
     {
@@ -185,7 +243,12 @@ const headers = [
     },
     { title: t("paid"), key: "paid", align: "start", sortable: false },
     { title: t("status"), key: "status", align: "start", sortable: false },
-    { title: t("details"), key: "description", align: "start", sortable: false },
+    {
+        title: t("details"),
+        key: "description",
+        align: "start",
+        sortable: false,
+    },
     { title: t("action"), key: "action", align: "end", sortable: false },
 ];
 </script>
