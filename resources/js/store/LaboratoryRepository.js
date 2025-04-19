@@ -7,6 +7,7 @@ export let useLaboratoryRepository = defineStore("LaboratoryRepository", {
     state() {
         return {
             isEditMode: ref(false),
+            mainLabPaymentID:ref(""),
 
             router: useRouter(),
 
@@ -18,12 +19,13 @@ export let useLaboratoryRepository = defineStore("LaboratoryRepository", {
             selectedItems: ref([]),
             itemsPerPage: ref(5),
 
+            mainLabCreatePaymentDialog: ref(""),
             createDialog: ref(false),
 
             laboratorySearch: ref(""),
             laboratories: reactive([]),
             laboratory: reactive([]),
-            dentalsFor:reactive([]),
+            dentalsFor: reactive([]),
             searchFetch: reactive([]),
             cureProduct: reactive([]),
             services: [],
@@ -31,10 +33,9 @@ export let useLaboratoryRepository = defineStore("LaboratoryRepository", {
             leadStageFor: reactive([]),
             labId: ref(""),
             doctorsFor: reactive([]),
-            customersFor:reactive([]),
+            customersFor: reactive([]),
             //money acc
-            account:reactive([]),
-            
+            account: reactive([]),
         };
     },
     actions: {
@@ -117,14 +118,12 @@ export let useLaboratoryRepository = defineStore("LaboratoryRepository", {
             this.dentalsFor = response.data.data;
 
             this.loading = false;
-            console.log(this.dentalsFor)
+            console.log(this.dentalsFor);
         },
         async FetchCustomersFor() {
             this.loading = true;
 
-            const response = await axios.get(
-                `peoples?type=customer`
-            );
+            const response = await axios.get(`peoples?type=customer`);
             this.customersFor = response.data.data;
             this.loading = false;
         },
@@ -250,9 +249,91 @@ export let useLaboratoryRepository = defineStore("LaboratoryRepository", {
             }
         },
         async fetchAccountDataForCreate() {
-            const response = await axios.get('/moneyAccount');
+            const response = await axios.get("/moneyAccount");
             this.account = response.data.data;
             console.log(this.account);
+        },
+        //
+        async FetchLabPayments({ page, itemsPerPage }) {
+            this.loading = true;
+            const response = await axios.get(
+                `generatePaySlip?page=${page}&perPage=${itemsPerPage}&${this.PaymentLabSearch}`
+            );
+            this.paymentLabs = response.data.data;
+            // this.totalItems = response.data.meta.total;
+            this.loading = false;
+        },
+        async FetchLabPayment(id) {
+            // this.loading = true;
+            console.log(id);
+            try {
+                const response = await axios.get(`generatePaySlip/${id}`);
+                this.paymentLab = response.data.data;
+                console.log(this.lead);
+            } catch (err) {
+                this.error = err;
+            }
+        },
+        async CreateLabPayment(formData) {
+            console.log(formData);
+            try {
+                const config = {
+                    method: "POST",
+                    url: "generatePaySlip",
+                    data: formData,
+                };
+                const response = await axios(config);
+                this.mainLabCreatePaymentDialog = false;
+                this.FetchLabPayments({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                this.error = err;
+            }
+        },
+        async UpdateLabPayment(id, formData) {
+            console.log(formData, id, "Update ");
+            try {
+                const config = {
+                    method: "PUT",
+                    url: `generatePaySlip/${id}`,
+                    data: formData,
+                };
+                const response = await axios(config);
+                this.mainLabCreatePaymentDialog = false;
+                this.FetchLabPayments({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+
+                this.isEditMode = false;
+            } catch (err) {
+                this.error = err;
+            }
+        },
+        async DeleteLabPayment(id) {
+            try {
+                const config = {
+                    method: "DELETE",
+                    url: `generatePaySlip/${id}`,
+                };
+                const response = await axios(config);
+                this.FetchLabPayments({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                this.error = err;
+            }
+        },
+        // money account 
+        async fetchMoneyAccountsFor() {
+            this.loading = true;
+
+            const response = await axios.get(`moneyAccount`);
+            this.moneyAccsFor = response.data.data;
+            this.loading = false;
         },
     },
 });

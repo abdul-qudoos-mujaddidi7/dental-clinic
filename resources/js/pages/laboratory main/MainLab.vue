@@ -182,15 +182,15 @@ const dir = computed(() => {
 // Bulk delete
 
 const CreateDialog = (id) => {
-    LaboratoryRepository.labIdForPayment = id;
-    LaboratoryRepository.billExpensesPayments = {};
+    LaboratoryRepository.mainLabPaymentID = id;
+    LaboratoryRepository.paymentLab = {};
     LaboratoryRepository.setEditMode(false);
     LaboratoryRepository.mainLabCreatePaymentDialog = true;
 };
 const ViewPaymentDialog = (item) => {
     console.log(item.id, "payment id");
     const expenseId = item.id;
-    LaboratoryRepository.paymentId = item.id;
+    LaboratoryRepository.mainLabPaymentID = item.id;
     // LaboratoryRepository.billExpensesPayments = {};
     // if (Object.keys(LaboratoryRepository.billExpensesPayments).length === 0) {
     LaboratoryRepository.FetchLabPayment(expenseId)

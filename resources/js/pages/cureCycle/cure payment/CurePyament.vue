@@ -28,24 +28,40 @@
                     <v-card-text>
                         <v-form ref="formRef" class="pt-4">
                             <div class="flex w-100">
-                                <v-text-field
-                                    v-model="formData.amount"
+                                <div class="pb-4 w-50 pr-2">
+                                    <date-picker
+                                        mode="single"
+                                        :column="1"
+                                        v-model="formData.date"
+                                        :styles="styles"
+                                        locale="fa"
+                                        type="date"
+                                        format="jYYYY/jMM/jDD"
+                                        :locale-config="LocaleConfigs"
+                                    />
+                                </div>
+                                <v-autocomplete
+                                    :items="CureRepository.account"
+                                    v-model="formData.accountId"
+                                    :return-object="false"
                                     variant="outlined"
-                                    label="Amount *"
-                                    class="pb-4 pr-2 w-50"
+                                    :label="t('account') + ' *'"
+                                    class="pl-2 w-50 pb-4"
+                                    style="width: 45%"
+                                    item-value="id"
+                                    item-title="name"
                                     density="compact"
                                     :rules="[rules.required]"
-                                ></v-text-field>
-                                <v-text-field
-                                    v-model="formData.date"
-                                    type="date"
-                                    variant="outlined"
-                                    label="Date"
-                                    class="pb-4 pl-2 w-50"
-                                    density="compact"
-                                    :rules="[rules.required]"
-                                ></v-text-field>
+                                ></v-autocomplete>
                             </div>
+                            <v-text-field
+                                v-model="formData.amount"
+                                variant="outlined"
+                                label="Amount *"
+                                class="pb-4"
+                                density="compact"
+                                :rules="[rules.required]"
+                            ></v-text-field>
 
                             <v-textarea
                                 v-model="formData.note"
@@ -73,12 +89,15 @@
 <script setup>
 import { ref, reactive } from "vue";
 import { useCureRepository } from "@/store/CureRepository";
+import { useI18n } from "vue-i18n";
+import {LocaleConfigs} from "../../../LocaleConfigs"
+const { t } = useI18n();
 
 const CureRepository = useCureRepository();
 const formRef = ref(null);
 
 const formData = reactive({
-    cureId: CureRepository.cureId,
+    PeopleId: CureRepository.cureId,
     id: CureRepository.curePayment.id,
     amount: CureRepository.curePayment.amount,
     date: CureRepository.curePayment.date,
@@ -96,14 +115,13 @@ const save = async () => {
     const isValid = await formRef.value.validate();
     if (isValid) {
         if (CureRepository.isEditMode) {
-            await CureRepository.UpdateCurePayment(
-                formData.id,
-                formData
-            );
+            await CureRepository.UpdateCurePayment(formData.id, formData);
         } else {
             await CureRepository.CreateCurePayment(formData);
         }
     }
 };
+CureRepository.fetchAccountDataForCreate();
+
 formData.date = CureRepository.getTodaysDate();
 </script>

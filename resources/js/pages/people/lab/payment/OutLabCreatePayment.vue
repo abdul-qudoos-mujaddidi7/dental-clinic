@@ -30,15 +30,18 @@
                     <v-card-text>
                         <v-form ref="formRef" class="pt-4">
                             <div class="flex w-100">
-                                <v-text-field
-                                    v-model="formData.date"
-                                    type="date"
-                                    variant="outlined"
-                                    label="Date"
-                                    class="pb-4 pr-2 w-50"
-                                    density="compact"
-                                    :rules="[rules.required]"
-                                ></v-text-field>
+                                <div class="pb-4 w-50 pr-2">
+                                    <date-picker
+                                        mode="single"
+                                        :column="1"
+                                        v-model="formData.date"
+                                        :styles="styles"
+                                        locale="fa"
+                                        type="date"
+                                        format="jYYYY/jMM/jDD"
+                                        :locale-config="LocaleConfigs"
+                                    />
+                                </div>
                                 <v-autocomplete
                                     :items="PeopleRepository.moneyAccsFor"
                                     v-model="formData.accountId"
@@ -91,12 +94,13 @@
 import { ref, reactive } from "vue";
 import { usePeopleRepository } from "@/store/PeopleRepository";
 import { useI18n } from "vue-i18n";
+import { LocaleConfigs } from "../../../../LocaleConfigs";
 const { t } = useI18n();
 const PeopleRepository = usePeopleRepository();
 const formRef = ref(null);
 
 const formData = reactive({
-    billExpenseId: PeopleRepository.billExpenseId,
+    people_id: PeopleRepository.labIdForPayment,
     id: PeopleRepository.paymentLab,
     amount: PeopleRepository.paymentLab.amount,
     accountId: PeopleRepository.paymentLab.accountId,
