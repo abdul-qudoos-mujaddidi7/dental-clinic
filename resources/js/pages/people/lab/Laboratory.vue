@@ -96,7 +96,7 @@
                                                         class="cursor-pointer d-flex gap-3 justify-left pb-3"
                                                         @click="
                                                             CreateDialog(
-                                                                item.id
+                                                                item
                                                             )
                                                         "
                                                     >
@@ -176,8 +176,9 @@ import { usePeopleRepository } from "@/store/PeopleRepository";
 const PeopleRepository = usePeopleRepository();
 // bulk delete
 
-const CreateDialog = (id) => {
-    PeopleRepository.labIdForPayment = id;
+const CreateDialog = (item) => {
+    PeopleRepository.labIdForPayment = item.id;
+    PeopleRepository.peopleId =item.peopleId;
     PeopleRepository.billExpensesPayments = {};
     PeopleRepository.setEditMode(false);
     PeopleRepository.labCreatePaymentDialog = true;

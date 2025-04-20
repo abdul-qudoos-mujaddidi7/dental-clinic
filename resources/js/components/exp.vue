@@ -261,21 +261,45 @@ export default {
   </style>
 -->
 <template>
-  <div>
-    <h1>Select a date</h1>
-    <vue-awesome-datepicker
-      v-model="selectedDate"
-      :format="$datepickerConfig.format"
-      :lang="$datepickerConfig.lang"
-      :clearable="true"
-    />
-  </div>
+    <div>
+        <h1>Select a date</h1>
+        <!-- <vue-awesome-datepicker
+            v-model="selectedDate"
+            :format="$datepickerConfig.format"
+            :lang="$datepickerConfig.lang"
+            :clearable="true"
+        /> -->
+    </div>
+    <v-form ref="formRef">
+    <v-card color="#555" class="w-50 border-2">
+
+        <v-text-field label="man" v-model="formData.name"></v-text-field>
+        
+      </v-card>
+      <div>
+        <v-textarea label="assad" density="compact" v-model="formData.email" >
+        </v-textarea>
+      </div>
+      <v-btn  @click="Create">click</v-btn>
+    </v-form>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, reactive } from "vue";
+import {usePeopleRepository} from "../store/PeopleRepository"
+const formRef = ref(null);
+const  PeopleRepository = usePeopleRepository();
+const formData = reactive({
+  name:"",
+  email:""
+})
 
-const selectedDate = ref('');
+const Create = async()=>{
+  await PeopleRepository.CreateLabPayment(formData)
+  
+
+}
+const selectedDate = ref("");
 </script>
 
 <style scoped>

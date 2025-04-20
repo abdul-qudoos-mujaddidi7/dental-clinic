@@ -113,7 +113,7 @@
                                                         class="cursor-pointer d-flex gap-3 justify-left pb-3"
                                                         @click="
                                                             CreateDialogShow(
-                                                                item.id
+                                                                item
                                                             )
                                                         "
                                                     >
@@ -238,8 +238,10 @@ const deleteItem = async (item) => {
     await CureRepository.DeleteCure(item.id);
 };
 // create payment
-const CreateDialogShow = (id) => {
-    CureRepository.cureId = id;
+const CreateDialogShow = (item) => {
+    console.log(item, "this is what i want ", );
+    CureRepository.cureId = item.id;
+    CureRepository.peopleId = item.patientId;
 
     CureRepository.curePayment = {};
     CureRepository.setEditMode(false);

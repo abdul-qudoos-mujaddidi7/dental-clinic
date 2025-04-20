@@ -20,6 +20,7 @@ export let useCureRepository = defineStore("CureRepository", {
             createDialog: ref(false),
             ShowCurePaymentDialog: ref(false),
             cureId: ref(""),
+            peopleId: ref(""),
             paymentId: ref(""),
             services: [],
 
@@ -32,8 +33,8 @@ export let useCureRepository = defineStore("CureRepository", {
             searchFetch: reactive([]),
             cureProduct: reactive([]),
             leadStageFor: reactive([]),
-            // money account 
-            account:reactive([]),
+            // money account
+            account: reactive([]),
         };
     },
     actions: {
@@ -291,7 +292,7 @@ export let useCureRepository = defineStore("CureRepository", {
                 // Adding a custom header to the Axios request
                 const config = {
                     method: "POST",
-                    url: "curePayments",
+                    url: "generatePaySlip",
 
                     data: formData,
                 };
@@ -359,11 +360,11 @@ export let useCureRepository = defineStore("CureRepository", {
                 this.error = err;
             }
         },
-               // part for the change account
-               async fetchAccountDataForCreate() {
-                const response = await axios.get('/moneyAccount');
-                this.account = response.data.data;
-                console.log(this.account);
-            },
+        // part for the change account
+        async fetchAccountDataForCreate() {
+            const response = await axios.get("/moneyAccount");
+            this.account = response.data.data;
+            console.log(this.account);
+        },
     },
 });

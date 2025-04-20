@@ -100,7 +100,8 @@ const PeopleRepository = usePeopleRepository();
 const formRef = ref(null);
 
 const formData = reactive({
-    people_id: PeopleRepository.labIdForPayment,
+    people_id:PeopleRepository.peopleId,
+    outboundId: PeopleRepository.labIdForPayment,
     id: PeopleRepository.paymentLab,
     amount: PeopleRepository.paymentLab.amount,
     accountId: PeopleRepository.paymentLab.accountId,

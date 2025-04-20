@@ -8,6 +8,7 @@ export let useLaboratoryRepository = defineStore("LaboratoryRepository", {
         return {
             isEditMode: ref(false),
             mainLabPaymentID:ref(""),
+            peopleId:ref(""),
 
             router: useRouter(),
 

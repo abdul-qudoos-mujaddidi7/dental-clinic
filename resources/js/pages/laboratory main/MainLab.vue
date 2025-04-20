@@ -102,7 +102,7 @@
                                                         class="cursor-pointer d-flex gap-3 justify-left pb-3"
                                                         @click="
                                                             CreateDialog(
-                                                                item.id
+                                                                item
                                                             )
                                                         "
                                                     >
@@ -181,8 +181,10 @@ const dir = computed(() => {
 });
 // Bulk delete
 
-const CreateDialog = (id) => {
-    LaboratoryRepository.mainLabPaymentID = id;
+const CreateDialog = (item) => {
+    LaboratoryRepository.mainLabPaymentID = item.id;
+   LaboratoryRepository.peopleId = item.peopleId
+    
     LaboratoryRepository.paymentLab = {};
     LaboratoryRepository.setEditMode(false);
     LaboratoryRepository.mainLabCreatePaymentDialog = true;

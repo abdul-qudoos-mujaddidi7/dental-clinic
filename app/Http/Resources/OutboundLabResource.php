@@ -24,6 +24,7 @@ class OutboundLabResource extends JsonResource
                 'id'=>$this->dentist?->id,
                 'name'=>$this->dentist?->name
             ],
+            'peopleId'=>$this->supplier->id,
             // 'due'=> $due,
             // 'paymentStatus' => $this->getPaymentStatus(),
             'status' => $this->status,

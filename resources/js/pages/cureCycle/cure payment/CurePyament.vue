@@ -90,14 +90,15 @@
 import { ref, reactive } from "vue";
 import { useCureRepository } from "@/store/CureRepository";
 import { useI18n } from "vue-i18n";
-import {LocaleConfigs} from "../../../LocaleConfigs"
+import { LocaleConfigs } from "../../../LocaleConfigs";
 const { t } = useI18n();
 
 const CureRepository = useCureRepository();
 const formRef = ref(null);
 
 const formData = reactive({
-    PeopleId: CureRepository.cureId,
+    people_id: CureRepository.peopleId,
+    cureId: CureRepository.cureId,
     id: CureRepository.curePayment.id,
     amount: CureRepository.curePayment.amount,
     date: CureRepository.curePayment.date,

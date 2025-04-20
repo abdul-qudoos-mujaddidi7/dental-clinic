@@ -11,6 +11,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             router: useRouter(),
             peopleIDForSalary: ref(""),
             labIdForPayment: ref(""),
+            peopleId:ref(""),
 
             search: ref(""),
             serverItems: ref([]),
