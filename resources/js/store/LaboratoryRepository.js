@@ -37,6 +37,11 @@ export let useLaboratoryRepository = defineStore("LaboratoryRepository", {
             customersFor: reactive([]),
             //money acc
             account: reactive([]),
+            // payment 
+
+            PaymentLabSearch:ref(""),
+            paymentLabs:reactive([]),
+            paymentLab:reactive([]),
         };
     },
     actions: {
@@ -270,7 +275,7 @@ export let useLaboratoryRepository = defineStore("LaboratoryRepository", {
             try {
                 const response = await axios.get(`generatePaySlip/${id}`);
                 this.paymentLab = response.data.data;
-                console.log(this.lead);
+                console.log(this.paymentLab);
             } catch (err) {
                 this.error = err;
             }

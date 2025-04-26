@@ -1,10 +1,10 @@
 <template>
-    <UpdateExpensePayment v-if="PeopleRepository.createDialog" />
+    <UpdateExpensePayment v-if="LaboratoryRepository.createDialog" />
     <div dir="rtl">
         <v-dialog
             transition="dialog-top-transition"
             width="55rem"
-            v-model="PeopleRepository.createDialog"
+            v-model="LaboratoryRepository.createDialog"
             class="rtl-dialog"
         >
             <template v-slot:default="{ isActive }">
@@ -37,7 +37,7 @@
                                 <tr
                                     v-for="(
                                         payment, index
-                                    ) in PeopleRepository.paymentLabs"
+                                    ) in LaboratoryRepository.paymentLab"
                                     :key="index"
                                     class="text-left"
                                 >
@@ -111,29 +111,29 @@
 
 <script setup>
 // import { reactive, ref } from "vue";
-import { usePeopleRepository } from "@/store/PeopleRepository";
-const PeopleRepository = usePeopleRepository();
+import { useLaboratoryRepository } from "@/store/LaboratoryRepository";
+const LaboratoryRepository = useLaboratoryRepository();
 
 const deleteItem = async (payment) => {
-    await PeopleRepository.DeleteLabPayment(payment.id);
+    await LaboratoryRepository.DeleteLabPayment(payment.id);
 };
-// PeopleRepository.FetchBillExpensePayment();
+// LaboratoryRepository.FetchBillExpensePayment();
 const editItem = async (payment) => {
-    PeopleRepository.isEditMode = true;
-    // PeopleRepository.meterCyclePaymentId = id;
-    PeopleRepository.setEditMode(true);
-    PeopleRepository.paymentLab = {};
-    if (Object.keys(PeopleRepository.FetchLabPayment).length === 0) {
-        PeopleRepository.FetchLabPayment(payment.id)
+    LaboratoryRepository.isEditMode = true;
+    // LaboratoryRepository.meterCyclePaymentId = id;
+    LaboratoryRepository.setEditMode(true);
+    LaboratoryRepository.paymentLab = {};
+    if (Object.keys(LaboratoryRepository.FetchLabPayment).length === 0) {
+        LaboratoryRepository.FetchLabPayment(payment.id)
             .then(() => {
-                PeopleRepository.createDialog = true;
+                LaboratoryRepository.createDialog = true;
             })
             .catch((error) => {
                 console.error("Error fetching data: ", error);
             });
     }
-    // console.log(PeopleRepository.meterCyclePaymentId, id);
-    // await PeopleRepository.fetchMeterCyclePaymentForUpdate(id);
+    // console.log(LaboratoryRepository.meterCyclePaymentId, id);
+    // await LaboratoryRepository.fetchMeterCyclePaymentForUpdate(id);
 };
 
 const headers = [

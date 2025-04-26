@@ -1,5 +1,6 @@
 <template>
     <CreateMainLabPayment v-if="LaboratoryRepository.mainLabCreatePaymentDialog" />
+    <ShowMainLabPayment v-if="LaboratoryRepository.createDialog"/>
     <div class="all-expense rounded-xl">
         <div class="card rounded-xl" :dir="dir">
             <AppBar
@@ -117,7 +118,7 @@
                                                         class="cursor-pointer d-flex gap-3 justify-left pb-3"
                                                         @click="
                                                             ViewPaymentDialog(
-                                                                item.id
+                                                                item
                                                             )
                                                         "
                                                     >
@@ -171,6 +172,7 @@
 import { ref, computed, onMounted } from "vue";
 import AppBar from "../../components/AppBar.vue";
 import CreateMainLabPayment from "./payment/CreateMainLabPayment.vue";
+import ShowMainLabPayment from "./payment/ShowMainLabPayment.vue";
 import { useI18n } from "vue-i18n";
 const { t, locale } = useI18n();
 import { useLaboratoryRepository } from "@/store/LaboratoryRepository";

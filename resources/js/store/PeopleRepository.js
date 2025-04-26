@@ -1262,15 +1262,16 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             );
             this.paymentLabs = response.data.data;
             // this.totalItems = response.data.meta.total;
+            console.log(this.paymentLabs,'data fo index from repository ')
             this.loading = false;
         },
         async FetchLabPayment(id) {
             // this.loading = true;
-            console.log(id);
+            console.log(id, 'id in repository');
             try {
                 const response = await axios.get(`generatePaySlip/${id}`);
                 this.paymentLab= response.data.data;
-                console.log(this.lead);
+                console.log(this.paymentLab,'data of lab');
             } catch (err) {
                 this.error = err;
             }

@@ -111,7 +111,7 @@
                                                         class="cursor-pointer d-flex gap-3 justify-left pb-3"
                                                         @click="
                                                             ViewPaymentDialog(
-                                                                item.id
+                                                                item
                                                             )
                                                         "
                                                     >
@@ -189,7 +189,7 @@ const ViewPaymentDialog = (item) => {
     PeopleRepository.paymentId = item.id;
     // PeopleRepository.billExpensesPayments = {};
     // if (Object.keys(PeopleRepository.billExpensesPayments).length === 0) {
-    PeopleRepository.FetchLabPayment(expenseId)
+    PeopleRepository.FetchLabPayments(expenseId)
         .then(() => {
             PeopleRepository.createDialog = true;
         })

@@ -6,7 +6,7 @@
         <router-link to="/dashboard">
             <div class="flex items-center justify-center py-4">
                 <img
-                    src="/storage/images/company/dental.png"
+                    src="../../../public/storage/images/company/dentalLogo.png"
                     alt="Logo"
                     class="w-[4rem] h-[4rem] rounded-full object-cover transition-all duration-300"
                 />
@@ -302,7 +302,7 @@ const navItems = computed(() => [
 const salaryItems = computed(() => [
     {
         to: "/salary",
-        title: t( "salary"),
+        title: t("salary"),
         icon: "mdi mdi-circle-medium",
         value: "salary",
     },
