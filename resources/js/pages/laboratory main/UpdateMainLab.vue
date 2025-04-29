@@ -53,7 +53,7 @@
                     label="Customer *"
                     class="pr-2 pl-2"
                     style="width: 45%"
-                    item-value="name"
+                    item-value="id"
                     item-title="name"
                     density="compact"
                     :rules="[rules.required]"
@@ -184,7 +184,6 @@
                     <span>Total</span>
                 </div>
 
-            
                 <div class="w-[25rem]">
                     <v-text-field
                         v-model="formData.paid"
@@ -227,8 +226,10 @@ import { useRoute } from "vue-router";
 import { LocaleConfigs } from "../../LocaleConfigs";
 
 import { useLaboratoryRepository } from "@/store/LaboratoryRepository";
-
 const LaboratoryRepository = useLaboratoryRepository();
+
+
+
 // LaboratoryRepository.services =  laboratory.details || [];
 const formData = reactive({
     tooths: LaboratoryRepository.services || [],
@@ -248,14 +249,16 @@ LaboratoryRepository.FetchLaboratory(routeParams.params.id).then((res) => {
     formData.id = laboratory.id;
     formData.returnDate = laboratory.returnDate;
     formData.issueAt = laboratory.issueAt;
-    LaboratoryRepository.services = laboratory.details || [];
+    LaboratoryRepository.services  = laboratory.details || [];
     formData.grandTotal = laboratory.grandTotal;
     formData.description = laboratory.description;
     formData.paid = laboratory.paid;
     formData.status = laboratory.status;
     formData.dentistId = laboratory.dentist?.id;
+    formData.customerId = laboratory.customer?.id;
 
-    console.log(formData.grandTotal, "Initial grand total");
+
+    console.log(laboratory.details, "Initial grand total");
 });
 
 watch(
@@ -266,6 +269,22 @@ watch(
             services.total = multiple(services);
             console.log(services);
         });
+    },
+    { deep: true }
+);
+
+watch(
+    () => LaboratoryRepository.laboratory,
+    (newData) => {
+        if (newData) {
+            formData.tooths = newData.details || [];
+            formData.grandTotal = newData.grandTotal;
+            formData.returnDate = newData.returnDate;
+            formData.issueAt = newData.issueAt;
+            formData.description = newData.description;
+            formData.paid = newData.paid;
+            formData.status = newData.status;
+        }
     },
     { deep: true }
 );
@@ -360,7 +379,7 @@ formData.startDate = LaboratoryRepository.getTodaysDate();
 
 // LaboratoryRepository.Patients();
 LaboratoryRepository.Doctors();
-LaboratoryRepository.FetchCustomersFor();   
+LaboratoryRepository.FetchCustomersFor();
 // ====================
 
 // const formData = reactive({

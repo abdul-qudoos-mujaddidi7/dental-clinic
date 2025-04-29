@@ -25,7 +25,11 @@ class InboundLabResource extends JsonResource
                 'id'=>$this->dentist?->id,
                 'name'=>$this->dentist?->name
             ],
-            'peopleId'=>$this->customer?->id,
+            'customer'=>[
+                'id'=>$this->customer?->id,
+                'name'=>$this->customer?->name
+            ],
+            // 'customerId'=>$this->customer?->id,
             // 'due'=> $due,
             // 'paymentStatus' => $this->getPaymentStatus(),
             'status' => $this->status,

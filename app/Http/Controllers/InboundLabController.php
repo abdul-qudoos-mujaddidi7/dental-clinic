@@ -62,25 +62,25 @@ class InboundLabController extends Controller
         return new $this->resource($InboundLab->load('mainLaboratoryDetails'));
     }
 
-    public function show(InboundLab $InboundLab)
+    public function show(InboundLab $inboundLab)
     {
-        $InboundLab->load(['mainLaboratoryDetails']);
-        return new $this->resource($InboundLab);
+        $inboundLab->load(['mainLaboratoryDetails']);
+        return new $this->resource($inboundLab);
     }
 
-    public function update(Request $request, InboundLab $InboundLab)
+    public function update(Request $request, InboundLab $inboundLab)
     {
         $validated = app($this->request)->validated();
 
         // Delete old services
-        $InboundLab->mainLaboratoryDetails()->delete();
+        $inboundLab->mainLaboratoryDetails()->delete();
 
         // Update services (if provided)
         if ($request->has('tooths')) {
             $details = [];
             foreach ($validated['tooths'] as $tooth) {
                 $details[] = [
-                    'inbound_lab_id' => $InboundLab->id,
+                    'inbound_lab_id' => $inboundLab->id,
                     'tooth_id' => $tooth['toothId'],
                     'cost' => $tooth['cost'],
                     'quantity' => $tooth['quantity'],
@@ -91,7 +91,7 @@ class InboundLabController extends Controller
             LaboratoryDetail::insert($details);
         }
 
-        $InboundLab->update($validated);
+        $inboundLab->update($validated);
 
         // Update or create payment information
         // CurePayment::updateOrCreate(
@@ -102,13 +102,13 @@ class InboundLabController extends Controller
         return response()->json(['message' => 'Record Updated successfully!'], 204);
     }
 
-    public function destroy(InboundLab $InboundLab)
+    public function destroy(InboundLab $inboundLab)
     {
         // Delete the related services first
-        $InboundLab->mainLaboratoryDetails()->delete();
+        $inboundLab->mainLaboratoryDetails()->delete();
 
         // Delete the Cure itself
-        $InboundLab->delete();
+        $inboundLab->delete();
 
         return response()->json(['message' => 'Record deleted successfully!'], 204);
     }
