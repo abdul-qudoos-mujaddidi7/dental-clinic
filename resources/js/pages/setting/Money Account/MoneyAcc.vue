@@ -143,8 +143,8 @@ const edit = (item) => {
     console.log(item, "me");
     // SettingRepository.setEditMode(true);
     SettingRepository.isEditMode = true;
-    SettingRepository.moneyAcc = {};
-    if (Object.keys(SettingRepository.moneyAcc).length === 0) {
+    SettingRepository.s = {};
+    if (Object.keys(SettingRepository.s).length === 0) {
         SettingRepository.fetchMoneyAcc(item.id)
             .then(() => {
                 SettingRepository.createDialog = true;

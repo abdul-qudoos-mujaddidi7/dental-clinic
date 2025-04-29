@@ -71,10 +71,11 @@ const { t } = useI18n();
 const SettingRepository = useSettingRepository();
 const formRef = ref(null);
 
+console.log(SettingRepository.s,'wadan')
 const formData = reactive({ 
-    id: SettingRepository.moneyAcc.id,
-    name: SettingRepository.moneyAcc.name,
-    balance: SettingRepository.moneyAcc.balance,
+    id: SettingRepository.s.id,
+    name: SettingRepository.s.name,
+    balance: SettingRepository.s.balance,
 });
 const rules = {
     required: (value) => !!value || "This field is required.",

@@ -42,8 +42,8 @@
         >
             <!-- Flight Group Details Tabs section  -->
             <v-tabs v-model="tab" color="primary">
-                <v-tab value="earnings">{{ t("accounts") }} </v-tab>
-                <v-tab value="Payment">{{ t("transfers") }} </v-tab>
+                <v-tab value="earnings">{{ t("transaction") }} </v-tab>
+                <!-- <v-tab value="Payment">{{ t("transfers") }} </v-tab> -->
             </v-tabs>
             <v-divider></v-divider>
             <v-window v-model="tab">

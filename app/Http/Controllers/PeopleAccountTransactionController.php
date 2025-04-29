@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Requests\PaginateRequest;
 use App\Models\PeopleAccountTransaction;
+use Illuminate\Http\Request;
 use App\Http\Requests\PeopleAccountExchangeRequest;
 use App\Http\Requests\PeopleAccountTransactionRequest;
 use App\Http\Resources\PeopleAccountTransactionResource;
@@ -28,10 +29,24 @@ class PeopleAccountTransactionController extends Controller
     }
 
 
-    public function index(PaginateRequest $request)
+    public function index(Request $request)
     {
-        return $this->resource::collection($this->listRecord($request, $this->model,['name']));
+        return $this->resource::collection($this->listRecord($request, $this->model,['people_id']));
     }
+
+//     public function index(Request $request)
+// {
+//     $query = PeopleAccountTransaction::query();
+
+//      if ($request->has('people_id')) {
+//         $query->where('people_id', $request->input('people_id'));
+//     }
+
+//     return PeopleAccountTransactionResource::collection(
+//         $query->paginate($request->get('per_page', 10))
+//     );
+// }
+
 
     public function show($id)
     {

@@ -11,7 +11,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             router: useRouter(),
             peopleIDForSalary: ref(""),
             labIdForPayment: ref(""),
-            peopleId:ref(""),
+            peopleId: ref(""),
 
             search: ref(""),
             serverItems: ref([]),
@@ -23,8 +23,8 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             createDialog: ref(false),
             generatePayslipDialog: ref(false),
             PaySalaryDialog: ref(false),
-            // lab payments 
-            labCreatePaymentDialog:ref(false),
+            // lab payments
+            labCreatePaymentDialog: ref(false),
             // patents
             patients: reactive([]),
             patient: reactive([]),
@@ -71,6 +71,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             peopleAccount: reactive([]),
             moneyAccsFor: reactive([]),
             idForCreatePayment: ref(""),
+            patientIdForView:ref(""),
             account: reactive([]),
             // pay salary
             paySalarySearch: ref(""),
@@ -80,10 +81,10 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             generatePayslipSearch: ref(""),
             generatePayslips: reactive([]),
             generatePayslip: reactive([]),
-            // payment lab 
-            PaymentLabSearch:ref(""),
-            paymentLabs:reactive([]),
-            paymentLab:reactive([]),
+            // payment lab
+            PaymentLabSearch: ref(""),
+            paymentLabs: reactive([]),
+            paymentLab: reactive([]),
         };
     },
     actions: {
@@ -1007,24 +1008,39 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
         async fetchMoneyAccountsFor() {
             this.loading = true;
 
-            const response = await axios.get(`moneyAccount`);
+            const response = await axios.get(`peopleAccountTransaction`);
             this.moneyAccsFor = response.data.data;
             this.loading = false;
         },
-        async FetchPeopleAccounts({ page, itemsPerPage }) {
+        async FetchPeopleAccounts({ page, itemsPerPage }, id) {
             this.loading = true;
+            try {
+                const response = await axios.get(`peopleAccountTransaction`, {
+                    params: {
+                        people_id: id,
+                        page,
+                        perPage: itemsPerPage,
+                        search: this.peopleAccSearch,
+                    },
+                });
 
-            const response = await axios.get(
-                `peopleAccount?page=${page}&perPage=${itemsPerPage}&search=${this.peopleAccSearch}`
-            );
-            this.peopleAccounts = response.data.data;
-            this.totalItems = response.data.meta.total;
-            this.loading = false;
+                // const response = await axios.get(
+                //     `peopleAccountTransaction/${id}?page=${page}&perPage=${itemsPerPage}&search=${this.peopleAccSearch}`
+                // );
+                this.peopleAccounts = response.data.data;
+                this.totalItems = response.data.meta.total;
+                this.loading = false;
+                console.log(this.peopleAccounts, "data i need ");
+            } catch (error) {
+                console.error("");
+            }
         },
         async FetchPeopleAccount(id) {
             // this.error = null;
             try {
-                const response = await axios.get(`peopleAccount/${id}`);
+                const response = await axios.get(
+                    `peopleAccountTransaction/${id}`
+                );
 
                 this.peopleAccount = response.data.data;
                 console.log(this.customer);
@@ -1038,7 +1054,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
                 // Adding a custom header to the Axios request
                 const config = {
                     method: "POST",
-                    url: "peopleAccount",
+                    url: "peopleAccountTransaction",
 
                     data: formData,
                 };
@@ -1059,7 +1075,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             try {
                 const config = {
                     method: "PUT",
-                    url: `peopleAccount/${id}`,
+                    url: `peopleAccountTransaction/${id}`,
 
                     data: data,
                 };
@@ -1083,7 +1099,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             try {
                 const config = {
                     method: "DELETE",
-                    url: "peopleAccount/" + id,
+                    url: "peopleAccountTransaction/" + id,
                 };
 
                 const response = await axios(config);
@@ -1262,16 +1278,16 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             );
             this.paymentLabs = response.data.data;
             // this.totalItems = response.data.meta.total;
-            console.log(this.paymentLabs,'data fo index from repository ')
+            console.log(this.paymentLabs, "data fo index from repository ");
             this.loading = false;
         },
         async FetchLabPayment(id) {
             // this.loading = true;
-            console.log(id, 'id in repository');
+            console.log(id, "id in repository");
             try {
                 const response = await axios.get(`generatePaySlip/${id}`);
-                this.paymentLab= response.data.data;
-                console.log(this.paymentLab,'data of lab');
+                this.paymentLab = response.data.data;
+                console.log(this.paymentLab, "data of lab");
             } catch (err) {
                 this.error = err;
             }
@@ -1329,6 +1345,5 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
                 this.error = err;
             }
         },
-
     },
 });

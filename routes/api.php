@@ -129,5 +129,6 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::post('/generatePaySlip', [PeopleAccountTransactionController::class, 'generatePaySlip']);
+Route::apiResource('/peopleAccountTransaction', PeopleAccountTransactionController::class);
 Route::post('/paySalary', [PeopleAccountTransactionController::class, 'paySalary']);
 

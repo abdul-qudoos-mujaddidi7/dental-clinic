@@ -416,7 +416,7 @@ export let useSettingRepository = defineStore("SettingRepository", {
                 // this.error = err.message;
             }
         },
-        async Dental(id, data) {
+        async UpdateDental(id, data) {
             try {
                 const config = {
                     method: "PUT",

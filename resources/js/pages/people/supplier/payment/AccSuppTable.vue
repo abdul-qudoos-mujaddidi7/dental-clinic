@@ -1,8 +1,6 @@
 <template>
-
     <div class="all-expense rounded-xl">
         <div class="card rounded-xl">
-
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
@@ -16,7 +14,7 @@
                         color="primaryOld"
                         density="compact"
                         variant="outlined"
-                         :label="t('search')"
+                        :label="t('search')"
                         append-inner-icon="mdi-magnify"
                         hide-details
                         v-model="PeopleRepository.peopleAccSearch"
@@ -44,7 +42,7 @@
                     <v-main class="main">
                         <v-row>
                             <v-col>
-                                <v-data-table-server
+                                 <v-data-table-server
                                 :class="
                                         dir === 'rtl'
                                             ? 'rtl-border'
@@ -54,6 +52,9 @@
 
                                     v-model:items-per-page="
                                         PeopleRepository.itemsPerPage
+                                    "
+                                      v-model:id="
+                                        PeopleRepository.idForCreatePayment
                                     "
                                     :headers="headers"
                                     :items-length="PeopleRepository.totalItems"
@@ -113,7 +114,9 @@
                                             </v-list>
                                         </v-menu>
                                     </template>
-                                </v-data-table-server>
+                                </v-data-table-server> 
+
+                              
                                 <v-btn
                                     class="header-button"
                                     v-if="selectedIds.length > 0"
@@ -135,10 +138,12 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
 import { usePeopleRepository } from "@/store/PeopleRepository";
-import { useI18n } from "vue-i18n";
-const {t,locale} = useI18n();
-
 const PeopleRepository = usePeopleRepository();
+import { useRoute } from "vue-router";
+import { useI18n } from "vue-i18n";
+const { t, locale } = useI18n();
+const route = useRoute();
+PeopleRepository.FetchPeopleAccounts(route.params.id);
 // bulk delete
 const selectedIds = ref([]);
 const sendSelectedIds = () => {
@@ -154,6 +159,14 @@ const sendSelectedIds = () => {
         console.log("No IDs selected.");
     }
 };
+
+onMounted(() => {
+    const savedId = localStorage.getItem('patientIdForView');
+    if (savedId) {
+        PeopleRepository.patientIdForView = Number(savedId);
+        PeopleRepository.FetchPeopleAccounts({ page: 1, itemsPerPage: 10 }, Number(savedId));
+    }
+});
 
 const dir = computed(() => {
     return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
@@ -185,11 +198,9 @@ const deleteItem = async (item) => {
 };
 // header
 const headers = [
-    { title: "", key: "checkbox", align: "start", sortable: false },
-    { title: t("name"), key: "name", align: "start", sortable: false },
-    { title: t("account"), key: "people.name", align: "start", sortable: false },
-    { title: t("balance"), key: "balance", align: "start", sortable: false },
-    { title: t("action"), key: "action", align: "center", sortable: false },
+    { title: t("date"), key: "date", align: "start", sortable: false },
+    { title: t("balance"), key: "amount", align: "start", sortable: false },
+    { title: t("paymentType"), key: "payment_type", align: "center", sortable: false },
 ];
 </script>
 

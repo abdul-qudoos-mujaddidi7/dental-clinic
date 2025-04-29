@@ -33,6 +33,7 @@ class AuthController extends Controller
             'user' => [
                 "id" => $user->id,
                 "name" => $user->first_name,
+                "email"=>$user->email
             ],
             'role' => $user->getRoleNames(),
             'permissions' => $user->getAllPermissions()->pluck('name'),

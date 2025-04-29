@@ -88,7 +88,7 @@
                                                     <router-link :to="
                                                         '/viewPatients/' + item.id">
                                                     <v-list-item-title
-                                                       
+                                                       @click="showId(item.id)"
                                                         class="cursor-pointer d-flex gap-3 justify-left pb-3"
                                                     >
                                                         <v-icon
@@ -172,6 +172,10 @@ const sendSelectedIds = () => {
     } else {
         console.log("No IDs selected.");
     }
+};
+const showId = (id) => {
+    PeopleRepository.patientIdForView = id;
+    PeopleRepository.FetchPeopleAccounts({ page: 1, itemsPerPage: 10 },id)
 };
 
 // delete and update Create

@@ -177,6 +177,7 @@ const dir = computed(() => {
 });
 const showId = (id) => {
     PeopleRepository.idForCreatePayment = id;
+    PeopleRepository.FetchPeopleAccounts({ page: 1, itemsPerPage: 10 },id)
 };
 // delete and update Create
 const CreateDialogShow = () => {

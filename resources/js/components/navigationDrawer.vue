@@ -212,9 +212,9 @@
             <hr />
             <!-- Profile Clickable Item -->
             <v-list-item
-                prepend-avatar="https://randomuser.me/api/portraits/men/85.jpg"
-                title="John Leider"
-                subtitle="john.leider@example.com"
+                :prepend-avatar="user.avatar || 'https://randomuser.me/api/portraits/men/85.jpg'"
+                :title="user.name"
+                :subtitle="user.email"
                 nav
                 class="px-4 py-2 cursor-pointer"
                 @click="dialog = true"
@@ -226,7 +226,10 @@
                     <v-card-text>
                         <v-avatar size="80">
                             <img
-                                src="https://randomuser.me/api/portraits/men/85.jpg"
+                                :src="
+                                    user.avatar ||
+                                    'https://randomuser.me/api/portraits/men/85.jpg'
+                                "
                                 alt="Profile Photo"
                             />
                         </v-avatar>
@@ -251,10 +254,11 @@ const { t } = useI18n();
 import { useAuthRepository } from "../store/AuthRepository";
 const AuthRepository = useAuthRepository();
 
+console.log(AuthRepository.user, "data");
 const dialog = ref(false);
 const user = ref({
-    name: "John Leider",
-    email: "john.leider@example.com",
+    name: AuthRepository.user?.name,
+    email: AuthRepository.user?.email,
 });
 
 const logout = () => {

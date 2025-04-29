@@ -172,6 +172,7 @@ const sendSelectedIds = () => {
 };
 const showId = (id) => {
     PeopleRepository.idForCreatePayment = id;
+    PeopleRepository.FetchPeopleAccounts({ page: 1, itemsPerPage: 10 },id)
 };
 const dir = computed(() => {
     return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"

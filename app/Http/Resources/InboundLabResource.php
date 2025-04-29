@@ -16,7 +16,7 @@ class InboundLabResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
+            'id' => $this?->id,
             'returnDate' => $this->return_date,
             'issueAt' => $this->issue_at,
             'grandTotal' => $this->grand_total,
@@ -25,7 +25,7 @@ class InboundLabResource extends JsonResource
                 'id'=>$this->dentist?->id,
                 'name'=>$this->dentist?->name
             ],
-            'peopleId'=>$this->customer->id,
+            'peopleId'=>$this->customer?->id,
             // 'due'=> $due,
             // 'paymentStatus' => $this->getPaymentStatus(),
             'status' => $this->status,
