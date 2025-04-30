@@ -76,8 +76,7 @@ import AppBar from "../../../components/AppBar.vue";
 // PeopleRepository.fetchTotalReportsOfEarnings();
 PeopleRepository.FetchPeopleAccounts(
     { page: 1, itemsPerPage: 10 },
-    (PeopleRepository.patientIdForView = id),
-    localStorage.setItem("patientIdForView", id)
+    PeopleRepository.patientIdForView
 );
 </script>
 

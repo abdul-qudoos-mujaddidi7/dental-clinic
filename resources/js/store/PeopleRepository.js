@@ -1028,12 +1028,13 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
                 //     `peopleAccountTransaction/${id}?page=${page}&perPage=${itemsPerPage}&search=${this.peopleAccSearch}`
                 // );
                 this.peopleAccounts = response.data.data;
-                this.totalItems = response.data.meta.total;
+                this.totalItems = response.data?.meta?.total;
                 this.loading = false;
                 console.log(this.peopleAccounts, "data i need ");
-            } catch (error) {
-                console.error("");
-            }
+             } catch (error) {
+                    console.error("FetchPeopleAccounts error:", error); // Show the actual error
+                  }
+                  
         },
         async FetchPeopleAccount(id) {
             // this.error = null;

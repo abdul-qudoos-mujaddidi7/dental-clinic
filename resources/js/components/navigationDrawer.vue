@@ -252,8 +252,10 @@ import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 import { useAuthRepository } from "../store/AuthRepository";
-const AuthRepository = useAuthRepository();
+import {useSettingRepository} from "../store/SettingRepository"
 
+const AuthRepository = useAuthRepository();
+const SettingRepository = useSettingRepository();
 console.log(AuthRepository.user, "data");
 const dialog = ref(false);
 const user = ref({
