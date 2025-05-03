@@ -6,7 +6,7 @@
         <router-link to="/dashboard">
             <div class="flex items-center justify-center py-4">
                 <img
-                    src="../../../public/storage/images/company/dentalLogo.png"
+                    :src="SettingRepository.systemSettings.photo"
                     alt="Logo"
                     class="w-[4rem] h-[4rem] rounded-full object-cover transition-all duration-300"
                 />
@@ -212,7 +212,10 @@
             <hr />
             <!-- Profile Clickable Item -->
             <v-list-item
-                :prepend-avatar="user.avatar || 'https://randomuser.me/api/portraits/men/85.jpg'"
+                :prepend-avatar="
+                    user.avatar ||
+                    'https://randomuser.me/api/portraits/men/85.jpg'
+                "
                 :title="user.name"
                 :subtitle="user.email"
                 nav
@@ -250,12 +253,15 @@
 <script setup>
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
+import { useRoute } from "vue-router";
 const { t } = useI18n();
 import { useAuthRepository } from "../store/AuthRepository";
-import {useSettingRepository} from "../store/SettingRepository"
-
-const AuthRepository = useAuthRepository();
+import { useSettingRepository } from "../store/SettingRepository";
 const SettingRepository = useSettingRepository();
+SettingRepository.FetchSystemSettings();
+const route = useRoute();
+const AuthRepository = useAuthRepository();
+console.log(SettingRepository.systemSettings, "shajryan ");
 console.log(AuthRepository.user, "data");
 const dialog = ref(false);
 const user = ref({

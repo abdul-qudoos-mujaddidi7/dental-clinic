@@ -1,6 +1,6 @@
 <template>
     <CreatePatients v-if="PeopleRepository.createDialog" />
-    <div class="all-expense rounded-xl" :dir="dir"> 
+    <div class="all-expense rounded-xl" :dir="dir">
         <div class="card rounded-xl">
             <AppBar :mainTitle="$t('patients')" :sub-title="$t('people')" />
             <v-divider
@@ -44,7 +44,7 @@
                         <v-row>
                             <v-col>
                                 <v-data-table-server
-                                :dir="dir"
+                                    :dir="dir"
                                     theme="cursor-pointer"
                                     v-model:items-per-page="
                                         PeopleRepository.itemsPerPage
@@ -81,23 +81,29 @@
                                                     v-bind="props"
                                                     variant="text"
                                                 ></v-btn>
-                                            </template> 
+                                            </template>
                                             <!--  -->
                                             <v-list>
                                                 <v-list-item>
-                                                    <router-link :to="
-                                                        '/viewPatients/' + item.id">
-                                                    <v-list-item-title
-                                                       @click="showId(item.id)"
-                                                        class="cursor-pointer d-flex gap-3 justify-left pb-3"
+                                                    <router-link
+                                                        :to="
+                                                            '/viewPatients/' +
+                                                            item.id
+                                                        "
                                                     >
-                                                        <v-icon
-                                                            color="tealColor"
-                                                            >mdi-eye-outline</v-icon
+                                                        <v-list-item-title
+                                                            @click="
+                                                                showId(item)
+                                                            "
+                                                            class="cursor-pointer d-flex gap-3 justify-left pb-3"
                                                         >
-                                                        {{ t("view") }}
-                                                    </v-list-item-title>
-                                                </router-link>
+                                                            <v-icon
+                                                                color="tealColor"
+                                                                >mdi-eye-outline</v-icon
+                                                            >
+                                                            {{ t("view") }}
+                                                        </v-list-item-title>
+                                                    </router-link>
                                                     <v-list-item-title
                                                         @click="edit(item)"
                                                         class="cursor-pointer d-flex gap-3 justify-left pb-3"
@@ -144,14 +150,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted,computed } from "vue";
+import { ref, onMounted, computed } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 import CreatePatients from "./CreatePatients.vue";
 import { useI18n } from "vue-i18n";
-const { t ,locale} = useI18n();
+const { t, locale } = useI18n();
 import { usePeopleRepository } from "@/store/PeopleRepository";
 const PeopleRepository = usePeopleRepository();
-
 
 // direction
 const dir = computed(() => {
@@ -173,9 +178,12 @@ const sendSelectedIds = () => {
         console.log("No IDs selected.");
     }
 };
-const showId = (id) => {
-    PeopleRepository.patientIdForView = id;
-    PeopleRepository.FetchPeopleAccounts({ page: 1, itemsPerPage: 10 },id)
+const showId = (item) => {
+    PeopleRepository.patientIdForView = item.id;
+    PeopleRepository.FetchPeopleAccounts(
+        { page: 1, itemsPerPage: 10 },
+        item.id
+    );
 };
 
 // delete and update Create

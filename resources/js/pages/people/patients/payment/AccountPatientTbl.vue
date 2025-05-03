@@ -60,9 +60,7 @@
                                     :items="PeopleRepository.peopleAccounts"
                                     :loading="PeopleRepository.loading"
                                     :search="PeopleRepository.peopleAccSearch"
-                                    @update:options="
-                                        PeopleRepository.FetchPeopleAccounts
-                                    "
+                                    @update:options="callFunction"
                                     :item-key="PeopleRepository.peopleAccounts"
                                     hover
                                     class="w-100 mx-auto"
@@ -138,10 +136,16 @@ import { usePeopleRepository } from "@/store/PeopleRepository";
 import { useI18n } from "vue-i18n";
 const { t, locale } = useI18n();
 import { useRoute } from "vue-router";
-const route =useRoute()
+const route = useRoute();
 
 const PeopleRepository = usePeopleRepository();
 // PeopleRepository.FetchPeopleAccounts(route.params.id);
+const callFunction = () => {
+    PeopleRepository.FetchPeopleAccounts(
+        { page: 1, itemsPerPage: 10 },
+        route.params.id
+    );
+};
 
 // bulk delete
 const selectedIds = ref([]);
@@ -191,7 +195,12 @@ const deleteItem = async (item) => {
 const headers = [
     { title: t("date"), key: "date", align: "start", sortable: false },
     { title: t("amount"), key: "amount", align: "start", sortable: false },
-    { title: t("paymentType"), key: "payment_type", align: "center", sortable: false },
+    {
+        title: t("paymentType"),
+        key: "payment_type",
+        align: "center",
+        sortable: false,
+    },
 ];
 </script>
 

@@ -2,6 +2,8 @@ import { defineStore } from "pinia";
 import { ref, reactive } from "vue";
 import { axios } from "../axios";
 import { useRouter } from "vue-router";
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
 
 export let useSettingRepository = defineStore("SettingRepository", {
     state() {
@@ -111,13 +113,32 @@ export let useSettingRepository = defineStore("SettingRepository", {
                     data: formData,
                 };
                 const response = await axios(config);
+
                 this.createDialog = false;
+
+                toast.success("User created successfully!", {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
                 this.FetchSystemSettings({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });
             } catch (err) {
-                // If there's an error, set the error in the stor
+                toast.error("User creation failed! Please try again.", {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
             }
         },
         async DeleteSystemSetting(id) {

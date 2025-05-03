@@ -45,9 +45,7 @@
                                     :items="PeopleRepository.peopleAccounts"
                                     :loading="PeopleRepository.loading"
                                     :search="PeopleRepository.peopleAccSearch"
-                                    @update:options="
-                                        PeopleRepository.FetchPeopleAccounts
-                                    "
+                                    @update:options="callFunction"
                                     :item-key="PeopleRepository.peopleAccounts"
                                     hover
                                     class="w-100 mx-auto"
@@ -120,11 +118,19 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
 import { usePeopleRepository } from "@/store/PeopleRepository";
+import { useRoute } from "vue-router";
 import { useI18n } from "vue-i18n";
 // import CreateCustomerAccount from './CreateCustomerAccount.vue'
 const { t, locale } = useI18n();
+const route = useRoute();
 
 const PeopleRepository = usePeopleRepository();
+const callFunction = () => {
+    PeopleRepository.FetchPeopleAccounts(
+        { page: 1, itemsPerPage: 10 },
+        route.params.id
+    );
+};
 // bulk delete
 const selectedIds = ref([]);
 const sendSelectedIds = () => {
@@ -174,7 +180,12 @@ const headers = [
     { title: t("date"), key: "date", align: "start", sortable: false },
 
     { title: t("amount"), key: "amount", align: "start", sortable: false },
-    { title: t("paymentType"), key: "payment_type", align: "center", sortable: false },
+    {
+        title: t("paymentType"),
+        key: "payment_type",
+        align: "center",
+        sortable: false,
+    },
 ];
 </script>
 

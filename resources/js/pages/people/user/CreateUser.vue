@@ -185,7 +185,7 @@ const PeopleRepository = usePeopleRepository();
 const formRef = ref(null);
 const formData = reactive({
     id: PeopleRepository.user.id,
-    photo: "",
+    profile_picture: PeopleRepository.profile_picture,
     firstName: PeopleRepository.user.firstName,
     phone: PeopleRepository.user.phone,
     status: PeopleRepository.user.status,
@@ -194,12 +194,12 @@ const formData = reactive({
     roleId: PeopleRepository.user.role?.id,
     lastName: "amn",
 });
-// image configuration      |
+// profile_picture configuration      |
 let imageSrc = ref(null);
 const inputRef = ref(null);
 const onChangeImage = (e) => {
     imageSrc.value = URL.createObjectURL(e.target.files[0]);
-    formData.photo = e.target.files[0];
+    formData.profile_picture = e.target.files[0];
 };
 const OpenWindow = (action) => {
     if (action) {
@@ -208,7 +208,7 @@ const OpenWindow = (action) => {
 };
 const CloseWindow = () => {
     imageSrc.value = null;
-    formData.photo = null;
+    formData.profile_picture = null;
 };
 // image configuration^
 const rules = {

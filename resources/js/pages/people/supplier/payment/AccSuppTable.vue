@@ -42,18 +42,17 @@
                     <v-main class="main">
                         <v-row>
                             <v-col>
-                                 <v-data-table-server
-                                :class="
+                                <v-data-table-server
+                                    :class="
                                         dir === 'rtl'
                                             ? 'rtl-border'
                                             : 'ltr-border'
                                     "
                                     theme="cursor-pointer"
-
                                     v-model:items-per-page="
                                         PeopleRepository.itemsPerPage
                                     "
-                                      v-model:id="
+                                    v-model:idForCreatePayment="
                                         PeopleRepository.idForCreatePayment
                                     "
                                     :headers="headers"
@@ -61,14 +60,12 @@
                                     :items="PeopleRepository.peopleAccounts"
                                     :loading="PeopleRepository.loading"
                                     :search="PeopleRepository.peopleAccSearch"
-                                    @update:options="
-                                        PeopleRepository.FetchPeopleAccounts
-                                    "
+                                    @update:options="funcCall"
                                     :item-key="PeopleRepository.peopleAccounts"
                                     hover
                                     class="w-100 mx-auto"
                                 >
-                                <template v-slot:item.checkbox="{ item }">
+                                    <template v-slot:item.checkbox="{ item }">
                                         <v-checkbox
                                             :value="item.id"
                                             v-model="selectedIds"
@@ -114,9 +111,8 @@
                                             </v-list>
                                         </v-menu>
                                     </template>
-                                </v-data-table-server> 
+                                </v-data-table-server>
 
-                              
                                 <v-btn
                                     class="header-button"
                                     v-if="selectedIds.length > 0"
@@ -143,7 +139,12 @@ import { useRoute } from "vue-router";
 import { useI18n } from "vue-i18n";
 const { t, locale } = useI18n();
 const route = useRoute();
-PeopleRepository.FetchPeopleAccounts(route.params.id);
+const funcCall = () => {
+    PeopleRepository.FetchPeopleAccounts(
+        { page: 1, itemsPerPage: 10 },
+        route.params.id
+    );
+};
 // bulk delete
 const selectedIds = ref([]);
 const sendSelectedIds = () => {
@@ -161,10 +162,13 @@ const sendSelectedIds = () => {
 };
 
 onMounted(() => {
-    const savedId = localStorage.getItem('patientIdForView');
+    const savedId = localStorage.getItem("patientIdForView");
     if (savedId) {
         PeopleRepository.patientIdForView = Number(savedId);
-        PeopleRepository.FetchPeopleAccounts({ page: 1, itemsPerPage: 10 }, Number(savedId));
+        PeopleRepository.FetchPeopleAccounts(
+            { page: 1, itemsPerPage: 10 },
+            Number(savedId)
+        );
     }
 });
 
@@ -200,7 +204,12 @@ const deleteItem = async (item) => {
 const headers = [
     { title: t("date"), key: "date", align: "start", sortable: false },
     { title: t("balance"), key: "amount", align: "start", sortable: false },
-    { title: t("paymentType"), key: "payment_type", align: "center", sortable: false },
+    {
+        title: t("paymentType"),
+        key: "payment_type",
+        align: "center",
+        sortable: false,
+    },
 ];
 </script>
 

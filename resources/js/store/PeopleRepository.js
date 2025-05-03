@@ -596,7 +596,9 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
                 const config = {
                     method: "POST",
                     url: "users",
-
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
                     data: formData,
                 };
 
