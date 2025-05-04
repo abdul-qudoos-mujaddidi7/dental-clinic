@@ -184,8 +184,9 @@ const dir = computed(() => {
 // Bulk delete
 
 const CreateDialog = (item) => {
+    console.log(item,'this si the data i need ')
     LaboratoryRepository.mainLabPaymentID = item.id;
-   LaboratoryRepository.peopleId = item.peopleId
+   LaboratoryRepository.peopleId = item.customer?.id
     
     LaboratoryRepository.paymentLab = {};
     LaboratoryRepository.setEditMode(false);

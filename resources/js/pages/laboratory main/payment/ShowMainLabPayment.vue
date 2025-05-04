@@ -12,7 +12,7 @@
                     <v-card-title
                         class="px-2 pt-4 d-flex justify-space-between"
                     >
-                        <h2>&nbsp; Show Payment &nbsp;</h2>
+                        <h2 class="px-2">  {{ t("showPayment") }} </h2>
                         <v-btn variant="text" @click="isActive.value = false">
                             <v-icon>mdi-close</v-icon>
                         </v-btn>
@@ -21,14 +21,16 @@
                     <v-spacer></v-spacer>
                     <hr />
                     <div class="d-flex flex-column body-2 px-8 py-12">
-                        <v-table>
+                        <v-table> 
+                      
+                            <!--  -->
                             <thead>
                                 <tr>
-                                    <th class="text-start">Date</th>
-                                    <th class="text-start">Amount</th>
-                                    <th class="text-start">Account</th>
-                                    <th class="text-start">Details</th>
-                                    <th class="text-end pl-6">Actions</th>
+                                    <th class="text-start"> {{ t("date") }}</th>
+                                    <th class="text-start"> {{ t("amount") }}</th>
+                                    <th class="text-start"> {{ t("account") }}</th>
+                                    <th class="text-start">{{ t("details") }}</th>
+                                    <th class="text-end pl-6">{{ t("action") }}</th>
                                 </tr>
                             </thead>
 
@@ -44,11 +46,11 @@
                                     <td>
                                         {{ payment }}
                                     </td>
-                                    <!-- <td>
-                                            {{ payment.date }}
-                                        </td> -->
                                     <td>
-                                        <!-- {{ payment.amount }} -->
+                                            {{ payment.date }}
+                                        </td>
+                                    <td>
+                                        {{ payment.amount }}
 
                                         <!-- {{ payment.people?.currency }} -->
                                     </td>
@@ -113,6 +115,8 @@
 // import { reactive, ref } from "vue";
 import { useLaboratoryRepository } from "@/store/LaboratoryRepository";
 const LaboratoryRepository = useLaboratoryRepository();
+import { useI18n } from "vue-i18n";
+const {t} = useI18n();
 
 const deleteItem = async (payment) => {
     await LaboratoryRepository.DeleteLabPayment(payment.id);
@@ -136,16 +140,5 @@ const editItem = async (payment) => {
     // await LaboratoryRepository.fetchMeterCyclePaymentForUpdate(id);
 };
 
-const headers = [
-    { title: "عمل", key: "action", align: "center", sortable: false },
-    {
-        title: "شخص ",
-        key: "account.name",
-        align: "center",
-        sortable: false,
-    },
-    { title: "مقدار ", key: "amount", align: "center", sortable: false },
 
-    { title: "تاریخ", key: "date", align: "center", sortable: false },
-];
 </script>

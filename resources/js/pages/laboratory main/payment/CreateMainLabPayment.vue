@@ -14,8 +14,8 @@
                         <h2 class="font-weight-bold pl-4">
                             {{
                                 LaboratoryRepository.isEditMode
-                                    ? "Update"
-                                    : "Create"
+                                    ? $t("update")
+                                    : $t("create")
                             }}
                         </h2>
                         <v-btn variant="text" @click="isActive.value = false">
@@ -59,7 +59,7 @@
                             <v-text-field
                                 v-model="formData.amount"
                                 variant="outlined"
-                                label="Amount *"
+                                :label="t('amount') + ' *'"
                                 class="pb-4"
                                 density="compact"
                                 :rules="[rules.required]"
@@ -68,7 +68,7 @@
                             <v-textarea
                                 v-model="formData.note"
                                 variant="outlined"
-                                label="Details "
+                                :label="t('details')"
                                 class="pb-3"
                                 density="compact"
                             ></v-textarea>
@@ -79,8 +79,8 @@
                         <v-btn color="#112F53" class="px-4" @click="save">
                             {{
                                 LaboratoryRepository.isEditMode
-                                    ? "Update"
-                                    : "Submit"
+                                    ? $t("update")
+                                    : $t("submit")
                             }}
                         </v-btn>
                     </div>
@@ -100,7 +100,7 @@ const LaboratoryRepository = useLaboratoryRepository();
 const formRef = ref(null);
 
 const formData = reactive({
-    people_id:LaboratoryRepository.peopleId,
+    people_id: LaboratoryRepository.peopleId,
     inboundId: LaboratoryRepository.mainLabPaymentID,
     id: LaboratoryRepository.paymentLab.id,
     amount: LaboratoryRepository.paymentLab.amount,
