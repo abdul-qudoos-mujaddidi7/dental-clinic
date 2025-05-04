@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Resources;
-
+use Carbon\Carbon;
 
 use App\Models\PeopleAccountTransaction;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -26,7 +26,8 @@ class PeopleAccountTransactionResource extends JsonResource
                 'id' => $this->people ? $this->people->id : NULL,
                 'name'  => $this->people ? $this->people->name : NULL,
             ],
-            'date' => $this[PeopleAccountTransaction::COLUMN_DATE],
+           'date' => Carbon::parse($this[PeopleAccountTransaction::COLUMN_DATE])->format('Y-m-d'),
+
             'description' => $this[PeopleAccountTransaction::COLUMN_DESCRIPTION],
         ];
     }

@@ -28,6 +28,7 @@
                         <v-row>
                             <v-col>
                                 <v-data-table-server
+                                :dir="dir"
                                     :class="
                                         dir === 'rtl'
                                             ? 'rtl-border'
@@ -179,11 +180,11 @@ const deleteItem = async (item) => {
 const headers = [
     { title: t("date"), key: "date", align: "start", sortable: false },
 
-    { title: t("amount"), key: "amount", align: "start", sortable: false },
+    { title: t("amount"), key: "amount", align: "center", sortable: false },
     {
         title: t("paymentType"),
         key: "payment_type",
-        align: "center",
+        align: "end",
         sortable: false,
     },
 ];

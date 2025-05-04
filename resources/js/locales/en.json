@@ -2,6 +2,8 @@
     "createPayment":"Create Payment",
     "showPayment":"Show Payment",
     "paySalary": "Pay Salary",
+    "createPermission":"Create Permission",
+
     "generatePayslip": "Generate Payslip ",
     "diabetes": "Diabetes",
     "bloodPressure": "Blood Pressure",

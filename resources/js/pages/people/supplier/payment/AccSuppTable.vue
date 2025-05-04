@@ -43,6 +43,7 @@
                         <v-row>
                             <v-col>
                                 <v-data-table-server
+                                    :dir="dir"
                                     :class="
                                         dir === 'rtl'
                                             ? 'rtl-border'
@@ -201,16 +202,16 @@ const deleteItem = async (item) => {
     await PeopleRepository.DeleteCustomer(item.id);
 };
 // header
-const headers = [
+const headers = computed(() => [
     { title: t("date"), key: "date", align: "start", sortable: false },
-    { title: t("balance"), key: "amount", align: "start", sortable: false },
+    { title: t("balance"), key: "amount", align: "center", sortable: false },
     {
         title: t("paymentType"),
         key: "payment_type",
-        align: "center",
+        align: "end",
         sortable: false,
     },
-];
+]);
 </script>
 
 <style scoped>

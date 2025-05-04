@@ -213,8 +213,8 @@
             <!-- Profile Clickable Item -->
             <v-list-item
                 :prepend-avatar="
-                    user.avatar ||
-                    'https://randomuser.me/api/portraits/men/85.jpg'
+                    user.photo ||
+                    'https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg?semt=ais_hybrid&w=740'
                 "
                 :title="user.name"
                 :subtitle="user.email"
@@ -230,8 +230,8 @@
                         <v-avatar size="80">
                             <img
                                 :src="
-                                    user.avatar ||
-                                    'https://randomuser.me/api/portraits/men/85.jpg'
+                                    user.photo ||
+                                    'https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg?semt=ais_hybrid&w=740'
                                 "
                                 alt="Profile Photo"
                             />
@@ -251,7 +251,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { computed, ref, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute } from "vue-router";
 const { t } = useI18n();
@@ -264,9 +264,21 @@ const AuthRepository = useAuthRepository();
 console.log(SettingRepository.systemSettings, "shajryan ");
 console.log(AuthRepository.user, "data");
 const dialog = ref(false);
+
 const user = ref({
-    name: AuthRepository.user?.name,
-    email: AuthRepository.user?.email,
+    name: "",
+    email: "",
+    photo: "",
+});
+
+onMounted(() => {
+    const storedUser = sessionStorage.getItem("user");
+    if (storedUser) {
+        const parsed = JSON.parse(storedUser);
+        user.value.name = parsed.name;
+        user.value.email = parsed.email;
+        user.value.photo = parsed.photo;
+    }
 });
 
 const logout = () => {

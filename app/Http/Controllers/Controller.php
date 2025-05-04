@@ -8,6 +8,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\Exists;
+use Illuminate\Support\Facades\Hash;
 use ResponseStatus;
 
 class Controller extends BaseController
@@ -50,6 +51,7 @@ class Controller extends BaseController
     {
         $validated = $request->validated();
         $validated['user_id'] = Auth::id();
+        $validated['password'] = Hash::make($validated['password']);
         $record =  $model::create($validated);
         $this->storeImage($request, $record);
         return $record;

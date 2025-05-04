@@ -1,7 +1,7 @@
 <template>
     <div class="m-2">
         <div>
-            <AppBar mainTitle="Create Permission" subTitle=" Settings" />
+            <AppBar :mainTitle="$t('createPermission')" :subTitle="$t('setting')" />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
@@ -44,7 +44,7 @@
                                         <v-checkbox
                                             v-model="formData.permissions"
                                             :value="`view${permission.value}`"
-                                            label="View"
+                                            :label="t('view')"
                                             density="compact"
                                             :class="
                                                 permission.onlyView
@@ -56,7 +56,8 @@
                                             <v-checkbox
                                                 v-model="formData.permissions"
                                                 :value="`edit${permission.value}`"
-                                                label="Edit"
+                                                :label="t('edit')"
+
                                                 density="compact"
                                             ></v-checkbox>
                                         </template>
@@ -65,13 +66,15 @@
                                         <v-checkbox
                                             v-model="formData.permissions"
                                             :value="`create${permission.value}`"
-                                            label="Create"
+                                            :label="t('create')"
+
                                             density="compact"
                                         ></v-checkbox>
                                         <v-checkbox
                                             v-model="formData.permissions"
                                             :value="`delete${permission.value}`"
-                                            label="Delete"
+                                            :label="t('delete')"
+
                                             density="compact"
                                         ></v-checkbox>
                                     </v-col>
