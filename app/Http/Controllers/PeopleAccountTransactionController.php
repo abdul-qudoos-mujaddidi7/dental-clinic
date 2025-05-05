@@ -78,4 +78,12 @@ class PeopleAccountTransactionController extends Controller
     {
         return new $this->resource($this->paymentService->paySalary($request->validated()));
     }
+    public function payCureCycle(PeopleAccountTransactionRequest $request)
+    {
+        return new $this->resource($this->paymentService->payCureCycle($request->validated()));
+    }
+    public function inBoundLabPayment(PeopleAccountTransactionRequest $request)
+    {
+        return new $this->resource($this->paymentService->inBoundLabPayment($request->validated()));
+    }
 }

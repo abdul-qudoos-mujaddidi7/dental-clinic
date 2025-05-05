@@ -131,4 +131,6 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::post('/generatePaySlip', [PeopleAccountTransactionController::class, 'generatePaySlip']);
 Route::apiResource('/peopleAccountTransaction', PeopleAccountTransactionController::class);
 Route::post('/paySalary', [PeopleAccountTransactionController::class, 'paySalary']);
+Route::post('/payCureCycle', [PeopleAccountTransactionController::class, 'payCureCycle']);
+Route::post('/inBoundLabPayment', [PeopleAccountTransactionController::class, 'inBoundLabPayment']);
 
