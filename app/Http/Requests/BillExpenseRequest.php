@@ -34,7 +34,7 @@ class BillExpenseRequest extends FormRequest
     public function rules(): array
     {
          // Get the bill expense ID from the route (assuming it's in the route)
-    
+    // dd($this->route('billExpense'));
         return [
             'bill_number' => [
                 'required',

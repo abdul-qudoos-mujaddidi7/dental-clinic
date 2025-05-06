@@ -1,7 +1,7 @@
 <template>
     <CreateLeads v-if="LeadRepository.createDialog" />
     <div class="all-expense rounded-xl" :dir="dir">
-        <div class="card rounded-xl" >
+        <div class="card rounded-xl">
             <AppBar :mainTitle="$t('leads')" :sub-title="$t('leads')" />
             <v-divider
                 :thickness="1"
@@ -27,14 +27,21 @@
                         {{ t("filter") }}
                     </v-btn>
                     &nbsp;
-                    <v-btn
-                        @click="CreateDialogShow"
-                        color="primaryOld"
-                        variant="flat"
-                        :text="$t('create')"
-                        class="px-6"
+                    <div
+                        v-if="
+                            AuthRepository.permissions &&
+                            AuthRepository.permissions.includes('createLead')
+                        "
                     >
-                    </v-btn>
+                        <v-btn
+                            @click="CreateDialogShow"
+                            color="primaryOld"
+                            variant="flat"
+                            :text="$t('create')"
+                            class="px-6"
+                        >
+                        </v-btn>
+                    </div>
                 </div>
             </div>
             <!-- v-table server  -->
@@ -45,9 +52,11 @@
                             <v-col>
                                 <!--  :location="location" -->
                                 <v-data-table-server
-                                :dir="dir"
+                                    :dir="dir"
                                     theme="cursor-pointer"
-                                    v-model:items-per-page="LeadRepository.itemsPerPage"
+                                    v-model:items-per-page="
+                                        LeadRepository.itemsPerPage
+                                    "
                                     :headers="headers"
                                     :items-length="LeadRepository.totalItems"
                                     :items="LeadRepository.leads"
@@ -57,9 +66,7 @@
                                     :item-key="LeadRepository.leads"
                                     hover
                                     class="w-100 mx-auto"
-                                    >
-                                    
-
+                                >
                                     <template v-slot:item.stage="{ item }">
                                         <td class="py-2 pl-4">
                                             <v-btn
@@ -111,6 +118,12 @@
                                             <v-list>
                                                 <v-list-item>
                                                     <v-list-item-title
+                                                        v-if="
+                                                            AuthRepository.permissions &&
+                                                            AuthRepository.permissions.includes(
+                                                                'editLead'
+                                                            )
+                                                        "
                                                         @click="edit(item)"
                                                         class="cursor-pointer d-flex gap-3 justify-left pb-3"
                                                     >
@@ -122,6 +135,12 @@
                                                     </v-list-item-title>
 
                                                     <v-list-item-title
+                                                        v-if="
+                                                            AuthRepository.permissions &&
+                                                            AuthRepository.permissions.includes(
+                                                                'deleteLead'
+                                                            )
+                                                        "
                                                         class="cursor-pointer d-flex gap-3"
                                                         @click="
                                                             deleteItem(item)
@@ -163,6 +182,8 @@ import CreateLeads from "./CreateLeads.vue";
 import { useI18n } from "vue-i18n";
 const { t, locale } = useI18n();
 import { useLeadRepository } from "@/store/LeadRepository";
+import { useAuthRepository } from "../../../store/AuthRepository";
+const AuthRepository = useAuthRepository();
 const LeadRepository = useLeadRepository();
 // swap function
 

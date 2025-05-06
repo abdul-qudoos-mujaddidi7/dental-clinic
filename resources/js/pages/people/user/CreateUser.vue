@@ -185,7 +185,7 @@ const PeopleRepository = usePeopleRepository();
 const formRef = ref(null);
 const formData = reactive({
     id: PeopleRepository.user.id,
-    profile_picture: PeopleRepository.profile_picture,
+    profile_picture: PeopleRepository.user.profilePicture,
     firstName: PeopleRepository.user.firstName,
     phone: PeopleRepository.user.phone,
     status: PeopleRepository.user.status,
@@ -195,7 +195,7 @@ const formData = reactive({
     lastName: "amn",
 });
 // profile_picture configuration      |
-let imageSrc = ref(null);
+let imageSrc = ref(PeopleRepository.user.profilePicture);
 const inputRef = ref(null);
 const onChangeImage = (e) => {
     imageSrc.value = URL.createObjectURL(e.target.files[0]);
