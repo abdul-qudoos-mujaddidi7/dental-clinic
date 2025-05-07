@@ -5,26 +5,25 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PeopleRequest;
 use App\Http\Resources\PeopleResource;
 use App\Models\People;
+use App\Models\Salary;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class PeopleController extends Controller
 {
+    private $model = People::class;
+    private $resource = PeopleResource::class;
+
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        $perPage = $request->input("perPage", 10);
-        $search = $request->input("search");
-        $type = $request->input("type");
-    
-        $peoples = People::where('type', $type)
-            ->search($search)
-            ->latest()
-            ->paginate($perPage);
-    
-        return PeopleResource::collection($peoples);
+
+        // Fetch paginated records, applying search and type filters
+        $people = $this->listRecord($request, $this->model, ['name','type']);
+
+        return $this->resource::collection($people);
     }
 
     /**
@@ -32,10 +31,15 @@ class PeopleController extends Controller
      */
     public function store(PeopleRequest $request)
     {
-        $validated = $request->validated();
-        People::create($validated);
-        return response()->json(["message"=>"record stored successfully"]);
+        $people = $this->storeRecord($request, $this->model);
+        if (in_array($people->type, ['employee', 'doctor'])) {
+            $salary = Salary::create([
+                'people_id' => $people->id,
+                'amount' => 0,
+            ]);
+        };
 
+        return response()->json(["message" => "record stored successfully"]);
     }
 
     /**
@@ -43,7 +47,7 @@ class PeopleController extends Controller
      */
     public function show(People $people)
     {
-        return new PeopleResource($people);
+        return new $this->resource($people);
     }
 
     /**
@@ -51,9 +55,10 @@ class PeopleController extends Controller
      */
     public function update(PeopleRequest $request, People $people)
     {
-        $validated = $request->validated();
-        $people->update($validated);
-        return new PeopleResource($people);
+        $people = $this->updateRecord($request, $people);
+
+
+        return new $this->resource($people);
     }
 
     /**
@@ -61,8 +66,10 @@ class PeopleController extends Controller
      */
     public function destroy(People $people)
     {
-        $people->delete();
+        $this->deleteRecord($people);
 
-        return response()->json(["message"=>"record deleted successfully"]);;
+        return response()->json(["message" => "Record deleted successfully"]);
     }
+
+    
 }

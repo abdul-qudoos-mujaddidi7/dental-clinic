@@ -7,7 +7,8 @@ use App\Http\Resources\CureResource;
 use App\Models\Cure;
 use App\Models\CurePayment;
 use App\Models\CureService;
-use App\Models\Patient;
+use App\Models\People;
+use App\Models\PeopleAccount;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -61,7 +62,23 @@ class CureController extends Controller
         // }
 
 
+
+        $patient = $validated['patient_id'];
+
+        $peopleAccount = PeopleAccount::where('people_id', $patient)->first();
+        if(!$peopleAccount){
+           $peopleAccount = PeopleAccount::create([
+                'name' => 'حساب افغانی',
+                'people_id' => $patient,
+                'balance' => 0,
+            ]);
+        };
+
+        $validated['people_account_id'] = $peopleAccount->id ;
+       
+
         $cure = Cure::create($validated);
+
 
         if ($request->has('services')) {
             foreach ($validated['services'] as $service) {
@@ -69,9 +86,11 @@ class CureController extends Controller
                     'cure_id' => $cure->id,
                     'service_id' => $service['serviceId'],
                     'cost' => $service['cost'],
-                    'quantity'=>$service['quantity'],
+                    'quantity' => $service['quantity'],
                     'total' => $service['total'],
-                    'status' => $service['status']
+                    'status' => $service['status'],
+                    'created_at' => now(),
+                    'updated_at' => now()
                 ]);
             }
         }
@@ -97,43 +116,43 @@ class CureController extends Controller
 
 
 
-//     public function update(CureRequest $request, Cure $cure)
-// {
-//     $validated = $request->validated();
-//     $validated['user_id'] = Auth::id() ?? 1;
-//     dd($validated);
-//     $cure->update($validated);
+    //     public function update(CureRequest $request, Cure $cure)
+    // {
+    //     $validated = $request->validated();
+    //     $validated['user_id'] = Auth::id() ?? 1;
+    //     dd($validated);
+    //     $cure->update($validated);
 
 
-//     // Update or create cure services
-//     foreach ($validated['services'] as $service) {
-//         CureService::updateOrCreate(
-//             [
-//                 'id' => $service['id'] ?? null,  // Check if an ID is provided for the service
-//             ],
-//             [
-//                 'cure_id' => $cure->id,
-//                 'service_id' => $service['serviceId'],
-//                 'cost' => $service['cost'],
-//                 'quantity' => $service['quantity'],
-//                 'total' => $service['total'],
-//                 'status' => $service['status'],
-//             ]
-//         );
-//     }
+    //     // Update or create cure services
+    //     foreach ($validated['services'] as $service) {
+    //         CureService::updateOrCreate(
+    //             [
+    //                 'id' => $service['id'] ?? null,  // Check if an ID is provided for the service
+    //             ],
+    //             [
+    //                 'cure_id' => $cure->id,
+    //                 'service_id' => $service['serviceId'],
+    //                 'cost' => $service['cost'],
+    //                 'quantity' => $service['quantity'],
+    //                 'total' => $service['total'],
+    //                 'status' => $service['status'],
+    //             ]
+    //         );
+    //     }
 
-//     // Delete cure services if deletedIds are provided
-//     if ($request['deletedIds']) {
-//         foreach ($request['deletedIds'] as $id) {
-//             CureService::destroy($id);
-//         }
-//     }
+    //     // Delete cure services if deletedIds are provided
+    //     if ($request['deletedIds']) {
+    //         foreach ($request['deletedIds'] as $id) {
+    //             CureService::destroy($id);
+    //         }
+    //     }
 
-//     return response()->json(['message' => 'Record updated successfully.']);
-// }
+    //     return response()->json(['message' => 'Record updated successfully.']);
+    // }
 
 
-/**
+    /**
      * Update the specified resource in storage.
      */
     public function update(CureRequest $request, Cure $cure)
@@ -157,31 +176,31 @@ class CureController extends Controller
         $cure->cureServices()->delete();
 
         // Update services (if provided)
-            if ($request->has('services')) {
-                $services = [];
-                foreach ($validated['services'] as $service) {
-                    $services[] = [  #is appending a new associative array (representing a service)
-                        #to the $services array in each iteration of the loop
-                        'service_id'=>$service['serviceId'],
-                        'cure_id' => $cure->id,
-                        'cost' => $service['cost'],
-                        'quantity'=>$service['quantity'],
-                        'total' => $service['total'],
-                        'status' => $service['status']
-                    ];
-                }
-                CureService::insert($services);
+        if ($request->has('services')) {
+            $services = [];
+            foreach ($validated['services'] as $service) {
+                $services[] = [  #is appending a new associative array (representing a service)
+                    #to the $services array in each iteration of the loop
+                    'service_id' => $service['serviceId'],
+                    'cure_id' => $cure->id,
+                    'cost' => $service['cost'],
+                    'quantity' => $service['quantity'],
+                    'total' => $service['total'],
+                    'status' => $service['status']
+                ];
             }
-        
-            $cure->update($validated);
-            CurePayment::updateOrCreate(
-                ['cure_id' => $cure->id], // Search condition
-                ['amount' => $validated['paid'], 'date' => $validated['start_date']] // Data to update or insert
-            );
-            
+            CureService::insert($services);
+        }
+
+        $cure->update($validated);
+        CurePayment::updateOrCreate(
+            ['cure_id' => $cure->id], // Search condition
+            ['amount' => $validated['paid'], 'date' => $validated['start_date']] // Data to update or insert
+        );
+
 
         // Return the updated Cure with services
-        return response()->json(['message'=>'updated successfully']);
+        return response()->json(['message' => 'updated successfully']);
     }
 
 

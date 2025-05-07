@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Models\Stage;
 
 class StageRequest extends FormRequest
 {
@@ -22,7 +23,7 @@ class StageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name"=> "required|string",
+            Stage::COLUMN_NAME => 'required|string',
         ];
     }
 }

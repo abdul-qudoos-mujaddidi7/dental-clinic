@@ -32,6 +32,7 @@ class ExpenseRequest extends FormRequest
             'date' => 'required|date',
             'amount' => 'required|numeric|min:0', // Ensures 'amount' is present, a numeric value, and non-negative
             'expense_category_id' => 'required|exists:expense_categories,id', // Ensures 'expense_category_id' is present and exists in the 'expense_categories' table
+            'money_account_id' => 'required|exists:money_accounts,id'
         ];
     }
 }

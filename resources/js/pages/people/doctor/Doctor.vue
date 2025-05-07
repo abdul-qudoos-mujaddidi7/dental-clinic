@@ -1,7 +1,7 @@
 <template>
     <CreateDoctor v-if="PeopleRepository.createDialog" />
-    <div>
-        <AppBar mainTitle="Doctor" sub-title="people" />
+    <div :dir="dir">
+        <AppBar :mainTitle="$t('doctor')" :sub-title="$t('people')" />
         <v-divider
             :thickness="1"
             class="border-opacity-100"
@@ -15,7 +15,7 @@
                     color="primaryOld"
                     density="compact"
                     variant="outlined"
-                    label="Search ..."
+                    :label="$t('search')"
                     append-inner-icon="mdi-magnify"
                     hide-details
                     v-model="PeopleRepository.doctorSearch"
@@ -23,14 +23,14 @@
             </div>
             <div class="btn">
                 <v-btn variant="outlined" color="primaryOld" class="px-6">
-                    Filter
+                    {{ t("filter") }}
                 </v-btn>
                 &nbsp;
                 <v-btn
                     @click="CreateDialogShow"
                     color="primaryOld"
                     variant="flat"
-                    text="Create"
+                    :text="$t('create')"
                     class="px-6"
                 >
                 </v-btn>
@@ -43,6 +43,7 @@
                     <v-row>
                         <v-col>
                             <v-data-table-server
+                            :dir="dir"
                                 theme="cursor-pointer"
                                 v-model:items-per-page="
                                     PeopleRepository.itemsPerPage
@@ -82,7 +83,8 @@
                                                     <v-icon color="tealColor"
                                                         >mdi-square-edit-outline</v-icon
                                                     >
-                                                    Edit
+                                                    
+                                                    {{ t("edit") }}
                                                 </v-list-item-title>
 
                                                 <v-list-item-title
@@ -92,7 +94,7 @@
                                                     <v-icon color="error"
                                                         >mdi-delete-outline</v-icon
                                                     >
-                                                    Delete
+                                                    {{ t("delete") }}
                                                 </v-list-item-title>
                                             </v-list-item>
                                         </v-list>
@@ -117,11 +119,19 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted,computed } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 import CreateDoctor from "./CreateDoctor.vue";
+import { useI18n } from "vue-i18n";
+const { t,locale } = useI18n();
 import { usePeopleRepository } from "@/store/PeopleRepository";
 const PeopleRepository = usePeopleRepository();
+
+// direction
+const dir = computed(() => {
+    return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
+});
+
 // bulk delete
 const selectedIds = ref([]);
 const sendSelectedIds = () => {
@@ -166,10 +176,10 @@ const deleteItem = async (item) => {
 // header
 const headers = [
     { title: "", key: "checkbox", align: "start", sortable: false },
-    { title: "Name", key: "name", align: "start", sortable: false },
-    { title: "Phone", key: "phone", align: "start", sortable: false },
+    { title: t("name"), key: "name", align: "start", sortable: false },
+    { title: t("phone"), key: "phone", align: "start", sortable: false },
 
-    { title: "Action", key: "action", align: "center", sortable: false },
+    { title: t("action"), key: "action", align: "center", sortable: false },
 ];
 </script>
 

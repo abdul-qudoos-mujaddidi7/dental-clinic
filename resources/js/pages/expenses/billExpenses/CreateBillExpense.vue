@@ -1,31 +1,36 @@
 <template>
-    <CReateExpensePRoduct v-if="ExpenseRepository.createDialog" />
+    <CreateProduct v-if="ExpenseRepository.createDialog" />
     <div class="all-expense rounded-xl m-4">
         <div class="card rounded-xl bg-white" rtl>
-            <AppBar mainTitle="Create Bill Expense" subTitle="expense" />
+            <AppBar
+                :mainTitle="t('createBillExpense')"
+                :subTitle="t('expense')"
+            />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
                 color="success"
             ></v-divider>
             <v-form ref="formRef" class="d-flex pt-12">
-                <v-text-field
-                    type="date"
-                    v-model="formData.billDate"
-                    variant="outlined"
-                    label="Date *"
-                    class="pr-2"
-                    style="width: 45%"
-                    color="#d3e2f8"
-                    density="compact"
-                ></v-text-field>
+                <div class="pb-4 w-50 pr-2">
+                    <date-picker
+                        mode="single"
+                        :column="1"
+                        v-model="formData.billDate"
+                        :styles="styles"
+                        locale="fa"
+                        type="date"
+                        format="jYYYY/jMM/jDD"
+                        :locale-config="LocaleConfigs"
+                    />
+                </div>
 
                 <v-autocomplete
                     :items="ExpenseRepository.suppliersFor"
                     v-model="formData.supplierId"
                     :return-object="false"
                     variant="outlined"
-                    label="Supplier *"
+                    :label="t('supplier') + ' *'"
                     class="pr-2 pl-2"
                     style="width: 45%"
                     item-value="id"
@@ -36,7 +41,7 @@
                 <v-text-field
                     v-model="formData.billNumber"
                     variant="outlined"
-                    label="Bill Number"
+                    :label="t('billNumber')"
                     class="pl-2"
                     density="compact"
                     style="width: 45%"
@@ -53,12 +58,20 @@
                             @input="ExpenseRepository.SearchFetchData"
                             @click:clear="clearSearch"
                             variant="outlined"
-                            label="Search Product"
+                            :label="t('searchProduct')"
                             density="compact"
                             append-inner-icon="mdi-magnify"
                             clearable
-                            class="border-none"
+                            class="border-none pr-2"
                         ></v-text-field>
+                        <v-btn
+                            @click="createExpenseProduct"
+                            color="primaryOld"
+                            style="height: 2.5rem"
+                            flat
+                        >
+                            {{ t("createProduct") }}
+                        </v-btn>
                     </div>
                     <div
                         class="rounded shadow-lg px-5 mb-12"
@@ -79,7 +92,6 @@
                         </div>
                     </div>
                 </v-col>
-
                 <table
                     class="text-sm text-center"
                     density="compact"
@@ -89,19 +101,19 @@
                         <tr>
                             <th scope="col" class="px-3 py-3 text-start">#</th>
                             <th scope="col" class="px-3 py-3 text-start">
-                                Product
+                                {{ t("product") }}
                             </th>
                             <th scope="col" class="px-3 py-3 text-start">
-                                Qty
+                                {{ t("qty") }}
                             </th>
                             <th scope="col" class="px-3 py-3 text-start">
-                                Cost
+                                {{ t("cost") }}
                             </th>
                             <th scope="col" class="px-3 py-3 text-center">
-                                Grand Total
+                                {{ t("subTotal") }}
                             </th>
                             <th scope="col" class="px-3 py-3 text-end">
-                                Action
+                                {{ t("action") }}
                             </th>
                         </tr>
                     </thead>
@@ -113,13 +125,8 @@
                             ) in ExpenseRepository.expenseProduct"
                             :key="index"
                         >
-                            <td class="pl-3 text-start">
-                                {{ index + 1 }}
-                            </td>
-                            <td class="pl-3 text-start">
-                                {{ pro.name }}
-                            </td>
-
+                            <td class="pl-3 text-start">{{ index + 1 }}</td>
+                            <td class="pl-3 text-start">{{ pro.name }}</td>
                             <td class="pt-2 text-center pb-0 w-[14rem]">
                                 <v-text-field
                                     v-model="pro.quantity"
@@ -130,7 +137,6 @@
                                     <span class="span"> {{ pro.unit }}</span>
                                 </v-text-field>
                             </td>
-
                             <td class="pt-2 pb-0 text-center w-[14rem]">
                                 <v-text-field
                                     v-if="formData.peopleId !== null"
@@ -139,15 +145,14 @@
                                     density="compact"
                                     class="w-75"
                                 >
-                                    <span class="span">
-                                        {{ displayedCurrencySymbol }}
-                                    </span>
+                                    <span class="span">{{
+                                        displayedCurrencySymbol
+                                    }}</span>
                                 </v-text-field>
                             </td>
                             <td class="text-center">
                                 <span>{{ multiple(pro) }}</span>
                             </td>
-
                             <td class="px-3 text-end">
                                 <v-icon
                                     color="red"
@@ -159,7 +164,6 @@
                     </tbody>
                 </table>
             </v-row>
-
             <div
                 class="pt-12 w-100 flex justify-space-between items-center"
                 dir="rtl"
@@ -168,33 +172,38 @@
                     class="flex justify-between w-[14rem] border-t-[.1rem] border-b-[.1rem] border-dashed border-[#C6C6C6] p-1 text-lg font-bold"
                 >
                     <span>{{ totalSum }}</span>
-                    <span>Total</span>
+                    <span>{{ t("total") }}</span>
                 </div>
-
-                <div>
+                <div class="w-[25rem]">
                     <v-text-field
                         v-model="formData.paid"
                         variant="outlined"
-                        label="Paid"
-                        type="number"
+                        :label="t('paid')"
+                     class="w-100"
                         density="compact"
                     >
-                    </v-text-field>
+                        <div @click="changeCurrency" style="cursor: pointer">
+                            <span class="paidSpan">
+                                {{ currenctAccountName.name }}
+                            </span>
+                        </div>
+                        {{ grandTotal }}</v-text-field
+                    >
                 </div>
             </div>
-
             <div class="pt-16">
                 <v-textarea
                     v-model="formData.note"
                     class="textArea"
-                    label="Details"
+                    :label="t('details')"
                     variant="outlined"
                     density="compact"
-                >
-                </v-textarea>
+                ></v-textarea>
             </div>
             <div class="d-flex flex-row-reverse mt-6">
-                <v-btn color="#112F53" @click="createEarning"> Submit</v-btn>
+                <v-btn color="#112F53" @click="createEarning">{{
+                    t("submit")
+                }}</v-btn>
             </div>
         </div>
     </div>
@@ -203,9 +212,11 @@
 <script setup>
 import AppBar from "../../../components/AppBar.vue";
 import { reactive, computed, ref, watch, onMounted } from "vue";
-
+import CreateProduct from "../expenseProduct/CreateProduct.vue";
 import { useExpenseRepository } from "@/store/ExpenseRepository";
-
+import { LocaleConfigs } from "../../../LocaleConfigs";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 const ExpenseRepository = useExpenseRepository();
 const CalcFetchProduct = (index) => {
     console.log(index, "man of the match");
@@ -291,6 +302,37 @@ const deleteItem = async (item) => {
 };
 formData.billDate = ExpenseRepository.getTodaysDate();
 
+// =====================================
+const account = ExpenseRepository.account.name;
+
+const accountIndex = ref(0);
+
+const currenctAccountName = computed(() => {
+    const accounts = ExpenseRepository.account;
+
+    if (!accounts || accounts.length === 0) {
+        return { moneyAccountId: "...", id: null };
+    }
+
+    if (accountIndex.value >= accounts.length) {
+        accountIndex.value = 0;
+    }
+
+    formData.moneyAccountId = accounts[accountIndex.value].id;
+
+    return {
+        name: accounts[accountIndex.value].name,
+        id: accounts[accountIndex.value].id,
+    };
+});
+//====================================
+const changeCurrency = () => {
+    const accounts = ExpenseRepository.account;
+    if (!accounts || accounts.length === 0) return;
+    accountIndex.value = (accountIndex.value + 1) % accounts.length;
+};
+
+ExpenseRepository.fetchAccountDataForCreate();
 ExpenseRepository.Suppliers();
 // ====================
 // =====================================

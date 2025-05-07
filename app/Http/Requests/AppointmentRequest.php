@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Models\Appointment;
 
 class AppointmentRequest extends FormRequest
 {
@@ -15,6 +16,18 @@ class AppointmentRequest extends FormRequest
     }
 
     /**
+     * Prepare the data for validation.
+     */
+    public function prepareForValidation()
+    {
+        return $this->merge([
+            Appointment::COLUMN_PATIENT_ID => $this->input('patientId'),
+            Appointment::COLUMN_DENTIST_ID => $this->input('dentistId'),
+            Appointment::COLUMN_DATETIME => $this->input('dateTime'),
+        ]);
+    }
+
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
@@ -22,11 +35,10 @@ class AppointmentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'date' => 'required|date',
-            'time' => 'required|date_format:H:i', // Adjust format as needed
-            'status' => 'required|string',
-            'dentist_id' => 'required|exists:dentists,id', // Ensure dentist exists
-            'patient_id' => 'required|exists:patients,id', // Ensure patient exists
+            Appointment::COLUMN_DATETIME => 'required',
+            Appointment::COLUMN_STATUS => 'required|string',
+            Appointment::COLUMN_DENTIST_ID => 'required|exists:people,id', // Ensure dentist exists
+            Appointment::COLUMN_PATIENT_ID => 'required|exists:people,id'
         ];
     }
 }

@@ -10,13 +10,25 @@ class Expense extends Model
 {
     use HasFactory, SoftDeletes;
 
+    public const COLUMN_ID = 'id';
+    public const COLUMN_AMOUNT = 'amount';
+    public const COLUMN_USER_ID = 'user_id';
+    public const COLUMN_EXPENSE_CATEGORY_ID = 'expense_category_id';
+    public const COLUMN_DESCRIPTION = 'note';
+    public const COLUMN_DATE = 'date';
+    public const COLUMN_MONEY_ACCOUNT_ID = 'money_account_id';
+
     protected $fillable = [
-        'date',
-        'amount',
-        'user_id',
-        'expense_category_id',
-        'note'
+        self::COLUMN_ID,
+        self::COLUMN_AMOUNT,
+        self::COLUMN_USER_ID,
+        self::COLUMN_EXPENSE_CATEGORY_ID,
+        self::COLUMN_DESCRIPTION,
+        self::COLUMN_DATE,
+        self::COLUMN_MONEY_ACCOUNT_ID
     ];
+
+    protected $table='expenses';
 
     protected static function boot()
     {

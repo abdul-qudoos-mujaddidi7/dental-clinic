@@ -2,28 +2,36 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Cure extends Model
 {
     use HasFactory;
+    use SoftDeletes;
+
+    public const COLUMN_PAID = 'paid';
     protected $fillable = [
         'patient_id',
         'dentist_id',
         'start_date',
         'grand_total',
-        'paid',
+        'people_account_id',
+        'money_account_id',
+        self::COLUMN_PAID,
         'status',
         'description',
     ];
+
+    protected $table='cures';
 
     protected static function boot()
     {
         parent::boot();
 
         static::creating(function ($cure) {
-            $cure->reference = 'CURE' . (self::max('id') + 1);
+            $cure->reference = 'CURE_' . (self::max('id') + 1);
         });
     }
 
@@ -36,10 +44,6 @@ class Cure extends Model
     return $this->belongsTo(People::class,'dentist_id');
 }
 
-    public function cureCycles()
-    {
-        return $this->hasMany(CureCycle::class);
-    }
     public function payments()
     {
         return $this->hasMany(CurePayment::class);

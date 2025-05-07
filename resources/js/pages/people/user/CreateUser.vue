@@ -9,7 +9,11 @@
             <v-card class="px-3">
                 <v-card-title class="px-2 pt-4 d-flex justify-space-between">
                     <h2 class="font-weight-bold pl-4">
-                        {{ PeopleRepository.isEditMode ? "Update" : "Create" }}
+                        {{
+                            PeopleRepository.isEditMode
+                                ? $t("update")
+                                : $t("create")
+                        }}
                     </h2>
                     <v-btn variant="text" @click="isActive.value = false">
                         <v-icon>mdi-close</v-icon>
@@ -19,38 +23,94 @@
 
                 <v-card-text>
                     <v-form ref="formRef">
-                        <v-text-field
-                            v-model="formData.firstName"
-                            variant="outlined"
-                            label="Name *"
-                            class="pb-4"
-                            density="compact"
-                            :rules="[rules.required, rules.name]"
-                        ></v-text-field>
+                        <v-row>
+                            <v-col cols="9">
+                                <v-text-field
+                                    v-model="formData.firstName"
+                                    variant="outlined"
+                                    :label="t('name')"
+                                    class="pb-4"
+                                    density="compact"
+                                    :rules="[rules.required, rules.name]"
+                                ></v-text-field>
 
-                        <v-text-field
-                            v-model="formData.phone"
-                            variant="outlined"
-                            label="Phone *"
-                            density="compact"
-                            :counter="10"
-                            type="tel"
-                            class="pb-4"
-                            :rules="[rules.required, rules.phoneNumber]"
-                        ></v-text-field>
+                                <v-text-field
+                                    v-model="formData.phone"
+                                    variant="outlined"
+                                    :label="t('phone')"
+                                    density="compact"
+                                    :counter="10"
+                                    type="tel"
+                                    class="pb-4"
+                                    :rules="[rules.required, rules.phoneNumber]"
+                                ></v-text-field>
+                            </v-col>
+                            <v-col cols="3">
+                                <div class="photo-upload-container">
+                                    <v-file-input
+                                        type="file"
+                                        ref="inputRef"
+                                        style="display: none"
+                                        @change="onChangeImage"
+                                    ></v-file-input>
+
+                                    <img
+                                        :src="imageSrc"
+                                        class="photo-preview"
+                                        v-show="imageSrc !== null"
+                                    />
+
+                                    <div class="photo-overlay">
+                                        <button
+                                            v-if="!imageSrc"
+                                            type="button"
+                                            @click="OpenWindow(inputRef)"
+                                            class="overlay-button"
+                                        >
+                                            <v-icon
+                                                size="x-large"
+                                                color="blue-grey-lighten-2"
+                                                >mdi-camera</v-icon
+                                            >
+                                        </button>
+                                        <button
+                                            v-if="imageSrc"
+                                            type="button"
+                                            @click="CloseWindow()"
+                                            class="close-button"
+                                        >
+                                            <v-icon size="small"
+                                                >mdi-close</v-icon
+                                            >
+                                        </button>
+                                        <button
+                                            v-if="imageSrc"
+                                            type="button"
+                                            @click="OpenWindow(inputRef)"
+                                            class="edit-button"
+                                        >
+                                            <v-icon size="small"
+                                                >mdi-pencil</v-icon
+                                            >
+                                        </button>
+                                    </div>
+                                </div>
+                            </v-col>
+                        </v-row>
+
                         <div class="flex w-100">
                             <v-text-field
                                 v-model="formData.email"
                                 variant="outlined"
                                 density="compact"
-                                label="Email *"
+                                :label="t('email')"
                                 :rules="[rules.required, rules.email]"
                                 class="w-50 pb-4 pr-2"
                             >
                             </v-text-field>
                             <v-text-field
                                 v-model="formData.password"
-                                label="Password *"
+                                :label="t('password')"
                                 variant="outlined"
                                 density="compact"
                                 :rules="[rules.required, rules.password]"
@@ -66,7 +126,7 @@
                                 item-title="name"
                                 variant="outlined"
                                 density="compact"
-                                label="Role *"
+                                :label="t('role')"
                                 :rules="[rules.required]"
                                 class="w-50 pb-4 pr-2"
                             >
@@ -103,7 +163,11 @@
 
                 <div class="d-flex flex-row-reverse mb-6 mx-6">
                     <v-btn color="#112F53" class="px-4" @click="save">
-                        {{ PeopleRepository.isEditMode ? "Update" : "Submit" }}
+                        {{
+                            PeopleRepository.isEditMode
+                                ? $t("update")
+                                : $t("create")
+                        }}
                     </v-btn>
                 </div>
             </v-card>
@@ -113,12 +177,15 @@
 
 <script setup>
 import { ref, reactive } from "vue";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 import { usePeopleRepository } from "@/store/PeopleRepository";
 
 const PeopleRepository = usePeopleRepository();
 const formRef = ref(null);
 const formData = reactive({
     id: PeopleRepository.user.id,
+    profile_picture: PeopleRepository.user.profilePicture,
     firstName: PeopleRepository.user.firstName,
     phone: PeopleRepository.user.phone,
     status: PeopleRepository.user.status,
@@ -127,6 +194,23 @@ const formData = reactive({
     roleId: PeopleRepository.user.role?.id,
     lastName: "amn",
 });
+// profile_picture configuration      |
+let imageSrc = ref(PeopleRepository.user.profilePicture);
+const inputRef = ref(null);
+const onChangeImage = (e) => {
+    imageSrc.value = URL.createObjectURL(e.target.files[0]);
+    formData.profile_picture = e.target.files[0];
+};
+const OpenWindow = (action) => {
+    if (action) {
+        ref(action).value.click();
+    }
+};
+const CloseWindow = () => {
+    imageSrc.value = null;
+    formData.profile_picture = null;
+};
+// image configuration^
 const rules = {
     required: (value) => !!value || "This field is required.",
     name: (value) =>
@@ -158,5 +242,59 @@ PeopleRepository.fetchRoleForUser();
 <style scoped>
 .borderStyle {
     border: 1px solid #999;
+}
+.photo-upload-container {
+    position: relative;
+    display: inline-block;
+    height: 8rem;
+    width: 8rem;
+    margin-left: 2rem;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    border: 1px solid gray;
+}
+
+.photo-preview {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.photo-overlay {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    border-radius: 0.5rem;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.overlay-button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.close-button {
+    position: absolute;
+    bottom: -0.25rem;
+    right: -0.25rem;
+    border: none;
+    background-color: transparent;
+    /* color: #060505; */
+    cursor: pointer;
+}
+
+.edit-button {
+    position: absolute;
+    top: -0.25rem;
+    right: -0.25rem;
+    border: none;
+    background-color: transparent;
+    color: #777777;
+    cursor: pointer;
 }
 </style>

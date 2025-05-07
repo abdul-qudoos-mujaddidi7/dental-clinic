@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ExpenseCategoryRequest extends FormRequest
 {
@@ -22,7 +23,11 @@ class ExpenseCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name" => "required|string|unique:expense_categories,name",
+            "name" => [
+                "required",
+                "string",
+                Rule::unique('expense_categories')->ignore($this->route('expenseCategory') ? $this->route('expenseCategory')->id : null),
+            ],
             "description" => "nullable|string|max:255",
         ];
     }

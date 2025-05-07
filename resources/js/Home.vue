@@ -1,25 +1,23 @@
 <template>
     <v-layout class="rounded rounded-md side">
-    <v-navigation-drawer
-      v-model="drawer"
-      :rail="rail"
-      permanent
-      color="#F8F8F8"
-      floating
-      location="left"
-      class="sideBar"
-    
-    >
-      <NavigationDrawer />
-    </v-navigation-drawer>
-
+        <v-navigation-drawer
+            v-model="drawer"
+            :rail="rail"
+            permanent
+            color="#F8F8F8"
+            floating
+            :location="dir"
+            class="sideBar"
+        >
+            <NavigationDrawer  :dir="isRtl ? 'rtl' : 'ltr'"  />
+        </v-navigation-drawer>
 
         <v-main class="d-flex flex-col" style="min-height: 300px">
             <v-card
                 variant="flat"
                 elevation="1"
                 :style="vCardStyle"
-                class="min-h-screen d-flex flex-col m-4 ml-4 py-4 px-4 rounded-xl "
+                class="min-h-screen d-flex flex-col m-4 ml-4 py-4 px-4 rounded-xl"
             >
                 <router-view></router-view>
             </v-card>
@@ -31,8 +29,13 @@
 import { ref, watch, computed } from "vue";
 import { useRoute } from "vue-router"; // Import to get the current route
 import NavigationDrawer from "./components/navigationDrawer.vue";
+import { useI18n } from "vue-i18n";
+const {t, locale } = useI18n();
 import { useAuthRepository } from "@/store/AuthRepository";
-
+const isRtl = ref(locale.value === "fa"); // Assuming 'fa' is the code for Dari
+watch(locale, (newLocale) => {
+    isRtl.value = newLocale === "fa";
+});
 const authRepo = useAuthRepository();
 const drawer = ref(true);
 const rail = ref(authRepo.rail);
@@ -44,6 +47,13 @@ watch(
     }
 );
 
+const dir = computed(() => {
+    if (locale.value === "fa") {
+        return "right"; // Reverse the order for Farsi
+    }
+
+    return "left";
+});
 
 // Use Vue Router's `useRoute` to determine the current route
 const route = useRoute();

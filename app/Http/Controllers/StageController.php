@@ -9,24 +9,16 @@ use Illuminate\Http\Request;
 
 class StageController extends Controller
 {
+
+    private $model = Stage::class;
+    private $resource = StageResource::class;
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        $perPage = $request->input("perPage", 5);
-        $search = $request->input("search");
-        // $stages = Stage::with('leads')
-        $stages = Stage::selectRaw("stages.name, MAX(stages.id) as id, COUNT(leads.id) as leads_count")
-            ->leftJoin('leads', 'stages.id', '=', 'leads.stage_id')
-            ->groupBy('stages.name');
-
-
-
-
-        $stages=$stages->search($search)->orderBy('stages.name', 'asc')->paginate($perPage);    
-
-        return StageResource::collection($stages);
+        
+        return $this->resource::collection($this->listRecord($request,$this->model,['name']));
     }
 
 
@@ -36,9 +28,8 @@ class StageController extends Controller
      */
     public function store(StageRequest $request)
     {
-        $validated = $request->validated();
-        $lead = Stage::create($validated);
-        return new StageResource($lead);
+        $lead = $this->storeRecord($request, Stage::class);
+        return new $this->resource($lead);
     }
 
     /**
@@ -46,7 +37,7 @@ class StageController extends Controller
      */
     public function show(Stage $stage)
     {
-        return StageResource::make($stage);
+        return new $this->resource($stage);
     }
 
 
@@ -56,9 +47,9 @@ class StageController extends Controller
      */
     public function update(StageRequest $request, Stage $stage)
     {
-        $validated = $request->validated();
-        $stage->update($validated);
-        return new StageResource($stage);
+        
+        $stage = $this->updateRecord($request, $stage);
+        return new $this->resource($stage);
     }
 
     /**
@@ -66,7 +57,7 @@ class StageController extends Controller
      */
     public function destroy(Stage $stage)
     {
-        $stage->delete();
-        return new StageResource($stage);
+        $this->deleteRecord($stage);
+        return new $this->resource($stage);
     }
 }

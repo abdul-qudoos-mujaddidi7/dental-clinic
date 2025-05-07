@@ -13,7 +13,7 @@
                     >
                         <h2 class="font-weight-bold pl-4">
                             {{
-                                LeadRepository.isEditMode ? "Update" : "Create"
+                               formTitle
                             }}
                         </h2>
                         <v-btn variant="text" @click="isActive.value = false">
@@ -28,7 +28,7 @@
                                 <v-text-field
                                     v-model="formData.name"
                                     variant="outlined"
-                                    label="Full name  *"
+                                    :label="$t('name')"
                                     class="pb-4 pr-2 w-50"
                                     density="compact"
                                     :rules="[rules.required]"
@@ -37,7 +37,7 @@
                                 <v-text-field
                                     v-model="formData.phone"
                                     variant="outlined"
-                                    label="Phone * "
+                                    :label="$t('phone')"
                                     density="compact"
                                     :counter="10"
                                     type="tel"
@@ -54,7 +54,7 @@
                                     item-value="id"
                                     item-title="name"
                                     :return-object="false"
-                                    label="Category"
+                                    :label="$t('category')"
                                     class="pb-4 pr-2 w-50"
                                     :rules="[rules.required]"
                                 >
@@ -67,63 +67,67 @@
                                     item-value="id"
                                     item-title="name"
                                     :return-object="false"
-                                    label="Status"
+                                    :label="$t('status')"
                                     class="pb-4 pl-2 w-50"
                                     :rules="[rules.required]"
                                 >
                                 </v-autocomplete>
                             </div>
                             <div class="flex w-100">
-                                <v-text-field
-                                    type="date"
+                                <div class="pb-4 w-50 pr-2">
+                                <date-picker
+                                    mode="single"
+                                    :column="1"
                                     v-model="formData.date"
-                                    variant="outlined"
-                                    label="Date"
-                                    class="pr-2 w-50"
-                                    density="compact"
-                                ></v-text-field>
+                                    :styles="styles"
+                                    locale="fa"
+                                    type="date"
+                                    format="jYYYY/jMM/jDD"
+                                    :locale-config="LocaleConfigs"
+                                />
+                                
+                            </div>
                                 <div class="w-50">
-                                    <div class="rounded ml-2 styleBTN w-60">
+                                    <div class="rounded-sm ml-2 styleBTN w-60">
                                         <v-btn
                                             class="w-50"
-                                            variant="text"
+                                            variant="flat"
                                             rounded="0"
                                             @click="selectGender('Male')"
-                                            :style="{
-                                                backgroundColor:
-                                                    formData.gender === 'Male'
-                                                        ? '#00893F'
-                                                        : '',
-                                                color:
-                                                    formData.gender === 'Male'
-                                                        ? '#FFFFFF'
-                                                        : '',
+                                            :color="
+                                                isMaleSelected
+                                                    ? '#00893f'
+                                                    : 'gray'
+                                            "
+                                            :class="{
+                                                'text-white': isMaleSelected,
                                             }"
-                                            >Male</v-btn
                                         >
+                                            {{$t('male')}}
+                                        </v-btn>
+
                                         <v-btn
                                             class="w-50"
-                                            variant="text"
-                                            @click="selectGender('Female')"
+                                            variant="flat"
                                             rounded="0"
-                                            :style="{
-                                                backgroundColor:
-                                                    formData.gender === 'Female'
-                                                        ? '#00893F'
-                                                        : '',
-                                                color:
-                                                    formData.gender === 'Female'
-                                                        ? '#FFFFFF'
-                                                        : '',
+                                            @click="selectGender('Female')"
+                                            :color="
+                                                isFemaleSelected
+                                                    ? '#00893f'
+                                                    : 'gray'
+                                            "
+                                            :class="{
+                                                'text-white': isFemaleSelected,
                                             }"
-                                            >Female
+                                        >
+                                            {{$t('female')}}
                                         </v-btn>
                                     </div>
                                 </div>
                             </div>
                             <v-text-field
                                 v-model="formData.address"
-                                label="Address *"
+                                :label="$t('address')"
                                 variant="outlined"
                                 density="compact"
                             >
@@ -132,7 +136,7 @@
                             <v-textarea
                                 v-model="formData.note"
                                 variant="outlined"
-                                label="Details  "
+                                :label="$t('details')  "
                                 density="compact"
                             >
                             </v-textarea>
@@ -142,7 +146,7 @@
                     <div class="d-flex flex-row-reverse mb-6 mx-6">
                         <v-btn color="#112F53" class="px-4" @click="save">
                             {{
-                                LeadRepository.isEditMode ? "Update" : "Submit"
+                                buttonText
                             }}
                         </v-btn>
                     </div>
@@ -153,10 +157,15 @@
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
+import { ref, reactive , computed} from "vue";
 import { useLeadRepository } from "@/store/LeadRepository";
+import { LocaleConfigs } from "../../../LocaleConfigs";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 
 const LeadRepository = useLeadRepository();
+const formTitle = computed(() => LeadRepository.isEditMode ? t('update') : t('create'));
+const buttonText = computed(() => LeadRepository.isEditMode ? t('update') : t('submit'));
 const formRef = ref(null);
 const selectGender = (gender) => {
     formData.gender = gender;
@@ -167,12 +176,15 @@ const formData = reactive({
     name: LeadRepository.lead.name,
     phone: LeadRepository.lead.phone,
     address: LeadRepository.lead.address,
-    gender: LeadRepository.lead.gender,
+    gender: LeadRepository.lead.gender || "Male",
     note: LeadRepository.lead.note,
-    date: LeadRepository.lead.date,
+    date: LeadRepository.lead.date ,
     categoryId: LeadRepository.lead.category?.id,
     stageId: LeadRepository.lead.stage?.id,
 });
+// Computed properties for cleaner styling logic
+const isMaleSelected = computed(() => formData.gender === "Male");
+const isFemaleSelected = computed(() => formData.gender === "Female");
 const rules = {
     required: (value) => !!value || "This field is required.",
 
@@ -186,7 +198,7 @@ const rules = {
 
 const save = async () => {
     const isValid = await formRef.value.validate();
-    console.log(formData)
+    console.log(formData);
     if (isValid) {
         if (LeadRepository.isEditMode) {
             await LeadRepository.UpdateLead(formData.id, formData);
@@ -196,4 +208,5 @@ const save = async () => {
     }
 };
 LeadRepository.leadCategories();
+formData.date = LeadRepository.getTodaysDate();
 </script>

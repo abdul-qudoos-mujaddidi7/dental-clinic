@@ -16,16 +16,25 @@ use Spatie\Permission\Models\Role;
 class UserController extends Controller
 {
     use ImageHandler;
+
+    private $model = User::class;
+    private $resource = UserResource::class;
+
+    function __construct()
+    {
+        $this->middleware("can:viewUser")->only(["index", "show"]);
+        $this->middleware("can:addUser")->only('store');
+        $this->middleware("can:updateUser")->only('update');
+        $this->middleware("can:deleteUser")->only('destroy');
+
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        $perPage = $request->input("perPage");
-        $search = $request->input("search");
-
-        $users = User::search($search)->latest()->paginate($perPage);
-        return UserResource::collection($users);
+        return $this->resource::collection($this->listRecord($request,$this->model,['first_name','last_name','email']));
     }
 
     /**
@@ -33,14 +42,12 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
+        $user = $this->storeRecord($request,User::class);
         $validated = $request->validated();
-        $validated['image'] = $request->hasFile('image') ? $this->storeImage($request, 'user') : null;
-        $validated['password'] = Hash::make($validated['password']);
         $role = Role::findOrFail($validated["role_id"]);
-        $user = User::create($validated);
         $user->assignRole($role);
 
-        return new UserResource($user);
+        return new $this->resource($user);
     }
 
     /**
@@ -56,8 +63,10 @@ class UserController extends Controller
      */
     public function update(UserRequest $request, User $user)
     {
-       
+
         $validated = $request->validated();
+        $user = $this->storeRecord($request,User::class);
+
         // $validated['image'] = $request->hasFile('image') ? $this->updateImage($request, $user, 'user') : null;
         $validated['password']=Hash::make($validated['password']);
         $role = Role::findOrFail($validated['role_id']);
@@ -73,17 +82,17 @@ class UserController extends Controller
         if ($user->id == Auth::id()) {
             return response()->json(['message' => "You cannot change the active user's status"], 403);
         }
-    
+
         $request->validate([
             'status' => 'required|boolean',
         ]);
-    
+
         $user->status = $request->status;
         $user->save();
-    
+
         return new UserResource($user);
     }
-    
+
 
 
     /**
@@ -92,7 +101,6 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $this->deleteImage($user);
-        $user->delete();
         return new UserResource($user);
     }
 }

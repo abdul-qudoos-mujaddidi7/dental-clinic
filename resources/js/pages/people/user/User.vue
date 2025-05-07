@@ -1,8 +1,8 @@
 <template>
     <CreateUser v-if="PeopleRepository.createDialog" />
-    <div class="all-expense rounded-xl">
+    <div class="all-expense rounded-xl" :dir="dir">
         <div class="card rounded-xl">
-            <AppBar mainTitle="User" sub-title="people" />
+            <AppBar :mainTitle="$t('user')" :sub-title="$t('people')" />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
@@ -16,7 +16,7 @@
                         color="primaryOld"
                         density="compact"
                         variant="outlined"
-                        label="Search ..."
+                        :label="$t('search')"
                         append-inner-icon="mdi-magnify"
                         hide-details
                         v-model="PeopleRepository.userSearch"
@@ -24,14 +24,14 @@
                 </div>
                 <div class="btn">
                     <v-btn variant="outlined" color="primaryOld" class="px-6">
-                        Filter
+                        {{ t("filter") }}
                     </v-btn>
                     &nbsp;
                     <v-btn
                         @click="CreateDialogShow"
                         color="primaryOld"
                         variant="flat"
-                        text="Create"
+                        :text="$t('create')"
                         class="px-6"
                     >
                     </v-btn>
@@ -44,6 +44,7 @@
                         <v-row>
                             <v-col>
                                 <v-data-table-server
+                                    :dir="dir"
                                     theme="cursor-pointer"
                                     v-model:items-per-page="
                                         PeopleRepository.itemsPerPage
@@ -60,6 +61,54 @@
                                     hover
                                     class="w-100 mx-auto"
                                 >
+                                    <!-- ========================== -->
+                                    <template v-slot:item.name="{ item }">
+                                        <div
+                                            style="
+                                                display: flex;
+                                                align-items: center;
+                                            "
+                                            @click="show(item)"
+                                        >
+                                            <!-- Container for the image -->
+
+                                            <div
+                                                style="
+                                                    width: 50px;
+                                                    height: 50px;
+                                                    overflow: hidden;
+                                                    margin-right: 10px;
+                                                "
+                                            >
+                                                <!-- Use inline styles to make the avatar square -->
+                                                <v-avatar
+                                                    size="42"
+                                                    style="
+                                                        width: 100%;
+                                                        height: 100%;
+                                                        border-radius: 0;
+                                                    "
+                                                >
+                                                    <img
+                                                        :src="
+                                                            item.profilePicture
+                                                        "
+                                                        alt="Profile Photo"
+                                                        style="
+                                                            width: 100%;
+                                                            height: auto;
+                                                            object-fit: cover;
+                                                        "
+                                                    />
+                                                </v-avatar>
+                                            </div>
+                                            <!-- Display the name with some space -->
+                                            <span style="margin-right: 10px">{{
+                                                item.firstName
+                                            }}</span>
+                                        </div>
+                                    </template>
+                                    <!-- ================================= -->
                                     <!-- Checkbox for selecting rows -->
 
                                     <template v-slot:item.checkbox="{ item }">
@@ -107,7 +156,7 @@
                                                             color="tealColor"
                                                             >mdi-square-edit-outline</v-icon
                                                         >
-                                                        Edit
+                                                        {{ t("edit") }}
                                                     </v-list-item-title>
 
                                                     <v-list-item-title
@@ -119,7 +168,7 @@
                                                         <v-icon color="error"
                                                             >mdi-delete-outline</v-icon
                                                         >
-                                                        Delete
+                                                        {{ t("delete") }}
                                                     </v-list-item-title>
                                                 </v-list-item>
                                             </v-list>
@@ -135,6 +184,29 @@
                                     text="delete"
                                 >
                                 </v-btn>
+                                <v-dialog
+                                    v-model="dialogVisible"
+                                    max-width="800px"
+                                >
+                                    <v-card>
+                                        <v-card-actions>
+                                            <v-btn
+                                                color="primary"
+                                                class=""
+                                                @click="dialogVisible = false"
+                                            >
+                                                <v-icon>mdi mdi-close</v-icon>
+                                            </v-btn>
+                                        </v-card-actions>
+                                        <v-card-text>
+                                            <v-img
+                                                :src="imageSrc"
+                                                max-height="550px"
+                                                contain
+                                            ></v-img>
+                                        </v-card-text>
+                                    </v-card>
+                                </v-dialog>
                             </v-col>
                         </v-row>
                     </v-main>
@@ -145,11 +217,24 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 import CreateUser from "./CreateUser.vue";
+import { useI18n } from "vue-i18n";
+const { t, locale } = useI18n();
 import { usePeopleRepository } from "@/store/PeopleRepository";
 const PeopleRepository = usePeopleRepository();
+const imageSrc = ref();
+const dialogVisible = ref(false);
+// direction
+const dir = computed(() => {
+    return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
+});
+const show = (item) => {
+    imageSrc.value = item.profilePicture;
+    dialogVisible.value = true;
+};
+
 // bulk delete
 const selectedIds = ref([]);
 const sendSelectedIds = () => {
@@ -174,7 +259,7 @@ const updateState = async (item) => {
 
 // delete and update Create
 const CreateDialogShow = () => {
-    PeopleRepository.user= {};
+    PeopleRepository.user = {};
     PeopleRepository.setEditMode(false);
     PeopleRepository.createDialog = true;
 };
@@ -200,12 +285,12 @@ const deleteItem = async (item) => {
 // header
 const headers = [
     { title: "", key: "checkbox", align: "start", sortable: false },
-    { title: "Name", key: "firstName", align: "start", sortable: false },
-    { title: "Email", key: "email", align: "start", sortable: false },
-    { title: "Phone", key: "phone", align: "start", sortable: false },
-    { title: "Role", key: "role.name", align: "start", sortable: false },
-    { title: "STATUS", key: "status", align: "start", sortable: false },
-    { title: "Action", key: "action", align: "center", sortable: false },
+    { title: t("profile"), key: "name", align: "start", sortable: false },
+    { title: t("email"), key: "email", align: "start", sortable: false },
+    { title: t("phone"), key: "phone", align: "start", sortable: false },
+    { title: t("role"), key: "role.name", align: "start", sortable: false },
+    { title: t("status"), key: "status", align: "start", sortable: false },
+    { title: t("action"), key: "action", align: "center", sortable: false },
 ];
 </script>
 

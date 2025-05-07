@@ -1,7 +1,7 @@
 <template>
     <div class="m-2">
         <div>
-            <AppBar mainTitle="Create Permission" subTitle=" Settings" />
+            <AppBar :mainTitle="$t('createPermission')" :subTitle="$t('setting')" />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
@@ -12,7 +12,7 @@
                     <v-col>
                         <v-text-field
                             v-model="formData.name"
-                            label="Role Name *"
+                            :label="$t('roleName')"
                             density="compact"
                             variant="outlined"
                             :rules="[rules.required, rules.validName]"
@@ -21,7 +21,7 @@
                     <v-col>
                         <v-text-field
                             v-model="formData.description"
-                            label="Description"
+                            :label="$t('details')"
                             density="compact"
                             variant="outlined"
                             :rules="[rules.required]"
@@ -44,16 +44,20 @@
                                         <v-checkbox
                                             v-model="formData.permissions"
                                             :value="`view${permission.value}`"
-                                            label="View"
+                                            :label="t('view')"
                                             density="compact"
-                                            :class="permission.onlyView ? 'mb-[3.8rem]' : ''"
-
+                                            :class="
+                                                permission.onlyView
+                                                    ? 'mb-[3.8rem]'
+                                                    : ''
+                                            "
                                         ></v-checkbox>
                                         <template v-if="!permission.onlyView">
                                             <v-checkbox
                                                 v-model="formData.permissions"
                                                 :value="`edit${permission.value}`"
-                                                label="Edit"
+                                                :label="t('edit')"
+
                                                 density="compact"
                                             ></v-checkbox>
                                         </template>
@@ -62,13 +66,15 @@
                                         <v-checkbox
                                             v-model="formData.permissions"
                                             :value="`create${permission.value}`"
-                                            label="Create"
+                                            :label="t('create')"
+
                                             density="compact"
                                         ></v-checkbox>
                                         <v-checkbox
                                             v-model="formData.permissions"
                                             :value="`delete${permission.value}`"
-                                            label="Delete"
+                                            :label="t('delete')"
+
                                             density="compact"
                                         ></v-checkbox>
                                     </v-col>
@@ -79,7 +85,9 @@
                 </v-row>
             </v-form>
             <div class="d-flex flex-row-reverse mb-6 mx-6 mt-4">
-                <v-btn color="#112F53" @click="createRole"> Submit </v-btn>
+                <v-btn color="#112F53" @click="createRole">
+                    {{ t("submit") }}
+                </v-btn>
             </div>
         </div>
     </div>
@@ -90,6 +98,8 @@
 import { useSettingRepository } from "@/store/SettingRepository";
 import { reactive, ref } from "vue";
 import AppBar from "../../../components/AppBar.vue";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 const SettingRepository = useSettingRepository();
 const formRef = ref(null);
 const rules = {
@@ -107,23 +117,23 @@ const permissions = reactive([
     // },
     {
         items: [
-            { title: "Dashboard", value: "Dashboard" , onlyView: true},
-            { title: "Lead", value: "Lead" },
-            { title: "Appointment", value: "Appointment" },
+            { title: t("dashboard"), value: "Dashboard", onlyView: true },
+            { title:t("leads"), value: "Lead" },
+            { title: t("appointment"), value: "Appointment" },
         ],
     },
     {
         items: [
-            { title: "Cure Cycle", value: "CureCycle" },
-            { title: "Expense", value: "Expense" },
-            { title: "Bill Expense", value: "BillExpense" },
+            { title: t("cureCycle") ,value: "CureCycle" },
+            { title: t("expenses") ,value: "Expense" },
+            { title: t("billExpense"), value: "BillExpense" },
         ],
     },
     {
         items: [
-            { title: "People", value: "People" },
-            { title: "Report", value: "Report" },
-            { title: "Setting ", value: "Setting" },
+            { title:t("people"), value: "People" },
+            { title:t("reports"), value: "Report" },
+            { title:t("setting"), value: "Setting" },
         ],
     },
 ]);

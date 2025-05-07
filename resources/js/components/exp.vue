@@ -135,7 +135,7 @@ export default {
     await dashboardStore.fetchDashboardData();
   });
   </script>
-   -->
+   
 
    <template>
     <div class="all-expense rounded-xl m-4">
@@ -164,7 +164,7 @@ export default {
           </div>
         </div>
   
-        <!-- Data Table -->
+
         <v-data-table-server
           theme="cursor-pointer"
           v-model:items-per-page="ReportRepository.itemsPerPage"
@@ -259,3 +259,49 @@ export default {
     margin-left: -5px !important;
   }
   </style>
+-->
+<template>
+    <div>
+        <h1>Select a date</h1>
+        <!-- <vue-awesome-datepicker
+            v-model="selectedDate"
+            :format="$datepickerConfig.format"
+            :lang="$datepickerConfig.lang"
+            :clearable="true"
+        /> -->
+    </div>
+    <v-form ref="formRef">
+    <v-card color="#555" class="w-50 border-2">
+
+        <v-text-field label="man" v-model="formData.name"></v-text-field>
+        
+      </v-card>
+      <div>
+        <v-textarea label="assad" density="compact" v-model="formData.email" >
+        </v-textarea>
+      </div>
+      <v-btn  @click="Create">click</v-btn>
+    </v-form>
+</template>
+
+<script setup>
+import { ref, reactive } from "vue";
+import {usePeopleRepository} from "../store/PeopleRepository"
+const formRef = ref(null);
+const  PeopleRepository = usePeopleRepository();
+const formData = reactive({
+  name:"",
+  email:""
+})
+
+const Create = async()=>{
+  await PeopleRepository.CreateLabPayment(formData)
+  
+
+}
+const selectedDate = ref("");
+</script>
+
+<style scoped>
+/* @import 'vue-awesome-datepicker/dist/style.css'; */
+</style>

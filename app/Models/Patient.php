@@ -47,7 +47,7 @@ class Patient extends Model
         return $this->hasMany(Appointment::class);
     }
 
-    public function cure()
+    public function cures()
     {
         return $this->hasMany(Cure::class);
     }

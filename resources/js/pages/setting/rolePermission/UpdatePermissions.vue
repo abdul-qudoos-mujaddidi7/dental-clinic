@@ -91,6 +91,8 @@ import { useSettingRepository } from "@/store/SettingRepository";
 import { reactive, ref } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 import { useRoute } from "vue-router";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 const SettingRepository = useSettingRepository();
 const formRef = ref(null);
 const rules = {

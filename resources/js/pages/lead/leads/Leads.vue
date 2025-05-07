@@ -1,8 +1,8 @@
 <template>
     <CreateLeads v-if="LeadRepository.createDialog" />
-    <div class="all-expense rounded-xl">
+    <div class="all-expense rounded-xl" :dir="dir">
         <div class="card rounded-xl">
-            <AppBar mainTitle="leads" sub-title="Lead" />
+            <AppBar :mainTitle="$t('leads')" :sub-title="$t('leads')" />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
@@ -16,7 +16,7 @@
                         color="primaryOld"
                         density="compact"
                         variant="outlined"
-                        label="Search ..."
+                        :label="$t('search')"
                         append-inner-icon="mdi-magnify"
                         hide-details
                         v-model="LeadRepository.leadSearch"
@@ -24,17 +24,24 @@
                 </div>
                 <div class="btn">
                     <v-btn variant="outlined" color="primaryOld" class="px-6">
-                        Filter
+                        {{ t("filter") }}
                     </v-btn>
                     &nbsp;
-                    <v-btn
-                        @click="CreateDialogShow"
-                        color="primaryOld"
-                        variant="flat"
-                        text="Create"
-                        class="px-6"
+                    <div
+                        v-if="
+                            AuthRepository.permissions &&
+                            AuthRepository.permissions.includes('createLead')
+                        "
                     >
-                    </v-btn>
+                        <v-btn
+                            @click="CreateDialogShow"
+                            color="primaryOld"
+                            variant="flat"
+                            :text="$t('create')"
+                            class="px-6"
+                        >
+                        </v-btn>
+                    </div>
                 </div>
             </div>
             <!-- v-table server  -->
@@ -43,7 +50,9 @@
                     <v-main class="main">
                         <v-row>
                             <v-col>
+                                <!--  :location="location" -->
                                 <v-data-table-server
+                                    :dir="dir"
                                     theme="cursor-pointer"
                                     v-model:items-per-page="
                                         LeadRepository.itemsPerPage
@@ -59,11 +68,10 @@
                                     class="w-100 mx-auto"
                                 >
                                     <template v-slot:item.stage="{ item }">
-                                        <td class="px-4 py-2 font-semibold">
+                                        <td class="py-2 pl-4">
                                             <v-btn
                                                 flat
                                                 fluid
-                                                small
                                                 rounded
                                                 @click="
                                                     changeStage(
@@ -74,12 +82,14 @@
                                                 :style="{
                                                     backgroundColor:
                                                         getStageColor(item.id),
-                                                    color: 'white',
                                                 }"
+                                                class="text-white px-4 py-2"
                                             >
-                                                <p class="text-gray-200">
+                                                <span
+                                                    class="text-[10px] tracking-wide"
+                                                >
                                                     {{ item.stage.name }}
-                                                </p>
+                                                </span>
                                             </v-btn>
                                         </td>
                                     </template>
@@ -108,6 +118,12 @@
                                             <v-list>
                                                 <v-list-item>
                                                     <v-list-item-title
+                                                        v-if="
+                                                            AuthRepository.permissions &&
+                                                            AuthRepository.permissions.includes(
+                                                                'editLead'
+                                                            )
+                                                        "
                                                         @click="edit(item)"
                                                         class="cursor-pointer d-flex gap-3 justify-left pb-3"
                                                     >
@@ -115,10 +131,16 @@
                                                             color="tealColor"
                                                             >mdi-square-edit-outline</v-icon
                                                         >
-                                                        Edit
+                                                        {{ $t("edit") }}
                                                     </v-list-item-title>
 
                                                     <v-list-item-title
+                                                        v-if="
+                                                            AuthRepository.permissions &&
+                                                            AuthRepository.permissions.includes(
+                                                                'deleteLead'
+                                                            )
+                                                        "
                                                         class="cursor-pointer d-flex gap-3"
                                                         @click="
                                                             deleteItem(item)
@@ -127,7 +149,7 @@
                                                         <v-icon color="error"
                                                             >mdi-delete-outline</v-icon
                                                         >
-                                                        Delete
+                                                        {{ $t("delete") }}
                                                     </v-list-item-title>
                                                 </v-list-item>
                                             </v-list>
@@ -140,6 +162,7 @@
                                     @click="sendSelectedIds"
                                     color="#B71C1C"
                                     flat
+                                    inset
                                     text="delete"
                                 >
                                 </v-btn>
@@ -156,7 +179,11 @@
 import { ref, computed, reactive } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 import CreateLeads from "./CreateLeads.vue";
+import { useI18n } from "vue-i18n";
+const { t, locale } = useI18n();
 import { useLeadRepository } from "@/store/LeadRepository";
+import { useAuthRepository } from "../../../store/AuthRepository";
+const AuthRepository = useAuthRepository();
 const LeadRepository = useLeadRepository();
 // swap function
 
@@ -175,6 +202,10 @@ const getStageName = (itemId) => {
     const currentIndex = stageIndexes.value[itemId] % leadStage.length;
     return leadStage[currentIndex]?.name || "...";
 };
+
+const dir = computed(() => {
+    return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
+});
 
 // Function to get button color based on stage name
 const getStageColor = (itemId) => {
@@ -277,21 +308,22 @@ const deleteItem = async (item) => {
     await LeadRepository.DeleteLead(item.id);
 };
 // header
-const headers = [
+const headers = computed(() => [
     { title: "", key: "checkbox", align: "start", sortable: false },
-    { title: "Name", key: "name", align: "start", sortable: false },
-    { title: "Phone", key: "phone", align: "start", sortable: false },
+    { title: t("name"), key: "name", align: "center", sortable: false },
+    { title: t("phone"), key: "phone", align: "start", sortable: false },
     {
-        title: "Category",
+        title: t("category"),
         key: "category.name",
         align: "start",
         sortable: false,
     },
-    { title: "Status", key: "stage", align: "start", sortable: false },
-    { title: "Address", key: "address", align: "start", sortable: false },
-    { title: "Details", key: "note", align: "start", sortable: false },
-    { title: "Action", key: "action", align: "center", sortable: false },
-];
+    { title: t("status"), key: "stage", align: "center", sortable: false },
+    { title: t("address"), key: "address", align: "start", sortable: false },
+    { title: t("details"), key: "note", align: "start", sortable: false },
+    { title: t("action"), key: "action", align: "center", sortable: false },
+]);
+
 LeadRepository.leadStages();
 </script>
 

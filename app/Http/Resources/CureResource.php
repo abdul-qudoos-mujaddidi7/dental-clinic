@@ -25,6 +25,7 @@ class CureResource extends JsonResource
                 'id'=> $this->patient->id,
                 'name'=> $this->patient->name,
             ],
+            'patientId'=>$this->patient->id,
             'dentist' => [
                 'id'=> $this->dentist->id,
                 'name'=> $this->dentist->name,

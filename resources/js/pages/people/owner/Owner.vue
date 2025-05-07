@@ -1,8 +1,8 @@
 <template>
     <CreateOwner v-if="PeopleRepository.createDialog" />
-    <div class="all-expense rounded-xl">
+    <div class="all-expense rounded-xl" :dir="dir">
         <div class="card rounded-xl">
-            <AppBar mainTitle="Owners" sub-title="people" />
+            <AppBar :mainTitle="$t('owners')" :sub-title="$t('people')"/>
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
@@ -16,7 +16,7 @@
                         color="primaryOld"
                         density="compact"
                         variant="outlined"
-                        label="Search ..."
+                        :label="$t('search')"
                         append-inner-icon="mdi-magnify"
                         hide-details
                         v-model="PeopleRepository.ownerSearch"
@@ -24,14 +24,14 @@
                 </div>
                 <div class="btn">
                     <v-btn variant="outlined" color="primaryOld" class="px-6">
-                        Filter
+                        {{ t("filter") }}
                     </v-btn>
                     &nbsp;
                     <v-btn
                         @click="CreateDialogShow"
                         color="primaryOld"
                         variant="flat"
-                        text="Create"
+                        :text="$t('create')"
                         class="px-6"
                     >
                     </v-btn>
@@ -44,6 +44,7 @@
                         <v-row>
                             <v-col>
                                 <v-data-table-server
+                                :dir="dir"
                                     theme="cursor-pointer"
                                     v-model:items-per-page="
                                         PeopleRepository.itemsPerPage
@@ -81,7 +82,7 @@
                                                             color="tealColor"
                                                             >mdi-square-edit-outline</v-icon
                                                         >
-                                                        Edit
+                                                        {{ t("edit") }}
                                                     </v-list-item-title>
 
                                                     <v-list-item-title
@@ -93,7 +94,7 @@
                                                         <v-icon color="error"
                                                             >mdi-delete-outline</v-icon
                                                         >
-                                                        Delete
+                                                        {{ t("delete") }}
                                                     </v-list-item-title>
                                                 </v-list-item>
                                             </v-list>
@@ -110,17 +111,23 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted ,computed} from "vue";
 import AppBar from "../../../components/AppBar.vue";
 import CreateOwner from "./CreateOwner.vue";
+import { useI18n } from "vue-i18n";
+const { t ,locale} = useI18n();
 import { usePeopleRepository } from "@/store/PeopleRepository";
 const PeopleRepository = usePeopleRepository();
+
+// direction
+const dir = computed(() => {
+    return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
+});
 // bulk delete
 
 // delete and update Create
 const CreateDialogShow = () => {
-    PeopleRepository.owner = {},
-    PeopleRepository.setEditMode(false);
+    (PeopleRepository.owner = {}), PeopleRepository.setEditMode(false);
     PeopleRepository.createDialog = true;
 };
 
@@ -144,10 +151,10 @@ const deleteItem = async (item) => {
 };
 // header
 const headers = [
-    { title: "Name", key: "name", align: "start", sortable: false },
-    { title: "Pickup", key: "totalAmount", align: "center", sortable: false },
-    { title: "Phone", key: "phone", align: "center", sortable: false },
+    { title: t("name"), key: "name", align: "start", sortable: false },
+    { title: t("pickup"), key: "totalAmount", align: "center", sortable: false },
+    { title:t("phone"), key: "phone", align: "center", sortable: false },
 
-    { title: "Action", key: "action", align: "end", sortable: false },
+    { title: t("action"), key: "action", align: "end", sortable: false },
 ];
 </script>

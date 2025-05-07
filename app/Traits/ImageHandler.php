@@ -6,10 +6,10 @@ use Illuminate\Support\Facades\Storage;
 
 trait ImageHandler
 {
-    public function storeImage($request, $folder)
+    public function storeImage($request, $folder,$filename)
     {
-            return $request->file("logo")->store('images/'. $folder, 'public');
-        
+            return $request->file($filename)->store('images/'. $folder, 'public');
+
     }
 
     public function updateImage($request, $model,$folder)
@@ -22,7 +22,7 @@ trait ImageHandler
 
     public function deleteImage($model)
     {
-        
+
         if ($model->logo) {
             Storage::disk('public')->delete($model->logo);
         }

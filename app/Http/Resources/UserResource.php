@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -26,7 +27,7 @@ class UserResource extends JsonResource
             ] : null,
             'email' => $this->email,
             'status' => (bool) $this->status,
-            // "photoUrl" => $this->image ? asset("storage/" . $this->image) : null,
+            "profilePicture" => $this[User::COLUMN_PROFILE_PICTURE] ? asset("storage/" . $this[User::COLUMN_PROFILE_PICTURE] ) : null,
         ];
     }
 }

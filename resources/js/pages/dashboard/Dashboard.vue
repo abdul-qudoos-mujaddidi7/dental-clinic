@@ -1,6 +1,16 @@
 <template>
-    <div class="bg-[#f8f8f8] rounded-xl" rtl>
-        <AppBar subTitle="Dashboard" main-title="dashboard" class="MenuColor" />
+    <div
+        class="bg-[#f8f8f8] rounded-xl"
+        v-if="
+            AuthRepository.permissions &&
+            AuthRepository.permissions.includes('viewDashboard')
+        "
+    >
+        <AppBar
+            :subTitle="$t('dashboard')"
+            :main-title="$t('dashboard')"
+            class="MenuColor"
+        />
         <v-divider
             :thickness="1"
             class="border-opacity-100"
@@ -9,41 +19,39 @@
 
         <v-row class="pt-6">
             <v-col>
-                <v-card variant="flat" rounded="lg" >
-                 
-                    <template v-slot:title >
-                        <div class="d-flex ">
-                        <v-avatar size="40" class="mr-4">
-                            <!-- <v-icon size="36">mdi-account-details</v-icon> -->
-                            <img
-                                src="@/assets/images/dashboard/totalVisa.svg"
-                                class="w-6"
-                            />
-                        </v-avatar>
-                        <div class="pt-1 ">
-                            <div class="font-weight-black ">
-                                {{
-                                    DashboardRepository.dashboardReport.netProfit
-                                }}
+                <v-card variant="flat" rounded="lg">
+                    <template v-slot:title>
+                        <div class="d-flex">
+                            <v-avatar size="40" class="mr-4">
+                                <img
+                                    src="@/assets/images/dashboard/totalVisa.svg"
+                                    class="w-6"
+                                />
+                            </v-avatar>
+                            <div class="pt-1">
+                                <div class="font-weight-black">
+                                    {{
+                                        DashboardRepository.dashboardReport
+                                            .netProfit
+                                    }}
+                                </div>
                             </div>
                         </div>
-                    </div>
                     </template>
-            
+
                     <v-card-text
                         class="text-h6 d-flex justify-start calibri_font ml-14"
                     >
-                        Profit
+                        {{ t("profit") }}
                     </v-card-text>
-                </v-card></v-col
-            >
+                </v-card>
+            </v-col>
 
             <v-col>
-                <v-card variant="flat"  rounded="lg">
+                <v-card variant="flat" rounded="lg">
                     <template v-slot:title>
                         <div class="d-flex align-center justify-start">
                             <v-avatar size="40" class="mr-4">
-                                <!-- <v-icon size="36">mdi-account-details</v-icon> -->
                                 <img
                                     src="@/assets/images/dashboard/totalTicket.svg"
                                     class="w-8"
@@ -55,50 +63,46 @@
                                         .totalAllExpenses
                                 }}
                             </div>
-                          
                         </div>
                     </template>
                     <v-card-text
                         class="text-h6 d-flex justify-start calibri_font ml-14"
                     >
-                        Expense
+                        {{ t("expense") }}
                     </v-card-text>
-                </v-card></v-col
-            >
+                </v-card>
+            </v-col>
             <v-col>
-                <v-card variant="flat"  rounded="lg">
+                <v-card variant="flat" rounded="lg">
                     <template v-slot:title>
                         <div class="d-flex align-center justify-start">
                             <v-avatar size="40" class="mr-4">
-                                <!-- <v-icon size="36">mdi-account-details</v-icon> -->
                                 <img
                                     src="@/assets/images/dashboard/totalTourpackageBooket.svg"
                                     class="w-6"
                                 />
                             </v-avatar>
-                            <div class="font-weight-black">
+                            <div class="font-weight-black" :dir="dir">
                                 {{
                                     DashboardRepository.dashboardReport
                                         .totalEarnings
                                 }}
                             </div>
-                            
                         </div>
                     </template>
                     <v-card-text
                         class="text-h6 d-flex justify-start calibri_font ml-14"
                     >
-                        Sales
+                        {{ t("sales") }}
                     </v-card-text>
-                </v-card></v-col
-            >
+                </v-card>
+            </v-col>
 
             <v-col>
-                <v-card variant="flat"  rounded="lg">
+                <v-card variant="flat" rounded="lg">
                     <template v-slot:title>
                         <div class="d-flex align-center justify-start">
                             <v-avatar size="40" class="mr-4">
-                                <!-- <v-icon size="36">mdi-account-details</v-icon> -->
                                 <img
                                     src="@/assets/images/dashboard/totalTourpackage.svg"
                                     class="w-4"
@@ -110,13 +114,12 @@
                                         .totalPatients
                                 }}
                             </div>
-                           
                         </div>
                     </template>
                     <v-card-text
                         class="text-h6 d-flex justify-start calibri_font ml-14"
                     >
-                        Patients
+                        {{ t("patients") }}
                     </v-card-text>
                 </v-card>
             </v-col>
@@ -144,7 +147,9 @@
                                     }}
                                 </p>
                                 <p class="text-subtitle-2">
-                                    Expenses based on amount and percentage
+                                    {{
+                                        t("expensesBasedOnAmountAndPercentage")
+                                    }}
                                 </p>
                             </span>
                             <span class="flex flex-col gap-1">
@@ -169,7 +174,7 @@
                                         )
                                     "
                                 >
-                                    {{ "this year" }}
+                                    {{ t("thisYear") }}
                                 </v-btn>
                                 <v-btn
                                     size="x-small"
@@ -191,7 +196,7 @@
                                         )
                                     "
                                 >
-                                    {{ "this month" }}
+                                    {{ t("thisMonth") }}
                                 </v-btn>
                                 <v-btn
                                     size="x-small"
@@ -213,7 +218,7 @@
                                         )
                                     "
                                 >
-                                    {{ "today" }}
+                                    {{ t("today") }}
                                 </v-btn>
                             </span>
                         </div>
@@ -239,56 +244,58 @@
                                 height="6"
                                 :color="randomColor()"
                                 class="rounded-lg"
-                                reverse
                             ></v-progress-linear>
                         </div>
                     </div>
                 </v-card>
             </v-col>
             <v-col>
-                <v-card
-                    class="bg-white rounded-xl mr-3 mt-0 h-100"
-                    variant="flat"
-                >
-                    <h2 class="pl-4 py-4">Upcoming Appointment</h2>
-                    <v-table>
-                        <template v-slot:default>
-                            <thead class="bg-white" style="border: none">
-                                <tr
-                                    style="
-                                        border: none;
-                                        background-color: white;
-                                    "
-                                >
-                                    <th class="text-left">Customer</th>
-                                    <th class="text-left">Time</th>
-                                    <th class="text-left">Phone</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr
-                                    style="border: none"
-                                    v-for="item in DashboardRepository
-                                        .dashboardReport.upcomingAppointments"
-                                    :key="item.id"
-                                >
-                                    <td>{{ item.customerId }}</td>
-                                    <td class="d-flex align-center">
-                                        <v-avatar class="mr-2" size="36px">
-                                            <img
-                                                :src="item.photo"
-                                                alt="Avatar"
-                                            />
-                                        </v-avatar>
-                                        {{ item.customerName }}
-                                    </td>
-                                    <td>{{ item.customerPhone }}</td>
-                                    <td>{{ item.totalSpentKW }}</td>
-                                    <td>{{ item.paid }}</td>
-                                </tr>
-                            </tbody>
-                        </template>
-                    </v-table>
+                <v-card class="bg-white rounded-xl mr-3 px-4 mt-0 h-100">
+                    <h2 class="pl-2 py-4">{{ t("upcomingAppointment") }}</h2>
+                    <div class="flex justify-center">
+                        <v-table class="rounded w-100">
+                            <template v-slot:default>
+                                <thead class="bg-gray-100">
+                                    <tr>
+                                        <th
+                                            class="text-left font-medium text-gray-700"
+                                        >
+                                            {{ t("patient") }}
+                                        </th>
+                                        <th
+                                            class="text-center font-medium text-gray-700"
+                                        >
+                                            {{ t("time") }}
+                                        </th>
+                                        <th
+                                            class="text-center font-medium text-gray-700"
+                                        >
+                                            {{ t("phone") }}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr
+                                        v-for="item in DashboardRepository
+                                            .dashboardReport
+                                            .upcomingAppointments"
+                                        :key="item.id"
+                                        class="border-b border-gray-200"
+                                    >
+                                        <td class="text-left">
+                                            {{ item.name }}
+                                        </td>
+                                        <td class="text-center">
+                                            {{ item.time }}
+                                        </td>
+                                        <td class="text-center">
+                                            {{ item.phone }}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </template>
+                        </v-table>
+                    </div>
                 </v-card>
             </v-col>
         </v-row>
@@ -298,13 +305,24 @@
 <!-- ============================================================================================================================= -->
 
 <script setup>
+import { computed } from "vue";
 import DataBar from "@/components/UI/DashboardCharts/barChart.vue";
 import MoneyAccountChart from "@/components/UI/DashboardCharts/MoneyAccountChart.vue";
 import TotalPayment from "@/components/UI/DashboardCharts/TotalPayment.vue";
 import AppBar from "../../components/AppBar.vue";
+import { useI18n } from "vue-i18n";
+const { t, locale } = useI18n();
+
+// direction
+const dir = computed(() => {
+    return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
+});
 
 import { useDashboardRepository } from "@/store/DashboardRepository";
+import { useAuthRepository } from "@/store/AuthRepository";
+const AuthRepository = useAuthRepository();
 import { onMounted, ref } from "vue";
+import { use } from "echarts";
 
 let DashboardRepository = useDashboardRepository();
 

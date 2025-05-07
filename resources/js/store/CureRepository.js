@@ -18,20 +18,23 @@ export let useCureRepository = defineStore("CureRepository", {
             selectedItems: ref([]),
             itemsPerPage: ref(5),
             createDialog: ref(false),
-            ShowCurePaymentDialog:ref(false),
-            cureId:ref(''),
-            paymentId:ref(''),
+            ShowCurePaymentDialog: ref(false),
+            cureId: ref(""),
+            peopleId: ref(""),
+            paymentId: ref(""),
             services: [],
-            
+
             // lead
             cures: reactive([]),
             cure: reactive([]),
             leadSearch: ref(""),
             patientsFor: reactive([]),
-            doctorFor:reactive([]),
+            doctorFor: reactive([]),
             searchFetch: reactive([]),
             cureProduct: reactive([]),
-            leadStageFor:reactive([]),
+            leadStageFor: reactive([]),
+            // money account
+            account: reactive([]),
         };
     },
     actions: {
@@ -68,22 +71,22 @@ export let useCureRepository = defineStore("CureRepository", {
         //         // Fetch product data from the backend
         //         const response = await axios.get(`services/${id}`);
         //         const productData = response.data.data;
-        
+
         //         // // If updating, remove the `id` field to avoid duplication issues
         //         // if (isUpdate) {
         //         //     delete productData.id;
         //         // }
-        
+
         //         // Check if the product already exists in the services array
         //         const exists = this.services.some(item => item.id === productData.id);
         //         if (!exists) {
-                  
+
         //             this.services.push(productData);
         //             this.cure.servicesDetails.push(productData);
         //         } else {
         //             console.warn(`Product with ID ${productData.id} already exists.`);
         //         }
-        
+
         //         // Clear the search results after processing
         //         this.searchFetch = [];
         //     } catch (error) {
@@ -94,37 +97,40 @@ export let useCureRepository = defineStore("CureRepository", {
             try {
                 const response = await axios.get(`services/${id}`);
                 const productData = response.data.data;
-        
+
                 if (isUpdate) delete productData.id;
-        
+
                 // Only add if it doesn’t already exist
-                if (!this.services.some(item => item.id === productData.id)) {
+                if (!this.services.some((item) => item.id === productData.id)) {
                     this.services.push(productData);
                     // this.cure.services.push(productData);
                     // this.billExpense.expenseDetails.push(productData);
                 }
-        
+
                 console.log(response.data.data, "fetchProduct");
-        
+
                 // Avoid duplication in `cureProduct`
-                if (!this.cureProduct.some((item) => item.id === productData.id)) {
+                if (
+                    !this.cureProduct.some((item) => item.id === productData.id)
+                ) {
                     this.cureProduct.push(productData);
                 }
-        
+
                 // Avoid duplication in `servicesDetails`
-                if (!this.cure.servicesDetails.some((item) => item.id === productData.id)) {
+                if (
+                    !this.cure.servicesDetails.some(
+                        (item) => item.id === productData.id
+                    )
+                ) {
                     this.cure.servicesDetails.push(productData);
                 }
-                
-        
+
                 // Clear search results
                 this.searchFetch = [];
             } catch (error) {
                 console.error("Error fetching product:", error);
             }
-        }
-,        
-        
+        },
         async Patients() {
             const response = await axios.get("peoples?type=patient");
             this.patientsFor = response.data.data;
@@ -171,24 +177,27 @@ export let useCureRepository = defineStore("CureRepository", {
         //         this.error = err;
         //     }
         // },
-       
+
         async FetchCure(id) {
             try {
                 const response = await axios.get(`cures/${id}`);
                 this.cure = response.data.data;
-                this.cureProduct = response.data.data.servicesDetails
-                this.cureProduct = this.cureProduct.map((data)=>{
-                    return{...data, name:data.cureProduct.serviceName || data.cureProduct.name}
-                })
+                this.cureProduct = response.data.data.servicesDetails;
+                // this.cureProduct = this.cureProduct.map((data) => {
+                //     return {
+                //         ...data,
+                //         name:
+                //             data.cureProduct.serviceName ||
+                //             data.cureProduct.name,
+                //     };
+                // });
                 console.log(this.cure, "fetch cure");
                 console.log(this.servicesDetails, "services in the fetch cure");
                 console.log(this.cureProduct, "services in the fetchProduct");
             } catch (err) {
                 console.error("Error fetching cure:", err);
             }
-        }
-,        
-        
+        },
         async CreateCure(formData) {
             console.log(formData);
             try {
@@ -198,7 +207,7 @@ export let useCureRepository = defineStore("CureRepository", {
                     data: formData,
                 };
                 const response = await axios(config);
-               this.router.push("/cure")
+                this.router.push("/cure");
                 this.FetchCures({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
@@ -216,7 +225,7 @@ export let useCureRepository = defineStore("CureRepository", {
                     data: formData,
                 };
                 const response = await axios(config);
-                
+
                 this.router.push("/cure");
                 this.FetchCures({
                     page: this.page,
@@ -250,7 +259,6 @@ export let useCureRepository = defineStore("CureRepository", {
                     data: formData,
                 };
                 const response = await axios(config);
-             
             } catch (err) {
                 this.error = err;
             }
@@ -260,9 +268,7 @@ export let useCureRepository = defineStore("CureRepository", {
         async FetchCurePayments(id) {
             this.loading = true;
 
-            const response = await axios.get(
-                `curePayments?cure=${id}`
-            );
+            const response = await axios.get(`curePayments?cure=${id}`);
             this.curePayments = response.data.data;
             console.log(this.curePayments, "this is the data i want ");
 
@@ -286,7 +292,7 @@ export let useCureRepository = defineStore("CureRepository", {
                 // Adding a custom header to the Axios request
                 const config = {
                     method: "POST",
-                    url: "curePayments",
+                    url: "generatePaySlip",
 
                     data: formData,
                 };
@@ -319,7 +325,7 @@ export let useCureRepository = defineStore("CureRepository", {
                 const response = await axios(config);
                 this.updateDialog = false;
 
-                console.log(this.cureId)
+                console.log(this.cureId);
                 this.FetchCurePayments(this.cureId);
                 this.FetchCures({
                     page: this.page,
@@ -336,7 +342,7 @@ export let useCureRepository = defineStore("CureRepository", {
             // this.Expenses = [];
             this.error = null;
 
-            console.log(id, 'payment id')
+            console.log(id, "payment id");
             try {
                 const config = {
                     method: "DELETE",
@@ -354,7 +360,11 @@ export let useCureRepository = defineStore("CureRepository", {
                 this.error = err;
             }
         },
-
-
+        // part for the change account
+        async fetchAccountDataForCreate() {
+            const response = await axios.get("/moneyAccount");
+            this.account = response.data.data;
+            console.log(this.account);
+        },
     },
 });

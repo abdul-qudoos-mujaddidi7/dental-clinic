@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Lead;
 use Illuminate\Foundation\Http\FormRequest;
 
 class LeadRequest extends FormRequest
@@ -14,11 +15,14 @@ class LeadRequest extends FormRequest
         return true;
     }
 
-    public function prePareForValidation()
+    /**
+     * Prepare the data for validation.
+     */
+    protected function prepareForValidation()
     {
-        return $this->merge([
-            "category_id" => $this->input("categoryId"),
-            "stage_id"=> $this->input("stageId"),
+        $this->merge([
+            Lead::COLUMN_CATEGORY_ID => $this->input('categoryId'),
+            Lead::COLUMN_STAGE_ID => $this->input('stageId'),
         ]);
     }
 
@@ -30,14 +34,14 @@ class LeadRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string',
-            'phone' => 'required|string|max:15',
-            'gender' => 'required|in:Male,Female',
-            'address' => 'nullable|string|max:255',
-            'date' => 'required|date',
-            'category_id' => 'required', 
-            'stage_id' => 'required',
-            'note' => 'nullable|string',
+            Lead::COLUMN_NAME => 'required|string',
+            Lead::COLUMN_PHONE => 'required|string|max:15',
+            Lead::COLUMN_GENDER => 'required|in:Male,Female',
+            Lead::COLUMN_ADDRESS => 'nullable|string|max:255',
+            Lead::COLUMN_DATE => 'required|date',
+            Lead::COLUMN_CATEGORY_ID => 'required',
+            Lead::COLUMN_STAGE_ID => 'required',
+            Lead::COLUMN_NOTE => 'nullable|string',
         ];
     }
 }

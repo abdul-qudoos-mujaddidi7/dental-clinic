@@ -6,6 +6,7 @@ use App\Models\BillExpense;
 use App\Models\CurePayment;
 use App\Models\Expense;
 use App\Models\Patient;
+use App\Models\People;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -102,16 +103,15 @@ class DashboardController extends Controller
 
 
         // Count new patients added today
-        $newPatients = Patient::whereDay('created_at', $today)->count();
-
+        $newPatients = People::where('type', 'patient')->whereDay('created_at', $today)->count();
         // Total number of patients
-        $totalPatients = Patient::count();
+        $totalPatients = People::where('type', 'patient')->count();
 
         $dailyExpenses = DB::table('expenses')
             ->join('expense_categories', 'expenses.expense_category_id', '=', 'expense_categories.id')
             ->selectRaw('expense_categories.name as categoryName, SUM(expenses.amount) as totalExpense, 
          (SUM(expenses.amount) / (SELECT SUM(amount) FROM expenses WHERE DATE(created_at) = ?)) * 100 as percentage', [$today])
-            ->whereDate('expenses.created_at', $today)
+            ->whereDate('expenses.date', $today)
             ->groupBy('expense_categories.name')
             ->orderBy('totalExpense', 'desc')
             ->get();
@@ -122,7 +122,7 @@ class DashboardController extends Controller
             ->selectRaw('expense_categories.name as categoryName, SUM(expenses.amount) as totalExpense, 
          (SUM(expenses.amount) / (SELECT SUM(amount) FROM expenses WHERE YEAR(created_at) = ? AND created_at BETWEEN ? AND ?)) * 100 as percentage', [now()->year, $startOfMonth, $endOfMonth])
             ->whereYear('expenses.created_at', now()->year)
-            ->whereBetween('expenses.created_at', [$startOfMonth, $endOfMonth])
+            ->whereBetween('expenses.date', [$startOfMonth, $endOfMonth])
             ->groupBy('expense_categories.name')
             ->orderBy('totalExpense', 'desc')
             ->get();
@@ -132,19 +132,20 @@ class DashboardController extends Controller
             ->join('expense_categories', 'expenses.expense_category_id', '=', 'expense_categories.id')
             ->selectRaw('expense_categories.name as categoryName, SUM(expenses.amount) as totalExpense, 
          (SUM(expenses.amount) / (SELECT SUM(amount) FROM expenses WHERE YEAR(created_at) = ?)) * 100 as percentage', [$currentYear])
-            ->whereYear('expenses.created_at', $currentYear)
+            ->whereYear('expenses.date', $currentYear)
             ->groupBy('expense_categories.name')
             ->orderBy('totalExpense', 'desc')
             ->get();
 
         // Upcoming Appointments
         $upcomingAppointments = DB::table('appointments')
-            ->join('patients', 'appointments.patient_id', '=', 'patients.id') // Join with the patients table
-            ->select('patients.name', 'patients.phone', 'appointments.time') // Select the patient's name and appointment time
-            ->whereDate('appointments.created_at', $today) // Filter by today's date
-            ->orderBy('appointments.time', 'asc') // Order by appointment time
-            ->limit(5) // Limit to 5 appointments
+            ->join('people', 'appointments.patient_id', '=', 'people.id')
+            ->select('people.name', 'people.phone', DB::raw('TIME(appointments.date_time) as time'))
+            ->whereDate('appointments.date_time', $today)
+            ->orderBy('time', 'asc')
+            ->limit(5) 
             ->get();
+
 
         $everyMonthExpenses = [];
         $everyMonthIncomes = []; // Array to hold monthly data

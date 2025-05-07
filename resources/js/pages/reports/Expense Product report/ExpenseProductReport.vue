@@ -1,6 +1,6 @@
 <template>
     <CreatePatients v-if="ReportRepository.createDialog" />
-    <div class="all-expense rounded-xl">
+    <div class="all-expense rounded-xl" :dir="dir">
         <div class="card rounded-xl">
             <AppBar mainTitle="Owner Pickups" sub-title="people" />
             <v-divider
@@ -16,7 +16,7 @@
                         color="primaryOld"
                         density="compact"
                         variant="outlined"
-                        label="Search ..."
+                        :label="$t('search')"
                         append-inner-icon="mdi-magnify"
                         hide-details
                         v-model="ReportRepository.expenseProductReportSearch"
@@ -37,6 +37,7 @@
                         <v-row>
                             <v-col>
                                 <v-data-table-server
+                                :dir="dir"
                                     theme="cursor-pointer"
                                     v-model:items-per-page="
                                         ReportRepository.itemsPerPage
@@ -68,19 +69,29 @@
 </template>
 
 <script setup>
-import { ref, onMounted,reactive, watch } from "vue";
+import { ref, onMounted,reactive, watch,computed } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 import { useReportRepository } from "@/store/ReportRepository";
 const ReportRepository = useReportRepository();
 import DatePicker from "vue-datepicker-next";
 import "vue-datepicker-next/index.css";
+import { useI18n } from "vue-i18n";
+const { t,locale } = useI18n();
 const productDateRange = ref([new Date(), new Date()]);
+
+// direction
+const dir = computed(() => {
+    return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
+});
 
 
 const onDateChange = () => {
-    const [startDate, endDate] = ReportRepository.productDateRange;
+    console.log('called');
+
+    const startDate = ReportRepository.productDateRange[0];
+    const endDate = ReportRepository.productDateRange[1];
     if (startDate && endDate) {
-        ReportRepository.fetchExpenseProductReports(startDate, endDate);
+        ReportRepository.fetchExpenseProductReports( { page: 1, itemsPerPage: 10 },startDate, endDate);
     }
 };
 
@@ -97,6 +108,7 @@ watch(
 onMounted(() => {
     ReportRepository.productDateRange = productDateRange.value;
     ReportRepository.fetchExpenseProductReports(
+        { page: 1, itemsPerPage: 10 },
         productDateRange.value[0],
         productDateRange.value[1]
     );
@@ -104,9 +116,9 @@ onMounted(() => {
 });
 // header
 const headers = [
-    { title: "Category Name", key: "name", align: "start", sortable: false },
+    { title: t("categoryName"), key: "name", align: "start", sortable: false },
     {
-        title: "Total Amount",
+        title: t("totalAmount"),
         key: "totalAmount",
         align: "start",
         sortable: false,

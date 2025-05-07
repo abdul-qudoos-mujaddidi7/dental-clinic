@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\People;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,26 +12,29 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('people', function (Blueprint $table) {
+        Schema::create((new People())->getTable(), function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('phone');
-            $table->string('email')->nullable()->unique();
-            $table->string('address')->nullable();
-            $table->enum('type', ['patient', 'dentist', 'supplier', 'owner']);
-            
+            $table->string(People::COLUMN_NAME);
+            $table->string(People::COLUMN_PHONE)->nullable();
+            $table->string(People::COLUMN_EMAIL)->nullable()->unique();
+            $table->string(People::COLUMN_ADDRESS)->nullable();
+            $table->enum(People::COLUMN_TYPE, ['patient', 'dentist', 'supplier', 'owner', 'employee', 'customer']);
+
             // Fields specific to patients
-            $table->date('date_of_birth')->nullable();
-            $table->enum('gender', ['Male', 'Female'])->nullable();
-            $table->json('medical_record')->nullable();
-            $table->json('dental_record')->nullable();
-            
+            $table->date(People::COLUMN_DATE_OF_BIRTH)->nullable();
+            $table->enum(People::COLUMN_GENDER, ['Male', 'Female'])->nullable();
+            $table->json(People::COLUMN_MEDICAL_RECORD)->nullable();
+            $table->json(People::COLUMN_DENTAL_RECORD)->nullable();
+
             // Fields specific to dentists
-            $table->boolean('status')->nullable();
-            // $table->string('image')->nullable();
+            // $table->boolean(People::COLUMN_STATUS)->nullable();
 
             // Fields specific to owners
-            $table->decimal('share', 10, 2)->nullable();
+            // $table->decimal(People::COLUMN_SHARE, 10, 2)->nullable();
+
+            // Fields specific to employees
+            $table->decimal(People::COLUMN_SALARY, 10, 2)->nullable();
+            $table->string(People::COLUMN_POSITION)->nullable();
 
             $table->timestamps();
         });
@@ -41,6 +45,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('people');
+        Schema::dropIfExists((new People())->getTable());
     }
 };

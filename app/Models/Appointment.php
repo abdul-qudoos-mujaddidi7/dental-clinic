@@ -8,31 +8,60 @@ use Illuminate\Database\Eloquent\Model;
 class Appointment extends Model
 {
     use HasFactory;
+
+    private $model = Appointment::class;
+
+    // Define constants for column names
+    const COLUMN_DATETIME = 'date_time';
+    const COLUMN_STATUS = 'status';
+    const COLUMN_DENTIST_ID = 'dentist_id';
+    const COLUMN_USER_ID = 'user_id';
+    const COLUMN_PATIENT_ID = 'patient_id';
+
+
     protected $fillable = [
-        'date',
-        'time',
-        'status',
-        'dentist_id', // Make sure to use the foreign key
-        'user_id',    // Make sure to use the foreign key
-        'patient_id', // Make sure to use the foreign key
+        self::COLUMN_DATETIME,
+        self::COLUMN_STATUS,
+        self::COLUMN_DENTIST_ID,
+        self::COLUMN_USER_ID,
+        self::COLUMN_PATIENT_ID,
     ];
 
-    public function user(){
+    /**
+     * Relationship with User.
+     */
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function patient(){
-        return $this->belongsTo(Patient::class);
-    }
-    public function dentist(){
-        return $this->belongsTo(Dentist::class);
+    /**
+     * Relationship with Patient.
+     */
+    public function patient()
+    {
+        return $this->belongsTo(People::class, self::COLUMN_PATIENT_ID);
     }
 
-    public function scopeSearch($query, $search){
-        if(!$search ){
-            return $query;
-        }
-        $search = trim($search);
-        $query->where('','LIKE','%'.$search.'%');
+    /**
+     * Relationship with Dentist.
+     */
+    public function dentist()
+    {
+        return $this->belongsTo(People::class, self::COLUMN_DENTIST_ID);
     }
+
+    /**
+     * Scope to search appointments.
+     */
+    // public function scopeSearch($query, $search)
+    // {
+    //     if (!$search) {
+    //         return $query;
+    //     }
+    //     $search = trim($search);
+    //     return $query->where(self::COLUMN_DATE, 'LIKE', '%' . $search . '%')
+    //                  ->orWhere(self::COLUMN_TIME, 'LIKE', '%' . $search . '%')
+    //                  ->orWhere(self::COLUMN_STATUS, 'LIKE', '%' . $search . '%');
+    // }
 }

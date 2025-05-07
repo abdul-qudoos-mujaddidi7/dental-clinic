@@ -1,9 +1,9 @@
 <template>
-    <CurePyament v-if="CureRepository.createDialog"/>
-    <ShowCurePayment v-if="CureRepository.ShowCurePaymentDialog"/>
-    <div class="all-expense rounded-xl">
+    <CurePyament v-if="CureRepository.createDialog" />
+    <ShowCurePayment v-if="CureRepository.ShowCurePaymentDialog" />
+    <div class="all-expense rounded-xl" :dir="dir">
         <div class="card rounded-xl">
-            <AppBar mainTitle="Cure Cycle" sub-title="cure Cycle" />
+            <AppBar :mainTitle="$t('cureCycle')" :sub-title="$t('cureCycle')" />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
@@ -17,7 +17,7 @@
                         color="primaryOld"
                         density="compact"
                         variant="outlined"
-                        label="Search ..."
+                        :label="$t('search')"
                         append-inner-icon="mdi-magnify"
                         hide-details
                         v-model="CureRepository.curesSearch"
@@ -25,14 +25,14 @@
                 </div>
                 <div class="btn">
                     <v-btn variant="outlined" color="primaryOld" class="px-6">
-                        Filter
+                        {{ $t("filter") }}
                     </v-btn>
                     &nbsp;
                     <router-link to="/createCure">
                         <v-btn
                             color="primaryOld"
                             variant="flat"
-                            text="Create"
+                            :text="$t('create')"
                             class="px-6"
                         >
                         </v-btn>
@@ -46,6 +46,7 @@
                         <v-row>
                             <v-col>
                                 <v-data-table-server
+                                    :dir="dir"
                                     theme="cursor-pointer"
                                     v-model:items-per-page="
                                         CureRepository.itemsPerPage
@@ -82,20 +83,15 @@
                                             {{ item.paymentStatus }}
                                         </span>
                                     </template>
-                                    <template v-slot:item.due="{item}">
-                                        <span class="text-[#E54141]">{{item.due}}</span>
-
+                                    <template v-slot:item.due="{ item }">
+                                        <span class="text-[#E54141]">{{
+                                            item.due
+                                        }}</span>
                                     </template>
 
-                                    <template
-                                        v-slot:item.status="{ item }"
-                                    >
+                                    <template v-slot:item.status="{ item }">
                                         <span
-                                            :class="
-                                                getStatusClass(
-                                                    item.status
-                                                )
-                                            "
+                                            :class="getStatusClass(item.status)"
                                         >
                                             {{ item.status }}
                                         </span>
@@ -117,7 +113,7 @@
                                                         class="cursor-pointer d-flex gap-3 justify-left pb-3"
                                                         @click="
                                                             CreateDialogShow(
-                                                                item.id
+                                                                item
                                                             )
                                                         "
                                                     >
@@ -156,7 +152,23 @@
                                                                 color="tealColor"
                                                                 >mdi-square-edit-outline</v-icon
                                                             >
-                                                            Edit
+                                                            {{ $t("edit") }}
+                                                        </v-list-item-title>
+                                                    </router-link>
+                                                    <router-link
+                                                        :to="
+                                                            '/viewCureCycle/' +
+                                                            item.id
+                                                        "
+                                                    >
+                                                        <v-list-item-title
+                                                            class="cursor-pointer d-flex gap-3 justify-left pb-3"
+                                                        >
+                                                            <v-icon
+                                                                color="tealColor"
+                                                                >mdi-square-edit-outline</v-icon
+                                                            >
+                                                            {{ $t("show") }}
                                                         </v-list-item-title>
                                                     </router-link>
 
@@ -169,7 +181,7 @@
                                                         <v-icon color="error"
                                                             >mdi-delete-outline</v-icon
                                                         >
-                                                        Delete
+                                                        {{ $t("delete") }}
                                                     </v-list-item-title>
                                                 </v-list-item>
                                             </v-list>
@@ -195,13 +207,18 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 import CurePyament from "../cure payment/CurePyament.vue";
 import ShowCurePayment from "../cure payment/ShowCurePayment.vue";
-
+import { useI18n } from "vue-i18n";
+const { t, locale } = useI18n();
 import { useCureRepository } from "@/store/CureRepository";
 const CureRepository = useCureRepository();
+
+const dir = computed(() => {
+    return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
+});
 // bulk delete
 const selectedIds = ref([]);
 const sendSelectedIds = () => {
@@ -221,8 +238,10 @@ const deleteItem = async (item) => {
     await CureRepository.DeleteCure(item.id);
 };
 // create payment
-const CreateDialogShow = (id) => {
-    CureRepository.cureId = id;
+const CreateDialogShow = (item) => {
+    console.log(item, "this is what i want ", );
+    CureRepository.cureId = item.id;
+    CureRepository.peopleId = item.patientId;
 
     CureRepository.curePayment = {};
     CureRepository.setEditMode(false);
@@ -246,52 +265,67 @@ const ViewPaymentDialog = (item) => {
         });
     // }
 };
-// change the color 
+// change the color
 function getPaymentStatusClass(status) {
-  const statusClasses = {
-    DUE: 'text-[#E54141]  font-bold',
-    PAID: 'text-[#00893F] font-bold',
-    PARTIAL: 'text-[#EC942C] font-bold',
-  };
-  return statusClasses[status] || 'text-[#000000]'; // Default fallback
+    const statusClasses = {
+        DUE: "text-[#E54141]  font-bold",
+        PAID: "text-[#00893F] font-bold",
+        PARTIAL: "text-[#EC942C] font-bold",
+    };
+    return statusClasses[status] || "text-[#000000]"; // Default fallback
 }
 function getStatusClass(state) {
-  const status = {
-    completed: 'text-[#E54141]  font-bold',
-    ongoing: 'text-[#00893F] font-bold',
-    new: 'text-[#EC942C] font-bold',
-  };
-  return status[state] || 'text-[#000000]'; // Default fallback
+    const status = {
+        completed: "text-[#E54141]  font-bold",
+        ongoing: "text-[#00893F] font-bold",
+        new: "text-[#EC942C] font-bold",
+    };
+    return status[state] || "text-[#000000]"; // Default fallback
 }
 // header
 const headers = [
     { title: "", key: "checkbox", align: "start", sortable: false },
-    { title: "Reference", key: "reference", align: "start", sortable: false },
-    { title: "Date", key: "start_date", align: "start", sortable: false },
-    { title: "Doctor", key: "dentist.name", align: "start", sortable: false },
-    { title: "patient", key: "patient.name", align: "center", sortable: false },
     {
-        title: "CURE STATUS",
+        title: t("reference"),
+        key: "reference",
+        align: "center",
+        sortable: false,
+    },
+    { title: t("date"), key: "start_date", align: "start", sortable: false },
+    {
+        title: t("doctor"),
+        key: "dentist.name",
+        align: "start",
+        sortable: false,
+    },
+    {
+        title: t("patient"),
+        key: "patient.name",
+        align: "center",
+        sortable: false,
+    },
+    {
+        title: t("status"),
         key: "status",
         align: "center",
         sortable: false,
     },
     {
-        title: "Grand total",
+        title: t("grandTotal"),
         key: "grand_total",
         align: "center",
         sortable: false,
     },
-    { title: "PAID", key: "paid", align: "center", sortable: false },
-    { title: "DUE", key: "due", align: "center", sortable: false },
+    { title: t("paid"), key: "paid", align: "center", sortable: false },
+    { title: t("due"), key: "due", align: "center", sortable: false },
     {
-        title: "Payment Status",
+        title: t("paymentStatus"),
         key: "paymentStatus",
         align: "center",
         sortable: false,
     },
 
-    { title: "Action", key: "action", align: "center", sortable: false },
+    { title: t("action"), key: "action", align: "center", sortable: false },
 ];
 </script>
 

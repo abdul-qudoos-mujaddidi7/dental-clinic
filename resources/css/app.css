@@ -8,10 +8,7 @@
 
 div.v-data-table-footer
 {
-    position: absolute;
-    top: 66%;
-    bottom: 100%;
-    width: 100%;
+    
     display: flex;
     justify-content: space-between;
 }
@@ -23,29 +20,64 @@ div.v-data-table-footer
 body{
     background-color: #F8F8F8;
     
-    /* font-family: 'Work Sans', sans-serif; */
-    
+    /* font-family: 'Work Sans', sans-serif; */ 
 }
 .v-table > :nth-child(1) > :nth-child(1) > :nth-child(1) > tr {
     background-color: #ECF1F4;
     border-left: 4px solid #F4D03F;
     border-bottom: 4px solid #ffff;
     border-width: 4px;
-    border-right: none;
     border-top: none;
+    border-right: none;
+
 }
 
-.v-table > :nth-child(1) > :nth-child(1) > :nth-child(2) > tr {
-    border-left: 4px solid #F4D03F;
+.v-data-table__tr {
+    border-bottom: 4px solid #ffff;
+    border-left: 4px solid #F4D03F !important;
+    border-right: none;
+    border-width: 4px;
+    
+}
+[dir="rtl"] .v-data-table__tr {
+    border-bottom: 4px solid #ffff;
+    border-right: 4px solid #F4D03F !important;
+    border-left: none !important;
+    border-width: 4px;
+    
+}
+[dir="rtl"].v-table > :nth-child(1) > :nth-child(1) > :nth-child(1) > tr {
+    background-color: #ECF1F4;
+    border-right: 4px solid #F4D03F !important;
+    border-left: none;
     border-bottom: 4px solid #ffff;
     border-width: 4px;
-    border-right: none;
     border-top: none;
+
 }
-.span {
+
+
+
+
+div.v-data-table-footer 
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+[dir="rtl"] div.v-data-table-footer 
+{
+    display: flex;
+    flex-direction: row-reverse;
+    direction: ltr;
+}
+
+.span{
     background-color: #ecf1f4;
     position: absolute;
-    right: 0px; 
+    right: 0px;
+     
     top: 100%;
     transform: translateY(-100%);
     padding: .4rem 0rem 0rem .2rem;
@@ -53,8 +85,29 @@ body{
     height: 2.5rem;
 }
 
+.paidSpan {
+    background-color: #ecf1f4;
+    position: absolute;
+    right: 0px;
+     
+    top: 100%;
+    transform: translateY(-100%);
+    padding: .4rem 0rem 0rem .2rem;
+    width: 8rem;
+    height: 2.5rem;
+}
+
 .styleBTN {
     border: 1px solid #00893f;
     display: flex;
     flex-wrap: nowrap;
+}
+.v-navigation-drawer__content {
+    flex: 0 1 auto;
+    height: 100%;
+    max-width: 100%;
+    /* overflow-x: hidden; */
+    overflow-y: hidden !important;
+
+    
 }

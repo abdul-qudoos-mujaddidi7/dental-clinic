@@ -18,7 +18,7 @@ class SystemSettingSeeder extends Seeder
             'name' => 'Health Solutions Ltd.',
             'email' => 'info@healthsolution.com',
             'phone' => '0987654321',
-            'logo' => "images/company/jawad.jpg",
+            'image' => "images/company/jawad.jpg",
             'address' => '456 Wellness Street, New York, NY',
 
         ]);

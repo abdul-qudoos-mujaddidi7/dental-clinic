@@ -19,13 +19,16 @@ class PeopleResource extends JsonResource
             'email' => $this->email,
             'address' => $this->address,
             'type' => $this->type,
-            'date_of_birth' => $this->date_of_birth,
+            'dateOfBirth' => now()->diffInYears($this->date_of_birth),
             'gender' => $this->gender,
             'medicalRecord' => $this->medical_record,
             'dentalRecord' => $this->dental_record,
             'status' => $this->status,
+            'salary' => $this->salary,
+            'position' => $this->position,
             'image' => $this->image,
             'share' => $this->share,
         ];
     }
 }
+

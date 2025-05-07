@@ -73,6 +73,7 @@ const formData = reactive({
     name: SettingRepository.serviceGroup.firstName,
     description: SettingRepository.serviceGroup.description,
     serviceId:1,
+
 });
 const rules = {
     required: (value) => !!value || "This field is required.",

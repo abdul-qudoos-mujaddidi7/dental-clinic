@@ -2,30 +2,35 @@
     <CReateExpensePRoduct v-if="CureRepository.createDialog" />
     <div class="all-expense rounded-xl m-4">
         <div class="card rounded-xl bg-white" rtl>
-            <AppBar mainTitle="Create Cure Cycle" subTitle="cure cycle" />
+            <AppBar
+                :mainTitle="$t('CreateCureCycle')"
+                :subTitle="$t('cureCycle')"
+            />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
                 color="success"
             ></v-divider>
             <v-form ref="formRef" class="d-flex pt-12">
-                <v-text-field
-                    type="date"
-                    v-model="formData.startDate"
-                    variant="outlined"
-                    label="Date *"
-                    class="pr-2"
-                    style="width: 45%"
-                    color="#d3e2f8"
-                    density="compact"
-                ></v-text-field>
+                <div class="pb-4 w-50 pr-2">
+                    <date-picker
+                        mode="single"
+                        :column="1"
+                        v-model="formData.startDate"
+                        :styles="styles"
+                        locale="fa"
+                        type="date"
+                        format="jYYYY/jMM/jDD"
+                        :locale-config="LocaleConfigs"
+                    />
+                </div>
 
                 <v-autocomplete
-                v-model="formData.patientId"
+                    v-model="formData.patientId"
                     :items="CureRepository.patientsFor"
                     :return-object="false"
                     variant="outlined"
-                    label="Patient *"
+                    :label="$t('patient')"
                     class="pr-2 pl-2"
                     style="width: 45%"
                     item-value="id"
@@ -33,13 +38,13 @@
                     density="compact"
                     :rules="[rules.required]"
                 ></v-autocomplete>
-                
+
                 <v-autocomplete
-                v-model="formData.dentistId"
+                    v-model="formData.dentistId"
                     :items="CureRepository.doctorFor"
                     :return-object="false"
                     variant="outlined"
-                    label="Doctor *"
+                    :label="$t('doctor')"
                     class="pr-2 pl-2"
                     style="width: 45%"
                     item-value="id"
@@ -48,11 +53,11 @@
                     :rules="[rules.required]"
                 ></v-autocomplete>
                 <v-autocomplete
-                v-model="formData.status"
+                    v-model="formData.status"
                     :items="CureRepository.leadStageFor"
                     :return-object="false"
                     variant="outlined"
-                    label="Status *"
+                    :label="$t('status')"
                     class="pr-2 pl-2"
                     style="width: 45%"
                     item-value="name"
@@ -60,7 +65,6 @@
                     density="compact"
                     :rules="[rules.required]"
                 ></v-autocomplete>
-            
             </v-form>
             <v-divider></v-divider>
             <v-row no-gutters class="justify-space-between mt-16">
@@ -72,7 +76,7 @@
                             @input="CureRepository.SearchFetchData"
                             @click:clear="clearSearch"
                             variant="outlined"
-                            label="Search Services"
+                            :label="$t('search')"
                             density="compact"
                             append-inner-icon="mdi-magnify"
                             clearable
@@ -108,31 +112,29 @@
                         <tr>
                             <th scope="col" class="px-3 py-3 text-start">#</th>
                             <th scope="col" class="px-3 py-3 text-start">
-                                Service
+                                {{ t("service") }}
                             </th>
                             <th scope="col" class="px-3 py-3 text-start">
-                                Qty
+                                {{ t("qty") }}
                             </th>
                             <th scope="col" class="px-3 py-3 text-start">
-                                Cost
+                                {{ t("cost") }}
                             </th>
                             <th scope="col" class="px-3 py-3 text-start">
-                                status
+                                {{ t("status") }}
                             </th>
                             <th scope="col" class="px-3 py-3 text-center">
-                                Sub Total
+                                {{ t("subTotal") }}
                             </th>
                             <th scope="col" class="px-3 py-3 text-end">
-                                Action
+                                {{ t("action") }}
                             </th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr
                             class="product-table"
-                            v-for="(
-                                pro, index
-                            ) in CureRepository.services"
+                            v-for="(pro, index) in CureRepository.services"
                             :key="index"
                         >
                             <td class="pl-3 text-start">
@@ -150,10 +152,8 @@
                                     density="compact"
                                     class="w-75"
                                 >
-                                   
                                 </v-text-field>
                             </td>
-                            
 
                             <td class="pt-2 pb-0 text-center w-[14rem]">
                                 <v-text-field
@@ -170,15 +170,13 @@
                             </td>
                             <td class="pt-2 text-center pb-0 w-[14rem]">
                                 <v-autocomplete
-                                :items="['complete', 'start']"
-                                v-model="pro.status"
-                                variant="outlined"
-                                density="compact"
+                                    :items="['complete', 'start']"
+                                    v-model="pro.status"
+                                    variant="outlined"
+                                    density="compact"
                                     class="w-75"
                                 >
-
                                 </v-autocomplete>
-
                             </td>
                             <td class="text-center">
                                 <span>{{ multiple(pro) }}</span>
@@ -204,17 +202,25 @@
                     class="flex justify-between w-[14rem] border-t-[.1rem] border-b-[.1rem] border-dashed border-[#C6C6C6] p-1 text-lg font-bold"
                 >
                     <span>{{ totalSum }}</span>
-                    <span>Total</span>
+                    <span>{{ t("total") }}</span>
                 </div>
 
-                <div>
+                <div class="w-[25rem]">
                     <v-text-field
                         v-model="formData.paid"
                         variant="outlined"
-                        label="Paid"
-                        type="number"
+                        :label="$t('paid')"
+                    
+                        class="w-100"
                         density="compact"
                     >
+                        <div @click="changeCurrency" style="cursor: pointer">
+                            <span class="paidSpan">
+                                {{ currenctAccountName.name }}
+                            </span>
+                        </div>
+                        {{ grandTotal }}
+
                     </v-text-field>
                 </div>
             </div>
@@ -223,14 +229,16 @@
                 <v-textarea
                     v-model="formData.description"
                     class="textArea"
-                    label="Details"
+                    :label="$t('details')"
                     variant="outlined"
                     density="compact"
                 >
                 </v-textarea>
             </div>
             <div class="d-flex flex-row-reverse mt-6">
-                <v-btn color="#112F53" @click="createEarning"> Submit</v-btn>
+                <v-btn color="#112F53" @click="createEarning">
+                    {{ t("submit") }}</v-btn
+                >
             </div>
         </div>
     </div>
@@ -239,8 +247,10 @@
 <script setup>
 import AppBar from "../../../components/AppBar.vue";
 import { reactive, computed, ref, watch, onMounted } from "vue";
-
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 import { useCureRepository } from "@/store/CureRepository";
+import { LocaleConfigs } from "../../../LocaleConfigs";
 
 const CureRepository = useCureRepository();
 const CalcFetchProduct = (index) => {
@@ -263,13 +273,13 @@ const createExpenseProduct = () => {
 };
 
 const formData = reactive({
-    services: CureRepository.services ||[],
+    services: CureRepository.services || [],
     grandTotal: "",
     patientId: "",
     startDate: "",
     description: "",
     paid: "",
-    status:"",
+    status: "",
 });
 const formRef = ref(null);
 const rules = {
@@ -334,11 +344,10 @@ const createEarning = async () => {
         // Reset other formData fields
         formData.grandTotal = "";
         formData.patientId = "";
-        formData.startDate = CureRepository.getTodaysDate(); // Reset to today's date
+        formData.startDate = ""; // Reset to today's date
         formData.description = "";
         formData.paid = "";
         formData.status = "";
-
 
         console.log("Form submitted and cleared successfully!");
     }
@@ -352,11 +361,42 @@ const deleteItem = async (item) => {
     await CureRepository.deleteEarning(item.id);
 };
 formData.startDate = CureRepository.getTodaysDate();
+// ===================
+const account = CureRepository.account.name;
+
+const accountIndex = ref(0);
+
+const currenctAccountName = computed(() => {
+    const accounts = CureRepository.account;
+
+    if (!accounts || accounts.length === 0) {
+        return { moneyAccountId: "...", id: null };
+    }
+
+    if (accountIndex.value >= accounts.length) {
+        accountIndex.value = 0;
+    }
+
+    formData.moneyAccountId = accounts[accountIndex.value].id;
+
+    return {
+        name: accounts[accountIndex.value].name,
+        id: accounts[accountIndex.value].id,
+    };
+});
+//====================================
+const changeCurrency = () => {
+    const accounts = CureRepository.account;
+    if (!accounts || accounts.length === 0) return;
+    accountIndex.value = (accountIndex.value + 1) % accounts.length;
+};
+CureRepository.fetchAccountDataForCreate();
 
 CureRepository.Patients();
 CureRepository.Doctor();
 CureRepository.leadStagesFor();
 // ====================
+// =====================================
 // =====================================
 </script>
 

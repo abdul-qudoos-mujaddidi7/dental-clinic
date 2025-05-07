@@ -1,8 +1,8 @@
 <template>
     <CreatePatients v-if="PeopleRepository.createDialog" />
-    <div class="all-expense rounded-xl">
+    <div class="all-expense rounded-xl" :dir="dir">
         <div class="card rounded-xl">
-            <AppBar mainTitle="Owner Pickups" sub-title="people" />
+            <AppBar :mainTitle="$t('patients')" :sub-title="$t('people')" />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
@@ -16,7 +16,7 @@
                         color="primaryOld"
                         density="compact"
                         variant="outlined"
-                        label="Search ..."
+                        :label="$t('search')"
                         append-inner-icon="mdi-magnify"
                         hide-details
                         v-model="PeopleRepository.patientSearch"
@@ -24,14 +24,14 @@
                 </div>
                 <div class="btn">
                     <v-btn variant="outlined" color="primaryOld" class="px-6">
-                        Filter
+                        {{ t("filter") }}
                     </v-btn>
                     &nbsp;
                     <v-btn
                         @click="CreateDialogShow"
                         color="primaryOld"
                         variant="flat"
-                        text="Create"
+                        :text="$t('create')"
                         class="px-6"
                     >
                     </v-btn>
@@ -44,6 +44,7 @@
                         <v-row>
                             <v-col>
                                 <v-data-table-server
+                                    :dir="dir"
                                     theme="cursor-pointer"
                                     v-model:items-per-page="
                                         PeopleRepository.itemsPerPage
@@ -81,8 +82,28 @@
                                                     variant="text"
                                                 ></v-btn>
                                             </template>
+                                            <!--  -->
                                             <v-list>
                                                 <v-list-item>
+                                                    <router-link
+                                                        :to="
+                                                            '/viewPatients/' +
+                                                            item.id
+                                                        "
+                                                    >
+                                                        <v-list-item-title
+                                                            @click="
+                                                                showId(item)
+                                                            "
+                                                            class="cursor-pointer d-flex gap-3 justify-left pb-3"
+                                                        >
+                                                            <v-icon
+                                                                color="tealColor"
+                                                                >mdi-eye-outline</v-icon
+                                                            >
+                                                            {{ t("view") }}
+                                                        </v-list-item-title>
+                                                    </router-link>
                                                     <v-list-item-title
                                                         @click="edit(item)"
                                                         class="cursor-pointer d-flex gap-3 justify-left pb-3"
@@ -91,7 +112,7 @@
                                                             color="tealColor"
                                                             >mdi-square-edit-outline</v-icon
                                                         >
-                                                        Edit
+                                                        {{ t("edit") }}
                                                     </v-list-item-title>
 
                                                     <v-list-item-title
@@ -103,7 +124,7 @@
                                                         <v-icon color="error"
                                                             >mdi-delete-outline</v-icon
                                                         >
-                                                        Delete
+                                                        {{ t("delete") }}
                                                     </v-list-item-title>
                                                 </v-list-item>
                                             </v-list>
@@ -129,11 +150,19 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 import CreatePatients from "./CreatePatients.vue";
+import { useI18n } from "vue-i18n";
+const { t, locale } = useI18n();
 import { usePeopleRepository } from "@/store/PeopleRepository";
 const PeopleRepository = usePeopleRepository();
+
+// direction
+const dir = computed(() => {
+    return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
+});
+
 // bulk delete
 const selectedIds = ref([]);
 const sendSelectedIds = () => {
@@ -149,10 +178,17 @@ const sendSelectedIds = () => {
         console.log("No IDs selected.");
     }
 };
+const showId = (item) => {
+    PeopleRepository.patientIdForView = item.id;
+    PeopleRepository.FetchPeopleAccounts(
+        { page: 1, itemsPerPage: 10 },
+        item.id
+    );
+};
 
 // delete and update Create
 const CreateDialogShow = () => {
-    PeopleRepository.isEditMode=false;
+    PeopleRepository.isEditMode = false;
     PeopleRepository.createDialog = true;
 };
 
@@ -177,10 +213,12 @@ const deleteItem = async (item) => {
 // header
 const headers = [
     { title: "", key: "checkbox", align: "start", sortable: false },
-    { title: "Name", key: "name", align: "start", sortable: false },
-    { title: "Phone", key: "phone", align: "start", sortable: false },
-    { title: "Address", key: "address", align: "start", sortable: false },
-    { title: "Action", key: "action", align: "center", sortable: false },
+    { title: t("name"), key: "name", align: "start", sortable: false },
+    { title: t("phone"), key: "phone", align: "start", sortable: false },
+    { title: t("address"), key: "address", align: "start", sortable: false },
+    { title: t("age"), key: "dateOfBirth", align: "center", sortable: false },
+    { title: t("gender"), key: "gender", align: "center", sortable: false },
+    { title: t("action"), key: "action", align: "center", sortable: false },
 ];
 </script>
 

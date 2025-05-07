@@ -12,10 +12,10 @@
                         class="px-2 pt-4 d-flex justify-space-between"
                     >
                         <h2 class="font-weight-bold pl-4">
-                            {{
+                             {{
                                 PeopleRepository.isEditMode
-                                    ? "Update"
-                                    : "Create"
+                                    ?t('update')
+                                    : t('create')
                             }}
                         </h2>
                         <v-btn variant="text" @click="isActive.value = false">
@@ -30,7 +30,7 @@
                                 <v-text-field
                                     v-model="formData.name"
                                     variant="outlined"
-                                    label="Name *"
+                    :label="$t('name')"
                                     class="pb-4"
                                     density="compact"
                                     :rules="[rules.required]"
@@ -41,7 +41,7 @@
                             <v-text-field
                                 v-model="formData.phone"
                                 variant="outlined"
-                                label="Phone *"
+                    :label="$t('phone')"
                                 density="compact"
                                 :counter="10"
                                 type="tel"
@@ -57,8 +57,8 @@
                         <v-btn color="#112F53" class="px-4" @click="save">
                             {{
                                 PeopleRepository.isEditMode
-                                    ? "Update"
-                                    : "Submit"
+                                    ?t('update')
+                                    : t('submit')
                             }}
                         </v-btn>
                     </div>
@@ -70,6 +70,8 @@
 
 <script setup>
 import { ref, reactive } from "vue";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 import { usePeopleRepository } from "@/store/PeopleRepository";
 
 const PeopleRepository = usePeopleRepository();

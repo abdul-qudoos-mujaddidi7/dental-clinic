@@ -1,6 +1,6 @@
 <template>
     <CreatePatients v-if="ReportRepository.createDialog" />
-    <div class="all-expense rounded-xl">
+    <div class="all-expense rounded-xl" :dir="dir">
         <div class="card rounded-xl">
             <AppBar mainTitle="patient report " sub-title="report" />
             <v-divider
@@ -16,7 +16,7 @@
                         color="primaryOld"
                         density="compact"
                         variant="outlined"
-                        label="Search ..."
+                        :label="$t('search')"
                         append-inner-icon="mdi-magnify"
                         hide-details
                         v-model="ReportRepository.patientReportSearch"
@@ -29,7 +29,6 @@
                         range
                     ></date-picker>
                 </div>
-           
             </div>
             <!-- v-table server  -->
             <div class="overflow-x-hidden">
@@ -38,6 +37,7 @@
                         <v-row>
                             <v-col>
                                 <v-data-table-server
+                               :dir="dir"
                                     theme="cursor-pointer"
                                     v-model:items-per-page="
                                         ReportRepository.itemsPerPage
@@ -67,20 +67,29 @@
 </template>
 
 <script setup>
-import { ref, onMounted,reactive, watch } from "vue";
+import { ref, onMounted, reactive, watch,computed } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 import { useReportRepository } from "@/store/ReportRepository";
+import { useI18n } from "vue-i18n";
+const { t,locale } = useI18n();
 const ReportRepository = useReportRepository();
+
+// direction
+const dir = computed(() => {
+    return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
+});
 
 import DatePicker from "vue-datepicker-next";
 import "vue-datepicker-next/index.css";
 const productDateRange = ref([new Date(), new Date()]);
 
-
 const onDateChange = () => {
-    const [startDate, endDate] = ReportRepository.productDateRange;
+    console.log("called");
+
+    const startDate = ReportRepository.productDateRange[0];
+    const endDate = ReportRepository.productDateRange[1];
     if (startDate && endDate) {
-        ReportRepository.fetchPatientsReports(startDate, endDate);
+        ReportRepository.fetchPatientsReports({ page: 1, itemsPerPage: 10 },startDate, endDate);
     }
 };
 
@@ -97,16 +106,22 @@ watch(
 onMounted(() => {
     ReportRepository.productDateRange = productDateRange.value;
     ReportRepository.fetchPatientsReports(
+        { page: 1, itemsPerPage: 10 },
+
         productDateRange.value[0],
         productDateRange.value[1]
     );
-    console.log(productDateRange.value[0], productDateRange.value[1], "service report");
+    console.log(
+        productDateRange.value[0],
+        productDateRange.value[1],
+        "service report"
+    );
 });
 // header
 const headers = [
-    { title: "Patients", key: "name", align: "start", sortable: false },
-    { title: "Phone", key: "phone", align: "start", sortable: false },
-    { title: "Address", key: "address", align: "start", sortable: false },
-    { title: "Due", key: "due", align: "center", sortable: false },
+    { title: t("patient"), key: "name", align: "start", sortable: false },
+    { title: t("phone"), key: "phone", align: "start", sortable: false },
+    { title: t("address"), key: "address", align: "start", sortable: false },
+    { title: t("due"), key: "due", align: "center", sortable: false },
 ];
 </script>

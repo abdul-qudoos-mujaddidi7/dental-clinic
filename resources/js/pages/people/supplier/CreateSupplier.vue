@@ -12,11 +12,7 @@
                         class="px-2 pt-4 d-flex justify-space-between"
                     >
                         <h2 class="font-weight-bold pl-4">
-                            {{
-                                PeopleRepository.isEditMode
-                                    ? "Update"
-                                    : "Create"
-                            }}
+                            {{ PeopleRepository.isEditMode ? $t("update") : $t("create") }}
                         </h2>
                         <v-btn variant="text" @click="isActive.value = false">
                             <v-icon>mdi-close</v-icon>
@@ -26,19 +22,36 @@
 
                     <v-card-text>
                         <v-form ref="formRef" class="pt-4">
-                            <v-text-field
-                                v-model="formData.name"
-                                variant="outlined"
-                                label="Name *"
-                                class="pb-4"
-                                density="compact"
-                                :rules="[rules.required]"
-                            ></v-text-field>
+                            <div class="w-100 flex">
+                                <v-text-field
+                                    v-model="formData.name"
+                                    variant="outlined"
+                                     :label="$t('name')"
+                                    class="pb-4 w-100"
+                                    density="compact"
+                                    :rules="[rules.required]"
+                                ></v-text-field>
+                                <!-- <v-autocomplete
+                                    v-model="formData.type"
+                                    :items="selectType"
+                                    :return-object="false"
+                                    variant="outlined"
+                                    :label="$t('type')"
+
+                                    class="pr-2 pl-2 pb-4 w-50"
+                                    style="width: 45%"
+                                    item-value="id"
+                                    item-title="name"
+                                    density="compact"
+                                    :rules="[rules.required]"
+                                ></v-autocomplete> -->
+                            </div>
 
                             <v-text-field
                                 v-model="formData.phone"
                                 variant="outlined"
-                                label="Phone *"
+                                :label="$t('phone')"
+
                                 density="compact"
                                 :counter="10"
                                 type="tel"
@@ -50,11 +63,7 @@
 
                     <div class="d-flex flex-row-reverse mb-6 mx-6">
                         <v-btn color="#112F53" class="px-4" @click="save">
-                            {{
-                                PeopleRepository.isEditMode
-                                    ? "Update"
-                                    : "Submit"
-                            }}
+                            {{ PeopleRepository.isEditMode ? $t("update") : $t("submit") }}
                         </v-btn>
                     </div>
                 </v-card>
@@ -66,10 +75,15 @@
 <script setup>
 import { ref, reactive } from "vue";
 import { usePeopleRepository } from "@/store/PeopleRepository";
+import Supplier from "./Supplier.vue";
 
 const PeopleRepository = usePeopleRepository();
 const formRef = ref(null);
 
+const selectType = [
+    { id: "supplier", name: "Supplier" },
+    { id: "customer", name: "Customer" },
+];
 const formData = reactive({
     id: PeopleRepository.supplier.id,
     name: PeopleRepository.supplier.name,
