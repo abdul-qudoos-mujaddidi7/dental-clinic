@@ -25,6 +25,10 @@
                 </v-list-item>
             </router-link>
             <v-list-item
+                v-if="
+                    AuthRepository.permissions &&
+                    AuthRepository.permissions.includes('viewLead')
+                "
                 active-class="bg-primaryOld text-white"
                 prepend-icon="mdi mdi-gauge"
                 value="lead"
@@ -54,6 +58,10 @@
             <!-- appointment -->
             <router-link to="appointments">
                 <v-list-item
+                v-if="
+                    AuthRepository.permissions &&
+                    AuthRepository.permissions.includes('viewAppointment')
+                "
                     @click="toggleMenu('appointment')"
                     active-class="bg-primaryOld text-white"
                     prepend-icon="mdi mdi-calendar-clock"
@@ -79,6 +87,10 @@
             <!-- main lab -->
             <router-link to="mainLaboratory">
                 <v-list-item
+                v-if="
+                    AuthRepository.permissions &&
+                    AuthRepository.permissions.includes('viewMainLab')
+                "
                     @click="toggleMenu('inboundLaboratory')"
                     active-class="bg-primaryOld text-white"
                     prepend-icon="mdi-microscope"
@@ -90,6 +102,10 @@
             </router-link>
             <router-link to="laboratory">
                 <v-list-item
+                v-if="
+                    AuthRepository.permissions &&
+                    AuthRepository.permissions.includes('viewLab')
+                "
                     @click="toggleMenu('outboundLaboratory')"
                     active-class="bg-primaryOld text-white"
                     prepend-icon="mdi-microscope"
@@ -101,6 +117,10 @@
             </router-link>
 
             <v-list-item
+            v-if="
+                    AuthRepository.permissions &&
+                    AuthRepository.permissions.includes('viewExpense')
+                "
                 active-class="bg-primaryOld text-white"
                 prepend-icon="mdi mdi-cash-marker"
                 value="expenses"
@@ -129,6 +149,10 @@
             </transition>
             <!-- people -->
             <v-list-item
+            v-if="
+                    AuthRepository.permissions &&
+                    AuthRepository.permissions.includes('viewPeople')
+                "
                 active-class="bg-primaryOld text-white"
                 prepend-icon="mdi mdi-card-account-details-outline"
                 value="people"
@@ -158,6 +182,10 @@
                 active-class="bg-primaryOld text-white"
                 prepend-icon="mdi-finance"
                 value="Reports"
+                v-if="
+                    AuthRepository.permissions &&
+                    AuthRepository.permissions.includes('viewReports')
+                "
                 @click="toggleMenu('reports')"
                 class="transition-all duration-300 cursor-pointer py-3 borderRadius"
             >
@@ -185,6 +213,10 @@
                 active-class="bg-primaryOld text-white"
                 prepend-icon="mdi-cog-outline"
                 value="Setting"
+                v-if="
+                    AuthRepository.permissions &&
+                    AuthRepository.permissions.includes('viewSetting')
+                "
                 @click="toggleMenu('setting')"
                 class="transition-all duration-300 cursor-pointer py-3 borderRadius"
             >

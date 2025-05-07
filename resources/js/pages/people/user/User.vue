@@ -44,7 +44,7 @@
                         <v-row>
                             <v-col>
                                 <v-data-table-server
-                                :dir="dir"
+                                    :dir="dir"
                                     theme="cursor-pointer"
                                     v-model:items-per-page="
                                         PeopleRepository.itemsPerPage
@@ -61,6 +61,54 @@
                                     hover
                                     class="w-100 mx-auto"
                                 >
+                                    <!-- ========================== -->
+                                    <template v-slot:item.name="{ item }">
+                                        <div
+                                            style="
+                                                display: flex;
+                                                align-items: center;
+                                            "
+                                            @click="show(item)"
+                                        >
+                                            <!-- Container for the image -->
+
+                                            <div
+                                                style="
+                                                    width: 50px;
+                                                    height: 50px;
+                                                    overflow: hidden;
+                                                    margin-right: 10px;
+                                                "
+                                            >
+                                                <!-- Use inline styles to make the avatar square -->
+                                                <v-avatar
+                                                    size="42"
+                                                    style="
+                                                        width: 100%;
+                                                        height: 100%;
+                                                        border-radius: 0;
+                                                    "
+                                                >
+                                                    <img
+                                                        :src="
+                                                            item.profilePicture
+                                                        "
+                                                        alt="Profile Photo"
+                                                        style="
+                                                            width: 100%;
+                                                            height: auto;
+                                                            object-fit: cover;
+                                                        "
+                                                    />
+                                                </v-avatar>
+                                            </div>
+                                            <!-- Display the name with some space -->
+                                            <span style="margin-right: 10px">{{
+                                                item.firstName
+                                            }}</span>
+                                        </div>
+                                    </template>
+                                    <!-- ================================= -->
                                     <!-- Checkbox for selecting rows -->
 
                                     <template v-slot:item.checkbox="{ item }">
@@ -136,6 +184,29 @@
                                     text="delete"
                                 >
                                 </v-btn>
+                                <v-dialog
+                                    v-model="dialogVisible"
+                                    max-width="800px"
+                                >
+                                    <v-card>
+                                        <v-card-actions>
+                                            <v-btn
+                                                color="primary"
+                                                class=""
+                                                @click="dialogVisible = false"
+                                            >
+                                                <v-icon>mdi mdi-close</v-icon>
+                                            </v-btn>
+                                        </v-card-actions>
+                                        <v-card-text>
+                                            <v-img
+                                                :src="imageSrc"
+                                                max-height="550px"
+                                                contain
+                                            ></v-img>
+                                        </v-card-text>
+                                    </v-card>
+                                </v-dialog>
                             </v-col>
                         </v-row>
                     </v-main>
@@ -146,18 +217,23 @@
 </template>
 
 <script setup>
-import { ref, onMounted,computed } from "vue";
+import { ref, onMounted, computed } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 import CreateUser from "./CreateUser.vue";
 import { useI18n } from "vue-i18n";
-const { t,locale } = useI18n();
+const { t, locale } = useI18n();
 import { usePeopleRepository } from "@/store/PeopleRepository";
 const PeopleRepository = usePeopleRepository();
-
+const imageSrc = ref();
+const dialogVisible = ref(false);
 // direction
 const dir = computed(() => {
     return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
 });
+const show = (item) => {
+    imageSrc.value = item.profilePicture;
+    dialogVisible.value = true;
+};
 
 // bulk delete
 const selectedIds = ref([]);
@@ -209,7 +285,7 @@ const deleteItem = async (item) => {
 // header
 const headers = [
     { title: "", key: "checkbox", align: "start", sortable: false },
-    { title: t("name"), key: "firstName", align: "start", sortable: false },
+    { title: t("profile"), key: "name", align: "start", sortable: false },
     { title: t("email"), key: "email", align: "start", sortable: false },
     { title: t("phone"), key: "phone", align: "start", sortable: false },
     { title: t("role"), key: "role.name", align: "start", sortable: false },

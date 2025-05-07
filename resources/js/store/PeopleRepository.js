@@ -617,9 +617,11 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             console.log(data);
             try {
                 const config = {
-                    method: "PUT",
-                    url: `users/${id}`,
-
+                    method: "POST",
+                    url: `users/updateUsers/${id}`,
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
                     data: data,
                 };
 

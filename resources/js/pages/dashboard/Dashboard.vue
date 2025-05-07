@@ -1,6 +1,16 @@
 <template>
-    <div class="bg-[#f8f8f8] rounded-xl">
-        <AppBar :subTitle="$t('dashboard')" :main-title="$t('dashboard')" class="MenuColor" />
+    <div
+        class="bg-[#f8f8f8] rounded-xl"
+        v-if="
+            AuthRepository.permissions &&
+            AuthRepository.permissions.includes('viewDashboard')
+        "
+    >
+        <AppBar
+            :subTitle="$t('dashboard')"
+            :main-title="$t('dashboard')"
+            class="MenuColor"
+        />
         <v-divider
             :thickness="1"
             class="border-opacity-100"
@@ -19,7 +29,7 @@
                                 />
                             </v-avatar>
                             <div class="pt-1">
-                                <div class="font-weight-black" >
+                                <div class="font-weight-black">
                                     {{
                                         DashboardRepository.dashboardReport
                                             .netProfit
@@ -32,7 +42,7 @@
                     <v-card-text
                         class="text-h6 d-flex justify-start calibri_font ml-14"
                     >
-                        {{ t('profit') }}
+                        {{ t("profit") }}
                     </v-card-text>
                 </v-card>
             </v-col>
@@ -58,7 +68,7 @@
                     <v-card-text
                         class="text-h6 d-flex justify-start calibri_font ml-14"
                     >
-                        {{ t('expense') }}
+                        {{ t("expense") }}
                     </v-card-text>
                 </v-card>
             </v-col>
@@ -83,7 +93,7 @@
                     <v-card-text
                         class="text-h6 d-flex justify-start calibri_font ml-14"
                     >
-                        {{ t('sales') }}
+                        {{ t("sales") }}
                     </v-card-text>
                 </v-card>
             </v-col>
@@ -109,7 +119,7 @@
                     <v-card-text
                         class="text-h6 d-flex justify-start calibri_font ml-14"
                     >
-                        {{ t('patients') }}
+                        {{ t("patients") }}
                     </v-card-text>
                 </v-card>
             </v-col>
@@ -137,7 +147,9 @@
                                     }}
                                 </p>
                                 <p class="text-subtitle-2">
-                                    {{ t('expensesBasedOnAmountAndPercentage') }}
+                                    {{
+                                        t("expensesBasedOnAmountAndPercentage")
+                                    }}
                                 </p>
                             </span>
                             <span class="flex flex-col gap-1">
@@ -162,7 +174,7 @@
                                         )
                                     "
                                 >
-                                    {{ t('thisYear') }}
+                                    {{ t("thisYear") }}
                                 </v-btn>
                                 <v-btn
                                     size="x-small"
@@ -184,7 +196,7 @@
                                         )
                                     "
                                 >
-                                    {{ t('thisMonth') }}
+                                    {{ t("thisMonth") }}
                                 </v-btn>
                                 <v-btn
                                     size="x-small"
@@ -206,7 +218,7 @@
                                         )
                                     "
                                 >
-                                    {{ t('today') }}
+                                    {{ t("today") }}
                                 </v-btn>
                             </span>
                         </div>
@@ -239,26 +251,26 @@
             </v-col>
             <v-col>
                 <v-card class="bg-white rounded-xl mr-3 px-4 mt-0 h-100">
-                    <h2 class="pl-2 py-4">{{ t('upcomingAppointment') }}</h2>
+                    <h2 class="pl-2 py-4">{{ t("upcomingAppointment") }}</h2>
                     <div class="flex justify-center">
                         <v-table class="rounded w-100">
                             <template v-slot:default>
                                 <thead class="bg-gray-100">
                                     <tr>
-                                        <th 
+                                        <th
                                             class="text-left font-medium text-gray-700"
                                         >
-                                            {{ t('patient') }}
+                                            {{ t("patient") }}
                                         </th>
                                         <th
                                             class="text-center font-medium text-gray-700"
                                         >
-                                            {{ t('time') }}
+                                            {{ t("time") }}
                                         </th>
                                         <th
                                             class="text-center font-medium text-gray-700"
                                         >
-                                            {{ t('phone') }}
+                                            {{ t("phone") }}
                                         </th>
                                     </tr>
                                 </thead>
@@ -270,9 +282,15 @@
                                         :key="item.id"
                                         class="border-b border-gray-200"
                                     >
-                                        <td class="text-left">{{ item.name }}</td>
-                                        <td class="text-center">{{ item.time }}</td>
-                                        <td class="text-center">{{ item.phone }}</td>
+                                        <td class="text-left">
+                                            {{ item.name }}
+                                        </td>
+                                        <td class="text-center">
+                                            {{ item.time }}
+                                        </td>
+                                        <td class="text-center">
+                                            {{ item.phone }}
+                                        </td>
                                     </tr>
                                 </tbody>
                             </template>
@@ -284,27 +302,27 @@
     </div>
 </template>
 
-
-
 <!-- ============================================================================================================================= -->
 
 <script setup>
-import {computed} from 'vue';
+import { computed } from "vue";
 import DataBar from "@/components/UI/DashboardCharts/barChart.vue";
 import MoneyAccountChart from "@/components/UI/DashboardCharts/MoneyAccountChart.vue";
 import TotalPayment from "@/components/UI/DashboardCharts/TotalPayment.vue";
 import AppBar from "../../components/AppBar.vue";
 import { useI18n } from "vue-i18n";
-const { t ,locale} = useI18n();
+const { t, locale } = useI18n();
 
 // direction
 const dir = computed(() => {
     return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
 });
 
-
 import { useDashboardRepository } from "@/store/DashboardRepository";
+import { useAuthRepository } from "@/store/AuthRepository";
+const AuthRepository = useAuthRepository();
 import { onMounted, ref } from "vue";
+import { use } from "echarts";
 
 let DashboardRepository = useDashboardRepository();
 
