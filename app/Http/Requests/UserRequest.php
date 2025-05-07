@@ -48,4 +48,3 @@ class UserRequest extends FormRequest
         ];
     }
 }
-g
