@@ -91,6 +91,15 @@ export let useSettingRepository = defineStore("SettingRepository", {
                     data: data,
                 };
                 const response = await axios(config);
+                toast.success("Company  created successfully!", {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
                 this.FetchSystemSettings({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
@@ -98,6 +107,15 @@ export let useSettingRepository = defineStore("SettingRepository", {
             } catch (err) {
                 // If there's an error, set the error in the store
                 this.error = err;
+                toast.error("Compony  creation failed! Please try again.", {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
             }
         },
         async CreateSystemSetting(formData) {
@@ -116,29 +134,13 @@ export let useSettingRepository = defineStore("SettingRepository", {
 
                 this.createDialog = false;
 
-                toast.success("User created successfully!", {
-                    position: "top-right",
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
+         
                 this.FetchSystemSettings({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });
             } catch (err) {
-                toast.error("User creation failed! Please try again.", {
-                    position: "top-right",
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
+          
             }
         },
         async DeleteSystemSetting(id) {

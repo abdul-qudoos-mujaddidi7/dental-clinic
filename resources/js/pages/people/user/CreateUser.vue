@@ -229,14 +229,26 @@ const rules = {
 
 const save = async () => {
     const isValid = await formRef.value.validate();
-    if (isValid) {
-        if (PeopleRepository.isEditMode) {
-            await PeopleRepository.UpdateUser(formData.id, formData);
-        } else {
-            await PeopleRepository.CreateUser(formData);
-        }
+    if (!isValid) return;
+
+    const isImageUrl =
+        typeof formData.profile_picture === "string" &&
+        formData.profile_picture.startsWith("http");
+
+    const payload = { ...formData };
+
+    // Only include the profile_picture if it's a File (i.e., newly selected)
+    if (isImageUrl) {
+        delete payload.profile_picture;
+    }
+
+    if (PeopleRepository.isEditMode) {
+        await PeopleRepository.UpdateUser(formData.id, payload);
+    } else {
+        await PeopleRepository.CreateUser(payload);
     }
 };
+
 PeopleRepository.fetchRoleForUser();
 </script>
 <style scoped>

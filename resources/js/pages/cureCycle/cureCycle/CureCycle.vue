@@ -28,7 +28,13 @@
                         {{ $t("filter") }}
                     </v-btn>
                     &nbsp;
-                    <router-link to="/createCure">
+                    <router-link
+                        to="/createCure"
+                        v-if="
+                            AuthRepository.permissions &&
+                            AuthRepository.permissions.includes('addCureCycle')
+                        "
+                    >
                         <v-btn
                             color="primaryOld"
                             variant="flat"
@@ -125,6 +131,7 @@
                                                         Create Payment
                                                     </v-list-item-title>
                                                     <v-list-item-title
+                                                
                                                         class="cursor-pointer d-flex gap-3 justify-left pb-3"
                                                         @click="
                                                             ViewPaymentDialog(
@@ -139,7 +146,8 @@
                                                         >
                                                         Show Payment
                                                     </v-list-item-title>
-                                                    <router-link
+                                                    <router-link 
+                                                    v-if="AuthRepository.permissions && AuthRepository.permissions.includes('')"
                                                         :to="
                                                             '/updateCure/' +
                                                             item.id
@@ -215,6 +223,8 @@ import { useI18n } from "vue-i18n";
 const { t, locale } = useI18n();
 import { useCureRepository } from "@/store/CureRepository";
 const CureRepository = useCureRepository();
+import { useAuthRepository } from "../../../store/AuthRepository";
+const AuthRepository = useAuthRepository();
 
 const dir = computed(() => {
     return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
@@ -239,7 +249,7 @@ const deleteItem = async (item) => {
 };
 // create payment
 const CreateDialogShow = (item) => {
-    console.log(item, "this is what i want ", );
+    console.log(item, "this is what i want ");
     CureRepository.cureId = item.id;
     CureRepository.peopleId = item.patientId;
 
