@@ -60,12 +60,12 @@ class Controller extends BaseController
     public function updateRecord($request, $model,$record)
     {
 
-        // $record  = $model::findOrFail($id);
-        $this->deleteImage($record);
+        // $record  = $model::findOrFail($id);s
+        $validated = $request->validated();
+        $this->deleteImage($record,$request);
         $validated['user_id'] = Auth::id();
         $validated['password'] = Hash::make($validated['password']);
         $record = tap($record)->update($request->validated());
-
         $this->storeImage($request, $record);
         return $record;
 
@@ -117,15 +117,22 @@ class Controller extends BaseController
     }
 
 
-    private function deleteImage($model)
-    {
-        if($model->images == null) return;
-        foreach ($model->images as $image) {
-            if ($model[$image]) {
-                Storage::disk('public')->delete($model[$image]);
-                $model->update([$image => null]);
-            }
+    private function deleteImage($model, $request)
+{
+    if ($model->images == null) return;
+
+    foreach ($model->images as $image) {
+        // Only delete if a new file is uploaded for this image
+        if (!$request->hasFile($image)) {
+            continue; // Skip deletion if no new image is coming
+        }
+
+        if ($model[$image]) {
+            Storage::disk('public')->delete($model[$image]);
+            $model->update([$image => null]);
         }
     }
+}
+
 
 }

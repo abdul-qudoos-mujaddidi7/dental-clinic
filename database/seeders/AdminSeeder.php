@@ -28,6 +28,13 @@ class AdminSeeder extends Seeder
             'addExpense',
             'updateExpense',
             'deleteExpense',
+
+            
+
+            'viewPeople',
+            'addPeople',
+            'updatePeople',
+            'deletePeople',
             
             'viewDashboard',
             

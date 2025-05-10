@@ -61,7 +61,7 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UserRequest $request, User $user)
+    public function updateUser(UserRequest $request, User $user)
     {
 
         $user = $this->updateRecord($request,$this->model,$user);
