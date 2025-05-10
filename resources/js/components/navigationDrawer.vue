@@ -56,12 +56,12 @@
                 </v-list>
             </transition>
             <!-- appointment -->
-            <router-link to="appointments">
+            <router-link to="/appointments">
                 <v-list-item
-                v-if="
-                    AuthRepository.permissions &&
-                    AuthRepository.permissions.includes('viewAppointment')
-                "
+                    v-if="
+                        AuthRepository.permissions &&
+                        AuthRepository.permissions.includes('viewAppointment')
+                    "
                     @click="toggleMenu('appointment')"
                     active-class="bg-primaryOld text-white"
                     prepend-icon="mdi mdi-calendar-clock"
@@ -72,8 +72,12 @@
                 </v-list-item>
             </router-link>
             <!-- cure cycle  -->
-            <router-link to="cure">
+            <router-link to="/cure">
                 <v-list-item
+                    v-if="
+                        AuthRepository.permissions &&
+                        AuthRepository.permissions.includes('viewCureCycle')
+                    "
                     @click="toggleMenu('cureCycle')"
                     active-class="bg-primaryOld text-white"
                     prepend-icon="mdi-tooth-outline"
@@ -85,12 +89,12 @@
             </router-link>
 
             <!-- main lab -->
-            <router-link to="mainLaboratory">
+            <router-link to="/mainLaboratory">
                 <v-list-item
-                v-if="
-                    AuthRepository.permissions &&
-                    AuthRepository.permissions.includes('viewMainLab')
-                "
+                    v-if="
+                        AuthRepository.permissions &&
+                        AuthRepository.permissions.includes('viewInboundLab')
+                    "
                     @click="toggleMenu('inboundLaboratory')"
                     active-class="bg-primaryOld text-white"
                     prepend-icon="mdi-microscope"
@@ -100,12 +104,12 @@
                     {{ t("inboundLaboratory") }}
                 </v-list-item>
             </router-link>
-            <router-link to="laboratory">
+            <router-link to="/laboratory">
                 <v-list-item
-                v-if="
-                    AuthRepository.permissions &&
-                    AuthRepository.permissions.includes('viewLab')
-                "
+                    v-if="
+                        AuthRepository.permissions &&
+                        AuthRepository.permissions.includes('viewOutBoundLab')
+                    "
                     @click="toggleMenu('outboundLaboratory')"
                     active-class="bg-primaryOld text-white"
                     prepend-icon="mdi-microscope"
@@ -117,7 +121,7 @@
             </router-link>
 
             <v-list-item
-            v-if="
+                v-if="
                     AuthRepository.permissions &&
                     AuthRepository.permissions.includes('viewExpense')
                 "
@@ -148,8 +152,9 @@
                 </v-list>
             </transition>
             <!-- people -->
+
             <v-list-item
-            v-if="
+                v-if="
                     AuthRepository.permissions &&
                     AuthRepository.permissions.includes('viewPeople')
                 "
@@ -209,14 +214,15 @@
                 </v-list>
             </transition>
             <!-- setting -->
+
             <v-list-item
-                active-class="bg-primaryOld text-white"
-                prepend-icon="mdi-cog-outline"
-                value="Setting"
                 v-if="
                     AuthRepository.permissions &&
                     AuthRepository.permissions.includes('viewSetting')
                 "
+                active-class="bg-primaryOld text-white"
+                prepend-icon="mdi-cog-outline"
+                value="Setting"
                 @click="toggleMenu('setting')"
                 class="transition-all duration-300 cursor-pointer py-3 borderRadius"
             >
@@ -293,7 +299,6 @@ const SettingRepository = useSettingRepository();
 SettingRepository.FetchSystemSettings();
 const route = useRoute();
 const AuthRepository = useAuthRepository();
-console.log(SettingRepository.systemSettings, "shajryan ");
 console.log(AuthRepository.user, "data");
 const dialog = ref(false);
 
@@ -353,22 +358,6 @@ const navItems = computed(() => [
         icon: "mdi mdi-circle-medium",
         value: "categories",
     },
-]);
-// salary
-const salaryItems = computed(() => [
-    {
-        to: "/salary",
-        title: t("salary"),
-        icon: "mdi mdi-circle-medium",
-        value: "salary",
-    },
-
-    // {
-    //     to: "/appointments",
-    //     title: "Appointments",
-    //     icon: "mdi mdi-circle-medium",
-    //     value: "appointments",
-    // },
 ]);
 const peopleItems = computed(() => [
     {

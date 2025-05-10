@@ -9,7 +9,8 @@ export let useAuthRepository = defineStore("AuthRepository", {
     state() {
         return {
             user: null,
-            permissions: reactive([]),
+          permissions: [],
+
             role: null,
             isLoading: false,
             error: null,
