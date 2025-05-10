@@ -22,29 +22,36 @@
                         v-model="ExpenseRepository.ExpenseSearch"
                     ></v-text-field>
                 </div>
-                <div class="btn">
+                <div class="btn d-flex">
                     <v-btn variant="outlined" color="primaryOld" class="px-6">
                         {{ t("filter") }}
                     </v-btn>
                     &nbsp;
-                    <v-btn
-                        @click="CreateDialogShow"
-                        color="primaryOld"
-                        variant="flat"
-                        :text="t('create')"
-                        class="px-6"
+                    <div
+                        v-if="
+                            AuthRepository.permissions &&
+                            AuthRepository.permissions.includes('addExpense')
+                        "
                     >
-                    </v-btn>
+                        <v-btn
+                            @click="CreateDialogShow"
+                            color="primaryOld"
+                            variant="flat"
+                            :text="t('create')"
+                            class="px-6"
+                        >
+                        </v-btn>
+                    </div>
                 </div>
             </div>
             <!-- v-table server  -->
             <div class="overflow-x-hidden">
                 <v-app>
-                    <v-main class="main" >
+                    <v-main class="main">
                         <v-row>
                             <v-col>
                                 <v-data-table-server
-                                :dir="dir"
+                                    :dir="dir"
                                     theme="cursor-pointer"
                                     v-model:items-per-page="
                                         ExpenseRepository.itemsPerPage
@@ -85,6 +92,12 @@
                                             <v-list>
                                                 <v-list-item>
                                                     <v-list-item-title
+                                                        v-if="
+                                                            AuthRepository.permissions &&
+                                                            AuthRepository.permissions.includes(
+                                                                'UpdateExpense'
+                                                            )
+                                                        "
                                                         @click="edit(item)"
                                                         class="cursor-pointer d-flex gap-3 justify-left pb-3"
                                                     >
@@ -96,6 +109,12 @@
                                                     </v-list-item-title>
 
                                                     <v-list-item-title
+                                                        v-if="
+                                                            AuthRepository.permissions &&
+                                                            AuthRepository.permissions.includes(
+                                                                'deleteExpense'
+                                                            )
+                                                        "
                                                         class="cursor-pointer d-flex gap-3"
                                                         @click="
                                                             deleteItem(item)
@@ -130,14 +149,14 @@
 </template>
 
 <script setup>
-import { ref, onMounted ,computed} from "vue";
+import { ref, onMounted, computed } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 import CreateExpense from "./CreateExpense.vue";
 import { useExpenseRepository } from "@/store/ExpenseRepository";
 const ExpenseRepository = useExpenseRepository();
 // bulk delete
 import { useI18n } from "vue-i18n";
-const {t,locale} = useI18n();
+const { t, locale } = useI18n();
 const selectedIds = ref([]);
 const sendSelectedIds = () => {
     if (selectedIds.value.length > 0) {
@@ -156,7 +175,6 @@ const sendSelectedIds = () => {
 const dir = computed(() => {
     return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
 });
-
 
 // delete and update Create
 const CreateDialogShow = () => {
@@ -185,10 +203,15 @@ const deleteItem = async (item) => {
     await ExpenseRepository.DeleteExpense(item.id);
 };
 // header
-const headers = computed(()=>[
+const headers = computed(() => [
     { title: "", key: "checkbox", align: "start", sortable: false },
     { title: t("date"), key: "date", align: "start", sortable: false },
-    { title: t("reference"), key: "reference", align: "center", sortable: false },
+    {
+        title: t("reference"),
+        key: "reference",
+        align: "center",
+        sortable: false,
+    },
     { title: t("addedBy"), key: "addedBy", align: "center", sortable: false },
     {
         title: t("category"),
@@ -198,7 +221,7 @@ const headers = computed(()=>[
     },
     { title: t("amount"), key: "amount", align: "center", sortable: false },
     { title: t("action"), key: "action", align: "center", sortable: false },
-])
+]);
 </script>
 
 <style scoped>

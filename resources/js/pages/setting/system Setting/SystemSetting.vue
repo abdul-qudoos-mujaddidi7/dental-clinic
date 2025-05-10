@@ -1,7 +1,17 @@
 <template>
-    <div class="all-expense rounded-xl mt-4">
+    <!-- addSetting -->
+    <div
+        class="all-expense rounded-xl mt-4"
+        v-if="
+            AuthRepository.permissions &&
+            AuthRepository.permissions.includes('viewSetting')
+        "
+    >
         <div class="card rounded-xl bg-white">
-            <AppBar :mainTitle="$t('systemSetting')" :subTitle="$t('setting')" />
+            <AppBar
+                :mainTitle="$t('systemSetting')"
+                :subTitle="$t('setting')"
+            />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
@@ -110,7 +120,7 @@
                                     class="me-4"
                                     color="primaryOld"
                                     type="submit"
-                                    >{{t('submit')}}</v-btn
+                                    >{{ t("submit") }}</v-btn
                                 >
                             </div>
                         </form>

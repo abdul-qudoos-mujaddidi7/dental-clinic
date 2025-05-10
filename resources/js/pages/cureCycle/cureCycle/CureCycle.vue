@@ -131,7 +131,6 @@
                                                         Create Payment
                                                     </v-list-item-title>
                                                     <v-list-item-title
-                                                
                                                         class="cursor-pointer d-flex gap-3 justify-left pb-3"
                                                         @click="
                                                             ViewPaymentDialog(
@@ -146,8 +145,13 @@
                                                         >
                                                         Show Payment
                                                     </v-list-item-title>
-                                                    <router-link 
-                                                    v-if="AuthRepository.permissions && AuthRepository.permissions.includes('')"
+                                                    <router-link
+                                                        v-if="
+                                                            AuthRepository.permissions &&
+                                                            AuthRepository.permissions.includes(
+                                                                'updateCureCycle'
+                                                            )
+                                                        "
                                                         :to="
                                                             '/updateCure/' +
                                                             item.id
@@ -181,6 +185,12 @@
                                                     </router-link>
 
                                                     <v-list-item-title
+                                                        v-if="
+                                                            AuthRepository.permissions &&
+                                                            AuthRepository.permissions.includes(
+                                                                'deleteCureCycle'
+                                                            )
+                                                        "
                                                         class="cursor-pointer d-flex gap-3"
                                                         @click="
                                                             deleteItem(item)
