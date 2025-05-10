@@ -57,11 +57,13 @@ class Controller extends BaseController
         return $record;
     }
 
-    public function updateRecord($request, $record)
+    public function updateRecord($request, $model,$record)
     {
 
         // $record  = $model::findOrFail($id);
         $this->deleteImage($record);
+        $validated['user_id'] = Auth::id();
+        $validated['password'] = Hash::make($validated['password']);
         $record = tap($record)->update($request->validated());
 
         $this->storeImage($request, $record);
@@ -103,16 +105,17 @@ class Controller extends BaseController
     }
 
 
-    private function storeImage($request, $model)
+    private function storeImage($request, $record)
     {
-        if($model->images == null) return;
-        foreach ($model->images as $image) {
+        if($record->images == null) return;
+        foreach ($record->images as $image) {
             if ($request->hasFile($image)) {
-                $imagePath = $request->file($image)->store(class_basename($model), 'public');
-                $model->update([$image => $imagePath]);
+                $imagePath = $request->file($image)->store(class_basename($record), 'public');
+                $record->update([$image => $imagePath]);
             }
         }
     }
+
 
     private function deleteImage($model)
     {

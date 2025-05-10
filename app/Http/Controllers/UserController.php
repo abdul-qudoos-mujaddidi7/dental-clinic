@@ -64,13 +64,10 @@ class UserController extends Controller
     public function update(UserRequest $request, User $user)
     {
 
-        $validated = $request->validated();
-        $user = $this->storeRecord($request,User::class);
-
+        $user = $this->updateRecord($request,$this->model,$user);
         // $validated['image'] = $request->hasFile('image') ? $this->updateImage($request, $user, 'user') : null;
-        $validated['password']=Hash::make($validated['password']);
+        $validated = $request->validated();
         $role = Role::findOrFail($validated['role_id']);
-        $user->update($validated);
         $user->syncRoles([$role]);
 
         return new UserResource($user);

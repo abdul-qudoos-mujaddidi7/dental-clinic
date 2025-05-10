@@ -39,7 +39,7 @@ class UserRequest extends FormRequest
             'phone' => 'required|string|max:15',
             'password' => 'required|string|min:8',
             'status' => 'required|boolean',
-            User::COLUMN_PROFILE_PICTURE => ['nullable','image','mimes:jpg,jpeg,png'],
+            User::COLUMN_PROFILE_PICTURE => ['nullable'],
             'email' => [
                 'required',
                 'email',
