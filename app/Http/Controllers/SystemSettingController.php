@@ -38,7 +38,7 @@ class SystemSettingController extends Controller
     {
 
 
-        $systemSetting = $this->updateRecord($request, $systemSetting);
+        $systemSetting = $this->updateRecord($request, $this->model,$systemSetting);
         return new SystemSettingResource($systemSetting);
     }
 }
