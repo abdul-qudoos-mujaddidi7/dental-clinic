@@ -268,7 +268,7 @@ export let useCureRepository = defineStore("CureRepository", {
         async FetchCurePayments(id) {
             this.loading = true;
 
-            const response = await axios.get(`curePayments?cure=${id}`);
+            const response = await axios.get(`payCureCycle?cure=${id}`);
             this.curePayments = response.data.data;
             console.log(this.curePayments, "this is the data i want ");
 
@@ -277,7 +277,7 @@ export let useCureRepository = defineStore("CureRepository", {
         async FetchCurePayment(id) {
             // this.error = null;
             try {
-                const response = await axios.get(`curePayments/${id}`);
+                const response = await axios.get(`payCureCycle/${id}`);
 
                 this.curePayment = response.data.data;
                 console.log(curePayments, "this is the data i want ");
@@ -292,7 +292,7 @@ export let useCureRepository = defineStore("CureRepository", {
                 // Adding a custom header to the Axios request
                 const config = {
                     method: "POST",
-                    url: "generatePaySlip",
+                    url: "payCureCycle",
 
                     data: formData,
                 };
@@ -316,7 +316,7 @@ export let useCureRepository = defineStore("CureRepository", {
             try {
                 const config = {
                     method: "PUT",
-                    url: `curePayments/${id}`,
+                    url: `payCureCycle/${id}`,
 
                     data: data,
                 };
@@ -346,7 +346,7 @@ export let useCureRepository = defineStore("CureRepository", {
             try {
                 const config = {
                     method: "DELETE",
-                    url: "curePayments/" + id,
+                    url: "payCureCycle/" + id,
                 };
 
                 const response = await axios(config);

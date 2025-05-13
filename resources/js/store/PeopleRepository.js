@@ -70,6 +70,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             peopleAccounts: reactive([]),
             peopleAccount: reactive([]),
             moneyAccsFor: reactive([]),
+            AccsForCreate:reactive([]),
             idForCreatePayment: ref(""),
             patientIdForView:ref(""),
             account: reactive([]),
@@ -1008,10 +1009,15 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
                 this.error = err;
             }
         },
+           async MoneyAccountsForCreate() {
+            this.loading = true;
+            const response = await axios.get(`moneyAccount`);
+            this.AccsForCreate = response.data.data;
+            this.loading = false;
+        },
         // peopleAccount
         async fetchMoneyAccountsFor() {
             this.loading = true;
-
             const response = await axios.get(`peopleAccountTransaction`);
             this.moneyAccsFor = response.data.data;
             this.loading = false;

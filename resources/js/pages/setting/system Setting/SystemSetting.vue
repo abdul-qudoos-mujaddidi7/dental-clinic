@@ -138,6 +138,8 @@ import AppBar from "@/components/AppBar.vue";
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 const SettingRepository = useSettingRepository();
+import { useAuthRepository } from "../../../store/AuthRepository";
+const AuthRepository = useAuthRepository();
 
 import { reactive } from "vue";
 const routeParams = useRouter();
