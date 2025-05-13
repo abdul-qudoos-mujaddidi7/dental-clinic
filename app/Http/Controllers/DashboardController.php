@@ -10,6 +10,7 @@ use App\Models\People;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Morilog\Jalali\Jalalian;
 
 class DashboardController extends Controller
 {
@@ -22,6 +23,7 @@ class DashboardController extends Controller
         $endOfMonth = Carbon::now()->endOfMonth();
         $startOfLastMonth = Carbon::now()->subMonth()->startOfMonth();
         $endOfLastMonth = Carbon::now()->subMonth()->endOfMonth();
+        $currentJalaliDateTime = Jalalian::now()->format('Y-m-d');
 
         // Earnings and Expenses for Today
         $todayEarning = CurePayment::whereDay('date', $today)
@@ -139,11 +141,11 @@ class DashboardController extends Controller
 
         // Upcoming Appointments
         $upcomingAppointments = DB::table('appointments')
-            ->join('people', 'appointments.patient_id', '=', 'people.id')
+            ->join('people', 'appointments.people_id', '=', 'people.id')
             ->select('people.name', 'people.phone', DB::raw('TIME(appointments.date_time) as time'))
-            ->whereDate('appointments.date_time', $today)
+            ->whereDate('appointments.date_time','>=', $currentJalaliDateTime)
             ->orderBy('time', 'asc')
-            ->limit(5) 
+            ->limit(5)
             ->get();
 
 

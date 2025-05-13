@@ -16,7 +16,7 @@ class Appointment extends Model
     const COLUMN_STATUS = 'status';
     const COLUMN_DENTIST_ID = 'dentist_id';
     const COLUMN_USER_ID = 'user_id';
-    const COLUMN_PATIENT_ID = 'patient_id';
+    const COLUMN_PEOPLE_ID = 'people_id';
 
 
     protected $fillable = [
@@ -24,7 +24,7 @@ class Appointment extends Model
         self::COLUMN_STATUS,
         self::COLUMN_DENTIST_ID,
         self::COLUMN_USER_ID,
-        self::COLUMN_PATIENT_ID,
+        self::COLUMN_PEOPLE_ID,
     ];
 
     /**
@@ -40,7 +40,7 @@ class Appointment extends Model
      */
     public function patient()
     {
-        return $this->belongsTo(People::class, self::COLUMN_PATIENT_ID);
+        return $this->belongsTo(People::class, self::COLUMN_PEOPLE_ID);
     }
 
     /**

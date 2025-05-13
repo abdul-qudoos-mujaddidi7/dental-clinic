@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string(Appointment::COLUMN_STATUS);
             $table->foreignIdFor(People::class, Appointment::COLUMN_DENTIST_ID);
             $table->foreignIdFor(User::class, Appointment::COLUMN_USER_ID);
-            $table->foreignIdFor(People::class, Appointment::COLUMN_PATIENT_ID);
+            $table->foreignIdFor(People::class, Appointment::COLUMN_PEOPLE_ID);
             $table->timestamps();
         });
     }

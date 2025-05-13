@@ -51,7 +51,9 @@ class Controller extends BaseController
     {
         $validated = $request->validated();
         $validated['user_id'] = Auth::id();
-        $validated['password'] = Hash::make($validated['password']);
+        if (isset($validated['password'])) {
+            $validated['password'] = \Hash::make($validated['password']);
+        } 
         $record =  $model::create($validated);
         $this->storeImage($request, $record);
         return $record;
@@ -64,8 +66,10 @@ class Controller extends BaseController
         $validated = $request->validated();
         $this->deleteImage($record,$request);
         $validated['user_id'] = Auth::id();
-        $validated['password'] = Hash::make($validated['password']);
-        $record = tap($record)->update($request->validated());
+        if (isset($validated['password'])) {
+            $validated['password'] = \Hash::make($validated['password']);
+        }        
+        $record->update($validated);
         $this->storeImage($request, $record);
         return $record;
 
@@ -117,7 +121,7 @@ class Controller extends BaseController
     }
 
 
-    private function deleteImage($model, $request)
+    private function deleteImage($model, $request=null)
 {
     if ($model->images == null) return;
 
