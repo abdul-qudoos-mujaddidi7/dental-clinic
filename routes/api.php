@@ -133,4 +133,5 @@ Route::apiResource('/peopleAccountTransaction', PeopleAccountTransactionControll
 Route::post('/paySalary', [PeopleAccountTransactionController::class, 'paySalary']);
 Route::post('/payCureCycle', [PeopleAccountTransactionController::class, 'payCureCycle']);
 Route::post('/inBoundLabPayment', [PeopleAccountTransactionController::class, 'inBoundLabPayment']);
+Route::post('/outBoundLabPayment', [PeopleAccountTransactionController::class, 'outBoundLabPayment']);
 
