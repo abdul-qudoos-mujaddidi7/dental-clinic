@@ -9,7 +9,7 @@
             :location="dir"
             class="sideBar"
         >
-            <NavigationDrawer  :dir="isRtl ? 'rtl' : 'ltr'"  />
+            <NavigationDrawer :dir="isRtl ? 'rtl' : 'ltr'" />
         </v-navigation-drawer>
 
         <v-main class="d-flex flex-col" style="min-height: 300px">
@@ -30,7 +30,7 @@ import { ref, watch, computed } from "vue";
 import { useRoute } from "vue-router"; // Import to get the current route
 import NavigationDrawer from "./components/navigationDrawer.vue";
 import { useI18n } from "vue-i18n";
-const {t, locale } = useI18n();
+const { t, locale } = useI18n();
 import { useAuthRepository } from "@/store/AuthRepository";
 const isRtl = ref(locale.value === "fa"); // Assuming 'fa' is the code for Dari
 watch(locale, (newLocale) => {
