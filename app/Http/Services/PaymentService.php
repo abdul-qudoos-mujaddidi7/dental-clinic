@@ -36,6 +36,11 @@ class PaymentService
         $data = $this->prepareData($request,OperationType::IN_BOUND_LAB_PAYMNET);
         return PeopleAccountTransaction::create($data);
     }
+    public function outBoundLabPayment(array $request)
+    {
+        $data = $this->prepareData($request,OperationType::OUT_BOUND_LAB_PAYMENT);
+        return PeopleAccountTransaction::create($data);
+    }
         
     public function payExpensePayment(array $request)
     {

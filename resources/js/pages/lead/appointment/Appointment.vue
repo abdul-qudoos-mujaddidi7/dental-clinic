@@ -25,11 +25,7 @@
                         v-model="LeadRepository.appointmentSearch"
                     ></v-text-field>
                 </div>
-<<<<<<< HEAD
-                <div class="btn d-flex">
-=======
                 <div class="btn d-flex" >
->>>>>>> 335190da0b3dd072e4facad3f475d4ad5d5583cd
                     <v-btn variant="outlined" color="primaryOld" class="px-6">
                         {{ $t("filter") }}
                     </v-btn>
