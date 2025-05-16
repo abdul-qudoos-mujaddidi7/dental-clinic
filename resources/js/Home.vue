@@ -4,10 +4,9 @@
             v-model="drawer"
             :rail="rail"
             permanent
-            color="#F8F8F8"
             floating
             :location="dir"
-            class="sideBar"
+            class="sideBar bg-lightSectionBg"
         >
             <NavigationDrawer :dir="isRtl ? 'rtl' : 'ltr'" />
         </v-navigation-drawer>
@@ -32,9 +31,10 @@ import NavigationDrawer from "./components/navigationDrawer.vue";
 import { useI18n } from "vue-i18n";
 const { t, locale } = useI18n();
 import { useAuthRepository } from "@/store/AuthRepository";
-const isRtl = ref(locale.value === "fa"); // Assuming 'fa' is the code for Dari
+const isRtl = ref(locale.value == "fa" ); // Assuming 'fa' is the code for Dari // Assuming 'fa' is the code for Dari
 watch(locale, (newLocale) => {
-    isRtl.value = newLocale === "fa";
+    isRtl.value = newLocale == "fa" || "pa"
+
 });
 const authRepo = useAuthRepository();
 const drawer = ref(true);
@@ -52,16 +52,27 @@ const dir = computed(() => {
         return "right"; // Reverse the order for Farsi
     }
 
+    if (locale.value === "pa") {
+        return "right"; // Reverse the order for Farsi
+    }
+
     return "left";
 });
 
 // Use Vue Router's `useRoute` to determine the current route
 const route = useRoute();
+import { useTheme } from "vuetify";
+
+const theme = useTheme();
+
 const vCardStyle = computed(() => {
-    console.log(route.path);
-    return route.path === "/dashboard" // Replace 'dashboard' with the actual name of your route
-        ? "background-color:#f8f8f8"
-        : "background-color:white";
+    const colors = theme.current.value.colors;
+
+    if (route.path === "/dashboard") {
+        return `background-color: ${colors.background};`;
+    }
+
+    return `background-color: ${colors.background};`;
 });
 </script>
 

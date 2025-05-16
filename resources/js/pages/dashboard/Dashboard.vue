@@ -1,6 +1,6 @@
 <template>
     <div
-        class="bg-[#f8f8f8] rounded-xl"
+        class=" rounded-xl"
         v-if="
             AuthRepository.permissions &&
             AuthRepository.permissions.includes('viewDashboard')
@@ -9,7 +9,8 @@
         <AppBar
             :subTitle="$t('dashboard')"
             :main-title="$t('dashboard')"
-            class="MenuColor"
+            
+            
         />
         <v-divider
             :thickness="1"
@@ -134,7 +135,7 @@
         </v-row>
         <v-row>
             <v-col>
-                <v-card class="pt-4 bg-white rounded-xl pr-4" variant="flat">
+                <v-card class="pt-4 bg-background rounded-xl pr-4" >
                     <div class="pa-3 px-4 py-5 mr-4 ml-6">
                         <!-- Header -->
                         <div class="d-flex justify-space-between mb-6">
@@ -250,7 +251,7 @@
                 </v-card>
             </v-col>
             <v-col>
-                <v-card class="bg-white rounded-xl mr-3 px-4 mt-0 h-100">
+                <v-card  class="bg-background rounded-xl mr-3 px-4 mt-0 h-100">
                     <h2 class="pl-2 py-4">{{ t("upcomingAppointment") }}</h2>
                     <div class="flex justify-center">
                         <v-table class="rounded w-100">

@@ -123,7 +123,7 @@ onMounted(updateChart);
 </script>
 
 <template>
-    <div class="shadow-md pt-6 bg-white rounded-xl pb-10 d-flex justify-center">
+    <div class="shadow-md pt-6 bg-background rounded-xl pb-10 d-flex justify-center">
         <canvas id="income" style="width: 34rem"></canvas>
     </div>
 </template>

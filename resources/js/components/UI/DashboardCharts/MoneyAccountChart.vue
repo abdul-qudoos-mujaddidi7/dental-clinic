@@ -52,7 +52,7 @@ onMounted(updateChart);
 </script>
 
 <template>
-    <div class="shadow-md py-7 px-4 mr-9">
+    <div class="shadow-md bg-background py-7 px-4 mr-9">
         <p class="text-lg mb-4">{{$t('Money Account')}}</p>
         <canvas id="main"></canvas>
     </div>

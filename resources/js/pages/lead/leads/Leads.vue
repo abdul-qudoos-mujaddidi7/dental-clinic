@@ -22,7 +22,7 @@
                         v-model="LeadRepository.leadSearch"
                     ></v-text-field>
                 </div>
-                <div class="btn">
+                <div class="btn flex">
                     <v-btn variant="outlined" color="primaryOld" class="px-6">
                         {{ t("filter") }}
                     </v-btn>
@@ -69,28 +69,65 @@
                                 >
                                     <template v-slot:item.stage="{ item }">
                                         <td class="py-2 pl-4">
-                                            <v-btn
-                                                flat
-                                                fluid
-                                                rounded
-                                                @click="
-                                                    changeStage(
-                                                        item.id,
-                                                        item.stage.id
-                                                    )
+                                            <v-select
+                                                v-model="item.stage.id"
+                                                :items="
+                                                    LeadRepository.leadStageFor
                                                 "
-                                                :style="{
-                                                    backgroundColor:
-                                                        getStageColor(item.id),
-                                                }"
-                                                class="text-white px-4 py-2"
+                                                item-title="name"
+                                                item-value="id"
+                                                density="compact"
+                                                variant="plain"
+                                                hide-details
+                                                class="max-w-[180px]"
+                                                @update:modelValue="
+                                                    (value) =>
+                                                        changeStage(
+                                                            item.id,
+                                                            value
+                                                        )
+                                                "
                                             >
-                                                <span
-                                                    class="text-[10px] tracking-wide"
+                                                <!-- Dropdown list items -->
+                                                <template
+                                                    #item="{
+                                                        item: stage,
+                                                        props,
+                                                    }"
                                                 >
-                                                    {{ item.stage.name }}
-                                                </span>
-                                            </v-btn>
+                                                    <v-list-item
+                                                        v-bind="props"
+                                                        :style="{
+                                                            backgroundColor:
+                                                                getStageColor(
+                                                                    stage.name
+                                                                ),
+                                                            color: '#fff',
+                                                        }"
+                                                    >
+                                                        <v-list-item-title>{{
+                                                            stage.name
+                                                        }}</v-list-item-title>
+                                                    </v-list-item>
+                                                </template>
+
+                                                <!-- Selected item appearance -->
+                                                <template
+                                                    #selection="{ item: stage }"
+                                                >
+                                                    <div
+                                                        class="px-4 py-1 p- rounded text-white text-sm font-medium pdd"
+                                                        :style="{
+                                                            backgroundColor:
+                                                                getStageColor(
+                                                                    stage.name
+                                                                ),
+                                                        }"
+                                                    >
+                                                        {{ stage.title }}
+                                                    </div>
+                                                </template>
+                                            </v-select>
                                         </td>
                                     </template>
 
@@ -208,60 +245,76 @@ const dir = computed(() => {
 });
 
 // Function to get button color based on stage name
-const getStageColor = (itemId) => {
-    const item = LeadRepository.leads.find((lead) => lead.id === itemId);
-    console.log(item);
-    if (!item || !item.stage) return "#112F53"; // Default color
-    if (item.stage.name) {
-        switch (item.stage.name.toLowerCase()) {
-            case "new":
-                return "#00893F";
-            case "on going":
-                return "#0080FF";
-            case "completed":
-                return "#3C3C54";
-            default:
-                return "#112F53";
-        }
-    } else {
-        return "#112F53";
+const getStageColor = (stageName) => {
+    if (!stageName) return "#112F53"; // Default
+
+    switch (stageName.toLowerCase()) {
+        case "new":
+            return "#00893F";
+        case "on going":
+            return "#0080FF";
+        case "completed":
+            return "#3C3C54";
+        default:
+            return "#112F53";
     }
 };
 
 // Method to change the stage for a specific item and update the backend
-const changeStage = async (itemId, currentStageId) => {
-    const leadStage = LeadRepository.leadStageFor;
-    if (!leadStage || leadStage.length === 0) return;
+// const changeStage = async (itemId, currentStageId) => {
+//     const leadStage = LeadRepository.leadStageFor;
+//     if (!leadStage || leadStage.length === 0) return;
 
-    // Find the index of the current stage
-    const currentIndex = leadStage.findIndex(
-        (stage) => stage.id === currentStageId
-    );
+//     // Find the index of the current stage
+//     const currentIndex = leadStage.findIndex(
+//         (stage) => stage.id === currentStageId
+//     );
 
-    // Cycle to the next stage
-    const nextIndex = (currentIndex + 1) % leadStage.length;
-    const nextStage = leadStage[nextIndex];
+//     // Cycle to the next stage
+//     const nextIndex = (currentIndex + 1) % leadStage.length;
+//     const nextStage = leadStage[nextIndex];
 
-    const formData = reactive({
-        stageId: nextStage.id,
-    });
+//     const formData = reactive({
+//         stageId: nextStage.id,
+//     });
+
+//     try {
+//         // Update backend
+//         await LeadRepository.UpdateLeadStages(itemId, formData);
+
+//         // Reflect the change in UI by updating the item's stage locally
+//         const item = LeadRepository.leads.find((lead) => lead.id === itemId);
+//         if (item) {
+//             item.stage = nextStage;
+//         }
+
+//         console.log(`Stage for item ${itemId} updated to: ${nextStage.name}`);
+//     } catch (error) {
+//         console.error(`Error updating stage for item ${itemId}:`, error);
+//     }
+// };
+
+// ===========
+const changeStage = async (itemId, newStageId) => {
+    const item = LeadRepository.leads.find((lead) => lead.id === itemId);
+    if (!item || item.stage.id === newStageId) return; // No need to update
 
     try {
-        // Update backend
+        const formData = reactive({ stageId: newStageId });
         await LeadRepository.UpdateLeadStages(itemId, formData);
 
-        // Reflect the change in UI by updating the item's stage locally
-        const item = LeadRepository.leads.find((lead) => lead.id === itemId);
-        if (item) {
-            item.stage = nextStage;
-        }
+        const newStage = LeadRepository.leadStageFor.find(
+            (stage) => stage.id === newStageId
+        );
+        if (newStage) item.stage = newStage;
 
-        console.log(`Stage for item ${itemId} updated to: ${nextStage.name}`);
+        console.log(`Stage for item ${itemId} updated to ${newStage.name}`);
     } catch (error) {
         console.error(`Error updating stage for item ${itemId}:`, error);
     }
 };
 
+// ============
 // bulk delete
 const selectedIds = ref([]);
 const sendSelectedIds = () => {

@@ -1,8 +1,21 @@
 <template>
-    <router-view></router-view>
+    <v-app>
+        <v-main
+            :style="{ backgroundColor: backgroundColor }"
+        >
+            <router-view />
+        </v-main>
+    </v-app>
 </template>
 
 <script setup>
+import { useTheme } from "vuetify";
+import { computed } from "vue";
+
+const theme = useTheme();
+const backgroundColor = computed(
+    () => theme.current.value.colors.lightSectionBg
+);
 import { useSettingRepository } from "./store/SettingRepository";
 const SettingRepository = useSettingRepository();
 SettingRepository.FetchSystemSettings();
@@ -22,7 +35,6 @@ SettingRepository.FetchSystemSettings();
 //     }
 // );
 
-
 // // Use Vue Router's `useRoute` to determine the current route
 // const route = useRoute();
 // const vCardStyle = computed(() => {
@@ -32,4 +44,5 @@ SettingRepository.FetchSystemSettings();
 //         : "background-color:white";
 // });
 </script>
+
 
