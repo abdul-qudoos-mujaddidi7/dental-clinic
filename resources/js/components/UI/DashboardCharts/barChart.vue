@@ -118,7 +118,7 @@ onMounted(updateChart);
 </script>
 
 <template>
-    <div class="shadow-md pt-8 bg-white rounded-xl d-flex justify-center">
+    <div class="shadow-md pt-8 bg-background rounded-xl d-flex justify-center">
         <canvas id="bar" style="width: 36rem"></canvas>
     </div>
 </template>

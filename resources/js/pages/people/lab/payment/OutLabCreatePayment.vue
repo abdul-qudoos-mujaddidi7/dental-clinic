@@ -43,9 +43,8 @@
                                     />
                                 </div>
                                 <v-autocomplete
-                                    :items="PeopleRepository.moneyAccsFor"
+                                    :items="PeopleRepository.AccsForCreate"
                                     v-model="formData.accountId"
-                                    :return-object="false"
                                     variant="outlined"
                                     :label="t('account') + ' *'"
                                     class="pl-2 w-50 pb-4"
@@ -53,6 +52,7 @@
                                     item-value="id"
                                     item-title="name"
                                     density="compact"
+                                    :return-object="false"
                                     :rules="[rules.required]"
                                 ></v-autocomplete>
                             </div>
@@ -100,7 +100,7 @@ const PeopleRepository = usePeopleRepository();
 const formRef = ref(null);
 
 const formData = reactive({
-    people_id:PeopleRepository.peopleId,
+    people_id: PeopleRepository.peopleId,
     outboundId: PeopleRepository.labIdForPayment,
     id: PeopleRepository.paymentLab,
     amount: PeopleRepository.paymentLab.amount,
@@ -120,15 +120,13 @@ const save = async () => {
     const isValid = await formRef.value.validate();
     if (isValid) {
         if (PeopleRepository.isEditMode) {
-            await PeopleRepository.UpdateLabPayment(
-                formData.id,
-                formData
-            );
+            await PeopleRepository.UpdateLabPayment(formData.id, formData);
         } else {
             await PeopleRepository.CreateLabPayment(formData);
         }
     }
 };
-PeopleRepository.fetchMoneyAccountsFor();
+PeopleRepository.MoneyAccountsForCreate();
+console.log(PeopleRepository.AccsForCreate, "compy");
 formData.date = PeopleRepository.getTodaysDate();
 </script>

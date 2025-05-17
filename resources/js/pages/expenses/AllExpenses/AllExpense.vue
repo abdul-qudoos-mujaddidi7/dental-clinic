@@ -154,6 +154,8 @@ import AppBar from "../../../components/AppBar.vue";
 import CreateExpense from "./CreateExpense.vue";
 import { useExpenseRepository } from "@/store/ExpenseRepository";
 const ExpenseRepository = useExpenseRepository();
+import { useAuthRepository } from "../../../store/AuthRepository";
+const AuthRepository = useAuthRepository();
 // bulk delete
 import { useI18n } from "vue-i18n";
 const { t, locale } = useI18n();
