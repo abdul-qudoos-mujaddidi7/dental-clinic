@@ -25,9 +25,9 @@ export default createVuetify({
                     danger: "#B71C1C",
                     background: "#FFFFFF", // important for light bg
                     lightSectionBg: "#F8F8F8", // light section bg
-                   
+
                     tableRowBg: "#ECF1F4",
-                     iconWrapperBg: "#ECF1F4"
+                    iconWrapperBg: "#ECF1F4",
                 },
             },
             myCustomDarkTheme: {
@@ -49,7 +49,7 @@ export default createVuetify({
                     lightSectionBg: "#1E1E1E", // dark equivalent
                     surface: "#1E1E1E",
                     tableRowBg: "#1e1e1e",
-                     iconWrapperBg: "#b0c9d8",
+                    iconWrapperBg: "#b0c9d8",
                 },
             },
         },
