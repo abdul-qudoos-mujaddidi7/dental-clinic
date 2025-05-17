@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\BillExpense;
 use App\Models\CurePayment;
 use App\Models\Expense;
-use App\Models\Patient;
+use App\Models\MoneyAccountTransaction;
 use App\Models\People;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -33,87 +33,54 @@ class DashboardController extends Controller
         $currentJalaliYear = Jalalian::now()->format('Y-m-d');
 
 
-        // Earnings and Expenses for Today
-        $todayEarning = CurePayment::whereDay('date', $jalaliToday)
-            ->whereNull('deleted_at')
-            ->sum('amount');
-
-        $todayExpense = Expense::whereDay('date', $jalaliToday)
-            ->whereNull('deleted_at')
-            ->sum('amount');
-
-        // Total today's expenses including bill expenses
-        $todayBillExpense = DB::table('bill_expenses')
-            ->whereDay('created_at', $jalaliToday)
-            ->whereNull('deleted_at')
-            ->sum('grand_total');
-
-        $totalTodayExpense = $todayExpense + $todayBillExpense;
-
-        // Calculate today's net profit
-        $netProfitToday = $todayEarning - $totalTodayExpense;
+        
 
         // All-time earnings and expenses
-        $totalEarnings = CurePayment::whereNull('deleted_at')->sum('amount');
-
-        $totalExpenses = Expense::whereNull('deleted_at')->sum('amount');
-        $totalBillableExpenses = BillExpense::whereNull('deleted_at')->sum('grand_total');
-
-        $totalAllExpenses = $totalExpenses + $totalBillableExpenses;
+        $totalEarnings = MoneyAccountTransaction::where('payment_type', 'received')
+        ->sum('amount');
+        
+        $totalAllExpenses = MoneyAccountTransaction::where('payment_type', 'paid')
+        ->sum('amount');
 
         // Calculate total net profit
         $netProfit = $totalEarnings - $totalAllExpenses;
 
         // Monthly Earnings and Expenses
-        $monthlyEarnings = CurePayment::whereBetween('date', [$jalaliStartOfMonth, $jalaliEndOfMonth])
+        $monthlyEarnings = MoneyAccountTransaction::whereBetween('date', [$jalaliStartOfMonth, $jalaliEndOfMonth])
             ->whereYear('created_at', $currentJalaliYear)
-            ->whereNull('deleted_at')
+            ->where('payment_type', 'received')
             ->sum('amount');
 
-        $monthlyExpenses = Expense::whereBetween('date', [$jalaliStartOfMonth, $jalaliEndOfMonth])
+        $totalMonthlyExpenses = MoneyAccountTransaction::whereBetween('date', [$jalaliStartOfMonth, $jalaliEndOfMonth])
             ->whereYear('date',  $currentJalaliYear)
-            ->whereNull('deleted_at')
+            ->where('payment_type','paid')
             ->sum('amount');
 
-        $monthlyBillableExpenses = BillExpense::whereBetween('bill_date', [$jalaliStartOfMonth, $jalaliEndOfMonth])
-            ->whereYear('bill_date', $currentJalaliYear)
-            ->whereNull('deleted_at')
-            ->sum('grand_total');
 
-        $totalMonthlyExpenses = $monthlyExpenses + $monthlyBillableExpenses;
         $thisMonthProfit = $monthlyEarnings - $totalMonthlyExpenses;
 
 
-        // Get the first and last day of the previous month
-
+        
 
         // Earnings for Last Month
-        $lastMonthEarnings = CurePayment::whereBetween('date', [$jalaliStartOfMonth, $endOfLastMonth])
-            ->whereYear('created_at', $currentYear)
-            ->whereNull('deleted_at')
+        // Get the first and last day of the previous month
+        $lastMonthEarnings = MoneyAccountTransaction::whereBetween('date', [$jalaliStartOfMonth, $jalaliEndOfMonth])
+            ->whereYear('date', $currentJalaliYear)
+            ->where("payment_type","received")
             ->sum('amount');
 
         // Expenses for Last Month
-        $lastMonthExpenses = Expense::whereBetween('date', [$jalaliStartOfMonth, $endOfLastMonth])
-            ->whereYear('created_at', $currentJalaliYear)
-            ->whereNull('deleted_at')
+        $totalLastMonthExpenses = MoneyAccountTransaction::whereBetween('date', [$jalaliStartOfMonth, $jalaliEndOfMonth])
+            ->whereYear('date', $currentJalaliYear)
+            ->where('payment_type','paid')
             ->sum('amount');
-
-        // Billable Expenses for Last Month
-        $lastMonthBillableExpenses = BillExpense::whereBetween('bill_date', [$jalaliStartOfMonth, $endOfLastMonth])
-            ->whereYear('bill_date',  $currentJalaliYear)
-            ->whereNull('deleted_at')
-            ->sum('grand_total');
-
-        // Total Expenses for Last Month
-        $totalLastMonthExpenses = $lastMonthExpenses + $lastMonthBillableExpenses;
 
         // Calculate Last Month's Profit
         $lastMonthProfit = $lastMonthEarnings - $totalLastMonthExpenses;
 
 
         // Count new patients added today
-        $newPatients = People::where('type', 'patient')->whereDay('created_at', $today)->count();
+        $newPatients = People::where('type', 'patient')->whereDay('created_at', $jalaliToday)->count();
         // Total number of patients
         $totalPatients = People::where('type', 'patient')->count();
 
@@ -130,8 +97,8 @@ class DashboardController extends Controller
         $monthlyExpenses = DB::table('expenses')
             ->join('expense_categories', 'expenses.expense_category_id', '=', 'expense_categories.id')
             ->selectRaw('expense_categories.name as categoryName, SUM(expenses.amount) as totalExpense, 
-         (SUM(expenses.amount) / (SELECT SUM(amount) FROM expenses WHERE YEAR(created_at) = ? AND created_at BETWEEN ? AND ?)) * 100 as percentage', [now()->year, $jalaliStartOfMonth, $jalaliEndOfMonth])
-            ->whereYear('expenses.created_at',  $currentJalaliYear)
+         (SUM(expenses.amount) / (SELECT SUM(amount) FROM expenses WHERE YEAR(created_at) = ? AND created_at BETWEEN ? AND ?)) * 100 as percentage', [$currentJalaliYear, $jalaliStartOfMonth, $jalaliEndOfMonth])
+            ->whereYear('expenses.date',  $currentJalaliYear)
             ->whereBetween('expenses.date', [$jalaliStartOfMonth, $jalaliEndOfMonth])
             ->groupBy('expense_categories.name')
             ->orderBy('totalExpense', 'desc')
@@ -188,8 +155,6 @@ class DashboardController extends Controller
         return [
             'thisMonthProfit' => $thisMonthProfit,
             'lastMonthProfit' => $lastMonthProfit,
-            'todayEarning' => $todayEarning,
-            'totalTodayExpense' => $totalTodayExpense,
             'newPatients' => $newPatients,
             'totalPatients' => $totalPatients,
             'totalEarnings' => $totalEarnings,
