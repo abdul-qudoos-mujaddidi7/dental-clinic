@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BillExpense;
-use App\Models\CurePayment;
-use App\Models\Expense;
+
 use App\Models\MoneyAccountTransaction;
 use App\Models\People;
 use Carbon\Carbon;
@@ -47,7 +45,7 @@ class DashboardController extends Controller
 
         // Monthly Earnings and Expenses
         $monthlyEarnings = MoneyAccountTransaction::whereBetween('date', [$jalaliStartOfMonth, $jalaliEndOfMonth])
-            ->whereYear('created_at', $currentJalaliYear)
+            ->whereYear('date', $currentJalaliYear)
             ->where('payment_type', 'received')
             ->sum('amount');
 
@@ -87,7 +85,7 @@ class DashboardController extends Controller
         $dailyExpenses = DB::table('expenses')
             ->join('expense_categories', 'expenses.expense_category_id', '=', 'expense_categories.id')
             ->selectRaw('expense_categories.name as categoryName, SUM(expenses.amount) as totalExpense, 
-         (SUM(expenses.amount) / (SELECT SUM(amount) FROM expenses WHERE DATE(created_at) = ?)) * 100 as percentage', [$jalaliToday])
+         (SUM(expenses.amount) / (SELECT SUM(amount) FROM expenses WHERE DATE(date) = ?)) * 100 as percentage', [$jalaliToday])
             ->whereDate('expenses.date', $jalaliToday)
             ->groupBy('expense_categories.name')
             ->orderBy('totalExpense', 'desc')
@@ -97,7 +95,7 @@ class DashboardController extends Controller
         $monthlyExpenses = DB::table('expenses')
             ->join('expense_categories', 'expenses.expense_category_id', '=', 'expense_categories.id')
             ->selectRaw('expense_categories.name as categoryName, SUM(expenses.amount) as totalExpense, 
-         (SUM(expenses.amount) / (SELECT SUM(amount) FROM expenses WHERE YEAR(created_at) = ? AND created_at BETWEEN ? AND ?)) * 100 as percentage', [$currentJalaliYear, $jalaliStartOfMonth, $jalaliEndOfMonth])
+         (SUM(expenses.amount) / (SELECT SUM(amount) FROM expenses WHERE YEAR(date) = ? AND created_at BETWEEN ? AND ?)) * 100 as percentage', [$currentJalaliYear, $jalaliStartOfMonth, $jalaliEndOfMonth])
             ->whereYear('expenses.date',  $currentJalaliYear)
             ->whereBetween('expenses.date', [$jalaliStartOfMonth, $jalaliEndOfMonth])
             ->groupBy('expense_categories.name')
@@ -108,7 +106,7 @@ class DashboardController extends Controller
         $yearlyExpenses = DB::table('expenses')
             ->join('expense_categories', 'expenses.expense_category_id', '=', 'expense_categories.id')
             ->selectRaw('expense_categories.name as categoryName, SUM(expenses.amount) as totalExpense, 
-         (SUM(expenses.amount) / (SELECT SUM(amount) FROM expenses WHERE YEAR(created_at) = ?)) * 100 as percentage', [$currentJalaliYear])
+         (SUM(expenses.amount) / (SELECT SUM(amount) FROM expenses WHERE YEAR(date) = ?)) * 100 as percentage', [$currentJalaliYear])
             ->whereYear('expenses.date',  $currentJalaliYear)
             ->groupBy('expense_categories.name')
             ->orderBy('totalExpense', 'desc')
