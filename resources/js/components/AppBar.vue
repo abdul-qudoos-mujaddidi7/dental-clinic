@@ -58,6 +58,7 @@
                                 icon="mdi-web"
                                 flat
                                 fluid
+                             
                                 class="icon bg-head "
                                 size="small"
                                 v-bind="props"
@@ -91,8 +92,8 @@
                     </v-menu>
                 </div>
 
-                <div class="icon-wrapper bg-iconWrapperBg">
-                    <!-- <BellIcon class="icon" /> -->
+                <!-- <div class="icon-wrapper bg-iconWrapperBg">
+                  
                     <svg
                         width="20"
                         height="20"
@@ -126,7 +127,7 @@
                             />
                         </defs>
                     </svg>
-                </div>
+                </div> -->
                 <div class="icon-wrapper bg-iconWrapperBg">
                     <v-btn flat fluid class="" icon @click="toggleTheme">
                         <v-icon>{{
