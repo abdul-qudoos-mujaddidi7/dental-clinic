@@ -23,7 +23,57 @@
                         v-model="ExpenseRepository.billExpenseSearch"
                     ></v-text-field>
                 </div>
-                <div class="btn">
+                <div class="btn d-flex">
+                    <!-- ====================== -->
+                    <v-btn
+                        color="danger"
+                        variant="outlined"
+                        prepend-icon="mdi mdi-file"
+                        class="px-6"
+                        @click="exportDialog = true"
+                    >
+                        {{ t("PDF") }}
+                    </v-btn>
+                    <!-- Export Dialog -->
+                    <v-dialog v-model="exportDialog" max-width="1200px">
+                        <v-card>
+                            <v-card-title class="text-h6">
+                                {{ t("Bill Expenses Report Preview") }}
+                            </v-card-title>
+
+                            <v-card-text>
+                                <!-- This is the visible preview inside dialog -->
+                                <Export
+                                    ref="exportRef"
+                                    :table-data="flattenedExpenses"
+                                    :fields="{
+                                        date: t('date'),
+                                        reference: t('reference'),
+                                        addedBy: t('addedBy'),
+                                        supplier: t('supplier'),
+                                        grandTotal: t('grandTotal'),
+                                        paid: t('paid'),
+                                        due: t('due'),
+                                    }"
+                                    file-name="Bill Expenses Report"
+                                    btn-color="primary"
+                                    :show-button="false"
+                                />
+                            </v-card-text>
+
+                            <v-card-actions>
+                                <v-spacer />
+                                <v-btn @click="exportDialog = false">{{
+                                    t("Close")
+                                }}</v-btn>
+                                <v-btn color="primary" @click="downloadPDF">
+                                    {{ t("Download PDF") }}
+                                </v-btn>
+                            </v-card-actions>
+                        </v-card>
+                    </v-dialog>
+                    <!-- ==================== -->
+                    &nbsp;
                     <v-btn variant="outlined" color="primaryOld" class="px-6">
                         {{ t("filter") }}
                     </v-btn>
@@ -44,7 +94,11 @@
                 <v-app>
                     <v-main class="main">
                         <v-row>
-                            <v-col>
+                            <v-col
+                                id="pdf-section"
+                                ref="pdfTable"
+                                class="export-table"
+                            >
                                 <v-data-table-server
                                     :dir="dir"
                                     theme="cursor-pointer"
@@ -179,12 +233,36 @@ import { useExpenseRepository } from "@/store/ExpenseRepository";
 import { useI18n } from "vue-i18n";
 const { t, locale } = useI18n();
 const ExpenseRepository = useExpenseRepository();
+import Export from "../../../components/ExportComponent.vue";
 
 // direction
 const dir = computed(() => {
     return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
 });
 
+// export component
+
+const exportDialog = ref(false);
+const exportRef = ref(null);
+
+// Data you are exporting
+const flattenedExpenses = computed(() =>
+  ExpenseRepository.billExpenses.map((item) => ({
+    date: item.date,
+    reference: item.reference,
+    addedBy: item.addedBy,
+    supplier: item.supplier?.name ?? "",
+    grandTotal: item.grandTotal,
+    paid: item.paid,
+    due: item.due,
+  }))
+);
+
+// Trigger PDF download from the child component
+const downloadPDF = () => {
+  exportRef.value?.exportToPDF?.();
+};
+// ===================
 // bulk delete
 const selectedIds = ref([]);
 const sendSelectedIds = () => {

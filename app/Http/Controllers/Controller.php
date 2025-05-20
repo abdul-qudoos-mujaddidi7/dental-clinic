@@ -59,7 +59,7 @@ class Controller extends BaseController
         return $record;
     }
 
-    public function updateRecord($request, $model,$record)
+    public function updateRecord($request,$record)
     {
 
         // $record  = $model::findOrFail($id);s

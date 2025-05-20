@@ -20,7 +20,7 @@
 
         <v-row class="pt-6">
             <v-col>
-                <v-card variant="flat" rounded="lg">
+                <v-card variant="elevated" rounded="lg" hover>
                     <template v-slot:title>
                         <div class="d-flex">
                             <v-avatar size="40" class="mr-4">
@@ -49,7 +49,7 @@
             </v-col>
 
             <v-col>
-                <v-card variant="flat" rounded="lg">
+                <v-card variant="elevated" rounded="lg" hover>
                     <template v-slot:title>
                         <div class="d-flex align-center justify-start">
                             <v-avatar size="40" class="mr-4">
@@ -74,7 +74,7 @@
                 </v-card>
             </v-col>
             <v-col>
-                <v-card variant="flat" rounded="lg">
+                <v-card variant="elevated" rounded="lg" hover>
                     <template v-slot:title>
                         <div class="d-flex align-center justify-start">
                             <v-avatar size="40" class="mr-4">
@@ -100,7 +100,7 @@
             </v-col>
 
             <v-col>
-                <v-card variant="flat" rounded="lg">
+                <v-card variant="elevated" rounded="lg" hover>
                     <template v-slot:title>
                         <div class="d-flex align-center justify-start">
                             <v-avatar size="40" class="mr-4">

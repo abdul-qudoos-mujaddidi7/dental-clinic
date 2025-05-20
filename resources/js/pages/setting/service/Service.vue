@@ -23,7 +23,7 @@
             </div>
             <div class="btn">
                 <v-btn variant="outlined" color="primaryOld" class="px-6">
-                    {{t('filter')}}
+                    {{ t("filter") }}
                 </v-btn>
                 &nbsp;
 
@@ -44,7 +44,7 @@
                     <v-row>
                         <v-col>
                             <v-data-table-server
-                            :dir="dir"
+                                :dir="dir"
                                 theme="cursor-pointer"
                                 v-model:items-per-page="
                                     SettingRepository.itemsPerPage
@@ -81,8 +81,7 @@
                                                     <v-icon color="tealColor"
                                                         >mdi-square-edit-outline</v-icon
                                                     >
-                                                                        {{t('edit')}}
-
+                                                    {{ t("edit") }}
                                                 </v-list-item-title>
 
                                                 <v-list-item-title
@@ -92,8 +91,7 @@
                                                     <v-icon color="error"
                                                         >mdi-delete-outline</v-icon
                                                     >
-                                                                        {{t('delete')}}
-
+                                                    {{ t("delete") }}
                                                 </v-list-item-title>
                                             </v-list-item>
                                         </v-list>
@@ -109,13 +107,13 @@
 </template>
 
 <script setup>
-import { ref,computed } from "vue";
+import { ref, computed } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 import CreatesService from "./CreatesService.vue";
 import { useSettingRepository } from "@/store/SettingRepository";
 const SettingRepository = useSettingRepository();
 import { useI18n } from "vue-i18n";
-const { t,locale } = useI18n();
+const { t, locale } = useI18n();
 
 // direction
 const dir = computed(() => {
@@ -126,14 +124,14 @@ const dir = computed(() => {
 const CreateDialogShow = () => {
     SettingRepository.service = {};
     // SettingRepository.setEditMode(false);
-    SettingRepository.isEditMode=false;
+    SettingRepository.isEditMode = false;
     SettingRepository.createDialog = true;
 };
 
 const edit = (item) => {
     console.log(item, "me");
     // SettingRepository.setEditMode(true);
-    SettingRepository.isEditMode=true
+    SettingRepository.isEditMode = true;
     SettingRepository.service = {};
     if (Object.keys(SettingRepository.service).length === 0) {
         SettingRepository.fetchService(item.id)
@@ -152,7 +150,12 @@ const deleteItem = async (item) => {
 // header
 const headers = [
     { title: t("name"), key: "name", align: "center", sortable: false },
-    { title: t("details"), key: "description", align: "center", sortable: false },
+    {
+        title: t("details"),
+        key: "description",
+        align: "center",
+        sortable: false,
+    },
     { title: t("action"), key: "action", align: "end", sortable: false },
 ];
 </script>

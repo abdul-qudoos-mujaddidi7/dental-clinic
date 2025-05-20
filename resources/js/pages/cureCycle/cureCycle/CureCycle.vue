@@ -23,7 +23,61 @@
                         v-model="CureRepository.curesSearch"
                     ></v-text-field>
                 </div>
-                <div class="btn">
+                <div class="btn d-flex">
+                    <!-- ====================== -->
+                    <v-btn
+                        color="danger"
+                        variant="outlined"
+                        prepend-icon="mdi mdi-file"
+                        class="px-6"
+                        @click="exportDialog = true"
+                    >
+                        {{ t("PDF") }}
+                    </v-btn>
+
+                    <!-- Export Dialog -->
+                    <v-dialog v-model="exportDialog" max-width="1200px">
+                        <v-card>
+                            <v-card-title class="text-h6">
+                                {{ t("Cure Report Preview") }}
+                            </v-card-title>
+
+                            <v-card-text>
+                                <!-- This is the visible preview inside dialog -->
+                                <Export
+                                    ref="exportRef"
+                                    :table-data="flattenedExpenses"
+                                    :fields="{
+                                        reference: t('reference'),
+                                        startDate: t('startDate'),
+                                        dentist: t('dentist'),
+                                        patient: t('patient'),
+                                        status: t('status'),
+                                        grandTotal: t('grandTotal'),
+                                        paid: t('paid'),
+                                        due: t('due'),
+                                        paymentStatus: t('paymentStatus'),
+                                    }"
+                                    file-name="Cure Report"
+                                    btn-color="primary"
+                                    :show-button="false"
+                                />
+                            </v-card-text>
+
+                            <v-card-actions>
+                                <v-spacer />
+                                <v-btn @click="exportDialog = false">{{
+                                    t("Close")
+                                }}</v-btn>
+                                <v-btn color="primary" @click="downloadPDF">
+                                    {{ t("Download PDF") }}
+                                </v-btn>
+                            </v-card-actions>
+                        </v-card>
+                    </v-dialog>
+
+                    <!-- ==================== -->
+                    &nbsp;
                     <v-btn variant="outlined" color="primaryOld" class="px-6">
                         {{ $t("filter") }}
                     </v-btn>
@@ -50,7 +104,11 @@
                 <v-app>
                     <v-main class="main">
                         <v-row>
-                            <v-col>
+                            <v-col
+                                id="pdf-section"
+                                ref="pdfTable"
+                                class="export-table"
+                            >
                                 <v-data-table-server
                                     :dir="dir"
                                     theme="cursor-pointer"
@@ -235,10 +293,36 @@ import { useCureRepository } from "@/store/CureRepository";
 const CureRepository = useCureRepository();
 import { useAuthRepository } from "../../../store/AuthRepository";
 const AuthRepository = useAuthRepository();
+import Export from "../../../components/ExportComponent.vue";
 
 const dir = computed(() => {
     return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
 });
+// export component
+
+const exportDialog = ref(false);
+const exportRef = ref(null);
+
+// Data you are exporting
+const flattenedExpenses = computed(() =>
+    CureRepository.cures.map((item) => ({
+        reference: item.reference,
+        startDate: item.start_date,
+        dentist: item.dentist?.name ?? "",
+        patient: item.patient?.name ?? "",
+        status: item.status,
+        grandTotal: item.grand_total,
+        paid: item.paid,
+        due: item.due,
+        paymentStatus: item.paymentStatus,
+    }))
+);
+
+// Trigger PDF download from the child component
+const downloadPDF = () => {
+    exportRef.value?.exportToPDF?.();
+};
+// ===================
 // bulk delete
 const selectedIds = ref([]);
 const sendSelectedIds = () => {
