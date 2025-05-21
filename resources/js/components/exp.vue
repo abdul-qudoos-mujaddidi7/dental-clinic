@@ -302,6 +302,3 @@ const Create = async()=>{
 const selectedDate = ref("");
 </script>
 
-<style scoped>
-/* @import 'vue-awesome-datepicker/dist/style.css'; */
-</style>

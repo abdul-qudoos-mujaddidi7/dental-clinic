@@ -70,7 +70,7 @@
                                     <template v-slot:item.stage="{ item }">
                                         <td class="py-2 pl-4">
                                             <v-select
-                                                v-model="item.stage.id"
+                                                v-model="item.stage"
                                                 :items="
                                                     LeadRepository.leadStageFor
                                                 "
@@ -79,7 +79,8 @@
                                                 density="compact"
                                                 variant="plain"
                                                 hide-details
-                                                class="max-w-[180px]"
+                                                menu-icon=""
+                                                class="max-w-[180px] no-arrow"
                                                 @update:modelValue="
                                                     (value) =>
                                                         changeStage(
@@ -88,7 +89,7 @@
                                                         )
                                                 "
                                             >
-                                                <!-- Dropdown list items -->
+                                                <!-- Custom item list -->
                                                 <template
                                                     #item="{
                                                         item: stage,
@@ -97,13 +98,7 @@
                                                 >
                                                     <v-list-item
                                                         v-bind="props"
-                                                        :style="{
-                                                            backgroundColor:
-                                                                getStageColor(
-                                                                    stage.name
-                                                                ),
-                                                            color: '#fff',
-                                                        }"
+                                                    
                                                     >
                                                         <v-list-item-title>{{
                                                             stage.name
@@ -111,16 +106,16 @@
                                                     </v-list-item>
                                                 </template>
 
-                                                <!-- Selected item appearance -->
+                                                <!-- Custom selection appearance -->
                                                 <template
                                                     #selection="{ item: stage }"
                                                 >
                                                     <div
-                                                        class="px-4 py-1 p- rounded text-white text-sm font-medium pdd"
+                                                        class="px-4 py-1 rounded text-white text-sm font-medium"
                                                         :style="{
                                                             backgroundColor:
                                                                 getStageColor(
-                                                                    stage.name
+                                                                    stage.title
                                                                 ),
                                                         }"
                                                     >
@@ -389,5 +384,8 @@ LeadRepository.leadStages();
     top: 0.7rem;
     left: 0.7rem;
     z-index: 1;
+}
+.no-arrow .v-field__append-inner {
+    display: none !important;
 }
 </style>
