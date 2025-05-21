@@ -189,7 +189,7 @@
                 value="Reports"
                 v-if="
                     AuthRepository.permissions &&
-                    AuthRepository.permissions.includes('viewReports')
+                    AuthRepository.permissions.includes('viewReport')
                 "
                 @click="toggleMenu('reports')"
                 class="transition-all duration-300 cursor-pointer py-3 borderRadius"
