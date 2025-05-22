@@ -23,11 +23,18 @@
                     ></v-text-field>
                 </div>
                 <div class="d-flex">
+                        <!-- Fix for date range picker -->
                     <date-picker
-                        v-model:value="ReportRepository.productDateRange"
-                        @change="onDateChange"
-                        range
-                    ></date-picker>
+                        mode="range"
+                        v-model="ReportRepository.productDateRange" 
+                        :styles="styles"
+                        @update:modelValue="onDateChange" 
+                        locale="fa"
+                        type="date"
+                        :locale-config="LocaleConfigs"
+                        input-format="jYYYY/jMM/jDD"
+                        format="YYYY-MM-DD"
+                    />
                 </div>
            
             </div>
@@ -74,8 +81,7 @@ import { ref, onMounted,watch,computed } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 import { useReportRepository } from "@/store/ReportRepository";
 const ReportRepository = useReportRepository();
-import DatePicker from "vue-datepicker-next";
-import "vue-datepicker-next/index.css";
+import { LocaleConfigs,styles } from "../../../LocaleConfigs";
 import { useI18n } from "vue-i18n";
 const { t ,locale} = useI18n();
 const productDateRange = ref([new Date(), new Date()]);
@@ -86,14 +92,13 @@ const dir = computed(() => {
 });
 
 
+const onDateChange = (newRange) => {
+    console.log('Date range changed:', newRange);
 
-const onDateChange = () => {
-    console.log('called');
+    const [startDate, endDate] = newRange;
 
-const startDate = ReportRepository.productDateRange[0];
-const endDate = ReportRepository.productDateRange[1];
     if (startDate && endDate) {
-        ReportRepository.fetchExpenseCategoryReports({ page: 1, itemsPerPage: 10 },startDate, endDate);
+        ReportRepository.fetchServiceReports({ page: 1, itemsPerPage: 10 }, startDate, endDate);
     }
 };
 
@@ -102,19 +107,13 @@ watch(
     (newSearchTerm) => {
         const [startDate, endDate] = ReportRepository.productDateRange;
         if (startDate && endDate) {
-            ReportRepository.fetchExpenseCategoryReports( startDate, endDate);
+            ReportRepository.fetchServiceReports(startDate, endDate);
         }
     }
 );
 
 onMounted(() => {
-    ReportRepository.productDateRange = productDateRange.value;
-    ReportRepository.fetchExpenseCategoryReports(
-        { page: 1, itemsPerPage: 10 },
-        productDateRange.value[0],
-        productDateRange.value[1]
-    );
-    console.log(productDateRange.value[0], productDateRange.value[1], "service report");
+    ReportRepository.fetchExpenseCategoryReports();
 });
 // header
 const headers = [
