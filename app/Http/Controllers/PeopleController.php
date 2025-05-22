@@ -33,7 +33,7 @@ class PeopleController extends Controller
     {
         $people = $this->storeRecord($request, $this->model);
         if (in_array($people->type, ['employee', 'doctor'])) {
-            $salary = Salary::create([
+             Salary::create([
                 'people_id' => $people->id,
                 'amount' => 0,
             ]);

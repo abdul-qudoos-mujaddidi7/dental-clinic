@@ -1,5 +1,4 @@
 <template>
-    <CreatePatients v-if="ReportRepository.createDialog" />
     <div class="all-expense rounded-xl" :dir="dir">
         <div class="card rounded-xl">
             <AppBar mainTitle="patient report " sub-title="report" />

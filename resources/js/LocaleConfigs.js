@@ -28,9 +28,8 @@ export const LocaleConfigs = {
             now: "هم اکنون",
             submit: "تایید",
         },
-        inputFormat: "jYYYY/jMM/jDD",
-        
-        displayFormat: "jD jMMMM",
+        inputFormat: "jYYYY/jMM/jDD",        // Gregorian format for backend
+displayFormat: "jYYYY",           // Jalali year only for user
     },
   
 };

@@ -157,7 +157,7 @@ const CreateDialogShow = () => {
 };
 
 const dir = computed(() => {
-    return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
+    return locale.value === "fa"  ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
 });
 
 const edit = (item) => {

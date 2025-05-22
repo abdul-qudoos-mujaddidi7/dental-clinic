@@ -23,13 +23,22 @@
                     ></v-text-field>
                 </div>
                 <div class="d-flex">
+
+                    <!-- Fix for date range picker -->
                     <date-picker
-                        v-model:value="ReportRepository.productDateRange"
-                        @change="onDateChange"
-                        range
-                    ></date-picker>
+                        mode="range"
+                        v-model="ReportRepository.productDateRange" 
+                        :styles="styles"
+                        @update:modelValue="onDateChange" 
+                        locale="fa"
+                        type="date"
+                        :locale-config="LocaleConfigs"
+                        input-format="jYYYY/jMM/jDD"
+                        format="YYYY-MM-DD"
+                    />
                 </div>
             </div>
+            
             <!-- v-table server  -->
             <div class="overflow-x-hidden">
                 <v-app>
@@ -37,21 +46,15 @@
                         <v-row>
                             <v-col>
                                 <v-data-table-server
-                                :dir="dir"
+                                    :dir="dir"
                                     theme="cursor-pointer"
-                                    v-model:items-per-page="
-                                        ReportRepository.itemsPerPage
-                                    "
+                                    v-model:items-per-page="ReportRepository.itemsPerPage"
                                     :headers="headers"
                                     :items-length="ReportRepository.totalItems"
                                     :items="ReportRepository.serviceReport"
                                     :loading="ReportRepository.loading"
-                                    :search="
-                                        ReportRepository.serviceReportSearch
-                                    "
-                                    @update:options="
-                                        ReportRepository.fetchServiceReports
-                                    "
+                                    :search="ReportRepository.serviceReportSearch"
+                                    @update:options="ReportRepository.fetchServiceReports"
                                     :item-key="ReportRepository.serviceReport"
                                     hover
                                     class="w-100 mx-auto"
@@ -67,32 +70,30 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch,computed } from "vue";
+import { ref, onMounted, computed, watch } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 import { useReportRepository } from "@/store/ReportRepository";
 const ReportRepository = useReportRepository();
-import DatePicker from "vue-datepicker-next";
-import "vue-datepicker-next/index.css";
 import { useI18n } from "vue-i18n";
-const { t,locale } = useI18n();
+import { LocaleConfigs, styles } from "../../../LocaleConfigs.js";
+const { t, locale } = useI18n();
+
 const productDateRange = ref([new Date(), new Date()]);
-const onDateChange = () => {
-    console.log('called');
 
-    const startDate = ReportRepository.productDateRange[0];
-    const endDate = ReportRepository.productDateRange[1];
+const onDateChange = (newRange) => {
+    console.log('Date range changed:', newRange);
 
-    console.log(startDate);
+    const [startDate, endDate] = newRange;
+
     if (startDate && endDate) {
         ReportRepository.fetchServiceReports({ page: 1, itemsPerPage: 10 }, startDate, endDate);
-    }
+    }
 };
 
 // direction
 const dir = computed(() => {
-    return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
+    return locale.value === "fa" ? "rtl" : "ltr";
 });
-
 
 watch(
     () => ReportRepository.ProductReportSearch,
@@ -107,11 +108,10 @@ watch(
 onMounted(() => {
     ReportRepository.fetchServiceReports();
 });
+
 // header
 const headers = [
     { title: t("service"), key: "name", align: "start", sortable: false },
     { title: t("used"), key: "totalApplied", align: "start", sortable: false },
-    // { title: "Amount", key: "Amount", align: "start", sortable: false },
-    // { title: "Amount", key: "idk", align: "start", sortable: false },
 ];
 </script>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Morilog\Jalali\Jalalian;
@@ -15,24 +16,13 @@ class AppointmentResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        try {
-            // Parse the Jalali datetime stored in the database
-            $jalali = Jalalian::fromFormat('Y-m-d H:i:s', $this->date_time);
-            
-            // Format the date and time in Jalali
-            $date = $jalali->format('Y-m-d'); // 1404-02-03
-            $time = $jalali->format('H:i');   // 05:51
-        } catch (\Exception $e) {
-            // In case of any error, set default values
-            $date = null;
-            $time = null;
-        }
+        
 
         return [
             'id' => $this->id,
-            'dateTime' => $this->date_time, // Original datetime (Jalali format)
-            'date' => $date, // Jalali formatted date
-            'time' => $time, // Jalali formatted time
+            'dateTime' => $this->date_time,
+            'date' => Jalalian::fromCarbon(Carbon::parse($this->date_time))->format('Y-m-d'), // Jalali formatted date
+            'time' => $this->date_time ? Jalalian::fromCarbon(Carbon::parse($this->date_time))->format('H:i'):null, // Jalali formatted time
             'status' => $this->status,
             'userName' => $this->user?->first_name,
             'dentists' => [

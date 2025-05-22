@@ -1018,7 +1018,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
         // peopleAccount
         async fetchMoneyAccountsFor() {
             this.loading = true;
-            const response = await axios.get(`peopleAccountTransaction`);
+            const response = await axios.get(`moneyAccount`);
             this.moneyAccsFor = response.data.data;
             this.loading = false;
         },

@@ -64,4 +64,7 @@ class Appointment extends Model
     //                  ->orWhere(self::COLUMN_TIME, 'LIKE', '%' . $search . '%')
     //                  ->orWhere(self::COLUMN_STATUS, 'LIKE', '%' . $search . '%');
     // }
+
+  
+    
 }
