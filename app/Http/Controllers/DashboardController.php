@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Models\MoneyAccountTransaction;
 use App\Models\People;
 use Carbon\Carbon;
@@ -14,7 +13,7 @@ class DashboardController extends Controller
 {
     public function __invoke(Request $request)
     {
-        // Initialize date variables
+        // Gregorian Dates
         $today = Carbon::today();
         $currentYear = Carbon::now()->year;
         $startOfMonth = Carbon::now()->startOfMonth();
@@ -22,7 +21,7 @@ class DashboardController extends Controller
         $startOfLastMonth = Carbon::now()->subMonth()->startOfMonth();
         $endOfLastMonth = Carbon::now()->subMonth()->endOfMonth();
 
-        // Jalali equivalents
+        // Hijri Dates
         $jalaliToday = Jalalian::fromCarbon($today)->format('Y-m-d');
         $jalaliStartOfMonth = Jalalian::fromCarbon($startOfMonth)->format('Y-m-d');
         $jalaliEndOfMonth = Jalalian::fromCarbon($endOfMonth)->format('Y-m-d');
@@ -31,125 +30,110 @@ class DashboardController extends Controller
         $currentJalaliYear = Jalalian::now()->format('Y-m-d');
 
 
-        
-
         // All-time earnings and expenses
-        $totalEarnings = MoneyAccountTransaction::where('payment_type', 'received')
-        ->sum('amount');
-        
-        $totalAllExpenses = MoneyAccountTransaction::where('payment_type', 'paid')
-        ->sum('amount');
-
-        // Calculate total net profit
+        $totalEarnings = MoneyAccountTransaction::where('payment_type', 'received')->sum('amount');
+        $totalAllExpenses = MoneyAccountTransaction::where('payment_type', 'paid')->sum('amount');
         $netProfit = $totalEarnings - $totalAllExpenses;
 
-        // Monthly Earnings and Expenses
-        $monthlyEarnings = MoneyAccountTransaction::whereBetween('date', [$jalaliStartOfMonth, $jalaliEndOfMonth])
-            ->whereYear('date', $currentJalaliYear)
-            ->where('payment_type', 'received')
-            ->sum('amount');
+        // Monthly Earnings and Expenses (this month)
+        $monthlyEarnings = MoneyAccountTransaction::whereBetween('date', [$startOfMonth, $endOfMonth])
+            ->where('payment_type', 'received')->sum('amount');
 
-        $totalMonthlyExpenses = MoneyAccountTransaction::whereBetween('date', [$jalaliStartOfMonth, $jalaliEndOfMonth])
-            ->whereYear('date',  $currentJalaliYear)
-            ->where('payment_type','paid')
-            ->sum('amount');
-
+        $totalMonthlyExpenses = MoneyAccountTransaction::whereBetween('date', [$startOfMonth, $endOfMonth])
+            ->where('payment_type', 'paid')->sum('amount');
 
         $thisMonthProfit = $monthlyEarnings - $totalMonthlyExpenses;
 
+        // Last Month Profit
+        $lastMonthEarnings = MoneyAccountTransaction::whereBetween('date', [$startOfLastMonth, $endOfLastMonth])
+            ->where('payment_type', 'received')->sum('amount');
 
-        
+        $totalLastMonthExpenses = MoneyAccountTransaction::whereBetween('date', [$startOfLastMonth, $endOfLastMonth])
+            ->where('payment_type', 'paid')->sum('amount');
 
-        // Earnings for Last Month
-        // Get the first and last day of the previous month
-        $lastMonthEarnings = MoneyAccountTransaction::whereBetween('date', [$jalaliStartOfMonth, $jalaliEndOfMonth])
-            ->whereYear('date', $currentJalaliYear)
-            ->where("payment_type","received")
-            ->sum('amount');
-
-        // Expenses for Last Month
-        $totalLastMonthExpenses = MoneyAccountTransaction::whereBetween('date', [$jalaliStartOfMonth, $jalaliEndOfMonth])
-            ->whereYear('date', $currentJalaliYear)
-            ->where('payment_type','paid')
-            ->sum('amount');
-
-        // Calculate Last Month's Profit
         $lastMonthProfit = $lastMonthEarnings - $totalLastMonthExpenses;
 
-
-        // Count new patients added today
-        $newPatients = People::where('type', 'patient')->whereDay('created_at', $jalaliToday)->count();
-        // Total number of patients
+        // New Patients Today
+        $newPatients = People::where('type', 'patient')->whereDate('created_at', $today)->count();
         $totalPatients = People::where('type', 'patient')->count();
 
+        // Daily Expenses
         $dailyExpenses = DB::table('expenses')
             ->join('expense_categories', 'expenses.expense_category_id', '=', 'expense_categories.id')
-            ->selectRaw('expense_categories.name as categoryName, SUM(expenses.amount) as totalExpense, 
-         (SUM(expenses.amount) / (SELECT SUM(amount) FROM expenses WHERE DATE(date) = ?)) * 100 as percentage', [$jalaliToday])
-            ->whereDate('expenses.date', $jalaliToday)
+            ->selectRaw(
+                'expense_categories.name as categoryName, 
+                 SUM(expenses.amount) as totalExpense,
+                 (SUM(expenses.amount) / (SELECT SUM(amount) FROM expenses WHERE DATE(date) = ?)) * 100 as percentage',
+                [$today->format('Y-m-d')]
+            )
+            ->whereDate('expenses.date', $today)
             ->groupBy('expense_categories.name')
-            ->orderBy('totalExpense', 'desc')
+            ->orderByDesc('totalExpense')
             ->get();
 
         // Monthly Expenses
         $monthlyExpenses = DB::table('expenses')
             ->join('expense_categories', 'expenses.expense_category_id', '=', 'expense_categories.id')
-            ->selectRaw('expense_categories.name as categoryName, SUM(expenses.amount) as totalExpense, 
-         (SUM(expenses.amount) / (SELECT SUM(amount) FROM expenses WHERE YEAR(date) = ? AND created_at BETWEEN ? AND ?)) * 100 as percentage', [$currentJalaliYear, $jalaliStartOfMonth, $jalaliEndOfMonth])
-            ->whereYear('expenses.date',  $currentJalaliYear)
-            ->whereBetween('expenses.date', [$jalaliStartOfMonth, $jalaliEndOfMonth])
+            ->selectRaw(
+                'expense_categories.name as categoryName,
+                 SUM(expenses.amount) as totalExpense,
+                 (SUM(expenses.amount) / 
+                  (SELECT SUM(amount) FROM expenses WHERE date BETWEEN ? AND ?)) * 100 as percentage',
+                [$startOfMonth, $endOfMonth]
+            )
+            ->whereBetween('expenses.date', [$startOfMonth, $endOfMonth])
             ->groupBy('expense_categories.name')
-            ->orderBy('totalExpense', 'desc')
+            ->orderByDesc('totalExpense')
             ->get();
 
         // Yearly Expenses
         $yearlyExpenses = DB::table('expenses')
             ->join('expense_categories', 'expenses.expense_category_id', '=', 'expense_categories.id')
-            ->selectRaw('expense_categories.name as categoryName, SUM(expenses.amount) as totalExpense, 
-         (SUM(expenses.amount) / (SELECT SUM(amount) FROM expenses WHERE YEAR(date) = ?)) * 100 as percentage', [$currentJalaliYear])
-            ->whereYear('expenses.date',  $currentJalaliYear)
+            ->selectRaw(
+                'expense_categories.name as categoryName,
+                 SUM(expenses.amount) as totalExpense,
+                 (SUM(expenses.amount) / 
+                  (SELECT SUM(amount) FROM expenses WHERE YEAR(date) = ?)) * 100 as percentage',
+                [$currentYear]
+            )
+            ->whereYear('expenses.date', $currentYear)
             ->groupBy('expense_categories.name')
-            ->orderBy('totalExpense', 'desc')
+            ->orderByDesc('totalExpense')
             ->get();
 
         // Upcoming Appointments
         $upcomingAppointments = DB::table('appointments')
             ->join('people', 'appointments.people_id', '=', 'people.id')
             ->select('people.name', 'people.phone', DB::raw('TIME(appointments.date_time) as time'))
-            ->whereDate('appointments.date_time', '>=', $currentJalaliYear)
-            ->orderBy('time', 'asc')
+            ->whereDate('appointments.date_time', '>=', $today)
+            ->orderBy('appointments.date_time', 'asc')
             ->limit(5)
             ->get();
 
-
+        // Income and Expense per month for chart
         $everyMonthExpenses = [];
-        $everyMonthIncomes = []; // Array to hold monthly data
+        $everyMonthIncomes = [];
 
-        for ($i = 0; $i < 12; $i++) {
-            // Calculate total expenses for the month
+        for ($i = 1; $i <= 12; $i++) {
             $expenseAmount = DB::table('expenses')
-                ->whereMonth('date', $i + 1)
-                ->whereYear('date',  $currentJalaliYear) // Filter by current year
+                ->whereMonth('date', $i)
+                ->whereYear('date', $currentYear)
                 ->sum('amount');
 
-            // Calculate total bill expenses for the month
             $billExpenseAmount = DB::table('bill_expenses')
-                ->whereMonth('created_at', $i + 1)
-                ->whereYear('bill_date', $currentJalaliYear) // Filter by current year
+                ->whereMonth('created_at', $i)
+                ->whereYear('bill_date', $currentYear)
                 ->sum('grand_total');
 
-            // Calculate total income for the month
-            $incomeAmount = DB::table('cure_payments') // Assuming you have an 'incomes' table
-                ->whereMonth('date', $i + 1)
-                ->whereYear('date',  $currentJalaliYear) // Filter by current year
+            $incomeAmount = DB::table('cure_payments')
+                ->whereMonth('date', $i)
+                ->whereYear('date', $currentYear)
                 ->sum('amount');
 
-            $everyMonthIncomes[$i] = $incomeAmount;
-            $everyMonthExpenses[$i] = $expenseAmount + $billExpenseAmount;
+            $everyMonthIncomes[$i - 1] = $incomeAmount;
+            $everyMonthExpenses[$i - 1] = $expenseAmount + $billExpenseAmount;
         }
 
-
-        // Return the results
         return [
             'thisMonthProfit' => $thisMonthProfit,
             'lastMonthProfit' => $lastMonthProfit,
@@ -167,3 +151,4 @@ class DashboardController extends Controller
         ];
     }
 }
+

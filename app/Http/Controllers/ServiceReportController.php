@@ -14,7 +14,6 @@ class ServiceReportController extends Controller
         // Check if date range is provided
         $fromDate = $request->start_date;
         $toDate = $request->end_date;
-       
         // Default calculations (All Records)
         $allData = DB::table('services')
             ->selectRaw('services.name, SUM(cure_services.quantity) as totalApplied')

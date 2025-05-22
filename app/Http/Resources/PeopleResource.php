@@ -20,9 +20,7 @@ class PeopleResource extends JsonResource
             'email' => $this->email,
             'address' => $this->address,
             'type' => $this->type,
-            'dateOfBirth' => $this->date_of_birth 
-                ? Jalalian::fromFormat('Y-m-d', $this->date_of_birth)->toCarbon()->diffInYears(now())
-                : null,
+            'dateOfBirth' => $this->date_of_birth ? $this->date_of_birth->diffInYears(now()) : null,
             'gender' => $this->gender,
             'medicalRecord' => $this->medical_record,
             'dentalRecord' => $this->dental_record,
