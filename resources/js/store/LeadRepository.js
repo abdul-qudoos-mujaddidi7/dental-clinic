@@ -17,8 +17,8 @@ export let useLeadRepository = defineStore("LeadRepository", {
             itemsPerPage: ref(5),
             createDialog: ref(false),
             // lab payment
-            mainLabCreatePaymentDialog:ref(false),
-            labIdForPayment:ref(""),
+            mainLabCreatePaymentDialog: ref(false),
+            labIdForPayment: ref(""),
             // lead
             leads: reactive([]),
             lead: reactive([]),
@@ -29,14 +29,13 @@ export let useLeadRepository = defineStore("LeadRepository", {
             appointmentSearch: ref(""),
             appointments: reactive([]),
             appointment: reactive([]),
-            patientsForApp:reactive([]),
-            doctorsForApp:reactive([]),
-            userForApp:reactive([]),
-            // pay salary 
-            paySalarySearch:ref(""),
-            paySalaries:reactive([]),
-            paySalary:reactive([]),
-            
+            patientsForApp: reactive([]),
+            doctorsForApp: reactive([]),
+            userForApp: reactive([]),
+            // pay salary
+            paySalarySearch: ref(""),
+            paySalaries: reactive([]),
+            paySalary: reactive([]),
         };
     },
     actions: {
@@ -60,24 +59,30 @@ export let useLeadRepository = defineStore("LeadRepository", {
             const response = await axios.get("stages");
             this.leadStageFor = response.data.data;
         },
-        async bulkDeleteLead(data) {
-            console.log(data);
-            try {
-                const config = {
-                    method: "DELETE",
-                    url: "leadsBulkDelete",
-                    data: data,
-                };
-                const response = response.data.data;
-                this.leads = response.data.data
-                  this.FetchLeads({
-                    page: this.page,
-                    itemsPerPage: this.itemsPerPage,
-                });
-            } catch (err) {
-                this.error = err;
-            }
-        },
+       async bulkDeleteLead(data) {
+    console.log(data);
+    try {
+        const config = {
+            method: "DELETE",
+            url: "leadBulkDelete",
+            data: data,
+        };
+
+        const response = await axios(config); // ✅ Make the request
+
+        // ✅ Correct the way you access response data
+        this.leads = response.data.data;
+
+        // ✅ Re-fetch the updated list of leads
+        this.FetchLeads({
+            page: this.page,
+            itemsPerPage: this.itemsPerPage,
+        });
+    } catch (err) {
+        console.error(err);
+        this.error = err;
+    }
+},
         async FetchLeads({ page, itemsPerPage }) {
             this.loading = true;
             const response = await axios.get(
@@ -321,18 +326,14 @@ export let useLeadRepository = defineStore("LeadRepository", {
         async fetchDoctors() {
             this.loading = true;
 
-            const response = await axios.get(
-                `peoples?type=dentist`
-            );
+            const response = await axios.get(`peoples?type=dentist`);
             this.doctorsForApp = response.data.data;
             this.loading = false;
         },
         async fetchUsers() {
             this.loading = true;
 
-            const response = await axios.get(
-                `users`
-            );
+            const response = await axios.get(`users`);
             this.userForApp = response.data.data;
             this.loading = false;
         },
@@ -391,7 +392,6 @@ export let useLeadRepository = defineStore("LeadRepository", {
                 });
 
                 this.isEditMode = false;
-                
             } catch (err) {
                 this.error = err;
             }
@@ -466,7 +466,6 @@ export let useLeadRepository = defineStore("LeadRepository", {
                 });
 
                 this.isEditMode = false;
-                
             } catch (err) {
                 this.error = err;
             }
@@ -486,7 +485,5 @@ export let useLeadRepository = defineStore("LeadRepository", {
                 this.error = err;
             }
         },
-      
-
     },
 });

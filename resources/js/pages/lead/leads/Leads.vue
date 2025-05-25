@@ -315,7 +315,7 @@ const selectedIds = ref([]);
 const sendSelectedIds = () => {
     if (selectedIds.value.length > 0) {
         const data = {
-            leadsIds: selectedIds.value,
+            leadIds: selectedIds.value,
         };
 
         console.log("Sending data:", data);
