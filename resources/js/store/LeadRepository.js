@@ -19,9 +19,6 @@ export let useLeadRepository = defineStore("LeadRepository", {
             // lab payment
             mainLabCreatePaymentDialog:ref(false),
             labIdForPayment:ref(""),
-
-
-
             // lead
             leads: reactive([]),
             lead: reactive([]),
@@ -72,6 +69,11 @@ export let useLeadRepository = defineStore("LeadRepository", {
                     data: data,
                 };
                 const response = response.data.data;
+                this.leads = response.data.data
+                  this.FetchLeads({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
             } catch (err) {
                 this.error = err;
             }

@@ -236,7 +236,7 @@
                                                         >
                                                             <v-icon
                                                                 color="tealColor"
-                                                                >mdi-square-edit-outline</v-icon
+                                                                >mdi-eye-outline</v-icon
                                                             >
                                                             {{ $t("show") }}
                                                         </v-list-item-title>

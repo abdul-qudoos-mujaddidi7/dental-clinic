@@ -1,5 +1,5 @@
 <template>
-    <AppBar :mainTitle="$t('profitLoss')" sub-title="reports" />
+    <AppBar :mainTitle="$t('viewEmployee')" sub-title="employee" />
 
     <div class="pb-8">
         <v-row class="pt-12">
