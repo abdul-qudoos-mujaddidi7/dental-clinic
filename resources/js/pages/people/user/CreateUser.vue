@@ -79,7 +79,7 @@
                                             @click="CloseWindow()"
                                             class="close-button"
                                         >
-                                            <v-icon size="small"
+                                            <v-icon size="lg" color="red"
                                                 >mdi-close</v-icon
                                             >
                                         </button>

@@ -79,4 +79,20 @@ class LeadController extends Controller
         $this->deleteRecord($lead);
         return new LeadResource($lead);
     }
+
+
+    public function bulkDelete(Request $request)
+    {
+        $validated= $request->validate([
+            "leadIds"=>"required|array",
+            "leadIds.*"=>"required|exists:leades,id"
+        ]);
+
+        Lead::whereIn('id',$validated['leadIds'])->delete();
+
+        return response()->noContent();
+
+
+
+    }
 }
