@@ -87,11 +87,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/outboundLab', OutboundLabController::class);
     Route::apiResource('/tooths', ToothController::class);
     Route::apiResource('/peoples', PeopleController::class);
-    Route::delete('/patientBulkDelete', [PatientController::class,'bulkDelete']);
     Route::apiResource('/appointments', AppointmentController::class);
     Route::apiResource('/categories', CategoryController::class);
     Route::apiResource('/stages', StageController::class);
     Route::apiResource('/leads', LeadController::class);
+    Route::delete('/leadBulkDelete', [LeadController::class,'bulkDelete']);
     Route::put('/leads/stage/{lead}', [LeadController::class, 'updateStage'])->name('leads.updateStage');
 
     Route::apiResource('/services', ServiceController::class);
