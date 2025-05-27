@@ -25,6 +25,7 @@ export let useCureRepository = defineStore("CureRepository", {
             services: [],
 
             // lead
+            curesSearch:ref(""),
             cures: reactive([]),
             cure: reactive([]),
             leadSearch: ref(""),
