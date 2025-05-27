@@ -9,15 +9,14 @@ export let useAuthRepository = defineStore("AuthRepository", {
     state() {
         return {
             user: null,
-          permissions: [],
+            permissions: [],
 
             role: null,
             isLoading: false,
             error: null,
             isLoggedIn: false,
             router: useRouter(),
-            rail:false,
-            
+            rail: false,
         };
     },
     actions: {

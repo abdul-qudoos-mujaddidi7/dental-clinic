@@ -20,7 +20,8 @@ class InboundLabController extends Controller
     public function index(Request $request)
     {
 
-        $InboundLab = $this->listRecord($request, $this->model, ['name']);
+        $InboundLab = $this->listRecord($request, $this->model, ['issue_at']);
+
 
         return $this->resource::collection($InboundLab);
     }

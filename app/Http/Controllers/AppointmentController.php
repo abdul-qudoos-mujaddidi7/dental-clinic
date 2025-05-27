@@ -20,7 +20,7 @@ class AppointmentController extends Controller
     {
 
 
-        $appointments = $this->listRecord($request, $this->model, ['date', 'time'], ['patient', 'dentist', 'user']);
+        $appointments = $this->listRecord($request, $this->model, ['people_id'], ['patient', 'dentist', 'user']);
         return $this->resource::collection($appointments);
     }
 

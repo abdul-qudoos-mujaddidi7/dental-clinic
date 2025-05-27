@@ -152,7 +152,7 @@ export let useLaboratoryRepository = defineStore("LaboratoryRepository", {
             this.loading = true;
 
             const response = await axios.get(
-                `inboundLab?page=${page}&perPage=${itemsPerPage}&search=${this.laboratorySearch}&type=in`
+                `inboundLab?page=${page}&perPage=${itemsPerPage}&issue_at=${this.laboratorySearch}&type=in`
             );
             this.laboratories = response.data.data;
             this.totalItems = response.data.meta.total;

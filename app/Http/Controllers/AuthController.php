@@ -47,6 +47,7 @@ class AuthController extends Controller
     {
         // Delete all tokens for the authenticated user
         $request->user()->tokens()->delete();
+      
         // $user():currently authenticated user from the request.
         return response()->json(['message' => 'The user logged out']);
     }

@@ -1,11 +1,6 @@
 <template>
-    <CreateAppointment v-if="LeadRepository.createDialog" />
-    <div class="all-expense rounded-xl" :dir="dir">
+    <div class="all-expense rounded-xl">
         <div class="card rounded-xl">
-            <AppBar
-                :mainTitle="$t('appointment')"
-                :sub-title="$t('appointment')"
-            />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
@@ -19,62 +14,65 @@
                         color="primaryOld"
                         density="compact"
                         variant="outlined"
-                        :label="$t('search')"
+                        :label="t('search')"
                         append-inner-icon="mdi-magnify"
                         hide-details
-                        v-model="LeadRepository.appointmentSearch"
+                        v-model="PeopleRepository.peopleAccSearch"
                     ></v-text-field>
-                    
                 </div>
-                <div class="btn d-flex" >
+                <!-- <div class="btn">
                     <v-btn variant="outlined" color="primaryOld" class="px-6">
-                        {{ $t("filter") }}
+                        {{ t("filter") }}
                     </v-btn>
                     &nbsp;
-                    <div
-                        v-if="
-                            AuthRepository.permissions &&
-                            AuthRepository.permissions.includes(
-                                'addAppointment'
-                            )
-                        "
-                    >
-                        <v-btn
-                            @click="CreateDialogShow"
-                            color="primaryOld"
-                            variant="flat"
-                            :text="$t('create')"
-                            class="px-6"
-                        >
-                        </v-btn>
-                    </div>
-                </div>
-            </div>
+                    <v-btn
+                        @click="CreateDialogShow"
+                        color="primaryOld"
+                        variant="flat"
+                        :text="t('create')"
 
-            <!-- v-table server -->
+                        class="px-6"
+                    >
+                    </v-btn>
+                </div> -->
+            </div>
+            <!-- v-table server  -->
             <div class="overflow-x-hidden">
                 <v-app>
                     <v-main class="main">
                         <v-row>
                             <v-col>
                                 <v-data-table-server
-                                    :dir="dir"
+                                :dir="dir"
+                                    :class="
+                                        dir === 'rtl'
+                                            ? 'rtl-border'
+                                            : 'ltr-border'
+                                    "
                                     theme="cursor-pointer"
                                     v-model:items-per-page="
-                                        LeadRepository.itemsPerPage
+                                        PeopleRepository.itemsPerPage
+                                    "
+                                    v-model:patientIdForView="
+                                        PeopleRepository.patientIdForView
                                     "
                                     :headers="headers"
-                                    :items-length="LeadRepository.totalItems"
-                                    :items="LeadRepository.appointments"
-                                    :loading="LeadRepository.loading"
-                                    :search="LeadRepository.appointmentSearch"
-                                    @update:options="
-                                        LeadRepository.FetchAppointments
-                                    "
-                                    :item-key="LeadRepository.appointments"
+                                    :items-length="PeopleRepository.totalItems"
+                                    :items="PeopleRepository.peopleAccounts"
+                                    :loading="PeopleRepository.loading"
+                                    :search="PeopleRepository.peopleAccSearch"
+                                    @update:options="callFunction"
+                                    :item-key="PeopleRepository.peopleAccounts"
                                     hover
                                     class="w-100 mx-auto"
                                 >
+                                    <template v-slot:item.checkbox="{ item }">
+                                        <v-checkbox
+                                            :value="item.id"
+                                            v-model="selectedIds"
+                                            class="w-0 d-flex"
+                                        ></v-checkbox>
+                                    </template>
                                     <template v-slot:item.action="{ item }">
                                         <v-menu>
                                             <template
@@ -89,12 +87,6 @@
                                             <v-list>
                                                 <v-list-item>
                                                     <v-list-item-title
-                                                        v-if="
-                                                            AuthRepository.permissions &&
-                                                            AuthRepository.permissions.includes(
-                                                                'updateAppointment'
-                                                            )
-                                                        "
                                                         @click="edit(item)"
                                                         class="cursor-pointer d-flex gap-3 justify-left pb-3"
                                                     >
@@ -102,16 +94,10 @@
                                                             color="tealColor"
                                                             >mdi-square-edit-outline</v-icon
                                                         >
-                                                        {{ $t("edit") }}
+                                                        {{ t("edit") }}
                                                     </v-list-item-title>
 
                                                     <v-list-item-title
-                                                        v-if="
-                                                            AuthRepository.permissions &&
-                                                            AuthRepository.permissions.includes(
-                                                                'deleteAppointment'
-                                                            )
-                                                        "
                                                         class="cursor-pointer d-flex gap-3"
                                                         @click="
                                                             deleteItem(item)
@@ -120,13 +106,22 @@
                                                         <v-icon color="error"
                                                             >mdi-delete-outline</v-icon
                                                         >
-                                                        {{ $t("delete") }}
+                                                        {{ t("delete") }}
                                                     </v-list-item-title>
                                                 </v-list-item>
                                             </v-list>
                                         </v-menu>
                                     </template>
                                 </v-data-table-server>
+                                <v-btn
+                                    class="header-button"
+                                    v-if="selectedIds.length > 0"
+                                    @click="sendSelectedIds"
+                                    color="#B71C1C"
+                                    flat
+                                    text="delete"
+                                >
+                                </v-btn>
                             </v-col>
                         </v-row>
                     </v-main>
@@ -138,37 +133,55 @@
 
 <script setup>
 import { ref, onMounted, computed } from "vue";
-import AppBar from "../../../components/AppBar.vue";
-import CreateAppointment from "./CreateAppointment.vue";
-import { useLeadRepository } from "@/store/LeadRepository";
-import { useAuthRepository } from "../../../store/AuthRepository";
-const AuthRepository = useAuthRepository();
-
+import { usePeopleRepository } from "@/store/PeopleRepository";
 import { useI18n } from "vue-i18n";
 const { t, locale } = useI18n();
-const LeadRepository = useLeadRepository();
+import { useRoute } from "vue-router";
+const route = useRoute();
+
+const PeopleRepository = usePeopleRepository();
+// PeopleRepository.FetchPeopleAccounts(route.params.id);
+const callFunction = () => {
+    PeopleRepository.FetchPeopleAccounts(
+        { page: 1, itemsPerPage: 10 },
+        route.params.id
+    );
+};
 
 // bulk delete
+const selectedIds = ref([]);
+const sendSelectedIds = () => {
+    if (selectedIds.value.length > 0) {
+        const data = {
+            customerIds: selectedIds.value,
+        };
 
-// delete and update Create
-const CreateDialogShow = () => {
-    LeadRepository.appointment = {};
-    LeadRepository.isEditMode = false;
-    LeadRepository.createDialog = true;
+        console.log("Sending data:", data);
+
+        PeopleRepository.bulkDeleteCustomer(data);
+    } else {
+        console.log("No IDs selected.");
+    }
 };
 
 const dir = computed(() => {
-    return locale.value === "fa"  ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
+    return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
 });
+// delete and update Create
+const CreateDialogShow = () => {
+    PeopleRepository.customer = {};
+    PeopleRepository.setEditMode(false);
+    PeopleRepository.createDialog = true;
+};
 
 const edit = (item) => {
     console.log(item, "me");
-    LeadRepository.isEditMode = true;
-    LeadRepository.appointment = {};
-    if (Object.keys(LeadRepository.appointment).length === 0) {
-        LeadRepository.fetchAppointment(item.id)
+    PeopleRepository.setEditMode(true);
+    PeopleRepository.customer = {};
+    if (Object.keys(PeopleRepository.customer).length === 0) {
+        PeopleRepository.FetchCustomer(item.id)
             .then(() => {
-                LeadRepository.createDialog = true;
+                PeopleRepository.createDialog = true;
             })
             .catch((error) => {
                 console.error("Error fetching data:", error);
@@ -177,27 +190,29 @@ const edit = (item) => {
 };
 
 const deleteItem = async (item) => {
-    await LeadRepository.DeleteAppointment(item.id);
+    await PeopleRepository.DeleteCustomer(item.id);
 };
-
 // header
 const headers = [
-    {
-        title: t("patient"),
-        key: "patients.name",
-        align: "start",
-        sortable: false,
-    },
-    {
-        title: t("doctor"),
-        key: "dentists.name",
-        align: "start",
-        sortable: false,
-    },
     { title: t("date"), key: "date", align: "start", sortable: false },
-    { title: t("addedBy"), key: "userName", align: "start", sortable: false },
-    { title: t("time"), key: "time", align: "start", sortable: false },
-    { title: t("status"), key: "status", align: "start", sortable: false },
-    { title: t("action"), key: "action", align: "end", sortable: false },
+    { title: t("amount"), key: "amount", align: "center", sortable: false },
+    {
+        title: t("paymentType"),
+        key: "payment_type",
+        align: "end",
+        sortable: false,
+    },
 ];
 </script>
+
+<style scoped>
+.v-data-table-server {
+    position: relative;
+}
+.header-button {
+    position: absolute;
+    top: 0.7rem;
+    left: 0.7rem;
+    z-index: 1;
+}
+</style>

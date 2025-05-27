@@ -25,6 +25,11 @@ class ExpenseResource extends JsonResource
                 'id' =>$this->expenseCategory->id,
                 'name'=>$this->expenseCategory->name
 
+            ],
+            'account'=>[
+                'id' =>$this->account?->id,
+                'name'=>$this->account?->name
+
             ]
         ];
     }

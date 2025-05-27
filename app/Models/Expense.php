@@ -47,8 +47,10 @@ class Expense extends Model
     public function user(){
         return $this->belongsTo(User::class);
     }
-
-
+ public function account()
+{
+    return $this->belongsTo(MoneyAccount::class,"money_account_id");
+}
 
     public function scopeSearch($query, $search)
     {

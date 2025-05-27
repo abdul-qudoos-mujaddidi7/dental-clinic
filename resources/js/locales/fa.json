@@ -1,10 +1,12 @@
 {
+    "viewEmployee": "نمایش کارمندان",
+
     "createPayment": "ایجاد پرداخت",
     "showPayment": "نمایش پرداخت",
     "paySalary": "پرداخت معاش",
     "generatePayslip": " ایجاد معاش",
     "diabetes": "شکر",
-    "createPermission":"ایجاد نقش",
+    "createPermission": "ایجاد نقش",
     "bloodPressure": "فشار خون",
     "heartDisease": "بیماری قلبی",
     "asthma": "حساسیت نفس (آسم)",
@@ -63,7 +65,7 @@
     "outboundLaboratory": "آزمایشگاه خروجی",
     "stakeholder": "ذینفعان",
     "grandTotal": "قیمت مجموعه",
-    "transaction":"انتقالات",
+    "transaction": "انتقالات",
     "show": "نمایش",
     "returnDate": "تاریخ بازگشت",
     "paymentMethod": "روش پرداخت",

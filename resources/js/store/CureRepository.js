@@ -152,10 +152,23 @@ export let useCureRepository = defineStore("CureRepository", {
                 this.error = err;
             }
         },
+        async bulkDeleteCure(data) {
+            console.log(data);
+            try {
+                const config = {
+                    method: "DELETE",
+                    url: "cureBulkDelete",
+                    data: data,
+                };
+                const response = response.data.data;
+            } catch (err) {
+                this.error = err;
+            }
+        },
         async FetchCures({ page, itemsPerPage }) {
             this.loading = true;
             const response = await axios.get(
-                `cures?page=${page}&perPage=${itemsPerPage}&${this.curesSearch}`
+                `cures?page=${page}&perPage=${itemsPerPage}&search=${this.curesSearch}`
             );
             this.cures = response.data.data;
             this.totalItems = response.data.meta.total;

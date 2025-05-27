@@ -97,7 +97,7 @@ async function updateChart() {
                     focus: "series",
                 },
                 color: "#112F5326",
-                data: DashboardRepository.monthExpenses,
+                data: DashboardRepository.monthIncomes,
             },
             {
                 name: "Expenses",

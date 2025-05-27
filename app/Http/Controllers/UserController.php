@@ -97,7 +97,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        $this->deleteImage($user);
+         $this->deleteRecord($user);
         return new UserResource($user);
     }
 }

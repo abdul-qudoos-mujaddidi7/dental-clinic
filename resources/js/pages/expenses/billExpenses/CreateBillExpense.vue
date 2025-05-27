@@ -20,7 +20,7 @@
                         :styles="styles"
                         locale="fa"
                         type="date"
-                        format="jYYYY/jMM/jDD"
+                        format="YYYY/MM/DD"
                         :locale-config="LocaleConfigs"
                     />
                 </div>
@@ -179,7 +179,7 @@
                         v-model="formData.paid"
                         variant="outlined"
                         :label="t('paid')"
-                     class="w-100"
+                        class="w-100"
                         density="compact"
                     >
                         <div @click="changeCurrency" style="cursor: pointer">
@@ -244,7 +244,7 @@ const formData = reactive({
     billNumber: "",
     billDate: "",
     note: "",
-    paid: "",
+    paid: 0,
 });
 const formRef = ref(null);
 const rules = {

@@ -76,6 +76,25 @@
                                             </template>
                                             <v-list>
                                                 <v-list-item>
+                                                      <router-link
+                                                        :to="
+                                                            '/viewEmployee/' +
+                                                            item.id
+                                                        "
+                                                    >
+                                                        <v-list-item-title
+                                                            @click="
+                                                                showId(item)
+                                                            "
+                                                            class="cursor-pointer d-flex gap-3 justify-left pb-3"
+                                                        >
+                                                            <v-icon
+                                                                color="tealColor"
+                                                                >mdi-eye-outline</v-icon
+                                                            >
+                                                            {{ t("view") }}
+                                                        </v-list-item-title>
+                                                    </router-link>
                                                     <v-list-item-title
                                                         @click="
                                                             PaySalaryFunc(item)
@@ -89,6 +108,7 @@
                                                         >
                                                         {{ t("paySalary") }}
                                                     </v-list-item-title>
+                                                     
 
                                                     <v-list-item-title
                                                         @click="
@@ -158,6 +178,13 @@ const dir = computed(() => {
     return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
 });
 
+const showId = (item) => {
+    PeopleRepository.patientIdForView = item.id;
+    PeopleRepository.FetchPeopleAccounts(
+        { page: 1, itemsPerPage: 10 },
+        item.id
+    );
+};
 // bulk delete
 
 // delete and update Create

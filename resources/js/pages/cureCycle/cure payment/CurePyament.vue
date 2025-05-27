@@ -36,7 +36,7 @@
                                         :styles="styles"
                                         locale="fa"
                                         type="date"
-                                        format="jYYYY/jMM/jDD"
+                                        format="YYYY/MM/DD"
                                         :locale-config="LocaleConfigs"
                                     />
                                 </div>

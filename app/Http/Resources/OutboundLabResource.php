@@ -20,9 +20,9 @@ class OutboundLabResource extends JsonResource
             'issueAt' => $this->issue_at,
             'grandTotal' => $this->grand_total,
             'paid' => $this->paid,
-            'dentist'=>[
-                'id'=>$this->dentist?->id,
-                'name'=>$this->dentist?->name
+            'supplier'=>[
+                'id'=>$this->supplier?->id,
+                'name'=>$this->supplier?->name
             ],
             'peopleId'=>$this->supplier->id,
             // 'due'=> $due,

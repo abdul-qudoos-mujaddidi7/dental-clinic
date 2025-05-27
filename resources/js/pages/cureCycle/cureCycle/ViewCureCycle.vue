@@ -1,6 +1,6 @@
 <template>
     <div class="all-expense rounded-xl m-4">
-        <div class="card rounded-xl bg-white" rtl>
+        <div class="card rounded-xl " rtl>
             <AppBar mainTitle="View Cure Cycle " sub-Title=" Cure Cycle " />
             <v-divider
                 :thickness="1"

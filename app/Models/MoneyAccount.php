@@ -40,6 +40,12 @@ class MoneyAccount extends Model
         'deleted_at',
     ];
 
+    public function expenses()
+{
+    return $this->hasMany(Expense::class,"money_account_id");
+}
+
+
 
     public function transactions()
     {

@@ -78,6 +78,11 @@ import { useI18n } from "vue-i18n";
 import { LocaleConfigs, styles } from "../../../LocaleConfigs.js";
 const { t, locale } = useI18n();
 
+
+// direction
+const dir = computed(() => {
+    return locale.value === "fa" ? "rtl" : "ltr";
+});
 const productDateRange = ref([new Date(), new Date()]);
 
 const onDateChange = (newRange) => {
@@ -89,11 +94,6 @@ const onDateChange = (newRange) => {
         ReportRepository.fetchServiceReports({ page: 1, itemsPerPage: 10 }, startDate, endDate);
     }
 };
-
-// direction
-const dir = computed(() => {
-    return locale.value === "fa" ? "rtl" : "ltr";
-});
 
 watch(
     () => ReportRepository.ProductReportSearch,

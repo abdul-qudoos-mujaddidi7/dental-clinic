@@ -20,7 +20,7 @@
                         :styles="styles"
                         locale="fa"
                         type="date"
-                        format="jYYYY/jMM/jDD"
+                        format="YYYY/MM/DD"
                         :locale-config="LocaleConfigs"
                     />
                 </div>
@@ -210,7 +210,6 @@
                         v-model="formData.paid"
                         variant="outlined"
                         :label="$t('paid')"
-                    
                         class="w-100"
                         density="compact"
                     >
@@ -220,7 +219,6 @@
                             </span>
                         </div>
                         {{ grandTotal }}
-
                     </v-text-field>
                 </div>
             </div>
@@ -278,7 +276,7 @@ const formData = reactive({
     patientId: "",
     startDate: "",
     description: "",
-    paid: "",
+    paid: 0,
     status: "",
 });
 const formRef = ref(null);

@@ -54,7 +54,7 @@ class Cure extends Model
         if (!$search) {
             return $query;
         }
-        return $query->where('name', 'LIKE', '%' . $search . '%');
+        return $query->where('reference', 'LIKE', '%' . $search . '%');
     }
 
     public function getPaymentStatus()

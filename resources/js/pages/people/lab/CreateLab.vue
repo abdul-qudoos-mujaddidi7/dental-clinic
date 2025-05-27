@@ -20,7 +20,7 @@
                         :styles="styles"
                         locale="fa"
                         type="date"
-                        format="jYYYY/jMM/jDD"
+                        format="YYYY-MM-DD"
                         :locale-config="LocaleConfigs"
                     />
                 </div>
@@ -39,7 +39,7 @@
                             :styles="styles"
                             locale="fa"
                             type="date"
-                            format="jYYYY/jMM/jDD"
+                            format="YYYY-MM-DD"
                             :locale-config="LocaleConfigs"
                         />
                     </div>
@@ -214,11 +214,12 @@ const PeopleRepository = usePeopleRepository();
 const formData = reactive({
     tooths: PeopleRepository.services || [],
     grandTotal: "",
+    supplierId:"",
     toothId: "",
     returnDate: "",
     issueAt: "",
     description: "",
-    paid: "",
+    paid: 0,
     status: "",
     type: "out",
 });
@@ -290,6 +291,7 @@ const createEarning = async () => {
         formData.description = "";
         formData.paid = "";
         formData.status = "";
+        
 
         console.log("Form submitted and cleared successfully!");
     }

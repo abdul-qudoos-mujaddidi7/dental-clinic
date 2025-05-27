@@ -20,7 +20,7 @@ class OutboundLabController extends Controller
     public function index(Request $request)
     {
 
-        $outboundLab = $this->listRecord($request, $this->model, ['name']);
+        $outboundLab = $this->listRecord($request, $this->model, ['issue_at']);
 
         return $this->resource::collection($outboundLab);
     }
