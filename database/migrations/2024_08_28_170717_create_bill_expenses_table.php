@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::create('bill_expenses', function (Blueprint $table) {
             $table->id();
             $table->string('bill_number')->unique(); 
+            $table->integer('people_account_id');
+            $table->integer('money_account_id');
             $table->date('bill_date'); 
             $table->decimal('paid',10,2)->default(0);
             $table->decimal('grand_total', 10, 2);
