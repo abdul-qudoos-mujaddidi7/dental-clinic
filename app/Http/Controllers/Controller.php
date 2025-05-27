@@ -126,10 +126,7 @@ class Controller extends BaseController
     if ($model->images == null) return;
 
     foreach ($model->images as $image) {
-        // Only delete if a new file is uploaded for this image
-        if (!$request->hasFile($image)) {
-            continue; // Skip deletion if no new image is coming
-        }
+        
 
         if ($model[$image]) {
             Storage::disk('public')->delete($model[$image]);

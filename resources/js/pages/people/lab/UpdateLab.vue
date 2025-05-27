@@ -57,7 +57,6 @@
                     density="compact"
                     :rules="[rules.required]"
                 ></v-autocomplete>
-           
             </v-form>
             <v-divider></v-divider>
             <v-row no-gutters class="justify-space-between mt-16">
@@ -174,7 +173,6 @@
                         v-model="formData.paid"
                         variant="outlined"
                         :label="$t('paid')"
-                    
                         class="w-100"
                         density="compact"
                     >
@@ -184,7 +182,6 @@
                             </span>
                         </div>
                         {{ grandTotal }}
-
                     </v-text-field>
                 </div>
             </div>
@@ -220,6 +217,7 @@ const formData = reactive({
     tooths: PeopleRepository.services || [],
     grandTotal: "",
     patientId: "",
+    supplierId: "",
     returnDate: "",
     issueAt: "",
     description: "",
@@ -239,6 +237,7 @@ PeopleRepository.FetchLaboratory(routeParams.params.id).then((res) => {
     formData.description = laboratory.description;
     formData.paid = laboratory.paid;
     formData.status = laboratory.status;
+    formData.supplierId = laboratory.supplier?.id;
 
     console.log(formData.grandTotal, "Initial grand total");
 });
@@ -254,6 +253,7 @@ watch(
             formData.description = newData.description;
             formData.paid = newData.paid;
             formData.status = newData.status;
+            formData.supplierId = laboratory.supplier;
         }
     },
     { deep: true }

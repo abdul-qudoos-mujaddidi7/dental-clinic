@@ -24,6 +24,7 @@
                         hide-details
                         v-model="LeadRepository.appointmentSearch"
                     ></v-text-field>
+                    
                 </div>
                 <div class="btn d-flex" >
                     <v-btn variant="outlined" color="primaryOld" class="px-6">

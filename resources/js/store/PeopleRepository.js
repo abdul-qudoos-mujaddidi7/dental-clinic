@@ -820,7 +820,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             this.loading = true;
 
             const response = await axios.get(
-                `outboundLab?page=${page}&perPage=${itemsPerPage}&search=${this.laboratorySearch}&type=out`
+                `outboundLab?page=${page}&perPage=${itemsPerPage}&issue_at=${this.laboratorySearch}&type=out`
             );
             this.laboratories = response.data.data;
             this.totalItems = response.data.meta.total;

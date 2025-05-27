@@ -40,7 +40,7 @@
                                         type="date"
                                         :locale-config="LocaleConfigs"
                                         input-format="jYYYY/jMM/jDD"
-                                        format="jYYYY/jMM/jDD"
+                                        format="YYYY/MM/DD"
                                     />
                                 </div>
                                 <v-autocomplete

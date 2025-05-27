@@ -30,15 +30,18 @@
                     <v-card-text>
                         <v-form ref="formRef" class="pt-4">
                             <div class="flex w-100">
-                                <v-text-field
-                                    v-model="formData.date"
-                                    type="date"
-                                    variant="outlined"
-                                    label="Date"
-                                    class="pb-4 pr-2 w-50"
-                                    density="compact"
-                                    :rules="[rules.required]"
-                                ></v-text-field>
+                                <div class="pb-4 w-50 pr-2">
+                                    <date-picker
+                                        mode="single"
+                                        :column="1"
+                                        v-model="formData.date"
+                                        :styles="styles"
+                                        locale="fa"
+                                        type="date"
+                                        format="YYYY/MM/DD"
+                                        :locale-config="LocaleConfigs"
+                                    />
+                                </div>
                                 <v-autocomplete
                                     :items="ExpenseRepository.moneyAccsFor"
                                     v-model="formData.accountId"
@@ -52,7 +55,6 @@
                                     density="compact"
                                     :rules="[rules.required]"
                                 ></v-autocomplete>
-                             
                             </div>
                             <v-text-field
                                 v-model="formData.amount"
@@ -92,6 +94,7 @@
 import { ref, reactive } from "vue";
 import { useExpenseRepository } from "@/store/ExpenseRepository";
 import { useI18n } from "vue-i18n";
+import { LocaleConfigs, styles } from "../../../LocaleConfigs";
 const { t } = useI18n();
 const ExpenseRepository = useExpenseRepository();
 const formRef = ref(null);
@@ -100,7 +103,7 @@ const formData = reactive({
     billExpenseId: ExpenseRepository.billExpenseId,
     id: ExpenseRepository.billExpensePayment.id,
     amount: ExpenseRepository.billExpensePayment.amount,
-    accountId:ExpenseRepository.billExpensePayment.accountId,
+    accountId: ExpenseRepository.billExpensePayment.accountId,
     date: ExpenseRepository.billExpensePayment.date,
     note: ExpenseRepository.billExpensePayment.note,
 });
@@ -125,6 +128,6 @@ const save = async () => {
         }
     }
 };
-ExpenseRepository.fetchMoneyAccountsFor()
+ExpenseRepository.fetchMoneyAccountsFor();
 formData.date = ExpenseRepository.getTodaysDate();
 </script>

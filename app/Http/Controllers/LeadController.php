@@ -85,7 +85,7 @@ class LeadController extends Controller
     {
         $validated= $request->validate([
             "leadIds"=>"required|array",
-            "leadIds.*"=>"required|exists:leades,id"
+            "leadIds.*"=>"required|exists:leads,id"
         ]);
 
         Lead::whereIn('id',$validated['leadIds'])->delete();

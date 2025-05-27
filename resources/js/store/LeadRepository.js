@@ -341,7 +341,7 @@ export let useLeadRepository = defineStore("LeadRepository", {
         async FetchAppointments({ page, itemsPerPage }) {
             this.loading = true;
             const response = await axios.get(
-                `appointments?page=${page}&perPage=${itemsPerPage}&${this.appointmentSearch}`
+                `appointments?page=${page}&perPage=${itemsPerPage}&people_id=${this.appointmentSearch}`
             );
             this.appointments = response.data.data;
             // this.totalItems = response.data.meta.total;

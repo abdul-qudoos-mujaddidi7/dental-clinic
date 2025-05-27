@@ -64,7 +64,7 @@ class UserController extends Controller
     public function updateUser(UserRequest $request, User $user)
     {
 
-        $user = $this->updateRecord($request,$this->model);
+        $user = $this->updateRecord($request,$user);
         // $validated['image'] = $request->hasFile('image') ? $this->updateImage($request, $user, 'user') : null;
         $validated = $request->validated();
         $role = Role::findOrFail($validated['role_id']);
@@ -97,7 +97,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        $this->deleteImage($user);
+         $this->deleteRecord($user);
         return new UserResource($user);
     }
 }

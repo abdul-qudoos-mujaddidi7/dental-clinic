@@ -112,7 +112,7 @@
                     "
                     @click="toggleMenu('outboundLaboratory')"
                     active-class="bg-primaryOld text-white"
-                    prepend-icon="mdi-microscope"
+                    prepend-icon="mdi-test-tube"
                     value="out lab"
                     class="transition-all duration-300 cursor-pointer py-3 borderRadius"
                 >
@@ -120,7 +120,37 @@
                 </v-list-item>
             </router-link>
 
-            
+            <v-list-item
+                v-if="
+                    AuthRepository.permissions &&
+                    AuthRepository.permissions.includes('viewExpense')
+                "
+                @click="toggleMenu('expense')"
+                active-class="bg-primaryOld text-white"
+                prepend-icon="mdi-currency-usd-off"
+                value="expense"
+                class="transition-all duration-300 cursor-pointer py-3 borderRadius"
+            >
+                {{ t("expense") }}
+            </v-list-item>
+
+            <transition name="slide-fade">
+                <v-list v-if="activeMenu === 'expense'" class="pl-4">
+                    <router-link
+                        v-for="item in navItems"
+                        :key="item.to"
+                        :to="item.to"
+                    >
+                        <v-list-item
+                            :title="item.title"
+                            :prepend-icon="item.icon"
+                            :value="item.value"
+                            color="primaryOld"
+                            class="child rounded-lg"
+                        />
+                    </router-link>
+                </v-list>
+            </transition>
 
             <v-list-item
                 v-if="

@@ -1,5 +1,5 @@
 <template>
-    <AppBar :mainTitle="$t('profitLoss')" sub-title="reports" />
+    <AppBar :mainTitle="$t('view')" sub-title="patient" />
 
     <div class="pb-8">
         <v-row class="pt-12">
@@ -42,7 +42,7 @@
         >
             <!-- Flight Group Details Tabs section  -->
             <v-tabs v-model="tab" color="primary">
-                <v-tab value="earnings">{{ t("accounts") }} </v-tab>
+                <v-tab value="earnings">{{ t("Transactions") }} </v-tab>
                 <v-tab value="Payment">{{ t("transfers") }} </v-tab>
             </v-tabs>
             <v-divider></v-divider>

@@ -163,7 +163,7 @@
                                                         v-if="
                                                             AuthRepository.permissions &&
                                                             AuthRepository.permissions.includes(
-                                                                'UpdateExpense'
+                                                                'editExpense'
                                                             )
                                                         "
                                                         @click="edit(item)"
