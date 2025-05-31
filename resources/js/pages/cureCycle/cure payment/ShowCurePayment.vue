@@ -43,9 +43,6 @@
                                     <td>
                                         {{ payment.date }}
                                     </td>
-                                    <!-- <td>
-                                            {{ payment.date }}
-                                        </td> -->
                                     <td>
                                         {{ payment.amount }}
 

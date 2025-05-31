@@ -282,11 +282,13 @@ export let useCureRepository = defineStore("CureRepository", {
         async FetchCurePayments(id) {
             this.loading = true;
 
-            const response = await axios.get(`payCureCycle?cure=${id}`);
+            const response = await axios.get(`showPayments?parent_id=${id}&operation_type=cure_cycle_payment`)
             this.curePayments = response.data.data;
+            
             console.log(this.curePayments, "this is the data i want ");
 
             this.loading = false;
+            
         },
         async FetchCurePayment(id) {
             // this.error = null;
@@ -315,8 +317,6 @@ export let useCureRepository = defineStore("CureRepository", {
                 const response = await axios(config);
                 this.createDialog = false;
                 // this.router.push("/billExpense");
-
-                this.FetchCurePayments(this.cureId);
                 this.FetchCures({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,

@@ -111,7 +111,7 @@
                                                     #selection="{ item: stage }"
                                                 >
                                                     <div
-                                                        class="px-4 py-1 rounded text-white text-sm font-medium"
+                                                        class="px-4 py-1  rounded text-white text-sm font-medium"
                                                         :style="{
                                                             backgroundColor:
                                                                 getStageColor(
@@ -366,7 +366,7 @@ const headers = computed(() => [
         align: "start",
         sortable: false,
     },
-    { title: t("status"), key: "stage", align: "center", sortable: false },
+    { title: t("status"), key: "stage", align: "start", sortable: false },
     { title: t("address"), key: "address", align: "start", sortable: false },
     { title: t("details"), key: "note", align: "start", sortable: false },
     { title: t("action"), key: "action", align: "center", sortable: false },

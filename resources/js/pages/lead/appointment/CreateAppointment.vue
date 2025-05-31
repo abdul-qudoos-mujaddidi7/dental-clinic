@@ -22,70 +22,70 @@
 
                     <v-card-text>
                         <v-form ref="formRef" class="pt-4">
-                            <div class="pb-4">
-                                <date-picker
-                                    mode="single"
-                                    :column="1"
-                                    v-model="formData.dateTime"
-                                    :styles="styles"
-                                    locale="fa"
-                                    type="datetime"
-                                    :locale-config="LocaleConfigs"
-                                    input-format="jYYYY/jMM/jDD H:m"
-                                    format="YYYY-MM-DD H:m"
-                                />
-                            </div>
+                            <v-row dense>
+  <v-col cols="6">
+    <date-picker
+      mode="single"
+      :column="1"
+      v-model="formData.dateTime"
+      :styles="styles"
+      locale="fa"
+      type="datetime"
+      :locale-config="LocaleConfigs"
+      input-format="jYYYY/jMM/jDD H:m"
+      format="YYYY-MM-DD H:m"
+    />
+  </v-col>
+  <v-col cols="6">
+    <v-autocomplete
+      v-model="formData.status"
+      :items="[
+        $t('completed'),
+        $t('pending'),
+        $t('cancelled'),
+        $t('inProgress'),
+        $t('noShow')
+      ]"
+      :return-object="false"
+      variant="outlined"
+      :label="$t('status') + ' *'"
+      item-value="id"
+      item-title="name"
+      density="compact"
+      :rules="[rules.required]"
+    />
+  </v-col>
 
-                            <div class="flex">
-                                <v-autocomplete
-                                    v-model="formData.patientId"
-                                    :items="LeadRepository.patientsForApp"
-                                    :return-object="false"
-                                    variant="outlined"
-                                    :label="$t('patient') + ' *'"
-                                    item-value="id"
-                                    item-title="name"
-                                    density="compact"
-                                    :rules="[rules.required]"
-                                    class="w-50 pr-2 pb-4"
-                                >
-                                </v-autocomplete>
 
-                                <v-autocomplete
-                                    v-model="formData.dentistId"
-                                    :items="LeadRepository.doctorsForApp"
-                                    :return-object="false"
-                                    variant="outlined"
-                                    :label="$t('doctor') + ' *'"
-                                    item-value="id"
-                                    item-title="name"
-                                    density="compact"
-                                    :rules="[rules.required]"
-                                    class="w-50 pl-2 pb-4"
-                                >
-                                </v-autocomplete>
-                            </div>
-                            <div class="flex">
-                                <v-autocomplete
-                                    v-model="formData.status"
-                                    :items="[
-                                        $t('completed'),
-                                        $t('pending'),
-                                        $t('cancelled'),
-                                        $t('inProgress'),
-                                        $t('noShow')
-                                    ]"
-                                    :return-object="false"
-                                    variant="outlined"
-                                    :label="$t('status') + ' *'"
-                                    item-value="id"
-                                    item-title="name"
-                                    density="compact"
-                                    :rules="[rules.required]"
-                                    class="pb-4"
-                                >
-                                </v-autocomplete>
-                            </div>
+
+  <v-col cols="6">
+    <v-autocomplete
+      v-model="formData.patientId"
+      :items="LeadRepository.patientsForApp"
+      :return-object="false"
+      variant="outlined"
+      :label="$t('patient') + ' *'"
+      item-value="id"
+      item-title="name"
+      density="compact"
+      :rules="[rules.required]"
+    />
+  </v-col>
+  <v-col cols="6">
+    <v-autocomplete
+      v-model="formData.dentistId"
+      :items="LeadRepository.doctorsForApp"
+      :return-object="false"
+      variant="outlined"
+      :label="$t('doctor') + ' *'"
+      item-value="id"
+      item-title="name"
+      density="compact"
+      :rules="[rules.required]"
+    />
+  </v-col>
+</v-row>
+
                         </v-form>
                     </v-card-text>
 

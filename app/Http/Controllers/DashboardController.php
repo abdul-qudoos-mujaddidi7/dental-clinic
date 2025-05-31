@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\MoneyAccountTransaction;
 use App\Models\People;
 use Carbon\Carbon;
+use Carbon\Traits\ToStringFormat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Morilog\Jalali\Jalalian;
@@ -112,27 +113,28 @@ class DashboardController extends Controller
 
         // Income and Expense per month for chart
         $everyMonthExpenses = [];
-        $everyMonthIncomes = [];
+$everyMonthIncomes = [];
+$everyMonthProfits = [];
 
-        for ($i = 1; $i <= 12; $i++) {
-            $expenseAmount = DB::table('expenses')
-                ->whereMonth('date', $i)
-                ->whereYear('date', $currentYear)
-                ->sum('amount');
+for ($i = 1; $i <= 12; $i++) {
+    $expenseAmount = DB::table('money_account_transactions')
+        ->whereMonth('date', $i)
+        ->whereYear('date', $currentYear)
+        ->where('payment_type', 'paid')
+        ->sum('amount');
 
-            $billExpenseAmount = DB::table('bill_expenses')
-                ->whereMonth('created_at', $i)
-                ->whereYear('bill_date', $currentYear)
-                ->sum('grand_total');
+    $incomeAmount = DB::table('money_account_transactions')
+        ->whereMonth('date', $i)
+        ->whereYear('date', $currentYear)
+        ->where('payment_type', 'received')
+        ->sum('amount');
 
-            $incomeAmount = DB::table('cure_payments')
-                ->whereMonth('date', $i)
-                ->whereYear('date', $currentYear)
-                ->sum('amount');
 
-            $everyMonthIncomes[$i - 1] = $incomeAmount;
-            $everyMonthExpenses[$i - 1] = $expenseAmount + $billExpenseAmount;
-        }
+    $everyMonthExpenses[$i - 1] = $expenseAmount;
+    $everyMonthIncomes[$i - 1] = $incomeAmount;
+    $everyMonthProfits[$i - 1] =$incomeAmount - $expenseAmount;
+}
+
 
         return [
             'thisMonthProfit' => $thisMonthProfit,
@@ -147,7 +149,8 @@ class DashboardController extends Controller
             'yearlyExpenses' => $yearlyExpenses,
             'upcomingAppointments' => $upcomingAppointments,
             'monthExpenses' => $everyMonthExpenses,
-            'monthIncomes' => $everyMonthIncomes
+            'monthIncomes' => $everyMonthIncomes,
+            'monthProfits' => $everyMonthProfits
         ];
     }
 }
