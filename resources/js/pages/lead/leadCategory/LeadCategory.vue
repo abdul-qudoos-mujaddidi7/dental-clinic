@@ -157,8 +157,7 @@ const deleteItem = async (item) => {
 };
 // header
 const headers = [
-    { title: t("name"), key: "name", align: "center", sortable: false },
-    { title: t("date"), key: "date", align: "center", sortable: false },
+    { title: t("name"), key: "name", align: "start", sortable: false },
     { title: t("items"), key: "items", align: "center", sortable: false },
     { title: t("action"), key: "action", align: "end", sortable: false },
 ];

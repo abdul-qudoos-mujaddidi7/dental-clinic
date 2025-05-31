@@ -1,4 +1,4 @@
-<script setup>
+ <script setup>
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 import * as echarts from "echarts";
@@ -111,11 +111,10 @@ async function updateChart() {
                 emphasis: {
                     focus: "series",
                 },
-                data: DashboardRepository.monthIncomes,
+                data: DashboardRepository.monthProfits,
             },
         ],
     };
-
     option && myChart.setOption(option);
 }
 

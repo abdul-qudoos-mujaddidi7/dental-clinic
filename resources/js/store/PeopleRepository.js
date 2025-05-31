@@ -195,8 +195,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
         },
         async DeletePatient(id) {
             this.isLoading = true;
-            this.patients = [];
-            this.error = null;
+            
 
             try {
                 const config = {
@@ -204,7 +203,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
                     url: "peoples/" + id,
                 };
 
-                const response = await axios(config);
+                 await axios(config);
 
                 // this.patients = response.data.data;
                 this.fetchPatients({
@@ -212,7 +211,8 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
                     itemsPerPage: this.itemsPerPage,
                 });
             } catch (err) {
-                this.error = err;
+                console.log("jwad")
+                
             }
         },
         // fetch owners

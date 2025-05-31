@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\MoneyAccountTransactionController;
+use App\Models\MoneyAccountTransaction;
 use App\Models\Service;
 use App\Models\Laboratory;
 use Illuminate\Http\Request;
@@ -120,6 +122,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('serviceReport', ServiceReportController::class);
     // money account  
     Route::apiResource('/moneyAccount', MoneyAccountController::class);
+    Route::get('/showPayments', [PeopleAccountTransactionController::class,'showPayments']);
     Route::apiResource('/moneyTransfer', MoneyTransferController::class);
     Route::apiResource('/peopleAccount', PeopleAccountController::class);
     Route::apiResource('/salary', SalaryController::class);
