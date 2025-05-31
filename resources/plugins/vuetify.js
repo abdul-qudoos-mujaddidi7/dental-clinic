@@ -11,7 +11,7 @@ export default createVuetify({
             myCustomLightTheme: {
                 dark: false,
                 colors: {
-                    primary: "#5499c7",
+                    primary: "#fff",
                     secondary: "#F4D03F",
                     accent: "#8E44AD",
                     success: "#28A745",
