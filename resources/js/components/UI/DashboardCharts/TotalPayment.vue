@@ -1,4 +1,4 @@
-<script setup>
+ <script setup>
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 import * as echarts from "echarts";
@@ -111,11 +111,10 @@ async function updateChart() {
                 emphasis: {
                     focus: "series",
                 },
-                data: DashboardRepository.monthIncomes,
+                data: DashboardRepository.monthProfits,
             },
         ],
     };
-
     option && myChart.setOption(option);
 }
 
@@ -123,7 +122,7 @@ onMounted(updateChart);
 </script>
 
 <template>
-    <div class="shadow-md pt-6 bg-white rounded-xl pb-10 d-flex justify-center">
+    <div class="shadow-md pt-6 bg-background rounded-xl pb-10 d-flex justify-center">
         <canvas id="income" style="width: 34rem"></canvas>
     </div>
 </template>

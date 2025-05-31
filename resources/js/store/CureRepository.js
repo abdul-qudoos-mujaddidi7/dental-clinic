@@ -25,6 +25,7 @@ export let useCureRepository = defineStore("CureRepository", {
             services: [],
 
             // lead
+            curesSearch:ref(""),
             cures: reactive([]),
             cure: reactive([]),
             leadSearch: ref(""),
@@ -152,10 +153,23 @@ export let useCureRepository = defineStore("CureRepository", {
                 this.error = err;
             }
         },
+        async bulkDeleteCure(data) {
+            console.log(data);
+            try {
+                const config = {
+                    method: "DELETE",
+                    url: "cureBulkDelete",
+                    data: data,
+                };
+                const response = response.data.data;
+            } catch (err) {
+                this.error = err;
+            }
+        },
         async FetchCures({ page, itemsPerPage }) {
             this.loading = true;
             const response = await axios.get(
-                `cures?page=${page}&perPage=${itemsPerPage}&${this.curesSearch}`
+                `cures?page=${page}&perPage=${itemsPerPage}&search=${this.curesSearch}`
             );
             this.cures = response.data.data;
             this.totalItems = response.data.meta.total;
@@ -268,16 +282,18 @@ export let useCureRepository = defineStore("CureRepository", {
         async FetchCurePayments(id) {
             this.loading = true;
 
-            const response = await axios.get(`curePayments?cure=${id}`);
+            const response = await axios.get(`showPayments?parent_id=${id}&operation_type=cure_cycle_payment`)
             this.curePayments = response.data.data;
+            
             console.log(this.curePayments, "this is the data i want ");
 
             this.loading = false;
+            
         },
         async FetchCurePayment(id) {
             // this.error = null;
             try {
-                const response = await axios.get(`curePayments/${id}`);
+                const response = await axios.get(`payCureCycle/${id}`);
 
                 this.curePayment = response.data.data;
                 console.log(curePayments, "this is the data i want ");
@@ -292,7 +308,7 @@ export let useCureRepository = defineStore("CureRepository", {
                 // Adding a custom header to the Axios request
                 const config = {
                     method: "POST",
-                    url: "generatePaySlip",
+                    url: "payCureCycle",
 
                     data: formData,
                 };
@@ -301,8 +317,6 @@ export let useCureRepository = defineStore("CureRepository", {
                 const response = await axios(config);
                 this.createDialog = false;
                 // this.router.push("/billExpense");
-
-                this.FetchCurePayments(this.cureId);
                 this.FetchCures({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
@@ -316,7 +330,7 @@ export let useCureRepository = defineStore("CureRepository", {
             try {
                 const config = {
                     method: "PUT",
-                    url: `curePayments/${id}`,
+                    url: `payCureCycle/${id}`,
 
                     data: data,
                 };
@@ -346,7 +360,7 @@ export let useCureRepository = defineStore("CureRepository", {
             try {
                 const config = {
                     method: "DELETE",
-                    url: "curePayments/" + id,
+                    url: "payCureCycle/" + id,
                 };
 
                 const response = await axios(config);

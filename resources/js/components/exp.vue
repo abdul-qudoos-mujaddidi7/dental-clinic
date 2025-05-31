@@ -271,37 +271,88 @@ export default {
         /> -->
     </div>
     <v-form ref="formRef">
-    <v-card color="#555" class="w-50 border-2">
-
-        <v-text-field label="man" v-model="formData.name"></v-text-field>
-        
-      </v-card>
-      <div>
-        <v-textarea label="assad" density="compact" v-model="formData.email" >
-        </v-textarea>
-      </div>
-      <v-btn  @click="Create">click</v-btn>
+        <v-card color="#555" class="w-50 border-2">
+            <v-text-field label="man" v-model="formData.name"></v-text-field>
+        </v-card>
+        <div>
+            <v-textarea
+                label="assad"
+                density="compact"
+                v-model="formData.email"
+            >
+            </v-textarea>
+        </div>
+        <v-btn @click="Create">click</v-btn>
     </v-form>
 </template>
 
 <script setup>
 import { ref, reactive } from "vue";
-import {usePeopleRepository} from "../store/PeopleRepository"
+import { usePeopleRepository } from "../store/PeopleRepository";
 const formRef = ref(null);
-const  PeopleRepository = usePeopleRepository();
+const PeopleRepository = usePeopleRepository();
 const formData = reactive({
-  name:"",
-  email:""
-})
+    name: "",
+    email: "",
+});
 
-const Create = async()=>{
-  await PeopleRepository.CreateLabPayment(formData)
-  
-
-}
+const Create = async () => {
+    await PeopleRepository.CreateLabPayment(formData);
+};
 const selectedDate = ref("");
 </script>
 
-<style scoped>
-/* @import 'vue-awesome-datepicker/dist/style.css'; */
-</style>
+<!-- 
+this is the date picker i used for report i will used in another project its a perfect one remember me 
+ <date-picker
+                        v-model:value="ReportRepository.productDateRange"
+                        @change="onDateChange"
+                        range
+                    ></date-picker>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+import DatePicker from "vue-datepicker-next";
+import "vue-datepicker-next/index.css";
+const productDateRange = ref([new Date(), new Date()]);
+
+const onDateChange = () => {
+    console.log("called");
+
+    const startDate = ReportRepository.productDateRange[0];
+    const endDate = ReportRepository.productDateRange[1];
+    if (startDate && endDate) {
+        ReportRepository.fetchPatientsReports({ page: 1, itemsPerPage: 10 },startDate, endDate);
+    }
+};
+
+watch(
+    () => ReportRepository.ProductReportSearch,
+    (newSearchTerm) => {
+        const [startDate, endDate] = ReportRepository.productDateRange;
+        if (startDate && endDate) {
+            ReportRepository.fetchPatientsReports(startDate, endDate);
+        }
+    }
+);
+
+onMounted(() => {
+    ReportRepository.productDateRange = productDateRange.value;
+    ReportRepository.fetchPatientsReports(
+        { page: 1, itemsPerPage: 10 },
+
+        productDateRange.value[0],
+        productDateRange.value[1]
+    );
+    console.log(
+        productDateRange.value[0],
+        productDateRange.value[1],
+        "service report"
+    );
+});-->

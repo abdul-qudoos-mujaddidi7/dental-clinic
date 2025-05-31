@@ -47,9 +47,11 @@ export const useDashboardRepository = defineStore("DashboardRepository", {
       upcomingAppointments: [],
       monthExpenses: [],
       monthIncomes: [],
+      monthProfits: [],
     }),
     monthExpenses: reactive([]),
     monthIncomes: reactive([]),
+    monthProfits: reactive([]),
   }),
 
   actions: {
@@ -72,6 +74,7 @@ export const useDashboardRepository = defineStore("DashboardRepository", {
           thisYearExpenses: data.yearlyExpenses || [],
           monthExpenses: data.monthExpenses || [],
           monthIncomes: data.monthIncomes || [],
+          monthProfits: data.monthProfits|| [],
           earnings: parseFloat(data.totalEarnings) || 0,
           expensesList: this.processExpenses(data.monthlyExpenses, "green"),
         });

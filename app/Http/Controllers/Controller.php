@@ -51,19 +51,25 @@ class Controller extends BaseController
     {
         $validated = $request->validated();
         $validated['user_id'] = Auth::id();
-        $validated['password'] = Hash::make($validated['password']);
+        if (isset($validated['password'])) {
+            $validated['password'] = \Hash::make($validated['password']);
+        } 
         $record =  $model::create($validated);
         $this->storeImage($request, $record);
         return $record;
     }
 
-    public function updateRecord($request, $record)
+    public function updateRecord($request,$record)
     {
 
-        // $record  = $model::findOrFail($id);
-        $this->deleteImage($record);
-        $record = tap($record)->update($request->validated());
-
+        // $record  = $model::findOrFail($id);s
+        $validated = $request->validated();
+        $this->deleteImage($record,$request);
+        $validated['user_id'] = Auth::id();
+        if (isset($validated['password'])) {
+            $validated['password'] = \Hash::make($validated['password']);
+        }        
+        $record->update($validated);
         $this->storeImage($request, $record);
         return $record;
 
@@ -103,26 +109,31 @@ class Controller extends BaseController
     }
 
 
-    private function storeImage($request, $model)
+    private function storeImage($request, $record)
     {
-        if($model->images == null) return;
-        foreach ($model->images as $image) {
+        if($record->images == null) return;
+        foreach ($record->images as $image) {
             if ($request->hasFile($image)) {
-                $imagePath = $request->file($image)->store(class_basename($model), 'public');
-                $model->update([$image => $imagePath]);
+                $imagePath = $request->file($image)->store(class_basename($record), 'public');
+                $record->update([$image => $imagePath]);
             }
         }
     }
 
-    private function deleteImage($model)
-    {
-        if($model->images == null) return;
-        foreach ($model->images as $image) {
-            if ($model[$image]) {
-                Storage::disk('public')->delete($model[$image]);
-                $model->update([$image => null]);
-            }
+
+    private function deleteImage($model, $request=null)
+{
+    if ($model->images == null) return;
+
+    foreach ($model->images as $image) {
+        
+
+        if ($model[$image]) {
+            Storage::disk('public')->delete($model[$image]);
+            $model->update([$image => null]);
         }
     }
+}
+
 
 }

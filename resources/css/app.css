@@ -2,13 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
 /* Add more weights if necessary */
 
-div.v-data-table-footer
-{
-    
+div.v-data-table-footer {
     display: flex;
     justify-content: space-between;
 }
@@ -17,70 +13,65 @@ div.v-data-table-footer
     display: flex;
     justify-content: space-between;
 }
-body{
-    background-color: #F8F8F8;
-    
-    /* font-family: 'Work Sans', sans-serif; */ 
+body {
+    background-color: #f8f8f8;
 }
+/* .custom-app-background {
+  background-color: var(--v-theme-lightSectionBg);
+  min-height: 100vh; /* ensure full-page background
+} */
 .v-table > :nth-child(1) > :nth-child(1) > :nth-child(1) > tr {
-    background-color: #ECF1F4;
-    border-left: 4px solid #F4D03F;
-    border-bottom: 4px solid #ffff;
+      background-color: rgb(var(--v-theme-tableRowBg));
+    border-left: 4px solid #f4d03f;
+      border-bottom: 4px solid rgb(var(--v-theme-background));
+
     border-width: 4px;
     border-top: none;
     border-right: none;
-
 }
 
 .v-data-table__tr {
-    border-bottom: 4px solid #ffff;
-    border-left: 4px solid #F4D03F !important;
+    border-bottom: 4px solid rgb(var(--v-theme-background));
+    border-left: 4px solid #f4d03f !important;
     border-right: none;
     border-width: 4px;
-    
 }
 [dir="rtl"] .v-data-table__tr {
     border-bottom: 4px solid #ffff;
-    border-right: 4px solid #F4D03F !important;
+    border-right: 4px solid #f4d03f !important;
     border-left: none !important;
     border-width: 4px;
-    
 }
 [dir="rtl"].v-table > :nth-child(1) > :nth-child(1) > :nth-child(1) > tr {
-    background-color: #ECF1F4;
-    border-right: 4px solid #F4D03F !important;
+    background-color: #b0c9d8;
+
+    border-right: 4px solid #f4d03f !important;
     border-left: none;
     border-bottom: 4px solid #ffff;
     border-width: 4px;
     border-top: none;
-
 }
 
-
-
-
-div.v-data-table-footer 
-{
+div.v-data-table-footer {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
 
-[dir="rtl"] div.v-data-table-footer 
-{
+[dir="rtl"] div.v-data-table-footer {
     display: flex;
     flex-direction: row-reverse;
     direction: ltr;
 }
 
-.span{
+.span {
     background-color: #ecf1f4;
     position: absolute;
     right: 0px;
-     
+
     top: 100%;
     transform: translateY(-100%);
-    padding: .4rem 0rem 0rem .2rem;
+    padding: 0.4rem 0rem 0rem 0.2rem;
     width: 3rem;
     height: 2.5rem;
 }
@@ -89,10 +80,10 @@ div.v-data-table-footer
     background-color: #ecf1f4;
     position: absolute;
     right: 0px;
-     
+
     top: 100%;
     transform: translateY(-100%);
-    padding: .4rem 0rem 0rem .2rem;
+    padding: 0.4rem 0rem 0rem 0.2rem;
     width: 8rem;
     height: 2.5rem;
 }
@@ -108,6 +99,7 @@ div.v-data-table-footer
     max-width: 100%;
     /* overflow-x: hidden; */
     overflow-y: hidden !important;
-
-    
 }
+
+
+/* #ECF1F4 */

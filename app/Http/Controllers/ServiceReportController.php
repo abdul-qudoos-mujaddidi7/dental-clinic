@@ -14,20 +14,6 @@ class ServiceReportController extends Controller
         // Check if date range is provided
         $fromDate = $request->start_date;
         $toDate = $request->end_date;
-        // if ($request->has(['from_date', 'to_date']) && !empty($request->from_date) && !empty($request->to_date)) {
-
-        //     // Filtered calculations (Custom Data)
-        //     $filteredData = DB::table('services')
-        //         ->selectRaw('services.name, SUM(cure_services.quantity) as totalApplied')
-        //         ->join('cure_services', 'cure_services.service_id', '=', 'services.id')
-        //         ->whereBetween('cures.created_at', [$fromDate, $toDate])
-        //         ->groupBy('services.id', 'services.name')
-        //         ->paginate($perPage);
-
-        //     // Return filtered data with pagination
-        //     return response()->json($filteredData);
-        // }
-
         // Default calculations (All Records)
         $allData = DB::table('services')
             ->selectRaw('services.name, SUM(cure_services.quantity) as totalApplied')

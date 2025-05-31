@@ -20,11 +20,11 @@
                         :styles="styles"
                         locale="fa"
                         type="date"
-                        format="jYYYY/jMM/jDD"
+                        input-format="jYYYY/jMM/jDD"
+                        format="YYYY/MM/DD"
                         :locale-config="LocaleConfigs"
                     />
                 </div>
-
 
                 <v-autocomplete
                     :items="ExpenseRepository.suppliersFor"
@@ -180,7 +180,7 @@
                         v-model="formData.paid"
                         variant="outlined"
                         :label="t('paid')"
-                     class="w-100"
+                        class="w-100"
                         density="compact"
                     >
                         <div @click="changeCurrency" style="cursor: pointer">
@@ -204,7 +204,9 @@
                 </v-textarea>
             </div>
             <div class="d-flex flex-row-reverse mt-6">
-                <v-btn color="#112F53" @click="update"> {{t('update')}}</v-btn>
+                <v-btn color="#112F53" @click="update">
+                    {{ t("update") }}</v-btn
+                >
             </div>
         </div>
     </div>
@@ -216,7 +218,7 @@ import { reactive, ref, watch, onMounted, computed } from "vue";
 import { useRoute } from "vue-router";
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
-import { LocaleConfigs } from "../../../LocaleConfigs";
+import { LocaleConfigs, styles } from "../../../LocaleConfigs";
 import { useExpenseRepository } from "@/store/ExpenseRepository";
 
 const ExpenseRepository = useExpenseRepository();
@@ -244,6 +246,7 @@ ExpenseRepository.fetchBillExpense(routeParams.params.id).then((res) => {
     formData.billDate = billExpense.date;
     formData.note = billExpense.note;
     formData.paid = billExpense.paid;
+    console.log(billExpense.date, "chiqa tyt ");
 });
 
 const formRef = ref(null);

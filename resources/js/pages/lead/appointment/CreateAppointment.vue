@@ -12,7 +12,7 @@
                         class="px-2 pt-4 d-flex justify-space-between"
                     >
                         <h2 class="font-weight-bold pl-4">
-                            {{ LeadRepository.isEditMode ? $t("update") : $t("create") }}
+                            {{ LeadRepository.isEditMode ? t("update") : t("create") }}
                         </h2>
                         <v-btn variant="text" @click="isActive.value = false">
                             <v-icon>mdi-close</v-icon>
@@ -22,76 +22,76 @@
 
                     <v-card-text>
                         <v-form ref="formRef" class="pt-4">
-                            <div class="pb-4">
-                                <date-picker
-                                    mode="single"
-                                    :column="1"
-                                    v-model="formData.dateTime"
-                                    :styles="styles"
-                                    locale="fa"
-                                    type="datetime"
-                                    :locale-config="LocaleConfigs"
-                                    input-format="jYYYY/jMM/jDD H:m"
-                                    format="jYYYY/jMM/jDD H:m"
-                                />
-                            </div>
+                            <v-row dense>
+  <v-col cols="6">
+    <date-picker
+      mode="single"
+      :column="1"
+      v-model="formData.dateTime"
+      :styles="styles"
+      locale="fa"
+      type="datetime"
+      :locale-config="LocaleConfigs"
+      input-format="jYYYY/jMM/jDD H:m"
+      format="YYYY-MM-DD H:m"
+    />
+  </v-col>
+  <v-col cols="6">
+    <v-autocomplete
+      v-model="formData.status"
+      :items="[
+        $t('completed'),
+        $t('pending'),
+        $t('cancelled'),
+        $t('inProgress'),
+        $t('noShow')
+      ]"
+      :return-object="false"
+      variant="outlined"
+      :label="$t('status') + ' *'"
+      item-value="id"
+      item-title="name"
+      density="compact"
+      :rules="[rules.required]"
+    />
+  </v-col>
 
-                            <div class="flex">
-                                <v-autocomplete
-                                    v-model="formData.patientId"
-                                    :items="LeadRepository.patientsForApp"
-                                    :return-object="false"
-                                    variant="outlined"
-                                    :label="$t('patient') + ' *'"
-                                    item-value="id"
-                                    item-title="name"
-                                    density="compact"
-                                    :rules="[rules.required]"
-                                    class="w-50 pr-2 pb-4"
-                                >
-                                </v-autocomplete>
 
-                                <v-autocomplete
-                                    v-model="formData.dentistId"
-                                    :items="LeadRepository.doctorsForApp"
-                                    :return-object="false"
-                                    variant="outlined"
-                                    :label="$t('doctor') + ' *'"
-                                    item-value="id"
-                                    item-title="name"
-                                    density="compact"
-                                    :rules="[rules.required]"
-                                    class="w-50 pl-2 pb-4"
-                                >
-                                </v-autocomplete>
-                            </div>
-                            <div class="flex">
-                                <v-autocomplete
-                                    v-model="formData.status"
-                                    :items="[
-                                        $t('completed'),
-                                        $t('pending'),
-                                        $t('cancelled'),
-                                        $t('inProgress'),
-                                        $t('noShow')
-                                    ]"
-                                    :return-object="false"
-                                    variant="outlined"
-                                    :label="$t('status') + ' *'"
-                                    item-value="id"
-                                    item-title="name"
-                                    density="compact"
-                                    :rules="[rules.required]"
-                                    class="pb-4"
-                                >
-                                </v-autocomplete>
-                            </div>
+
+  <v-col cols="6">
+    <v-autocomplete
+      v-model="formData.patientId"
+      :items="LeadRepository.patientsForApp"
+      :return-object="false"
+      variant="outlined"
+      :label="$t('patient') + ' *'"
+      item-value="id"
+      item-title="name"
+      density="compact"
+      :rules="[rules.required]"
+    />
+  </v-col>
+  <v-col cols="6">
+    <v-autocomplete
+      v-model="formData.dentistId"
+      :items="LeadRepository.doctorsForApp"
+      :return-object="false"
+      variant="outlined"
+      :label="$t('doctor') + ' *'"
+      item-value="id"
+      item-title="name"
+      density="compact"
+      :rules="[rules.required]"
+    />
+  </v-col>
+</v-row>
+
                         </v-form>
                     </v-card-text>
 
                     <div class="d-flex flex-row-reverse mb-6 mx-6">
                         <v-btn color="#112F53" class="px-4" @click="save">
-                            {{ LeadRepository.isEditMode ? $t('update') : $t('submit') }}
+                            {{ LeadRepository.isEditMode ? t('update') : t('submit') }}
                         </v-btn>
                     </div>
                 </v-card>
@@ -104,6 +104,8 @@
 import { ref, reactive } from "vue";
 import { useLeadRepository } from "@/store/LeadRepository";
 import { LocaleConfigs, styles } from "../../../LocaleConfigs.js";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 
 const LeadRepository = useLeadRepository();
 const formRef = ref(null);
@@ -117,11 +119,11 @@ const formData = reactive({
     userId: LeadRepository.appointment.user?.id,
 });
 const rules = {
-    required: (value) => !!value || $t("thisFieldIsRequired"),
+    required: (value) => !!value || t("thisFieldIsRequired"),
 
     name: (value) =>
         /^[a-zA-Z\u0600-\u06FF\s]*$/.test(value) ||
-        $t("pleaseEnterAValidName"),
+        t("pleaseEnterAValidName"),
 };
 
 const save = async () => {

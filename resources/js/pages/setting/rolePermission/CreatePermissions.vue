@@ -124,6 +124,13 @@ const permissions = reactive([
     },
     {
         items: [
+            { title: t("InboundLab"), value: "InboundLab" },
+            { title:t("OutBoundLab"), value: "OutBoundLab" },
+            { title: t("People"), value: "People" },
+        ],
+    },
+    {
+        items: [
             { title: t("cureCycle") ,value: "CureCycle" },
             { title: t("expenses") ,value: "Expense" },
             { title: t("billExpense"), value: "BillExpense" },

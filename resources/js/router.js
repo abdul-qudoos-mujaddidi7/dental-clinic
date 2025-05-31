@@ -11,15 +11,16 @@ import ExpenseCategory from "./pages/expenses/expenseCategory/ExpenseCategory.vu
 // people
 import OwnerPickup from "./pages/expenses/ownerPickup/OwnerPickup.vue";
 import Patients from "./pages/people/patients/Patients.vue";
-import ShowPatients from "./pages/people/patients/ShowPatients.vue"
+import ShowPatients from "./pages/people/patients/ShowPatients.vue";
 import Owner from "./pages/people/owner/Owner.vue";
 import Doctor from "./pages/people/doctor/Doctor.vue";
 import Supplier from "./pages/people/supplier/Supplier.vue";
 import ShowSupplier from "./pages/people/supplier/ShowSupplier.vue";
-import Customer from  "./pages/people/customer/Customer.vue"
-import ShowCustomer from "./pages/people/customer/ShowCustomer.vue"
+import Customer from "./pages/people/customer/Customer.vue";
+import ShowCustomer from "./pages/people/customer/ShowCustomer.vue";
 import User from "./pages/people/user/User.vue";
 import Employee from "./pages/people/employee/Employee.vue";
+import ViewEmployee from "./pages/people/employee/ViewEmployee.vue";
 import Laboratory from "./pages/people/lab/Laboratory.vue";
 import CreateLaboratory from "./pages/people/lab/CreateLab.vue";
 import UpdateLaboratory from "./pages/people/lab/UpdateLab.vue";
@@ -36,7 +37,7 @@ import CreatePermissions from "./pages/setting/rolePermission/CreatePermissions.
 import ServiceGroup from "./pages/setting/service Group/ServiceGroup.vue";
 import Service from "./pages/setting/service/Service.vue";
 import DentalType from "./pages/setting/DentalTypes/DentalTypes.vue";
-import MoneyAccount from "./pages/setting/Money Account/MoneyAcc.vue"
+import MoneyAccount from "./pages/setting/Money Account/MoneyAcc.vue";
 // reports
 import ProfitLoss from "./pages/reports/profit and loss/Profit&Loss.vue";
 import PatientsReport from "./pages/reports/patients report/PatientsReport.vue";
@@ -46,17 +47,17 @@ import PickupReport from "./pages/reports/pickup report/PickupReport.vue";
 import Services from "./pages/reports/services/Services.vue";
 //dashboard
 import Dashboard from "./pages/dashboard/Dashboard.vue";
-// salary info 
-import SalaryInfo from "./pages/salary/SalaryInfo.vue"
+// salary info
+import SalaryInfo from "./pages/salary/SalaryInfo.vue";
 // cure cycle
 import CureCycle from "./pages/cureCycle/cureCycle/CureCycle.vue";
 import CreateCureCycle from "./pages/cureCycle/cureCycle/CreateCureCycle.vue";
 import UpdateCureCycle from "./pages/cureCycle/cureCycle/UpdateCureCycle.vue";
-import ViewCureCycle from "./pages/cureCycle/cureCycle/ViewCureCycle.vue"
-// laboratory 
-import MainLab from "./pages/laboratory main/MainLab.vue"
-import CreateMainLab from "./pages/laboratory main/CreateMainLab.vue"
-import UpdateMainLab from "./pages/laboratory main/UpdateMainLab.vue"
+import ViewCureCycle from "./pages/cureCycle/cureCycle/ViewCureCycle.vue";
+// laboratory
+import MainLab from "./pages/laboratory main/MainLab.vue";
+import CreateMainLab from "./pages/laboratory main/CreateMainLab.vue";
+import UpdateMainLab from "./pages/laboratory main/UpdateMainLab.vue";
 // login
 import Login from "./pages/Auth/Login.vue";
 import Home from "./Home.vue";
@@ -89,7 +90,7 @@ const router = createRouter({
                 },
                 { path: "/expenseProducts", component: ExpenseProduct },
                 { path: "/expenseCat", component: ExpenseCategory },
-                // people 
+                // people
                 { path: "/patients", component: Patients },
                 {
                     path: "/viewPatients/:id",
@@ -105,7 +106,7 @@ const router = createRouter({
                     component: ShowSupplier,
                 },
                 { path: "/customer", component: Customer },
-                
+
                 {
                     path: "/viewCustomer/:id",
                     props: true,
@@ -113,6 +114,12 @@ const router = createRouter({
                 },
                 { path: "/user", component: User },
                 { path: "/employee", component: Employee },
+
+                {
+                    path: "/viewEmployee/:id",
+                    props: true,
+                    component: ViewEmployee,
+                },
                 { path: "/laboratory", component: Laboratory },
                 { path: "/createLab", component: CreateLaboratory },
                 {
@@ -135,7 +142,7 @@ const router = createRouter({
                     props: true,
                     component: UpdatePermissions,
                 },
-                
+
                 { path: "/moneyAcc", component: MoneyAccount },
 
                 { path: "/serviceGroup", component: ServiceGroup },
@@ -151,8 +158,7 @@ const router = createRouter({
                 // SalaryInfo
                 { path: "/salary", component: SalaryInfo },
 
-
-                // main lab 
+                // main lab
                 { path: "/mainLaboratory", component: MainLab },
                 { path: "/createMainLab", component: CreateMainLab },
                 {

@@ -26,14 +26,17 @@ class Cure extends Model
 
     protected $table='cures';
 
-    protected static function boot()
-    {
-        parent::boot();
+protected static function boot()
+{
+    parent::boot();
 
-        static::creating(function ($cure) {
-            $cure->reference = 'CURE_' . (self::max('id') + 1);
-        });
-    }
+    // Set reference AFTER the record is created and has an ID
+    static::created(function ($cure) {
+        $cure->reference = 'CURE_' . $cure->id;
+        $cure->save();
+    });
+}
+
 
     public function patient()
     {
@@ -54,7 +57,7 @@ class Cure extends Model
         if (!$search) {
             return $query;
         }
-        return $query->where('name', 'LIKE', '%' . $search . '%');
+        return $query->where('reference', 'LIKE', '%' . $search . '%');
     }
 
     public function getPaymentStatus()

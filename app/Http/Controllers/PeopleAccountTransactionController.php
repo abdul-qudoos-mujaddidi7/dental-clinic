@@ -78,4 +78,44 @@ class PeopleAccountTransactionController extends Controller
     {
         return new $this->resource($this->paymentService->paySalary($request->validated()));
     }
+    public function payCureCycle(PeopleAccountTransactionRequest $request)
+    {
+        return new $this->resource($this->paymentService->payCureCycle($request->validated()));
+    }
+    public function inBoundLabPayment(PeopleAccountTransactionRequest $request)
+    {
+        return new $this->resource($this->paymentService->inBoundLabPayment($request->validated()));
+    }
+
+    public function outBoundLabPayment(PeopleAccountTransactionRequest $request)
+    {
+        return new $this->resource($this->paymentService->outBoundLabPayment($request->validated()));
+    }
+
+    public function showPayments(Request $request)
+{
+    $validated = $request->validate([
+        'operation_type' => 'required|string', 
+        'parent_id' => 'required|integer' // Changed from nullable to required
+    ]);
+
+    try {
+        $payments = PeopleAccountTransaction::where([
+            'operation_type' => $validated['operation_type'],
+            'parent_record_id' => $validated['parent_id']
+        ])->get();
+
+        return $this->resource::collection($payments);
+        
+    } catch (\Exception $e) {
+        Log::error('Payment retrieval failed: ' . $e->getMessage());
+        return response()->json([
+            'success' => false,
+            'message' => 'Failed to retrieve payments'
+        ], 500);
+    }
+}
+
+
+
 }

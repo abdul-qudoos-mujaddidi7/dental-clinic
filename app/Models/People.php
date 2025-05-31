@@ -42,6 +42,8 @@ class People extends Model
     protected $casts = [
         self::COLUMN_MEDICAL_RECORD => 'array',
         self::COLUMN_DENTAL_RECORD => 'array',
+        self::COLUMN_DATE_OF_BIRTH => 'date',
+
     ];
 
     public function scopeSearch($query, $search)

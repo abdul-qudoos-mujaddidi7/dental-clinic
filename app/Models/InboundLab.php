@@ -51,7 +51,7 @@ class InboundLab extends Model
             return $query;
         }
 
-        return $query->where('name','LIKE','%'. $search .'%');
+        return $query->where('issue_at','LIKE','%'. $search .'%');
 
 
     }

@@ -1,5 +1,5 @@
 <template>
-    <AppBar :mainTitle="$t('view')" sub-title="patient" />
+    <AppBar :mainTitle="$t('viewEmployee')" sub-title="employee" />
 
     <div class="pb-8">
         <v-row class="pt-12">
@@ -42,13 +42,14 @@
         >
             <!-- Flight Group Details Tabs section  -->
             <v-tabs v-model="tab" color="primary">
-                <v-tab value="earnings">{{ t("Transactions") }} </v-tab>
+                <v-tab value="earnings">{{ t("accounts") }} </v-tab>
                 <v-tab value="Payment">{{ t("transfers") }} </v-tab>
             </v-tabs>
             <v-divider></v-divider>
             <v-window v-model="tab">
                 <v-window-item value="earnings"
-                    ><AccountPatientsTbl />
+                    > <AccountEmployee />
+                    
                 </v-window-item>
                 <v-window-item value="Payment"
                     ><TransferPatientTbl />
@@ -62,9 +63,9 @@
 import { ref, computed } from "vue";
 import { usePeopleRepository } from "@/store/PeopleRepository";
 const PeopleRepository = usePeopleRepository();
-import AccountPatientsTbl from "./payment/AccountPatientTbl.vue";
+import AccountEmployee from "./salary payment/AccountEmployeeTbl.vue"
 import { useI18n } from "vue-i18n";
-import TransferPatientTbl from "./payment/TransferPatientTbl.vue";
+// import TransferPatientTbl from "./payment/TransferPatientTbl.vue";
 const { t, locale } = useI18n();
 let tab = ref(null);
 const dir = computed(() => {

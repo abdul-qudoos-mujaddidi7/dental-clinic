@@ -22,14 +22,21 @@
                         v-model="ReportRepository.pickUpReportSearch"
                     ></v-text-field>
                 </div>
-                <div class="d-flex">
+              <div class="d-flex">
+
+                    <!-- Fix for date range picker -->
                     <date-picker
-                        v-model:value="ReportRepository.productDateRange"
-                        @change="onDateChange"
-                        range
-                    ></date-picker>
+                        mode="range"
+                        v-model="ReportRepository.productDateRange" 
+                        :styles="styles"
+                        @update:modelValue="onDateChange" 
+                        locale="fa"
+                        type="date"
+                        :locale-config="LocaleConfigs"
+                        input-format="jYYYY/jMM/jDD"
+                        format="YYYY-MM-DD"
+                    />
                 </div>
-                
             </div>
             <!-- v-table server  -->
             <div class="overflow-x-hidden">
@@ -73,8 +80,7 @@ import { ref, onMounted,reactive, watch } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 import { useReportRepository } from "@/store/ReportRepository";
 const ReportRepository = useReportRepository();
-import DatePicker from "vue-datepicker-next";
-import "vue-datepicker-next/index.css";
+import { LocaleConfigs, styles } from "../../../LocaleConfigs";
 const productDateRange = ref([new Date(), new Date()]);
 
 

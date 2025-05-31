@@ -70,6 +70,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             peopleAccounts: reactive([]),
             peopleAccount: reactive([]),
             moneyAccsFor: reactive([]),
+            AccsForCreate:reactive([]),
             idForCreatePayment: ref(""),
             patientIdForView:ref(""),
             account: reactive([]),
@@ -194,8 +195,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
         },
         async DeletePatient(id) {
             this.isLoading = true;
-            this.patients = [];
-            this.error = null;
+            
 
             try {
                 const config = {
@@ -203,7 +203,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
                     url: "peoples/" + id,
                 };
 
-                const response = await axios(config);
+                 await axios(config);
 
                 // this.patients = response.data.data;
                 this.fetchPatients({
@@ -211,7 +211,8 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
                     itemsPerPage: this.itemsPerPage,
                 });
             } catch (err) {
-                this.error = err;
+                console.log("jwad")
+                
             }
         },
         // fetch owners
@@ -819,7 +820,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             this.loading = true;
 
             const response = await axios.get(
-                `outboundLab?page=${page}&perPage=${itemsPerPage}&search=${this.laboratorySearch}&type=out`
+                `outboundLab?page=${page}&perPage=${itemsPerPage}&issue_at=${this.laboratorySearch}&type=out`
             );
             this.laboratories = response.data.data;
             this.totalItems = response.data.meta.total;
@@ -1008,11 +1009,16 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
                 this.error = err;
             }
         },
+           async MoneyAccountsForCreate() {
+            this.loading = true;
+            const response = await axios.get(`moneyAccount`);
+            this.AccsForCreate = response.data.data;
+            this.loading = false;
+        },
         // peopleAccount
         async fetchMoneyAccountsFor() {
             this.loading = true;
-
-            const response = await axios.get(`peopleAccountTransaction`);
+            const response = await axios.get(`moneyAccount`);
             this.moneyAccsFor = response.data.data;
             this.loading = false;
         },
@@ -1279,7 +1285,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
         async FetchLabPayments({ page, itemsPerPage }) {
             this.loading = true;
             const response = await axios.get(
-                `generatePaySlip?page=${page}&perPage=${itemsPerPage}&${this.PaymentLabSearch}`
+                `outBoundLabPayment?page=${page}&perPage=${itemsPerPage}&${this.PaymentLabSearch}`
             );
             this.paymentLabs = response.data.data;
             // this.totalItems = response.data.meta.total;
@@ -1290,7 +1296,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             // this.loading = true;
             console.log(id, "id in repository");
             try {
-                const response = await axios.get(`generatePaySlip/${id}`);
+                const response = await axios.get(`outBoundLabPayment/${id}`);
                 this.paymentLab = response.data.data;
                 console.log(this.paymentLab, "data of lab");
             } catch (err) {
@@ -1302,7 +1308,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             try {
                 const config = {
                     method: "POST",
-                    url: "generatePaySlip",
+                    url: "outBoundLabPayment",
                     data: formData,
                 };
                 const response = await axios(config);
@@ -1320,7 +1326,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             try {
                 const config = {
                     method: "PUT",
-                    url: `generatePaySlip/${id}`,
+                    url: `outBoundLabPayment/${id}`,
                     data: formData,
                 };
                 const response = await axios(config);
@@ -1339,7 +1345,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             try {
                 const config = {
                     method: "DELETE",
-                    url: `generatePaySlip/${id}`,
+                    url: `outBoundLabPayment/${id}`,
                 };
                 const response = await axios(config);
                 this.FetchLabPayments({

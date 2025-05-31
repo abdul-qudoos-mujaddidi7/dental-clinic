@@ -2,7 +2,10 @@
     <CreateAppointment v-if="LeadRepository.createDialog" />
     <div class="all-expense rounded-xl" :dir="dir">
         <div class="card rounded-xl">
-            <AppBar :mainTitle="$t('appointment')" :sub-title="$t('appointment')" />
+            <AppBar
+                :mainTitle="$t('appointment')"
+                :sub-title="$t('appointment')"
+            />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
@@ -21,46 +24,62 @@
                         hide-details
                         v-model="LeadRepository.appointmentSearch"
                     ></v-text-field>
+                    
                 </div>
-                <div class="btn">
+                <div class="btn d-flex" >
                     <v-btn variant="outlined" color="primaryOld" class="px-6">
-                        {{ $t('filter') }}
+                        {{ $t("filter") }}
                     </v-btn>
                     &nbsp;
-                    <v-btn
-                        @click="CreateDialogShow"
-                        color="primaryOld"
-                        variant="flat"
-                        :text="$t('create')"
-                        class="px-6"
+                    <div
+                        v-if="
+                            AuthRepository.permissions &&
+                            AuthRepository.permissions.includes(
+                                'addAppointment'
+                            )
+                        "
                     >
-                    </v-btn>
+                        <v-btn
+                            @click="CreateDialogShow"
+                            color="primaryOld"
+                            variant="flat"
+                            :text="$t('create')"
+                            class="px-6"
+                        >
+                        </v-btn>
+                    </div>
                 </div>
             </div>
 
             <!-- v-table server -->
             <div class="overflow-x-hidden">
                 <v-app>
-                    <v-main class="main" >
+                    <v-main class="main">
                         <v-row>
                             <v-col>
                                 <v-data-table-server
-                                :dir="dir"
+                                    :dir="dir"
                                     theme="cursor-pointer"
-                                    v-model:items-per-page="LeadRepository.itemsPerPage"
+                                    v-model:items-per-page="
+                                        LeadRepository.itemsPerPage
+                                    "
                                     :headers="headers"
                                     :items-length="LeadRepository.totalItems"
                                     :items="LeadRepository.appointments"
                                     :loading="LeadRepository.loading"
                                     :search="LeadRepository.appointmentSearch"
-                                    @update:options="LeadRepository.FetchAppointments"
+                                    @update:options="
+                                        LeadRepository.FetchAppointments
+                                    "
                                     :item-key="LeadRepository.appointments"
                                     hover
                                     class="w-100 mx-auto"
                                 >
                                     <template v-slot:item.action="{ item }">
                                         <v-menu>
-                                            <template v-slot:activator="{ props }">
+                                            <template
+                                                v-slot:activator="{ props }"
+                                            >
                                                 <v-btn
                                                     icon="mdi-dots-vertical"
                                                     v-bind="props"
@@ -70,19 +89,38 @@
                                             <v-list>
                                                 <v-list-item>
                                                     <v-list-item-title
+                                                        v-if="
+                                                            AuthRepository.permissions &&
+                                                            AuthRepository.permissions.includes(
+                                                                'updateAppointment'
+                                                            )
+                                                        "
                                                         @click="edit(item)"
                                                         class="cursor-pointer d-flex gap-3 justify-left pb-3"
                                                     >
-                                                        <v-icon color="tealColor">mdi-square-edit-outline</v-icon>
-                                                        {{ $t('edit') }}
+                                                        <v-icon
+                                                            color="tealColor"
+                                                            >mdi-square-edit-outline</v-icon
+                                                        >
+                                                        {{ $t("edit") }}
                                                     </v-list-item-title>
 
                                                     <v-list-item-title
+                                                        v-if="
+                                                            AuthRepository.permissions &&
+                                                            AuthRepository.permissions.includes(
+                                                                'deleteAppointment'
+                                                            )
+                                                        "
                                                         class="cursor-pointer d-flex gap-3"
-                                                        @click="deleteItem(item)"
+                                                        @click="
+                                                            deleteItem(item)
+                                                        "
                                                     >
-                                                        <v-icon color="error">mdi-delete-outline</v-icon>
-                                                        {{ $t('delete') }}
+                                                        <v-icon color="error"
+                                                            >mdi-delete-outline</v-icon
+                                                        >
+                                                        {{ $t("delete") }}
                                                     </v-list-item-title>
                                                 </v-list-item>
                                             </v-list>
@@ -99,12 +137,15 @@
 </template>
 
 <script setup>
-import { ref, onMounted,computed } from "vue";
+import { ref, onMounted, computed } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 import CreateAppointment from "./CreateAppointment.vue";
 import { useLeadRepository } from "@/store/LeadRepository";
+import { useAuthRepository } from "../../../store/AuthRepository";
+const AuthRepository = useAuthRepository();
+
 import { useI18n } from "vue-i18n";
-const { t,locale } = useI18n();
+const { t, locale } = useI18n();
 const LeadRepository = useLeadRepository();
 
 // bulk delete
@@ -117,7 +158,7 @@ const CreateDialogShow = () => {
 };
 
 const dir = computed(() => {
-    return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
+    return locale.value === "fa"  ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
 });
 
 const edit = (item) => {
@@ -141,8 +182,18 @@ const deleteItem = async (item) => {
 
 // header
 const headers = [
-    { title: t("patient"), key: "patients.name", align: "start", sortable: false },
-    { title: t("doctor"), key: "dentists.name", align: "start", sortable: false },
+    {
+        title: t("patient"),
+        key: "patients.name",
+        align: "start",
+        sortable: false,
+    },
+    {
+        title: t("doctor"),
+        key: "dentists.name",
+        align: "start",
+        sortable: false,
+    },
     { title: t("date"), key: "date", align: "start", sortable: false },
     { title: t("addedBy"), key: "userName", align: "start", sortable: false },
     { title: t("time"), key: "time", align: "start", sortable: false },

@@ -152,7 +152,7 @@ export let useLaboratoryRepository = defineStore("LaboratoryRepository", {
             this.loading = true;
 
             const response = await axios.get(
-                `inboundLab?page=${page}&perPage=${itemsPerPage}&search=${this.laboratorySearch}&type=in`
+                `inboundLab?page=${page}&perPage=${itemsPerPage}&issue_at=${this.laboratorySearch}&type=in`
             );
             this.laboratories = response.data.data;
             this.totalItems = response.data.meta.total;
@@ -263,7 +263,7 @@ export let useLaboratoryRepository = defineStore("LaboratoryRepository", {
         async FetchLabPayments({ page, itemsPerPage }) {
             this.loading = true;
             const response = await axios.get(
-                `generatePaySlip?page=${page}&perPage=${itemsPerPage}&${this.PaymentLabSearch}`
+                `inBoundLabPayment?page=${page}&perPage=${itemsPerPage}&${this.PaymentLabSearch}`
             );
             this.paymentLabs = response.data.data;
             // this.totalItems = response.data.meta.total;
@@ -273,7 +273,7 @@ export let useLaboratoryRepository = defineStore("LaboratoryRepository", {
             // this.loading = true;
             console.log(id);
             try {
-                const response = await axios.get(`generatePaySlip/${id}`);
+                const response = await axios.get(`inBoundLabPayment/${id}`);
                 this.paymentLab = response.data.data;
                 console.log(this.paymentLab);
             } catch (err) {
@@ -285,7 +285,7 @@ export let useLaboratoryRepository = defineStore("LaboratoryRepository", {
             try {
                 const config = {
                     method: "POST",
-                    url: "generatePaySlip",
+                    url: "inBoundLabPayment",
                     data: formData,
                 };
                 const response = await axios(config);
@@ -303,7 +303,7 @@ export let useLaboratoryRepository = defineStore("LaboratoryRepository", {
             try {
                 const config = {
                     method: "PUT",
-                    url: `generatePaySlip/${id}`,
+                    url: `inBoundLabPayment/${id}`,
                     data: formData,
                 };
                 const response = await axios(config);
@@ -322,7 +322,7 @@ export let useLaboratoryRepository = defineStore("LaboratoryRepository", {
             try {
                 const config = {
                     method: "DELETE",
-                    url: `generatePaySlip/${id}`,
+                    url: `inBoundLabPayment/${id}`,
                 };
                 const response = await axios(config);
                 this.FetchLabPayments({

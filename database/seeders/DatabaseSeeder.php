@@ -41,7 +41,6 @@ class DatabaseSeeder extends Seeder
 
         ExpenseCategory::factory(3)->create();
         Expense::factory(3)->create();
-        BillExpense::factory(3)->create();
         Product::factory(3)->create();
 
         // Lead

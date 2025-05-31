@@ -1,9 +1,9 @@
 {
-    "createPayment":"Create Payment",
-    "showPayment":"Show Payment",
+    "createPayment": "Create Payment",
+    "showPayment": "Show Payment",
     "paySalary": "Pay Salary",
-    "createPermission":"Create Permission",
-
+    "createPermission": "Create Permission",
+    "viewEmployee": "View Employee",
     "generatePayslip": "Generate Payslip ",
     "diabetes": "Diabetes",
     "bloodPressure": "Blood Pressure",

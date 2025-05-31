@@ -217,27 +217,27 @@ const CreateDialogShow = () => {
 
 // Header
 const headers = [
-    { title: t("issueAt"), key: "issueAt", align: "start", sortable: false },
+    { title: t("issueAt"), key: "issueAt", align: "center", sortable: false },
 
     {
         title: t("returnDate"),
         key: "returnDate",
-        align: "start",
+        align: "center",
         sortable: false,
     },
     {
         title: t("grandTotal"),
         key: "grandTotal",
-        align: "start",
+        align: "center",
         sortable: false,
     },
 
-    { title: t("paid"), key: "paid", align: "start", sortable: false },
-    { title: t("status"), key: "status", align: "start", sortable: false },
+    { title: t("paid"), key: "paid", align: "center", sortable: false },
+    // { title: t("status"), key: "status", align: "center", sortable: false },
     {
         title: t("details"),
         key: "description",
-        align: "start",
+        align: "center",
         sortable: false,
     },
     { title: t("action"), key: "action", align: "end", sortable: false },

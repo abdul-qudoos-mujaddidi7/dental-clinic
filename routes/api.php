@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\MoneyAccountTransactionController;
+use App\Models\MoneyAccountTransaction;
 use App\Models\Service;
 use App\Models\Laboratory;
 use Illuminate\Http\Request;
@@ -87,11 +89,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/outboundLab', OutboundLabController::class);
     Route::apiResource('/tooths', ToothController::class);
     Route::apiResource('/peoples', PeopleController::class);
-    Route::delete('/patientBulkDelete', [PatientController::class,'bulkDelete']);
     Route::apiResource('/appointments', AppointmentController::class);
     Route::apiResource('/categories', CategoryController::class);
     Route::apiResource('/stages', StageController::class);
     Route::apiResource('/leads', LeadController::class);
+    Route::delete('/leadBulkDelete', [LeadController::class,'bulkDelete']);
     Route::put('/leads/stage/{lead}', [LeadController::class, 'updateStage'])->name('leads.updateStage');
 
     Route::apiResource('/services', ServiceController::class);
@@ -120,6 +122,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('serviceReport', ServiceReportController::class);
     // money account  
     Route::apiResource('/moneyAccount', MoneyAccountController::class);
+    Route::get('/showPayments', [PeopleAccountTransactionController::class,'showPayments']);
     Route::apiResource('/moneyTransfer', MoneyTransferController::class);
     Route::apiResource('/peopleAccount', PeopleAccountController::class);
     Route::apiResource('/salary', SalaryController::class);
@@ -131,4 +134,7 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::post('/generatePaySlip', [PeopleAccountTransactionController::class, 'generatePaySlip']);
 Route::apiResource('/peopleAccountTransaction', PeopleAccountTransactionController::class);
 Route::post('/paySalary', [PeopleAccountTransactionController::class, 'paySalary']);
+Route::post('/payCureCycle', [PeopleAccountTransactionController::class, 'payCureCycle']);
+Route::post('/inBoundLabPayment', [PeopleAccountTransactionController::class, 'inBoundLabPayment']);
+Route::post('/outBoundLabPayment', [PeopleAccountTransactionController::class, 'outBoundLabPayment']);
 

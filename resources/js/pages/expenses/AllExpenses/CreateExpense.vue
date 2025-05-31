@@ -47,7 +47,7 @@
                                         :styles="styles"
                                         locale="fa"
                                         type="date"
-                                        format="jYYYY/jMM/jDD"
+                                        format="YYYY/MM/DD"
                                         :locale-config="LocaleConfigs"
                                     />
                                 </div>
@@ -117,7 +117,7 @@ const formData = reactive({
     id: ExpenseRepository.Expense.id,
     date: ExpenseRepository.Expense.date,
     amount: ExpenseRepository.Expense.amount,
-    money_account_id:ExpenseRepository.Expense.money_account_id,
+    money_account_id:ExpenseRepository.Expense.account?.id,
     expenseCategoryId: ExpenseRepository.Expense.expenseCategory?.id,
     note: ExpenseRepository.Expense.note,
 });
