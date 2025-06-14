@@ -134,6 +134,11 @@
                                             class="w-10 d-flex"
                                         ></v-checkbox>
                                     </template>
+                                    <template v-slot:item.printBtn="{ item }">
+                                        <v-btn color="primaryOld"  :text="$t('print')" >
+
+                                        </v-btn>
+                                    </template>
                                     <template
                                         v-slot:item.paymentStatus="{ item }"
                                     >
@@ -428,6 +433,8 @@ const headers = [
         align: "center",
         sortable: false,
     },
+    { title: t("print"), key: "printBtn", align: "center", sortable: false },
+
 
     { title: t("action"), key: "action", align: "center", sortable: false },
 ];

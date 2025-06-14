@@ -1,5 +1,6 @@
 {
     "viewEmployee": "نمایش کارمندان",
+    "print":"چاپ",
 
     "createPayment": "ایجاد پرداخت",
     "showPayment": "نمایش پرداخت",

@@ -31,15 +31,22 @@ import NavigationDrawer from "./components/navigationDrawer.vue";
 import { useI18n } from "vue-i18n";
 const { t, locale } = useI18n();
 import { useAuthRepository } from "@/store/AuthRepository";
-const isRtl = ref(locale.value == "fa" ); // Assuming 'fa' is the code for Dari // Assuming 'fa' is the code for Dari
-watch(locale, (newLocale) => {
-    isRtl.value = newLocale == "fa" || "pa"
 
+
+// Determine if the language is RTL
+const isRtl = ref(['fa', 'pa'].includes(locale.value));
+
+// Watch for locale changes
+watch(locale, (newLocale) => {
+    isRtl.value = ['fa', 'pa'].includes(newLocale);
 });
+
+// Drawer and rail state
 const authRepo = useAuthRepository();
 const drawer = ref(true);
 const rail = ref(authRepo.rail);
 
+// Sync rail state with authRepo
 watch(
     () => authRepo.rail,
     (newValue) => {
@@ -47,17 +54,9 @@ watch(
     }
 );
 
-const dir = computed(() => {
-    if (locale.value === "fa") {
-        return "right"; // Reverse the order for Farsi
-    }
+// Layout direction (used for drawer alignment etc.)
+const dir = computed(() => (isRtl.value ? 'right' : 'left'));
 
-    if (locale.value === "pa") {
-        return "right"; // Reverse the order for Farsi
-    }
-
-    return "left";
-});
 
 // Use Vue Router's `useRoute` to determine the current route
 const route = useRoute();
