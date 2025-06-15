@@ -267,7 +267,7 @@ const sendSelectedIds = () => {
 };
 // direction
 const dir = computed(() => {
-    return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
+    return locale.value === "fa" || "pa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
 });
 
 // delete and update Create

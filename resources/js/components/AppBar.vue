@@ -181,8 +181,8 @@ const items = ref([
 // Function to change language and toggle RTL
 const changeLanguage = (lang) => {
     locale.value = lang;
-    isRtl.value = lang === "fa"; // Assume 'fa' is the locale code for Dari
-    isRtl.value = lang === "pa"; // Assume 'fa' is the locale code for Dari
+    isRtl.value = lang === "fa";
+    isRtl.value = lang === "pa";
 };
 const toggleSidebar = () => {
     AuthRepository.toggleRail(); // This will update the store and trigger reactivity

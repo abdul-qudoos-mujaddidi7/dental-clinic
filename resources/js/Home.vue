@@ -31,9 +31,9 @@ import NavigationDrawer from "./components/navigationDrawer.vue";
 import { useI18n } from "vue-i18n";
 const { t, locale } = useI18n();
 import { useAuthRepository } from "@/store/AuthRepository";
-const isRtl = ref(locale.value == "fa" ); // Assuming 'fa' is the code for Dari // Assuming 'fa' is the code for Dari
+const isRtl = ref(locale.value == "fa" ); // Assuming 'fa' is the code for Dari 
 watch(locale, (newLocale) => {
-    isRtl.value = newLocale == "fa" || "pa"
+    isRtl.value = newLocale == "fa"
 
 });
 const authRepo = useAuthRepository();
@@ -48,13 +48,11 @@ watch(
 );
 
 const dir = computed(() => {
-    if (locale.value === "fa") {
+    if (locale.value === "fa" ||"pa") {
         return "right"; // Reverse the order for Farsi
     }
 
-    if (locale.value === "pa") {
-        return "right"; // Reverse the order for Farsi
-    }
+
 
     return "left";
 });
