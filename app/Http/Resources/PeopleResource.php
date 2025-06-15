@@ -5,9 +5,11 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Morilog\Jalali\Jalalian;
+use App\Models\SystemSetting;
 
 class PeopleResource extends JsonResource
 {
+
     /**
      * Transform the resource into an array.
      */
@@ -29,6 +31,9 @@ class PeopleResource extends JsonResource
             'position' => $this->position,
             'image' => $this->image,
             'share' => $this->share,
+            'systemAddress' => SystemSetting::first()?->address,
+            'systemPhone' => SystemSetting::first()?->phone,
+
         ];
     }
 }

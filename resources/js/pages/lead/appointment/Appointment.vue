@@ -75,6 +75,11 @@
                                     hover
                                     class="w-100 mx-auto"
                                 >
+                                 <template v-slot:item.printBtn="{ item }">
+                                        <v-btn color="primaryOld"  :text="$t('print')" >
+
+                                        </v-btn>
+                                    </template>
                                     <template v-slot:item.action="{ item }">
                                         <v-menu>
                                             <template
@@ -198,6 +203,7 @@ const headers = [
     { title: t("addedBy"), key: "userName", align: "start", sortable: false },
     { title: t("time"), key: "time", align: "start", sortable: false },
     { title: t("status"), key: "status", align: "start", sortable: false },
+    { title: t("print"), key: "printBtn", align: "center", sortable: false },
     { title: t("action"), key: "action", align: "end", sortable: false },
 ];
 </script>

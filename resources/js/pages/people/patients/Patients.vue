@@ -124,6 +124,15 @@
                                             class="w-6 d-flex"
                                         ></v-checkbox>
                                     </template>
+                                    <template v-slot:item.printBtn="{ item }">
+                                        <v-btn
+                                            color="primaryOld"
+                                            :text="$t('print')"
+                                            @click="generatePDF(item)"
+                                        >
+                                            {{ $t("print") }}
+                                        </v-btn>
+                                    </template>
 
                                     <template v-slot:item.action="{ item }">
                                         <v-menu>
@@ -213,6 +222,41 @@ import { usePeopleRepository } from "@/store/PeopleRepository";
 const PeopleRepository = usePeopleRepository();
 import Export from "../../../components/ExportComponent.vue";
 
+// ===================
+import html2pdf from "html2pdf.js";
+import PrintPatient from "./PrintPatient.vue";
+import { createApp, h } from "vue";
+
+const generatePDF = (patient) => {
+    // Create a temporary DOM element to mount the component
+    const container = document.createElement("div");
+    document.body.appendChild(container);
+
+    // Mount the component with data
+    const app = createApp({
+        render: () => h(PrintPatient, { patient }),
+    });
+    const vm = app.mount(container);
+
+    // Wait a moment to ensure render
+    setTimeout(() => {
+        html2pdf()
+            .set({
+                margin: 0.5,
+                filename: `${patient.name}_form.pdf`,
+                image: { type: "jpeg", quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
+            })
+            .from(container)
+            .save()
+            .then(() => {
+                app.unmount();
+                container.remove();
+            });
+    }, 500);
+};
+// ==========================
 // direction
 const dir = computed(() => {
     return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
@@ -294,6 +338,8 @@ const headers = [
     { title: t("address"), key: "address", align: "start", sortable: false },
     { title: t("age"), key: "dateOfBirth", align: "center", sortable: false },
     { title: t("gender"), key: "gender", align: "center", sortable: false },
+    { title: t("print"), key: "printBtn", align: "center", sortable: false },
+
     { title: t("action"), key: "action", align: "center", sortable: false },
 ];
 </script>

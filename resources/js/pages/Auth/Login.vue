@@ -34,7 +34,7 @@
 
                         <v-btn
                             class="submit-btn"
-                            color="primary"
+                            color="white"
                             block
                             type="submit"
                         >

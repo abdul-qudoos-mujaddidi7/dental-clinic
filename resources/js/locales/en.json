@@ -1,4 +1,5 @@
 {
+    "print":"Print",
     "createPayment": "Create Payment",
     "showPayment": "Show Payment",
     "paySalary": "Pay Salary",
