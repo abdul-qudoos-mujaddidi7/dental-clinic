@@ -226,38 +226,107 @@ import Export from "../../../components/ExportComponent.vue";
 import html2pdf from "html2pdf.js";
 import PrintPatient from "./PrintPatient.vue";
 import { createApp, h } from "vue";
+// const generatePDF = (patient) => {
+//     const container = document.createElement("div");
+//     document.body.appendChild(container);
 
+//     let componentInstance = null;
+
+//     const app = createApp({
+//         render() {
+//             return h(PrintPatient, {
+//                 patient,
+//                 ref: (el) => {
+//                     componentInstance = el;
+//                 },
+//             });
+//         },
+//     });
+
+//     app.mount(container);
+
+//     // Wait a bit for rendering
+//     setTimeout(() => {
+//         if (componentInstance?.printContent) {
+//             html2pdf()
+//                 .set({
+//                     margin: 0.5,
+//                     filename: `${patient.name}_form.pdf`,
+//                     image: { type: "jpeg", quality: 0.98 },
+//                     html2canvas: { scale: 2 },
+//                     jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
+//                 })
+//                 .from(componentInstance.printContent)
+//                 .save()
+//                 .then(() => {
+//                     app.unmount();
+//                     container.remove();
+//                 });
+//         } else {
+//             console.error("printContent not found");
+//             app.unmount();
+//             container.remove();
+//         }
+//     }, 500);
+// };
+// ==========================
+// direction
+
+// ==============
 const generatePDF = (patient) => {
-    // Create a temporary DOM element to mount the component
     const container = document.createElement("div");
     document.body.appendChild(container);
 
-    // Mount the component with data
-    const app = createApp({
-        render: () => h(PrintPatient, { patient }),
-    });
-    const vm = app.mount(container);
+    let componentInstance = null;
 
-    // Wait a moment to ensure render
-    setTimeout(() => {
-        html2pdf()
-            .set({
-                margin: 0.5,
-                filename: `${patient.name}_form.pdf`,
-                image: { type: "jpeg", quality: 0.98 },
-                html2canvas: { scale: 2 },
-                jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
-            })
-            .from(container)
-            .save()
-            .then(() => {
-                app.unmount();
-                container.remove();
+    const app = createApp({
+        render() {
+            return h(PrintPatient, {
+                patient,
+                ref: (el) => {
+                    componentInstance = el;
+                },
             });
+        },
+    });
+
+    app.mount(container);
+
+    // Wait for rendering
+    setTimeout(() => {
+        if (componentInstance?.printContent) {
+            html2pdf()
+                .set({
+                    margin: 0.5,
+                    filename: `${patient.name}_form.pdf`,
+                    image: { type: "jpeg", quality: 0.98 },
+                    html2canvas: { scale: 2 },
+                    jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
+                })
+                .from(componentInstance.printContent)
+                .output('bloburl') // ← generate PDF as blob URL
+                .then((pdfUrl) => {
+                    // Open PDF in new window and auto-trigger print
+                    const printWindow = window.open(pdfUrl);
+                    if (printWindow) {
+                        printWindow.onload = () => {
+                            printWindow.focus();
+                            printWindow.print();
+                        };
+                    }
+                    // Clean up
+                    app.unmount();
+                    container.remove();
+                });
+        } else {
+            console.error("printContent not found");
+            app.unmount();
+            container.remove();
+        }
     }, 500);
 };
-// ==========================
-// direction
+
+// ===================
 const dir = computed(() => {
     return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
 });

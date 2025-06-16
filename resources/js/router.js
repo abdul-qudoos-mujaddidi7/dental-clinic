@@ -29,6 +29,7 @@ import Leads from "./pages/lead/leads/Leads.vue";
 import LeadCategory from "./pages/lead/leadCategory/LeadCategory.vue";
 import LeadStage from "./pages/lead/leadStage/LeadStage.vue";
 import Appointments from "./pages/lead/appointment/Appointment.vue";
+import PrintAppointment from "./pages/lead/appointment/PrintAppointment.vue";
 // system setting
 import SystemSetting from "./pages/setting/system Setting/SystemSetting.vue";
 import RolePermission from "./pages/setting/rolePermission/RolePermission.vue";
@@ -133,6 +134,14 @@ const router = createRouter({
                 { path: "/leadCategory", component: LeadCategory },
                 { path: "/leadStage", component: LeadStage },
                 { path: "/appointments", component: Appointments },
+                {
+                    path: "/appointmentPrint/:id",
+                    name: "AppointmentPrint",
+                    component: () =>
+                        import("./pages/lead/appointment/PrintAppointment.vue"),
+                    meta: { layout: "blank" }, // or you can check this meta in your layout component to NOT render sidebar/appbar
+                },
+
                 // system setting
                 { path: "/systemSetting", component: SystemSetting },
                 { path: "/rolePermissions", component: RolePermission },

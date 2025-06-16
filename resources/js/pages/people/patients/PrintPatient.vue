@@ -1,12 +1,9 @@
 <template>
+    
     <div ref="printContent" class="p-6 bg-white text-black" dir="rtl">
         <!-- Header -->
         <div class="flex flex-col items-center border-b pb-4 text-center">
-            <img
-                src="../../../../../public/assets/logo.jpg/"
-                class="h-16 mb-2"
-                alt="Logo"
-            />
+            <img src="/assets/logo.jpg" class="h-16 mb-2" alt="Logo" />
             <div>
                 <h2 class="font-bold text-xl">کلینیک دندان پرسپویان</h2>
                 <p class="text-sm text-gray-600">Parsapoyan Dental Clinic</p>
@@ -71,8 +68,8 @@
             <div class="grid grid-cols-2 gap-2 text-primary">
                 <div class="text-right">
                     <p class="mb-4">
-                        اینجانب __________،تایید میکنم که اطلاعات فوق صحیح است و مجوز
-                        درمان را می دهم
+                        اینجانب __________،تایید میکنم که اطلاعات فوق صحیح است و
+                        مجوز درمان را می دهم
                     </p>
                     <p class="mb-4">__________تاریخ</p>
                     <p>1/1</p>
@@ -84,15 +81,16 @@
         </div>
 
         <!-- Footer -->
-        <div
-            class="border-t pt-4 mt-6 flex justify-between align-end text-xs "
-        >
-            <div class=" w-full bg-primaryOld text-white p-2">
-                <footer> 
+        <div class="border-t pt-4 mt-6 flex justify-between align-end text-xs">
+            <div class="w-full bg-primaryOld text-white p-2">
+                <footer>
                     <span class="mdi mdi-map-marker">
                         {{ patient.systemAddress }}
-                    </span> &nbsp; &nbsp; &nbsp;
-                    <span class="mdi mdi-phone-in-talk-outline">{{ patient.phone }}</span>
+                    </span>
+                    &nbsp; &nbsp; &nbsp;
+                    <span class="mdi mdi-phone-in-talk-outline">{{
+                        patient.phone
+                    }}</span>
                 </footer>
             </div>
         </div>
@@ -100,7 +98,12 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+
+import { ref, computed, defineExpose } from 'vue';
+const printContent = ref(null);
+
+// expose it so parent can access
+defineExpose({ printContent });;
 const props = defineProps({
     patient: Object,
 });
