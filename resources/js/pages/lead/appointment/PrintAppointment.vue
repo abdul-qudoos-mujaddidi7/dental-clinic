@@ -1,84 +1,49 @@
 <template>
-  <div class="print-wrapper">
-    <div class="print-content">
-      <h2 class="title">{{ $t("appointmentDetails") }}</h2>
-      <p><strong>{{ $t("patient") }}:</strong> {{ appointment.patients?.name }}</p>
-      <p><strong>{{ $t("doctor") }}:</strong> {{ appointment.dentists?.name }}</p>
-      <p><strong>{{ $t("date") }}:</strong> {{ appointment.date }}</p>
-      <p><strong>{{ $t("time") }}:</strong> {{ appointment.time }}</p>
-      <p><strong>{{ $t("status") }}:</strong> {{ appointment.status }}</p>
-      <p><strong>{{ $t("addedBy") }}:</strong> {{ appointment.userName }}</p>
+  <div ref="printContent" class="p-6 bg-white text-black" dir="rtl">
+    <!-- Header -->
+    <div class="flex flex-col items-center border-b pb-4 text-center">
+      <img src="/assets/logo.jpg" class="h-16 mb-2" alt="Logo" />
+      <div>
+        <h2 class="font-bold text-xl">کلینیک دندان پرسپویان</h2>
+        <p class="text-sm text-gray-600">Parsapoyan Dental Clinic</p>
+      </div>
+    </div>
+
+    <!-- Title -->
+    <div class="flex justify-center pb-2">
+      <h2 class="font-bold text-xl text-primaryOld">جزئیات ملاقات</h2>
+    </div>
+
+    <!-- Appointment Info -->
+    <div class="grid grid-cols-2 gap-4 mb-6 text-sm text-primaryOld">
+      <div><strong>نام مریض:</strong> {{ appointment?.patients?.name }}</div>
+      <div><strong>نام داکتر:</strong> {{ appointment?.dentists?.name }}</div>
+      <div><strong>تاریخ ملاقات:</strong> {{ appointment?.date }}</div>
+      <div><strong>زمان ملاقات:</strong> {{ appointment?.time }}</div>
+      <div><strong>حالت ملاقات:</strong> {{ appointment?.status }}</div>
+      <div><strong>اضافه شده توسط:</strong> {{ appointment?.userName }}</div>
     </div>
   </div>
 </template>
 
-
 <script setup>
-import { onMounted, ref } from 'vue';
-const props = defineProps({ appointment: Object });
-const emit = defineEmits(['close']);
+import { ref } from 'vue';
 
-onMounted(() => {
-  setTimeout(() => {
-    window.print();
-    emit('close');
-  }, 300);
+const props = defineProps({
+  appointment: Object, // داده‌های کامل ملاقات
 });
+
+const printContent = ref(null);
+
+defineExpose({ printContent });
 </script>
-<style>
-.print-wrapper {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: white;
-  z-index: 999999;
-  padding: 0;
-  margin: 0;
-  display: block;
-  font-family: sans-serif;
+
+<style scoped>
+[dir="rtl"] {
+  text-align: right;
 }
 
-.print-content {
-  width: 100%;
-  max-width: 700px;
-  /* margin: 0 auto; */
-  padding: 20mm;
-  padding-left: 10;
-  font-size: 16pt;
-}
-
-.title {
+[dir="rtl"] .text-center {
   text-align: center;
-  font-weight: bold;
-  font-size: 20pt;
-  margin-bottom: 20px;
-}
-
-/* Fix print layout */
-@media print {
-  body * {
-    visibility: hidden;
-  }
-
-  .print-wrapper,
-  .print-wrapper * {
-    visibility: visible;
-  }
-
-  .print-wrapper {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: auto;
-    padding: 0;
-  }
-
-  @page {
-    size: A4 portrait;
-    margin: 15mm;
-  }
 }
 </style>
