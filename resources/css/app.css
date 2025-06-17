@@ -44,7 +44,7 @@ body {
     border-width: 4px;
 }
 [dir="rtl"].v-table > :nth-child(1) > :nth-child(1) > :nth-child(1) > tr {
-    background-color: #b0c9d8;
+     background-color: rgb(var(--v-theme-tableRowBg));
     border-right: 4px solid #f4d03f !important;
     border-left: none;
     border-bottom: 4px solid #ffff;

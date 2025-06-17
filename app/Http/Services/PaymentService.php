@@ -56,6 +56,7 @@ class PaymentService
 
     public function generatePaySlip(array $request)
     {
+        
         $data = $this->prepareData($request,OperationType::PAYSLIP);
         return PeopleAccountTransaction::create($data);
     }

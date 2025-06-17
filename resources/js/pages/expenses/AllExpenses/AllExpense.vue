@@ -267,8 +267,10 @@ const sendSelectedIds = () => {
 };
 // direction
 const dir = computed(() => {
-    return locale.value === "fa" || "pa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
+  return ["fa", "pa"].includes(locale.value) ? "rtl" : "ltr";
 });
+
+
 
 // delete and update Create
 const CreateDialogShow = () => {
