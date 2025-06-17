@@ -309,23 +309,22 @@ import { useRoute } from "vue-router";
 const route = useRoute();
 
 onMounted(() => {
-  if (route.query.print === "true") {
-    setTimeout(() => {
-      window.print(); // opens print dialog
-    }, 1000); // wait for DOM to render
-  }
+    if (route.query.print === "true") {
+        setTimeout(() => {
+            window.print(); // opens print dialog
+        }, 1000); // wait for DOM to render
+    }
 });
 
 const dir = computed(() => {
     return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
 });
 // export component
-// print every row 
+// print every row
 const openPrintWindow = (id) => {
-  const url = `/viewCureCycle/${id}?print=true`;
-  window.open(url, "_blank");
+    const url = `/viewCureCycle/${id}?print=true`;
+    window.open(url, "_blank");
 };
-
 
 const exportDialog = ref(false);
 const exportRef = ref(null);
@@ -472,14 +471,14 @@ const headers = [
     z-index: 1;
 }
 @media print {
-  body {
-    background: white;
-    -webkit-print-color-adjust: exact;
-  }
-  .v-btn,
-  .v-app-bar,
-  .no-print {
-    display: none !important;
-  }
+    body {
+        background: white;
+        -webkit-print-color-adjust: exact;
+    }
+    .v-btn,
+    .v-app-bar,
+    .no-print {
+        display: none !important;
+    }
 }
 </style>
