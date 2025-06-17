@@ -24,9 +24,8 @@
                         hide-details
                         v-model="LeadRepository.appointmentSearch"
                     ></v-text-field>
-                    
                 </div>
-                <div class="btn d-flex" >
+                <div class="btn d-flex">
                     <v-btn variant="outlined" color="primaryOld" class="px-6">
                         {{ $t("filter") }}
                     </v-btn>
@@ -75,11 +74,17 @@
                                     hover
                                     class="w-100 mx-auto"
                                 >
-                                 <template v-slot:item.printBtn="{ item }">
-                                        <v-btn color="primaryOld"  :text="$t('print')" >
-
+                                    <template v-slot:item.printBtn="{ item }">
+                                        <v-btn
+                                            color="primaryOld"
+                                            @click="
+                                                openAppointmentPrint(item.id)
+                                            "
+                                        >
+                                            {{ $t("print") }}
                                         </v-btn>
                                     </template>
+
                                     <template v-slot:item.action="{ item }">
                                         <v-menu>
                                             <template
@@ -139,6 +144,11 @@
             </div>
         </div>
     </div>
+    <PrintAppointment
+        v-if="showPrint"
+        :appointment="selectedAppointment"
+        @close="showPrint = false"
+    />
 </template>
 
 <script setup>
@@ -152,6 +162,16 @@ const AuthRepository = useAuthRepository();
 import { useI18n } from "vue-i18n";
 const { t, locale } = useI18n();
 const LeadRepository = useLeadRepository();
+import PrintAppointment from './PrintAppointment.vue';
+const showPrint = ref(false);
+const selectedAppointment = ref(null);
+
+const openAppointmentPrint = async (id) => {
+  await LeadRepository.fetchAppointment(id);
+  selectedAppointment.value = LeadRepository.appointment;
+  showPrint.value = true;
+};
+
 
 // bulk delete
 
@@ -163,7 +183,7 @@ const CreateDialogShow = () => {
 };
 
 const dir = computed(() => {
-    return locale.value === "fa"  ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
+    return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
 });
 
 const edit = (item) => {

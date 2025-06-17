@@ -135,10 +135,14 @@
                                         ></v-checkbox>
                                     </template>
                                     <template v-slot:item.printBtn="{ item }">
-                                        <v-btn color="primaryOld"  :text="$t('print')" >
-
+                                        <v-btn
+                                            color="primaryOld"
+                                            @click="openPrintWindow(item.id)"
+                                        >
+                                            {{ $t("print") }}
                                         </v-btn>
                                     </template>
+
                                     <template
                                         v-slot:item.paymentStatus="{ item }"
                                     >
@@ -300,10 +304,27 @@ import { useAuthRepository } from "../../../store/AuthRepository";
 const AuthRepository = useAuthRepository();
 import Export from "../../../components/ExportComponent.vue";
 
+import { onMounted } from "vue";
+import { useRoute } from "vue-router";
+const route = useRoute();
+
+onMounted(() => {
+    if (route.query.print === "true") {
+        setTimeout(() => {
+            window.print(); // opens print dialog
+        }, 1000); // wait for DOM to render
+    }
+});
+
 const dir = computed(() => {
     return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
 });
 // export component
+// print every row
+const openPrintWindow = (id) => {
+    const url = `/viewCureCycle/${id}?print=true`;
+    window.open(url, "_blank");
+};
 
 const exportDialog = ref(false);
 const exportRef = ref(null);
@@ -435,7 +456,6 @@ const headers = [
     },
     { title: t("print"), key: "printBtn", align: "center", sortable: false },
 
-
     { title: t("action"), key: "action", align: "center", sortable: false },
 ];
 </script>
@@ -449,5 +469,16 @@ const headers = [
     top: 0.7rem;
     left: 0.7rem;
     z-index: 1;
+}
+@media print {
+    body {
+        background: white;
+        -webkit-print-color-adjust: exact;
+    }
+    .v-btn,
+    .v-app-bar,
+    .no-print {
+        display: none !important;
+    }
 }
 </style>
