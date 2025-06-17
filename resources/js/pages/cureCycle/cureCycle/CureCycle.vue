@@ -136,11 +136,10 @@
                                     </template>
                                     <template v-slot:item.printBtn="{ item }">
                                         <v-btn
+                                            @click="generateCurePrint(item)"
                                             color="primaryOld"
-                                            @click="openPrintWindow(item.id)"
+                                            >Print</v-btn
                                         >
-                                            {{ $t("print") }}
-                                        </v-btn>
                                     </template>
 
                                     <template
@@ -320,11 +319,76 @@ const dir = computed(() => {
     return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
 });
 // export component
-// print every row
-const openPrintWindow = (id) => {
-    const url = `/viewCureCycle/${id}?print=true`;
-    window.open(url, "_blank");
+import { createApp, h } from "vue";
+import html2pdf from "html2pdf.js";
+import PrintCure from "./PrintCure.vue";
+
+
+
+const generateCurePrint = async (cure) => {
+    const CureRepository = useCureRepository();
+    await CureRepository.FetchCure(cure.id); // Fetch and wait
+    const fullCure = CureRepository.cure;     // Get the fetched data
+
+    if (!fullCure) {
+        console.error("Cure not found!");
+        return;
+    }
+
+    const container = document.createElement("div");
+    document.body.appendChild(container);
+
+    let componentInstance = null;
+
+    const app = createApp({
+        render() {
+            return h(PrintCure, {
+                cure: fullCure,
+                ref: (el) => {
+                    componentInstance = el;
+                },
+            });
+        },
+    });
+
+    app.mount(container);
+
+    setTimeout(() => {
+        if (componentInstance?.printContent) {
+            html2pdf()
+                .set({
+                    margin: 0.5,
+                    filename: `${fullCure.patient?.name || "cure"}_cycle.pdf`,
+                    image: { type: "jpeg", quality: 0.98 },
+                    html2canvas: { scale: 2 },
+                    jsPDF: {
+                        unit: "in",
+                        format: "a4",
+                        orientation: "portrait",
+                    },
+                })
+                .from(componentInstance.printContent)
+                .output("bloburl")
+                .then((pdfUrl) => {
+                    const printWindow = window.open(pdfUrl);
+                    if (printWindow) {
+                        printWindow.onload = () => {
+                            printWindow.focus();
+                            printWindow.print();
+                        };
+                    }
+                    app.unmount();
+                    container.remove();
+                });
+        } else {
+            console.error("printContent not found");
+            app.unmount();
+            container.remove();
+        }
+    }, 500);
 };
+
+
 
 const exportDialog = ref(false);
 const exportRef = ref(null);

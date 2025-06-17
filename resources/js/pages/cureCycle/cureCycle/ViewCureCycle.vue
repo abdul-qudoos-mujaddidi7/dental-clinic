@@ -1,11 +1,12 @@
 <template>
   <div class="all-expense rounded-xl m-4">
-    <div ref="printSection" class="card rounded-xl" rtl>
-      <AppBar mainTitle="View Cure Cycle" sub-Title="Cure Cycle" />
+    <!-- ✅ AppBar فقط برای صفحه، نه برای PDF -->
+    <AppBar mainTitle="View Cure Cycle" sub-Title="Cure Cycle" />
 
-      <v-divider :thickness="1" class="border-opacity-100" color="success"></v-divider>
+    <div ref="printSection" class="card rounded-xl mt-4" rtl>
+      <v-divider :thickness="1" class="border-opacity-100" color="success" />
 
-      <!-- Cure Info -->
+      <!-- ✅ Cure Info -->
       <div class="pb-24">
         <div class="border-t-2 border-b-2 border-dashed border-[#ECF1F4] mt-4 w-25 py-1 flex justify-between">
           <span>Date</span>
@@ -21,7 +22,7 @@
         </div>
       </div>
 
-      <!-- Services Table -->
+      <!-- ✅ Services Table -->
       <div class="overflow-x-hidden">
         <v-table>
           <thead>
@@ -43,7 +44,7 @@
         </v-table>
       </div>
 
-      <!-- Notes & Totals -->
+      <!-- ✅ Notes & Totals -->
       <div class="pt-24 flex justify-space-between">
         <div>
           <span>Note:</span> <span>{{ CureRepository.cure.description }}</span>
@@ -65,7 +66,7 @@
       </div>
     </div>
 
-    <!-- 🔘 DOWNLOAD BUTTON -->
+    <!-- ✅ Download Button -->
     <div class="mt-4 text-left">
       <button
         @click="downloadPDF"
@@ -77,12 +78,8 @@
   </div>
 </template>
 
-
 <script setup>
 import { useCureRepository } from "@/store/CureRepository";
-// const CureRepository = useCureRepository();
-
-// ignore
 import html2pdf from "html2pdf.js";
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
@@ -95,24 +92,26 @@ const printSection = ref(null);
 onMounted(() => {
   CureRepository.FetchCure(route.params.id);
 });
+onMounted(() => {
+  CureRepository.FetchCure(route.params.id);
+
+  if (route.query.print === "true") {
+    setTimeout(() => {
+      window.print();
+    }, 1000); // small delay to allow data to render
+  }
+});
+
 
 const downloadPDF = () => {
-  html2pdf().from(printSection.value).set({
-    margin: 0.5,
-    filename: `Cure_Cycle_${CureRepository.cure.patient?.name || "Unknown"}.pdf`,
-    html2canvas: { scale: 2 },
-    jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
-  }).save();
+  html2pdf()
+    .from(printSection.value)
+    .set({
+      margin: 0.5,
+      filename: `Cure_Cycle_${CureRepository.cure.patient?.name || "Unknown"}.pdf`,
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
+    })
+    .save();
 };
-
-
-// const route = useRoute();
-
-CureRepository.FetchCure(route.params.id);
-console.log(CureRepository.cure, "this is what i nedd ");
-// delete and update
-const deleteItem = async (item) => {
-    await CureRepository.DeleteCure(item.id);
-};
-
 </script>
