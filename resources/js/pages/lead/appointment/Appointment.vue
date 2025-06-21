@@ -78,7 +78,9 @@
                                         <v-btn
                                             color="primaryOld"
                                             @click="
-                                                openAppointmentPrint(item.id)
+                                                generateAppointmentPrint(
+                                                    item
+                                                )
                                             "
                                         >
                                             {{ $t("print") }}
@@ -162,16 +164,71 @@ const AuthRepository = useAuthRepository();
 import { useI18n } from "vue-i18n";
 const { t, locale } = useI18n();
 const LeadRepository = useLeadRepository();
-import PrintAppointment from './PrintAppointment.vue';
+import PrintAppointment from "./PrintAppointment.vue";
 const showPrint = ref(false);
 const selectedAppointment = ref(null);
+import { createApp, h } from "vue";
+import html2pdf from "html2pdf.js";
 
-const openAppointmentPrint = async (id) => {
-  await LeadRepository.fetchAppointment(id);
-  selectedAppointment.value = LeadRepository.appointment;
-  showPrint.value = true;
+
+const generateAppointmentPrint = async (appointment) => {
+    if (!appointment) {
+        console.error("Appointment not found!");
+        return;
+    }
+
+    const container = document.createElement("div");
+    document.body.appendChild(container);
+
+    let componentInstance = null;
+
+    const app = createApp({
+        render() {
+            return h(PrintAppointment, {
+                appointment: appointment,
+                ref: (el) => {
+                    componentInstance = el;
+                },
+            });
+        },
+    });
+
+    app.mount(container);
+
+    setTimeout(() => {
+        if (componentInstance?.printContent) {
+            html2pdf()
+                .set({
+                    margin: 0.5,
+                    filename: `${appointment.patients?.name || "appointment"}_detail.pdf`,
+                    image: { type: "jpeg", quality: 0.98 },
+                    html2canvas: { scale: 2 },
+                    jsPDF: {
+                        unit: "in",
+                        format: "a4",
+                        orientation: "portrait",
+                    },
+                })
+                .from(componentInstance.printContent)
+                .output("bloburl")
+                .then((pdfUrl) => {
+                    const printWindow = window.open(pdfUrl);
+                    if (printWindow) {
+                        printWindow.onload = () => {
+                            printWindow.focus();
+                            printWindow.print();
+                        };
+                    }
+                    app.unmount();
+                    container.remove();
+                });
+        } else {
+            console.error("printContent not found");
+            app.unmount();
+            container.remove();
+        }
+    }, 500);
 };
-
 
 // bulk delete
 
