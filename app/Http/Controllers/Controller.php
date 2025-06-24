@@ -121,19 +121,21 @@ class Controller extends BaseController
     }
 
 
-    private function deleteImage($model, $request=null)
+ private function deleteImage($model, $request = null)
 {
     if ($model->images == null) return;
 
     foreach ($model->images as $image) {
-        
-
-        if ($model[$image]) {
+        // Only proceed if:
+        // - The model has an existing image in that field
+        // - The request has a new file for that image field
+        if ($model[$image] && ($request == null || $request->hasFile($image))) {
             Storage::disk('public')->delete($model[$image]);
             $model->update([$image => null]);
         }
     }
 }
+
 
 
 }

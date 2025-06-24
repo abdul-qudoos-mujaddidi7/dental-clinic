@@ -10,13 +10,20 @@ export let useAuthRepository = defineStore("AuthRepository", {
         return {
             user: null,
             permissions: [],
-
+            permissio: reactive([]),
+            permission: reactive([]),
             role: null,
             isLoading: false,
             error: null,
             isLoggedIn: false,
             router: useRouter(),
             rail: false,
+            search: ref(""),
+            isEditMode: ref(false),
+            totalItems: ref(5),
+            selectedItems: ref([]),
+            itemsPerPage: ref(5),
+            createDialog: ref(false),
         };
     },
     actions: {
@@ -30,63 +37,67 @@ export let useAuthRepository = defineStore("AuthRepository", {
         //     this.rail = false; // Disable rail mode
         // },
         async Login(formData) {
-            this.error = null;
-            console.log(formData);
-            try {
-                const config = {
-                    method: "POST",
-                    url: "/login",
-                    data: formData,
-                };
+    this.error = null;
 
-                const response = await axios(config);
-                this.permissions = response.data.permissions;
-                this.role = response.data.roles;
-                this.user = response.data.user;
-                console.log(this.user);
+    try {
+        // Step 1: Login and get token
+        const response = await axios.post("/login", formData);
 
-                sessionStorage.setItem(
-                    "token",
-                    JSON.stringify(response.data.access_token)
-                );
-                sessionStorage.setItem(
-                    "user",
-                    JSON.stringify(response.data.user)
-                );
-                sessionStorage.setItem(
-                    "permissions",
-                    JSON.stringify(response.data.permissions)
-                );
+        const token = response.data.access_token;
+        const user = response.data.user;
 
-                // Show success message using vue3-toastify
-                toast.success("Login successful!", {
-                    position: "top-right",
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
+        // Step 2: Save token & user to sessionStorage
+        sessionStorage.setItem("token", JSON.stringify(token));
+        sessionStorage.setItem("user", JSON.stringify(user));
 
-                this.router.push("/dashboard");
-            } catch (err) {
-                // Show error message using vue3-toastify
-                toast.error("Login failed! Please check your credentials.", {
-                    position: "top-right",
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
+        // Step 3: Set token for future requests
+        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-                this.error = err.response
-                    ? err.response.data.message
-                    : "An error occurred!";
-            }
-        },
+        // Step 4: Fetch user permissions from /api/me
+        const meResponse = await axios.get("/me");
+
+        const permissions = meResponse.data.data.permissions;
+        console.log("Permissions:", permissions);
+        const role = meResponse.data.data.role;
+
+        sessionStorage.setItem("permissions", JSON.stringify(permissions));
+        sessionStorage.setItem("role", JSON.stringify(role));
+
+        this.permissions = permissions;
+        this.role = role;
+        this.user = meResponse.data;
+
+        
+        // ✅ Toast + Redirect
+        toast.success("Login successful!", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+        });
+
+        this.router.push("/dashboard");
+    } catch (err) {
+        // ❌ Handle Error
+        toast.error("Login failed! Please check your credentials.", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+        });
+
+        this.error = err.response
+            ? err.response.data.message
+            : "An error occurred!";
+    }
+},
+
 
         async Logout() {
             this.error = null;
@@ -154,5 +165,111 @@ export let useAuthRepository = defineStore("AuthRepository", {
                 this.isLoggedIn = true;
             }
         },
+
+        // role permissions == role_permissions
+        async fetchRolePermissions({ page, itemsPerPage }) {
+            this.loading = true;
+
+            const response = await axios.get(
+                `role_permissions?page=${page}&perPage=${itemsPerPage}&search=${this.search}`
+            );
+            this.permissio = response.data.data;
+            this.totalItems = response.data.meta.total;
+            this.loading = false;
+        },
+        async fetchRolePermission(id) {
+            // this.error = null;
+            try {
+                const response = await axios.get(`role_permissions/${id}`);
+
+                this.permission = response.data.data;
+                console.log(this.permission);
+            } catch (err) {
+                // this.error = err.message;
+            }
+        },
+        async UpdateRolePermission(id, data) {
+            try {
+               const response = await axios.put("role_permissions/" + id, data);
+
+
+                // Using Axios to make a post request with async/await and custom headers
+        //        if (this.role && this.role.id === id) {
+            
+        // }
+                await this.refreshPermissions();
+                this.router.push("/rolePermissions");
+                this.fetchRolePermissions({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                // If there's an error, set the error in the store
+                this.error = err;
+            }
+        },
+        async CreateRolePermission(formData) {
+            console.log(formData);
+            try {
+                // Adding a custom header to the Axios request
+                const config = {
+                    method: "POST",
+                    url: "role_permissions",
+
+                    data: formData,
+                };
+
+                // Using Axios to make a GET request with async/await and custom headers
+                const response = await axios(config);
+                this.router.push("/rolePermissions");
+                this.fetchRolePermissions({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                // If there's an error, set the error in the stor
+            }
+        },
+        async DeleteRolePermission(id) {
+            this.isLoading = true;
+            this.setting = [];
+            this.error = null;
+
+            try {
+                const config = {
+                    method: "DELETE",
+                    url: "role_permissions/" + id,
+                };
+
+                const response = await axios(config);
+
+                // this.setting = response.data.data;
+                this.fetchRolePermissions({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                this.error = err;
+            }
+        },
+
+        async refreshPermissions() {
+        const meResponse = await axios.get("/me");
+        const permissions = meResponse.data.data.permissions;
+        console.log("Permissions:", permissions);
+        const role = meResponse.data.data.role;
+
+        sessionStorage.setItem("permissions", JSON.stringify(permissions));
+        sessionStorage.setItem("role", JSON.stringify(role));
+
+        this.permissions = permissions;
+        this.role = role;
+        this.user = meResponse.data;
+
+   
+
+    sessionStorage.setItem("user", JSON.stringify(this.user));
+}
+
     },
 });

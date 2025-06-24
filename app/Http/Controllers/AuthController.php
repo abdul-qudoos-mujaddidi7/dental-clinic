@@ -37,8 +37,7 @@ class AuthController extends Controller
                 "photo" => $user->profile_picture ? asset("storage/" . $user->profile_picture) : null
 
             ],
-            'role' => $user->getRoleNames(),
-            'permissions' => $user->getAllPermissions()->pluck('name'),
+                       
         ]);
         
     }

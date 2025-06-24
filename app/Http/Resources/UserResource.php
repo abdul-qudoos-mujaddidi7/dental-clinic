@@ -28,6 +28,8 @@ class UserResource extends JsonResource
             'email' => $this->email,
             'status' => (bool) $this->status,
             "profilePicture" => $this[User::COLUMN_PROFILE_PICTURE] ? asset("storage/" . $this[User::COLUMN_PROFILE_PICTURE] ) : null,
+            // 'role' => $this->getRoleNames(),
+        'permissions' => $this->getAllPermissions()->pluck('name')
         ];
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\MoneyAccountTransactionController;
+use App\Http\Resources\UserResource;
 use App\Models\MoneyAccountTransaction;
 use App\Models\Service;
 use App\Models\Laboratory;
@@ -59,9 +60,7 @@ Route::get('/', function(){
 Route::middleware('auth:sanctum')->group(function () {
 
     // Authenticated user route
-    Route::get('/user', function (Request $request) {
-        return $request->user();
-    });
+    Route::get('/me', [UserController::class, 'me']);
 
     // Resource routes that require authentication
     Route::apiResource('/expenseCategories', ExpenseCategoryController::class);

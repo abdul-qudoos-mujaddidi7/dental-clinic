@@ -146,20 +146,27 @@
 import { useAuthRepository } from "@/store/AuthRepository";
 import { useI18n } from "vue-i18n";
 import {useTheme} from "vuetify"
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch, onMounted } from "vue";
+
 const AuthRepository = useAuthRepository();
 const { t, locale } = useI18n();
-const isRtl = ref(locale.value === "fa"); // Assuming 'fa' is the code for Dari
+const theme = useTheme();
+
+// Initialize with saved language or default to 'en'
+const savedLang = localStorage.getItem("locale") || 'en';
+locale.value = savedLang;
+const isRtl = ref(['fa', 'pa'].includes(savedLang)); // Check if saved language is RTL
+
 watch(locale, (newLocale) => {
-    isRtl.value = newLocale === "fa";
+    isRtl.value = ['fa', 'pa'].includes(newLocale);
+    localStorage.setItem("locale", newLocale); // Save to localStorage on change
 });
+
 const toggleFullscreen = async () => {
     try {
         if (!document.fullscreenElement) {
-            // Enter fullscreen mode
             await document.documentElement.requestFullscreen();
         } else {
-            // Exit fullscreen mode
             await document.exitFullscreen();
         }
     } catch (err) {
@@ -167,8 +174,8 @@ const toggleFullscreen = async () => {
     }
 };
 
-const Rtl = computed(() => {
-    return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
+const dir = computed(() => {
+    return ['fa', 'pa'].includes(locale.value) ? "rtl" : "ltr";
 });
 
 // Define items with icons for language switcher
@@ -178,16 +185,14 @@ const items = ref([
     { title: t("pashto"), lang: "pa", icon: "/assets/dari.png" },
 ]);
 
-// Function to change language and toggle RTL
+// Function to change language
 const changeLanguage = (lang) => {
     locale.value = lang;
-    isRtl.value = lang === "fa";
-    isRtl.value = lang === "pa";
 };
+
 const toggleSidebar = () => {
-    AuthRepository.toggleRail(); // This will update the store and trigger reactivity
+    AuthRepository.toggleRail();
 };
-const theme = useTheme();
 
 const toggleTheme = () => {
   theme.global.name.value = theme.global.name.value === 'myCustomLightTheme'
