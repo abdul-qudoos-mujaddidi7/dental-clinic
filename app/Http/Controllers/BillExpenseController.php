@@ -10,6 +10,7 @@ use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Models\PeopleAccount;
 
 class BillExpenseController extends Controller
 {
@@ -38,8 +39,20 @@ class BillExpenseController extends Controller
         
         // Use transaction to ensure atomicity
         DB::transaction(function () use ($validated,$request) {
+
             // Create BillExpense
-            $billExpense = BillExpense::create($validated);
+            $supplier = $validated['supplier_id'];
+            $peopleAccount = PeopleAccount::where('people_id', $supplier)->first();
+        if(!$peopleAccount){
+           $peopleAccount = PeopleAccount::create([
+                'name' => 'حساب افغانی',
+                'people_id' => $supplier,
+                'balance' => 0,
+            ]);
+        };
+
+        $validated['people_account_id'] = $peopleAccount->id ;
+        $billExpense = billExpense::create($validated);
 
             // Insert BillExpenseDetails
             foreach ($validated['billable_details'] as $detail) {

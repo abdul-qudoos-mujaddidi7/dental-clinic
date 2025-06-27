@@ -112,7 +112,7 @@
                                     #
                                 </th>
                                 <th scope="col" class="px-3 py-3 text-start">
-                                    Service
+                                    Teeth Type
                                 </th>
                                 <th scope="col" class="px-3 py-3 text-start">
                                     Qty

@@ -170,7 +170,7 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
         },
         async DeleteExpense(id) {
             this.isLoading = true;
-            this.Expenses = [];
+            
             this.error = null;
 
             try {
@@ -208,7 +208,7 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
         },
         async Suppliers() {
             const config = {
-                url: "suppliers",
+                url: "peoples?type=supplier",
             };
             const response = await axios(config);
             this.suppliersFor = response.data.data;

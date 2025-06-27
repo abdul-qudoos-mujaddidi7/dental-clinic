@@ -304,9 +304,8 @@ const generatePDF = (patient) => {
                     jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
                 })
                 .from(componentInstance.printContent)
-                .output('bloburl') // ← generate PDF as blob URL
+                .output('bloburl') 
                 .then((pdfUrl) => {
-                    // Open PDF in new window and auto-trigger print
                     const printWindow = window.open(pdfUrl);
                     if (printWindow) {
                         printWindow.onload = () => {
@@ -328,7 +327,7 @@ const generatePDF = (patient) => {
 
 // ===================
 const dir = computed(() => {
-    return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
+    return locale.value === "fa" ? "rtl" : "ltr"; 
 });
 
 // export component
