@@ -58,8 +58,9 @@ const rules = {
 
 const checkEmail = async () => {
     try {
-        await axios.post("/api/forgot-password", { email: email.value });
+        await axios.post("http://127.0.0.1:8000/api/me", { email: email.value });
         showResetForm.value = true;
+        console.log(email.value,'this is the email')
     } catch (err) {
         alert("Email not found.");
     }
