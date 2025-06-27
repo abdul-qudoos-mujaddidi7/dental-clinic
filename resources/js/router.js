@@ -61,12 +61,18 @@ import CreateMainLab from "./pages/laboratory main/CreateMainLab.vue";
 import UpdateMainLab from "./pages/laboratory main/UpdateMainLab.vue";
 // login
 import Login from "./pages/Auth/Login.vue";
+import ForgetPassword from "./pages/Auth/ForgetPassword.vue";
 import Home from "./Home.vue";
 
 const router = createRouter({
     history: createWebHistory(),
     routes: [
         { path: "/", component: Login, meta: "" },
+        {
+            path: "/forgot-password",
+            name: "ForgotPassword",
+            component: ForgetPassword,
+        },
         {
             path: "/home",
             component: Home,

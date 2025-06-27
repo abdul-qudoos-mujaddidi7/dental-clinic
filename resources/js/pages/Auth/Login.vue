@@ -6,7 +6,7 @@
                 <v-form @submit.prevent="loginFunc" ref="formRef">
                     <div class="form-wrapper">
                         <div class="login-header">
-                            <h1>Login </h1>
+                            <h1>Login</h1>
                         </div>
 
                         <v-text-field
@@ -31,15 +31,19 @@
                             @click:append-inner="visible = !visible"
                             :rules="[rules.required, rules.password]"
                         ></v-text-field>
-
                         <v-btn
-                            class="submit-btn"
-                            color="primaryOld"
-                            block
-                            type="submit"
+                        class="submit-btn"
+                        color="primaryOld"
+                        block
+                        type="submit"
                         >
-                            Log In 
-                        </v-btn>
+                        Log In
+                    </v-btn>
+                    <div class="text-end pt-4 text-primaryOld">
+                        <a @click="goToForgotPassword" class="forgot-link"
+                            >Forgot Password?</a
+                        >
+                    </div>
                     </div>
                 </v-form>
             </v-container>
@@ -60,15 +64,24 @@ const formData = reactive({
 });
 const visible = ref(false);
 const formRef = ref(null);
+// forget password 
+import { useRouter } from "vue-router";
+const router = useRouter();
+
+const goToForgotPassword = () => {
+    console.log("Navigating to forgot password page");
+    router.push("/forgot-password");
+};
+
 
 // Validation rules
 const rules = {
     required: (value) => !!value || "This field is required", // Required validation
     email: (value) => /.+@.+\..+/.test(value) || "Invalid email address", // Simple email validation
     password: (value) =>
-        (value && value.length >= 3) || "Password must be at least 3 characters long", // Password must be at least 3 characters
+        (value && value.length >= 3) ||
+        "Password must be at least 3 characters long", // Password must be at least 3 characters
 };
-
 
 // Login function
 const loginFunc = async () => {
@@ -85,6 +98,18 @@ const loginFunc = async () => {
 </script>
 
 <style scoped>
+.forgot-link {
+    font-size: 0.9rem;
+    color: primaryOld;
+    cursor: pointer;
+    text-decoration: underline;
+    margin-top: -10px;
+    display: inline-block;
+}
+.forgot-link:hover {
+    color: primaryOld;
+}
+
 .bg-cover {
     background-image: url("https://picsum.photos/1920/1080");
     background-size: cover;
