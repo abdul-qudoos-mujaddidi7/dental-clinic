@@ -63,6 +63,7 @@ import UpdateMainLab from "./pages/laboratory main/UpdateMainLab.vue";
 import Login from "./pages/Auth/Login.vue";
 import ForgetPassword from "./pages/Auth/ForgetPassword.vue";
 import Home from "./Home.vue";
+import ResetPassword from "./pages/Auth/ResetPassword.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -72,6 +73,11 @@ const router = createRouter({
             path: "/forgot-password",
             name: "ForgotPassword",
             component: ForgetPassword,
+        },
+        {
+            path: "/reset-password",
+            name: "ResetPassword",
+            component: ResetPassword,
         },
         {
             path: "/home",

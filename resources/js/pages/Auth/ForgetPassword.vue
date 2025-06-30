@@ -1,85 +1,32 @@
 <template>
-    <div class="login-page">
-        <v-container class="fill-height d-flex align-center justify-center">
-            <v-form @submit.prevent="checkEmail" ref="formRef">
-                <div class="form-wrapper">
-                    <h2 class="text-center mb-4">Reset Password</h2>
-
-                    <v-text-field
-                        v-model="email"
-                        label="Enter your email"
-                        prepend-inner-icon="mdi-email-outline"
-                        variant="outlined"
-                        density="compact"
-                        :rules="[rules.required, rules.email]"
-                    ></v-text-field>
-
-                    <v-btn type="submit" block color="primaryOld">Submit</v-btn>
-
-                    <div v-if="showResetForm" class="mt-4 w-100">
-                        <v-text-field
-                            v-model="newPassword"
-                            label="New Password"
-                            type="password"
-                            prepend-inner-icon="mdi-lock-outline"
-                            variant="outlined"
-                        ></v-text-field>
-                        <v-text-field
-                            v-model="confirmPassword"
-                            label="Confirm Password"
-                            type="password"
-                            prepend-inner-icon="mdi-lock-outline"
-                            variant="outlined"
-                        ></v-text-field>
-                        <v-btn @click="resetPassword" color="primaryOld" block>Reset</v-btn>
-                    </div>
-                </div>
-            </v-form>
-        </v-container>
-    </div>
+  <v-form @submit.prevent="submit">
+    <v-text-field v-model="email" label="Email" required />
+    <v-btn type="submit">Send Reset Link</v-btn>
+    <p>{{ message }}</p>
+  </v-form>
 </template>
 
 <script setup>
-import { ref } from "vue";
-import axios from "axios";
-import { useRouter } from "vue-router";
+import { ref } from 'vue'
+import axios from 'axios'
 
-const email = ref("");
-const newPassword = ref("");
-const confirmPassword = ref("");
-const showResetForm = ref(false);
-const formRef = ref(null);
-const router = useRouter();
-
+const email = ref('')
+const message = ref('')
 const rules = {
     required: (v) => !!v || "Required",
     email: (v) => /.+@.+\..+/.test(v) || "Invalid email",
 };
 
-const checkEmail = async () => {
-    try {
-        await axios.post("http://127.0.0.1:8000/api/me", { email: email.value });
-        showResetForm.value = true;
-        console.log(email.value,'this is the email')
-    } catch (err) {
-        alert("Email not found.");
-    }
-};
-
-const resetPassword = async () => {
-    try {
-        await axios.post("/api/reset-password", {
-            email: email.value,
-            password: newPassword.value,
-            password_confirmation: confirmPassword.value,
-        });
-        alert("Password changed successfully!");
-        router.push("/login");
-    } catch (err) {
-        alert("Reset failed. Make sure passwords match.");
-    }
-};
+const submit = async () => {
+  try {
+    await axios.post('/forgot-password', { email: email.value })
+    message.value = res.data.message
+  } catch (e) {
+    message.value = e.response.data.message || 'Error occurred'
+  }
+}
 </script>
+
 
 <style scoped>
 .form-wrapper {

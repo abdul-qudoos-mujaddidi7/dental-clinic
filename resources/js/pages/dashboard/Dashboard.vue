@@ -308,7 +308,6 @@
 <script setup>
 import { computed } from "vue";
 import DataBar from "@/components/UI/DashboardCharts/barChart.vue";
-import MoneyAccountChart from "@/components/UI/DashboardCharts/MoneyAccountChart.vue";
 import TotalPayment from "@/components/UI/DashboardCharts/TotalPayment.vue";
 import AppBar from "../../components/AppBar.vue";
 import { useI18n } from "vue-i18n";
