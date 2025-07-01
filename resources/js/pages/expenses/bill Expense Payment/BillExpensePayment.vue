@@ -106,6 +106,7 @@ const formData = reactive({
     accountId: ExpenseRepository.billExpensePayment.accountId,
     date: ExpenseRepository.billExpensePayment.date,
     note: ExpenseRepository.billExpensePayment.note,
+    people_id:ExpenseRepository.supplierId,
 });
 const rules = {
     required: (value) => !!value || "This field is required.",

@@ -7,9 +7,9 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
     state() {
         return {
             isEditMode: ref(false),
-            
-            router: useRouter(),
 
+            router: useRouter(),
+            supplierId: ref(""),
             search: ref(""),
             serverItems: ref([]),
             loadingTable: ref(true),
@@ -18,20 +18,18 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
             selectedItems: ref([]),
             itemsPerPage: ref(5),
             createDialog: ref(false),
-            
+
             createPaymentBill: ref(false),
             ExpenseSearch: ref(""),
             Expenses: reactive([]),
             Expense: reactive([]),
-         
 
             // CREATE ALL EXPENSE
             categories: reactive([]),
             people: reactive([]),
-   
+
             paymentId: ref(""),
- 
-       
+
             // Expense Categories
             expenseCategory: reactive([]),
             expenseCategories: reactive([]),
@@ -43,15 +41,15 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
             ownerPickups: reactive([]),
             ownerPickupSearch: ref(""),
             ownerPickup: reactive([]),
-            owners:reactive([]),
-         
+            owners: reactive([]),
+
             // expenseProduct
             expenseProductSearch: ref(""),
             expenseProducts: reactive([]),
             expenseProduct: reactive([]),
             // Supplier
-            suppliersFor:reactive([]),
-           
+            suppliersFor: reactive([]),
+
             // bill expense
             billExpenseSearch: ref(""),
             billExpenses: reactive([]),
@@ -65,10 +63,8 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
             billExpensePayment: reactive([]),
             billExpensesPayments: reactive([]),
             billExpensePaymentUpdate: reactive([]),
-            moneyAccsFor:reactive([]),
-            account:reactive([]),
-
-          
+            moneyAccsFor: reactive([]),
+            account: reactive([]),
         };
     },
     actions: {
@@ -170,7 +166,7 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
         },
         async DeleteExpense(id) {
             this.isLoading = true;
-            
+
             this.error = null;
 
             try {
@@ -214,7 +210,7 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
             this.suppliersFor = response.data.data;
             // console.log(this.people);
         },
- 
+
         // expense category data
         async FetchExpenseCats({ page, itemsPerPage }) {
             this.loading = true;
@@ -307,9 +303,7 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
         // the people data=========
         async fetchOwners() {
             this.loading = true;
-            const response = await axios.get(
-                `owners`
-            );
+            const response = await axios.get(`owners`);
             this.owner = response.data.data;
             console.log(this.owner);
             // this.totalItems = response.data.meta.total;
@@ -332,7 +326,7 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
                 const response = await axios.get(`ownerPickups/${id}`);
 
                 this.ownerPickup = response.data.data;
-                console.log(this.ownerPickup,'man');
+                console.log(this.ownerPickup, "man");
             } catch (err) {
                 // this.error = err.message;
             }
@@ -579,7 +573,7 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
         },
         // bill expense
         // entigrating data for create Earnings
-       
+
         async SearchFetchData() {
             console.log(this.billExpenseSearch);
             this.loading = true;
@@ -592,15 +586,18 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
             // this.searchFetch = "";
         },
         async fetchProduct(id, isUpdate = false) {
-       
             try {
                 const response = await axios.get(`products/${id}`);
                 const productData = response.data.data;
-        
+
                 if (isUpdate) delete productData.id;
-        
+
                 // Only add if it doesn’t already exist
-                if (!this.expenseProduct.some(item => item.id === productData.id)) {
+                if (
+                    !this.expenseProduct.some(
+                        (item) => item.id === productData.id
+                    )
+                ) {
                     this.expenseProduct.push(productData);
                     this.billExpense.expenseDetails.push(productData);
                 }
@@ -609,7 +606,7 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
                 // this.error = err.message;
             }
         },
-        // 
+        //
         async bulkDeleteBillExpense(data) {
             console.log(data);
             try {
@@ -645,16 +642,18 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
 
             try {
                 const response = await axios.get(`billExpenses/${id}`);
-                this.billExpense = response.data.data;  
-            
+                this.billExpense = response.data.data;
+
                 // Use Map to remove any duplicates based on product ID
                 // this.expenseDetails = response.data.data.expenseDetails;
                 this.expenseProduct = Array.from(
                     new Map(
-                        this.billExpense.expenseDetails.map((item) => [item.id, item])
+                        this.billExpense.expenseDetails.map((item) => [
+                            item.id,
+                            item,
+                        ])
                     ).values()
                 );
-            
             } catch (err) {
                 // Handle error (e.g., display error message)
             }
@@ -731,21 +730,17 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
         },
         // create payment
         // payments
-        async fetchMoneyAccountsFor( ) {
+        async fetchMoneyAccountsFor() {
             this.loading = true;
 
-            const response = await axios.get(
-                `moneyAccount`
-            );
+            const response = await axios.get(`moneyAccount`);
             this.moneyAccsFor = response.data.data;
             this.loading = false;
         },
         async FetchBillExpensesPayments(expenseId) {
             this.loading = true;
 
-            const response = await axios.get(
-                `payments?expense=${expenseId}`
-            );
+            const response = await axios.get(`payments?expense=${expenseId}`);
             this.billExpensesPayments = response.data.data;
             console.log(this.billExpensesPayments, "this is the data i want ");
 
@@ -768,7 +763,7 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
                 // Adding a custom header to the Axios request
                 const config = {
                     method: "POST",
-                    url: "payments",
+                    url: "billExpensePayment",
 
                     data: formData,
                 };
@@ -784,8 +779,8 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
                 });
                 this.fetchBillExpenses({
                     page: this.page,
-                    itemsPerPage:this.itemsPerPage,
-                })
+                    itemsPerPage: this.itemsPerPage,
+                });
             } catch (err) {
                 // If there's an error, set the error in the stor
             }
@@ -834,11 +829,11 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
                 this.error = err;
             }
         },
-               // part for the change account
-               async fetchAccountDataForCreate() {
-                const response = await axios.get('/moneyAccount');
-                this.account = response.data.data;
-                console.log(this.account);
-            },
+        // part for the change account
+        async fetchAccountDataForCreate() {
+            const response = await axios.get("/moneyAccount");
+            this.account = response.data.data;
+            console.log(this.account);
+        },
     },
 });

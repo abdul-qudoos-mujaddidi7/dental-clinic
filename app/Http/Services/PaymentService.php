@@ -41,6 +41,11 @@ class PaymentService
         $data = $this->prepareData($request,OperationType::OUT_BOUND_LAB_PAYMENT);
         return PeopleAccountTransaction::create($data);
     }
+    public function billExpensePayment(array $request)
+    {
+        $data = $this->prepareData($request,OperationType::BILL_EXPENSE_PAYMENT);
+        return PeopleAccountTransaction::create($data);
+    }
         
     public function payExpensePayment(array $request)
     {
