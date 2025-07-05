@@ -198,7 +198,7 @@ const ViewPaymentDialog = (item) => {
     LaboratoryRepository.mainLabPaymentID = item.id;
     // LaboratoryRepository.billExpensesPayments = {};
     // if (Object.keys(LaboratoryRepository.billExpensesPayments).length === 0) {
-    LaboratoryRepository.FetchLabPayment(expenseId)
+    LaboratoryRepository.FetchLabPayments(expenseId)
         .then(() => {
             LaboratoryRepository.createDialog = true;
         })

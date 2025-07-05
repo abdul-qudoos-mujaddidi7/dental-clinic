@@ -29,7 +29,7 @@ class OperationType
 
     const OUT_BOUND_LAB_PAYMENT = 'out_bound_lab_payment';
     const BILL_EXPENSE_PAYMENT = 'bill_expense_payment';
-    const IN_BOUND_LAB_PAYMNET = 'in_bound_lab_payment';
+    const IN_BOUND_LAB_PAYMENT = 'in_bound_lab_payment';
     const CURE_CYLCE_PAYMENT = 'cure_cycle_payment';
 
 

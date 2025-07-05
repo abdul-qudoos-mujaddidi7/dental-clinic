@@ -38,7 +38,7 @@
                                         :styles="styles"
                                         locale="fa"
                                         type="date"
-                                         format="YYYY-MM-DD"
+                                        format="YYYY-MM-DD"
                                         :locale-config="LocaleConfigs"
                                     />
                                 </div>
@@ -66,7 +66,7 @@
                             ></v-text-field>
 
                             <v-textarea
-                                v-model="formData.note"
+                                v-model="formData.description"
                                 variant="outlined"
                                 :label="t('details')"
                                 class="pb-3"
@@ -101,12 +101,12 @@ const formRef = ref(null);
 
 const formData = reactive({
     people_id: LaboratoryRepository.peopleId,
-    inboundId: LaboratoryRepository.mainLabPaymentID,
+    parent_record_id: LaboratoryRepository.mainLabPaymentID,
     id: LaboratoryRepository.paymentLab.id,
     amount: LaboratoryRepository.paymentLab.amount,
     accountId: LaboratoryRepository.paymentLab.accountId,
     date: LaboratoryRepository.paymentLab.date,
-    note: LaboratoryRepository.paymentLab.note,
+    description: LaboratoryRepository.paymentLab.description,
 });
 const rules = {
     required: (value) => !!value || "This field is required.",

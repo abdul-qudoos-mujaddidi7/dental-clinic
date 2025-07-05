@@ -134,13 +134,11 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::post('/generatePaySlip', [PeopleAccountTransactionController::class, 'generatePaySlip']);
 Route::apiResource('/peopleAccountTransaction', PeopleAccountTransactionController::class);
+
 Route::post('/paySalary', [PeopleAccountTransactionController::class, 'paySalary']);
 Route::post('/payCureCycle', [PeopleAccountTransactionController::class, 'payCureCycle']);
 Route::post('/inBoundLabPayment', [PeopleAccountTransactionController::class, 'inBoundLabPayment']);
 Route::post('/outBoundLabPayment', [PeopleAccountTransactionController::class, 'outBoundLabPayment']);
-<<<<<<< HEAD
-Route::post('/billExpensePayment', [PeopleAccountTransactionController::class, 'billExpensePayment']);
-=======
 Route::get('/reset-password/{token}', function ($token) {
     return view('auth.reset-password', ['token' => $token]);
 })->name('password.reset');
@@ -150,5 +148,4 @@ Route::get('/', function () {
 
 Route::post('/forgot-password', [AuthController::class, 'sendResetLink']);
 Route::post('/reset-password', [AuthController::class, 'resetPassword']);
->>>>>>> add6ee539bf6a3b91373f3e6bad5f5d35b11188e
 

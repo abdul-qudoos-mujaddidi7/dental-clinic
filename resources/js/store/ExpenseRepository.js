@@ -2,6 +2,8 @@ import { defineStore } from "pinia";
 import { ref, reactive } from "vue";
 import { axios } from "../axios";
 import { useRouter } from "vue-router";
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
 
 export let useExpenseRepository = defineStore("ExpenseRepository", {
     state() {
@@ -156,6 +158,16 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
                 // Using Axios to make a GET request with async/await and custom headers
                 const response = await axios(config);
                 this.createDialog = false;
+                toast.success("Expense Created successfully!", {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+
                 this.fetchExpensesData({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,

@@ -42,22 +42,18 @@
                                     class="text-left"
                                 >
                                     <td>
-                                        {{ payment }}
+                                        {{ payment.date }}
                                     </td>
-                                    <!-- <td>
-                                            {{ payment.date }}
-                                        </td> -->
                                     <td>
-                                        <!-- {{ payment.amount }} -->
+                                        {{ payment.amount }}
+                                    </td>
+                                    <td>
+                                        {{ payment.people.name }}
+                                    </td>
+                                    <td>
+                                        {{ payment.description }}
+                                    </td>
 
-                                        <!-- {{ payment.people?.currency }} -->
-                                    </td>
-                                    <td dir="ltr">
-                                        <!-- {{ payment.user?.name }} -->
-                                    </td>
-                                    <td dir="ltr">
-                                        <!-- {{ payment.note }} -->
-                                    </td>
                                     <td class="text-end">
                                         <v-menu>
                                             <template

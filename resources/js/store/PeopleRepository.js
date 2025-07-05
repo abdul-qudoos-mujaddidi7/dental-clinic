@@ -70,9 +70,9 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             peopleAccounts: reactive([]),
             peopleAccount: reactive([]),
             moneyAccsFor: reactive([]),
-            AccsForCreate:reactive([]),
+            AccsForCreate: reactive([]),
             idForCreatePayment: ref(""),
-            patientIdForView:ref(""),
+            patientIdForView: ref(""),
             account: reactive([]),
             // pay salary
             paySalarySearch: ref(""),
@@ -86,6 +86,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             PaymentLabSearch: ref(""),
             paymentLabs: reactive([]),
             paymentLab: reactive([]),
+            paymentId: ref(""),
         };
     },
     actions: {
@@ -195,7 +196,6 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
         },
         async DeletePatient(id) {
             this.isLoading = true;
-            
 
             try {
                 const config = {
@@ -203,7 +203,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
                     url: "peoples/" + id,
                 };
 
-                 await axios(config);
+                await axios(config);
 
                 // this.patients = response.data.data;
                 this.fetchPatients({
@@ -211,8 +211,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
                     itemsPerPage: this.itemsPerPage,
                 });
             } catch (err) {
-                console.log("jwad")
-                
+                console.log("jwad");
             }
         },
         // fetch owners
@@ -1009,7 +1008,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
                 this.error = err;
             }
         },
-           async MoneyAccountsForCreate() {
+        async MoneyAccountsForCreate() {
             this.loading = true;
             const response = await axios.get(`moneyAccount`);
             this.AccsForCreate = response.data.data;
@@ -1041,10 +1040,9 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
                 this.totalItems = response.data?.meta?.total;
                 this.loading = false;
                 console.log(this.peopleAccounts, "data i need ");
-             } catch (error) {
-                    console.error("FetchPeopleAccounts error:", error); // Show the actual error
-                  }
-                  
+            } catch (error) {
+                console.error("FetchPeopleAccounts error:", error); // Show the actual error
+            }
         },
         async FetchPeopleAccount(id) {
             // this.error = null;
@@ -1282,10 +1280,11 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             }
         },
         // create Lab Payment
-        async FetchLabPayments({ page, itemsPerPage }) {
+        async FetchLabPayments(id) {
             this.loading = true;
+            console.log(id, "the id ");
             const response = await axios.get(
-                `outBoundLabPayment?page=${page}&perPage=${itemsPerPage}&${this.PaymentLabSearch}`
+                `showPayments?parent_id=${id}&operation_type=out_bound_lab_payment`
             );
             this.paymentLabs = response.data.data;
             // this.totalItems = response.data.meta.total;
@@ -1313,10 +1312,8 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
                 };
                 const response = await axios(config);
                 this.labCreatePaymentDialog = false;
-                this.FetchLabPayments({
-                    page: this.page,
-                    itemsPerPage: this.itemsPerPage,
-                });
+                this.createDialog = true;
+                this.FetchLabPayments(this.paymentId);
             } catch (err) {
                 this.error = err;
             }
@@ -1345,13 +1342,10 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             try {
                 const config = {
                     method: "DELETE",
-                    url: `outBoundLabPayment/${id}`,
+                    url: `peopleAccountTransaction/${id}`,
                 };
                 const response = await axios(config);
-                this.FetchLabPayments({
-                    page: this.page,
-                    itemsPerPage: this.itemsPerPage,
-                });
+                this.FetchLabPayments(this.paymentId);
             } catch (err) {
                 this.error = err;
             }

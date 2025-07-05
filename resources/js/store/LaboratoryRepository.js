@@ -7,8 +7,8 @@ export let useLaboratoryRepository = defineStore("LaboratoryRepository", {
     state() {
         return {
             isEditMode: ref(false),
-            mainLabPaymentID:ref(""),
-            peopleId:ref(""),
+            mainLabPaymentID: ref(""),
+            peopleId: ref(""),
 
             router: useRouter(),
 
@@ -37,11 +37,11 @@ export let useLaboratoryRepository = defineStore("LaboratoryRepository", {
             customersFor: reactive([]),
             //money acc
             account: reactive([]),
-            // payment 
+            // payment
 
-            PaymentLabSearch:ref(""),
-            paymentLabs:reactive([]),
-            paymentLab:reactive([]),
+            PaymentLabSearch: ref(""),
+            paymentLabs: reactive([]),
+            paymentLab: reactive([]),
         };
     },
     actions: {
@@ -260,10 +260,10 @@ export let useLaboratoryRepository = defineStore("LaboratoryRepository", {
             console.log(this.account);
         },
         //
-        async FetchLabPayments({ page, itemsPerPage }) {
+        async FetchLabPayments(id) {
             this.loading = true;
             const response = await axios.get(
-                `inBoundLabPayment?page=${page}&perPage=${itemsPerPage}&${this.PaymentLabSearch}`
+                `showPayments?parent_id=${id}&operation_type=in_bound_lab_payment`
             );
             this.paymentLabs = response.data.data;
             // this.totalItems = response.data.meta.total;
@@ -290,10 +290,8 @@ export let useLaboratoryRepository = defineStore("LaboratoryRepository", {
                 };
                 const response = await axios(config);
                 this.mainLabCreatePaymentDialog = false;
-                this.FetchLabPayments({
-                    page: this.page,
-                    itemsPerPage: this.itemsPerPage,
-                });
+                this.createDialog = true;
+                this.FetchLabPayments(this.mainLabPaymentID);
             } catch (err) {
                 this.error = err;
             }
@@ -322,18 +320,15 @@ export let useLaboratoryRepository = defineStore("LaboratoryRepository", {
             try {
                 const config = {
                     method: "DELETE",
-                    url: `inBoundLabPayment/${id}`,
+                    url: `peopleAccountTransaction/${id}`,
                 };
                 const response = await axios(config);
-                this.FetchLabPayments({
-                    page: this.page,
-                    itemsPerPage: this.itemsPerPage,
-                });
+                this.FetchLabPayments(this.mainLabPaymentID);
             } catch (err) {
                 this.error = err;
             }
         },
-        // money account 
+        // money account
         async fetchMoneyAccountsFor() {
             this.loading = true;
 

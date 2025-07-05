@@ -12,7 +12,7 @@
                     <v-card-title
                         class="px-2 pt-4 d-flex justify-space-between"
                     >
-                        <h2 class="px-2">  {{ t("showPayment") }} </h2>
+                        <h2 class="px-2">{{ t("showPayment") }}</h2>
                         <v-btn variant="text" @click="isActive.value = false">
                             <v-icon>mdi-close</v-icon>
                         </v-btn>
@@ -21,16 +21,23 @@
                     <v-spacer></v-spacer>
                     <hr />
                     <div class="d-flex flex-column body-2 px-8 py-12">
-                        <v-table> 
-                      
+                        <v-table>
                             <!--  -->
                             <thead>
                                 <tr>
-                                    <th class="text-start"> {{ t("date") }}</th>
-                                    <th class="text-start"> {{ t("amount") }}</th>
-                                    <th class="text-start"> {{ t("account") }}</th>
-                                    <th class="text-start">{{ t("details") }}</th>
-                                    <th class="text-end pl-6">{{ t("action") }}</th>
+                                    <th class="text-start">{{ t("date") }}</th>
+                                    <th class="text-start">
+                                        {{ t("amount") }}
+                                    </th>
+                                    <th class="text-start">
+                                        {{ t("account") }}
+                                    </th>
+                                    <th class="text-start">
+                                        {{ t("details") }}
+                                    </th>
+                                    <th class="text-end pl-6">
+                                        {{ t("action") }}
+                                    </th>
                                 </tr>
                             </thead>
 
@@ -39,27 +46,23 @@
                                 <tr
                                     v-for="(
                                         payment, index
-                                    ) in LaboratoryRepository.paymentLab"
+                                    ) in LaboratoryRepository.paymentLabs"
                                     :key="index"
                                     class="text-left"
                                 >
                                     <td>
-                                        {{ payment }}
+                                        {{ payment.date }}
                                     </td>
-                                    <td>
-                                            {{ payment.date }}
-                                        </td>
                                     <td>
                                         {{ payment.amount }}
+                                    </td>
+                                    <td>
+                                        {{ payment.people.name }}
+                                    </td>
+                                    <td dir="ltr">
+                                        {{ payment.description }}
+                                    </td>
 
-                                        <!-- {{ payment.people?.currency }} -->
-                                    </td>
-                                    <td dir="ltr">
-                                        <!-- {{ payment.user?.name }} -->
-                                    </td>
-                                    <td dir="ltr">
-                                        <!-- {{ payment.note }} -->
-                                    </td>
                                     <td class="text-end">
                                         <v-menu>
                                             <template
@@ -116,7 +119,7 @@
 import { useLaboratoryRepository } from "@/store/LaboratoryRepository";
 const LaboratoryRepository = useLaboratoryRepository();
 import { useI18n } from "vue-i18n";
-const {t} = useI18n();
+const { t } = useI18n();
 
 const deleteItem = async (payment) => {
     await LaboratoryRepository.DeleteLabPayment(payment.id);
@@ -139,6 +142,4 @@ const editItem = async (payment) => {
     // console.log(LaboratoryRepository.meterCyclePaymentId, id);
     // await LaboratoryRepository.fetchMeterCyclePaymentForUpdate(id);
 };
-
-
 </script>

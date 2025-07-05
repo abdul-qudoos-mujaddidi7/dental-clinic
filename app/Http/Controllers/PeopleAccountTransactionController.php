@@ -63,9 +63,13 @@ class PeopleAccountTransactionController extends Controller
         return new $this->resource($this->updateRecord($request,$this->model,$id));
     }
 
-    public function destroy($id)
+    public function destroy($id )
     {
-        return $this->deleteRecord($this->model,$id);
+
+    $peopleAccountTransaction = PeopleAccountTransaction::findOrFail($id);
+    return $this->deleteRecord($peopleAccountTransaction);
+
+       
     }
 
   
