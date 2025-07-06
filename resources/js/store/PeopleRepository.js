@@ -2,7 +2,8 @@ import { defineStore } from "pinia";
 import { reactive, ref } from "vue";
 import { axios } from "../axios";
 import { useRouter } from "vue-router";
-
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
 export let usePeopleRepository = defineStore("PeopleRepository", {
     state() {
         return {
@@ -186,12 +187,34 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
                 // Using Axios to make a GET request with async/await and custom headers
                 const response = await axios(config);
                 this.createDialog = false;
+                toast.success("Patient Created successful!", {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
                 this.fetchPatients({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });
             } catch (err) {
-                // If there's an error, set the error in the stor
+                this.error =
+                    err.response?.data?.message &&
+                    "Failed to create Patient. Please try again.";
+
+                // Show toast
+                toast.error(this.error, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
             }
         },
         async DeletePatient(id) {
@@ -387,12 +410,34 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
                 // Using Axios to make a GET request with async/await and custom headers
                 const response = await axios(config);
                 this.createDialog = false;
+                toast.success("Doctor Created successful!", {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
                 this.fetchDoctors({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });
             } catch (err) {
-                // If there's an error, set the error in the stor
+                this.error =
+                    err.response?.data?.message ||
+                    "Failed to create Doctor. Please try again.";
+
+                // Show toast
+                toast.error(this.error, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
             }
         },
         async DeleteDoctor(id) {
@@ -473,12 +518,34 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
                 // Using Axios to make a GET request with async/await and custom headers
                 const response = await axios(config);
                 this.createDialog = false;
+                toast.success("Supplier Created successful!", {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
                 this.FetchSuppliers({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });
             } catch (err) {
-                // If there's an error, set the error in the stor
+                this.error =
+                    err.response?.data?.message ||
+                    "Failed to create Supplier. Please try again.";
+
+                // Show toast
+                toast.error(this.error, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
             }
         },
         async UpdateSupplier(id, data) {
@@ -605,12 +672,35 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
                 // Using Axios to make a GET request with async/await and custom headers
                 const response = await axios(config);
                 this.createDialog = false;
+                toast.success("User Created successful!", {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
                 this.FetchUsers({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });
             } catch (err) {
-                // If there's an error, set the error in the stor
+                // Set the error message
+                this.error =
+                    err.response?.data?.message ||
+                    "Failed to create User. Please try again.";
+
+                // Show toast
+                toast.error(this.error, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
             }
         },
         async UpdateUser(id, data) {
@@ -694,12 +784,34 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
                 // Using Axios to make a GET request with async/await and custom headers
                 const response = await axios(config);
                 this.createDialog = false;
+                toast.success("Employee Created successful!", {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
                 this.FetchEmployees({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });
             } catch (err) {
-                // If there's an error, set the error in the stor
+                this.error =
+                    err.response?.data?.message ||
+                    "Failed to create Employee. Please try again.";
+
+                // Show toast
+                toast.error(this.error, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
             }
         },
         async UpdateEmployee(id, data) {
@@ -869,13 +981,35 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
 
                 // Using Axios to make a GET request with async/await and custom headers
                 const response = await axios(config);
+                toast.success("OutBound Laboratory Created successful!", {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
                 this.router.push("/laboratory");
                 this.FetchLaboratories({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });
             } catch (err) {
-                // If there's an error, set the error in the stor
+                this.error =
+                    err.response?.data?.message ||
+                    "Failed to create OutBound Laboratory. Please try again.";
+
+                // Show toast
+                toast.error(this.error, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
             }
         },
         async UpdateLaboratory(id, data) {
@@ -957,12 +1091,34 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
                 // Using Axios to make a GET request with async/await and custom headers
                 const response = await axios(config);
                 this.createDialog = false;
+                toast.success("Customer Created successful!", {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
                 this.FetchCustomers({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });
             } catch (err) {
-                // If there's an error, set the error in the stor
+                this.error =
+                    err.response?.data?.message ||
+                    "Failed to create Customer. Please try again.";
+
+                // Show toast
+                toast.error(this.error, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
             }
         },
         async UpdateCustomer(id, data) {
@@ -1295,7 +1451,9 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             // this.loading = true;
             console.log(id, "id in repository");
             try {
-                const response = await axios.get(`outBoundLabPayment/${id}`);
+                const response = await axios.get(
+                    `peopleAccountTransaction/${id}`
+                );
                 this.paymentLab = response.data.data;
                 console.log(this.paymentLab, "data of lab");
             } catch (err) {
@@ -1311,11 +1469,33 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
                     data: formData,
                 };
                 const response = await axios(config);
+                this.FetchLabPayments(this.labIdForPayment);
+                toast.success(" Bound Laboratory Payment Created successful!", {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
                 this.labCreatePaymentDialog = false;
                 this.createDialog = true;
-                this.FetchLabPayments(this.paymentId);
             } catch (err) {
-                this.error = err;
+                this.error =
+                    err.response?.data?.message ||
+                    "Failed to Create OutBound Laboratory Payment. Please try again.";
+
+                // Show toast
+                toast.error(this.error, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
             }
         },
         async UpdateLabPayment(id, formData) {
@@ -1323,19 +1503,38 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             try {
                 const config = {
                     method: "PUT",
-                    url: `outBoundLabPayment/${id}`,
+                    url: `peopleAccountTransaction/${id}`,
                     data: formData,
                 };
                 const response = await axios(config);
                 this.labCreatePaymentDialog = false;
-                this.FetchLabPayments({
-                    page: this.page,
-                    itemsPerPage: this.itemsPerPage,
+                toast.success(" Bound Laboratory Payment Updated successful!", {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
                 });
+                this.FetchLabPayments(this.labIdForPayment);
 
                 this.isEditMode = false;
             } catch (err) {
-                this.error = err;
+                this.error =
+                    err.response?.data?.message ||
+                    "Failed to Update OutBound Laboratory Payment. Please try again.";
+
+                // Show toast
+                toast.error(this.error, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
             }
         },
         async DeleteLabPayment(id) {
@@ -1345,7 +1544,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
                     url: `peopleAccountTransaction/${id}`,
                 };
                 const response = await axios(config);
-                this.FetchLabPayments(this.paymentId);
+                this.FetchLabPayments(this.labIdForPayment);
             } catch (err) {
                 this.error = err;
             }

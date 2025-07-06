@@ -60,7 +60,9 @@ class PeopleAccountTransactionController extends Controller
 
     public function update(PeopleAccountTransactionRequest $request,$id)
     {
-        return new $this->resource($this->updateRecord($request,$this->model,$id));
+
+         $peopleAccountTransaction = PeopleAccountTransaction::findOrFail($id);
+        return new $this->resource($this->updateRecord($request,$peopleAccountTransaction));
     }
 
     public function destroy($id )

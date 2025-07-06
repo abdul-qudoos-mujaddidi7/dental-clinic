@@ -2,6 +2,8 @@ import { defineStore } from "pinia";
 import { reactive, ref } from "vue";
 import { axios } from "../axios";
 import { useRouter } from "vue-router";
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
 
 export let useLeadRepository = defineStore("LeadRepository", {
     state() {
@@ -59,30 +61,30 @@ export let useLeadRepository = defineStore("LeadRepository", {
             const response = await axios.get("stages");
             this.leadStageFor = response.data.data;
         },
-       async bulkDeleteLead(data) {
-    console.log(data);
-    try {
-        const config = {
-            method: "DELETE",
-            url: "leadBulkDelete",
-            data: data,
-        };
+        async bulkDeleteLead(data) {
+            console.log(data);
+            try {
+                const config = {
+                    method: "DELETE",
+                    url: "leadBulkDelete",
+                    data: data,
+                };
 
-        const response = await axios(config); // ✅ Make the request
+                const response = await axios(config); // ✅ Make the request
 
-        // ✅ Correct the way you access response data
-        this.leads = response.data.data;
+                // ✅ Correct the way you access response data
+                this.leads = response.data.data;
 
-        // ✅ Re-fetch the updated list of leads
-        this.FetchLeads({
-            page: this.page,
-            itemsPerPage: this.itemsPerPage,
-        });
-    } catch (err) {
-        console.error(err);
-        this.error = err;
-    }
-},
+                // ✅ Re-fetch the updated list of leads
+                this.FetchLeads({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                console.error(err);
+                this.error = err;
+            }
+        },
         async FetchLeads({ page, itemsPerPage }) {
             this.loading = true;
             const response = await axios.get(
@@ -113,12 +115,37 @@ export let useLeadRepository = defineStore("LeadRepository", {
                 };
                 const response = await axios(config);
                 this.createDialog = false;
+                toast.success("Lead Created successfully!", {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+
                 this.FetchLeads({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });
             } catch (err) {
-                this.error = err;
+                toast.error(
+                    "CReating Lead failed! Please check your credentials.",
+                    {
+                        position: "top-right",
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    }
+                );
+
+                this.error = err.response
+                    ? err.response.data.message
+                    : "An error occurred!";
             }
         },
         async UpdateLead(id, formData) {
@@ -201,12 +228,35 @@ export let useLeadRepository = defineStore("LeadRepository", {
                 };
                 const response = await axios(config);
                 this.createDialog = false;
+                toast.success("Category Created successful!", {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
                 this.FetchCategories({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });
             } catch (err) {
-                this.error = err;
+                // Set the error message
+                this.error =
+                    err.response?.data?.message ||
+                    "Failed to create category. Please try again.";
+
+                // Show toast
+                toast.error(this.error, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
             }
         },
         async UpdateCategory(id, formData) {
@@ -368,12 +418,35 @@ export let useLeadRepository = defineStore("LeadRepository", {
                 };
                 const response = await axios(config);
                 this.createDialog = false;
+                toast.success("Appointment Created successful!", {
+                    position: "top-right",
+                    autoClose: 4000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
                 this.FetchAppointments({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });
             } catch (err) {
-                this.error = err;
+                // Set the error message
+                this.error =
+                    err.response?.data?.message ||
+                    "Failed to create Appointment. Please try again.";
+
+                // Show toast
+                toast.error(this.error, {
+                    position: "top-right",
+                    autoClose: 4000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
             }
         },
         async UpdateAppointment(id, formData) {

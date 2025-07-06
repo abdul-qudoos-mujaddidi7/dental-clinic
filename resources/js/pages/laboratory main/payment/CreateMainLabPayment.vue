@@ -100,7 +100,9 @@ const LaboratoryRepository = useLaboratoryRepository();
 const formRef = ref(null);
 
 const formData = reactive({
-    people_id: LaboratoryRepository.peopleId,
+    people_id:
+        LaboratoryRepository.peopleId ||
+        LaboratoryRepository.paymentLab?.people?.id,
     parent_record_id: LaboratoryRepository.mainLabPaymentID,
     id: LaboratoryRepository.paymentLab.id,
     amount: LaboratoryRepository.paymentLab.amount,

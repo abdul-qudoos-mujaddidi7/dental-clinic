@@ -4,6 +4,8 @@ import { axios } from "../axios";
 import { useRouter } from "vue-router";
 import Patients from "../pages/people/patients/Patients.vue";
 import { data } from "autoprefixer";
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
 
 export let useCureRepository = defineStore("CureRepository", {
     state() {
@@ -25,7 +27,7 @@ export let useCureRepository = defineStore("CureRepository", {
             services: [],
 
             // lead
-            curesSearch:ref(""),
+            curesSearch: ref(""),
             cures: reactive([]),
             cure: reactive([]),
             leadSearch: ref(""),
@@ -222,12 +224,36 @@ export let useCureRepository = defineStore("CureRepository", {
                 };
                 const response = await axios(config);
                 this.router.push("/cure");
+
                 this.FetchCures({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });
+                toast.success("Cure Created successful!", {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
             } catch (err) {
-                this.error = err;
+                // Set the error message
+                this.error =
+                    err.response?.data?.message ||
+                    "Failed to create Cure. Please try again.";
+
+                // Show toast
+                toast.error(this.error, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
             }
         },
         async UpdateCure(id, formData) {
@@ -241,12 +267,35 @@ export let useCureRepository = defineStore("CureRepository", {
                 const response = await axios(config);
 
                 this.router.push("/cure");
+                toast.success("Cure Updated successful!", {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
                 this.FetchCures({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });
             } catch (err) {
-                this.error = err;
+                // Set the error message
+                this.error =
+                    err.response?.data?.message ||
+                    "Failed to Update Cure. Please try again.";
+
+                // Show toast
+                toast.error(this.error, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
             }
         },
         async DeleteCure(id) {
@@ -282,18 +331,21 @@ export let useCureRepository = defineStore("CureRepository", {
         async FetchCurePayments(id) {
             this.loading = true;
 
-            const response = await axios.get(`showPayments?parent_id=${id}&operation_type=cure_cycle_payment`)
+            const response = await axios.get(
+                `showPayments?parent_id=${id}&operation_type=cure_cycle_payment`
+            );
             this.curePayments = response.data.data;
-            
+
             console.log(this.curePayments, "this is the data i want ");
 
             this.loading = false;
-            
         },
         async FetchCurePayment(id) {
             // this.error = null;
             try {
-                const response = await axios.get(`payCureCycle/${id}`);
+                const response = await axios.get(
+                    `peopleAccountTransaction/${id}`
+                );
 
                 this.curePayment = response.data.data;
                 console.log(curePayments, "this is the data i want ");
@@ -317,12 +369,34 @@ export let useCureRepository = defineStore("CureRepository", {
                 const response = await axios(config);
                 this.createDialog = false;
                 // this.router.push("/billExpense");
+                toast.success("Cure Payment Created successful!", {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
                 this.FetchCures({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });
             } catch (err) {
-                // If there's an error, set the error in the stor
+                this.error =
+                    err.response?.data?.message ||
+                    "Failed to create Cure Payment. Please try again.";
+
+                // Show toast
+                toast.error(this.error, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
             }
         },
         async UpdateCurePayment(id, data) {
@@ -330,24 +404,45 @@ export let useCureRepository = defineStore("CureRepository", {
             try {
                 const config = {
                     method: "PUT",
-                    url: `payCureCycle/${id}`,
+                    url: `peopleAccountTransaction/${id}`,
 
                     data: data,
                 };
 
                 // Using Axios to make a post request with async/await and custom headers
                 const response = await axios(config);
-                this.updateDialog = false;
-
+                this.createDialog = false;
+                toast.success("Cure Payment Updated successful!", {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
                 console.log(this.cureId);
                 this.FetchCurePayments(this.cureId);
+
                 this.FetchCures({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });
             } catch (err) {
-                // If there's an error, set the error in the store
-                this.error = err;
+                this.error =
+                    err.response?.data?.message ||
+                    "Failed to Update Cure Payment. Please try again.";
+
+                // Show toast
+                toast.error(this.error, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
             }
         },
 

@@ -785,6 +785,15 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
                 this.createDialog = false;
                 // this.router.push("/billExpense");
 
+                toast.success(" Bill Expense  Payment Created successful!", {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
                 this.FetchBillExpensesPayments({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
@@ -794,7 +803,20 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
                     itemsPerPage: this.itemsPerPage,
                 });
             } catch (err) {
-                // If there's an error, set the error in the stor
+                this.error =
+                    err.response?.data?.message ||
+                    "Failed to Create Bill Expense Payment. Please try again.";
+
+                // Show toast
+                toast.error(this.error, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
             }
         },
         async UpdateBillExpensePayment(id, data) {
@@ -810,14 +832,34 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
                 // Using Axios to make a post request with async/await and custom headers
                 const response = await axios(config);
                 this.createDialog = false;
-
+                toast.success("Bill Expense Payment Updated successful!", {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
                 this.FetchBillExpensesPayments({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });
             } catch (err) {
-                // If there's an error, set the error in the store
-                this.error = err;
+                this.error =
+                    err.response?.data?.message ||
+                    "Failed to Update Bill Expense Payment. Please try again.";
+
+                // Show toast
+                toast.error(this.error, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
             }
         },
         async DeleteBillExpensePayment(id) {

@@ -133,7 +133,7 @@ const editItem = async (payment) => {
     if (Object.keys(LaboratoryRepository.FetchLabPayment).length === 0) {
         LaboratoryRepository.FetchLabPayment(payment.id)
             .then(() => {
-                LaboratoryRepository.createDialog = true;
+                LaboratoryRepository.mainLabCreatePaymentDialog = true;
             })
             .catch((error) => {
                 console.error("Error fetching data: ", error);

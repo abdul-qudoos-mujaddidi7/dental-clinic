@@ -134,14 +134,11 @@ export let useSettingRepository = defineStore("SettingRepository", {
 
                 this.createDialog = false;
 
-         
                 this.FetchSystemSettings({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });
-            } catch (err) {
-          
-            }
+            } catch (err) {}
         },
         async DeleteSystemSetting(id) {
             this.isLoading = true;
@@ -165,7 +162,7 @@ export let useSettingRepository = defineStore("SettingRepository", {
                 this.error = err;
             }
         },
-        
+
         // service Group
         async FetchServiceGroups({ page, itemsPerPage }) {
             this.loading = true;
@@ -480,12 +477,34 @@ export let useSettingRepository = defineStore("SettingRepository", {
                 // Using Axios to make a GET request with async/await and custom headers
                 const response = await axios(config);
                 this.createDialog = false;
+                toast.success("Money Account Created successful!", {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
                 this.fetchMoneyAccounts({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });
             } catch (err) {
-                // If there's an error, set the error in the stor
+                this.error =
+                    err.response?.data?.message ||
+                    "Failed to create Money Account. Please try again.";
+
+                // Show toast
+                toast.error(this.error, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
             }
         },
         async DeleteMoneyAcc(id) {
