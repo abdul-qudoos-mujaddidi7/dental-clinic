@@ -145,8 +145,10 @@
                                         variant="outlined"
                                         type="number"
                                         density="compact"
+                         :rules="[rules.required,rules.positive]"
+
                                         class="w-75"
-                                        hide-details
+                                       
                                         single-line
                                     ></v-text-field>
                                 </td>
@@ -156,8 +158,10 @@
                                         v-model="pro.cost"
                                         variant="outlined"
                                         density="compact"
+                         :rules="[rules.required,rules.positive]"
+
                                         class="w-75"
-                                        hide-details
+                                       
                                         single-line
                                     >
                                         <span
@@ -200,6 +204,7 @@
                         label="Paid"
                         class="w-100"
                         density="compact"
+                        :rules="[rules.positive]"
                     >
                         <div @click="changeCurrency" style="cursor: pointer">
                             <span class="paidSpan">
@@ -250,6 +255,8 @@ const formData = reactive({
 const formRef = ref(null);
 const rules = {
     required: (value) => !!value || "This field is required.",
+    positive: (value) => value >= 0 || "Negative values are not allowed.",
+
     name: (value) =>
         /^[a-zA-Z\u0600-\u06FF\s]*$/.test(value) || "Invalid name.",
 };

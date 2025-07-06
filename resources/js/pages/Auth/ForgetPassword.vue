@@ -5,7 +5,7 @@
         <v-form @submit.prevent="submit" ref="formRef">
           <div class="form-wrapper">
             <div class="login-header">
-              <h1>Reset Password</h1>
+              <h1>Forget Password</h1>
             </div>
 
             <v-text-field
