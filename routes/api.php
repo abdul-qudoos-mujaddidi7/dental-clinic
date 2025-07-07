@@ -137,8 +137,9 @@ Route::apiResource('/peopleAccountTransaction', PeopleAccountTransactionControll
 
 Route::post('/paySalary', [PeopleAccountTransactionController::class, 'paySalary']);
 Route::post('/payCureCycle', [PeopleAccountTransactionController::class, 'payCureCycle']);
-Route::post('/inBoundLabPayment', [PeopleAccountTransactionController::class, 'inBoundLabPayment']);
 Route::post('/outBoundLabPayment', [PeopleAccountTransactionController::class, 'outBoundLabPayment']);
+Route::post('/inBoundLabPayment', [PeopleAccountTransactionController::class, 'inBoundLabPayment']);
+Route::post('/billExpensePayment', [PeopleAccountTransactionController::class, 'billExpensePayment']);
 Route::get('/reset-password/{token}', function ($token) {
     return view('auth.reset-password', ['token' => $token]);
 })->name('password.reset');
