@@ -37,67 +37,70 @@ export let useAuthRepository = defineStore("AuthRepository", {
         //     this.rail = false; // Disable rail mode
         // },
         async Login(formData) {
-    this.error = null;
+            this.error = null;
 
-    try {
-        // Step 1: Login and get token
-        const response = await axios.post("/login", formData);
+            try {
+                // Step 1: Login and get token
+                const response = await axios.post("/login", formData);
 
-        const token = response.data.access_token;
-        const user = response.data.user;
+                const token = response.data.access_token;
+                const user = response.data.user;
 
-        // Step 2: Save token & user to sessionStorage
-        sessionStorage.setItem("token", JSON.stringify(token));
-        sessionStorage.setItem("user", JSON.stringify(user));
+                // Step 2: Save token & user to sessionStorage
+                sessionStorage.setItem("token", JSON.stringify(token));
+                sessionStorage.setItem("user", JSON.stringify(user));
 
-        // Step 3: Set token for future requests
-        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+                // Step 3: Set token for future requests
+                axios.defaults.headers.common[
+                    "Authorization"
+                ] = `Bearer ${token}`;
 
-        // Step 4: Fetch user permissions from /api/me
-        const meResponse = await axios.get("/me");
+                // Step 4: Fetch user permissions from /api/me
+                const meResponse = await axios.get("/me");
 
-        const permissions = meResponse.data.data.permissions;
-        console.log("Permissions:", permissions);
-        const role = meResponse.data.data.role;
+                const permissions = meResponse.data.data.permissions;
+                console.log("Permissions:", permissions);
+                const role = meResponse.data.data.role;
 
-        sessionStorage.setItem("permissions", JSON.stringify(permissions));
-        sessionStorage.setItem("role", JSON.stringify(role));
+                sessionStorage.setItem(
+                    "permissions",
+                    JSON.stringify(permissions)
+                );
+                sessionStorage.setItem("role", JSON.stringify(role));
 
-        this.permissions = permissions;
-        this.role = role;
-        this.user = meResponse.data;
+                this.permissions = permissions;
+                this.role = role;
+                this.user = meResponse.data;
 
-        
-        // ✅ Toast + Redirect
-        toast.success("Login successful!", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-        });
+                // ✅ Toast + Redirect
+                toast.success("Login successful!", {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
 
-        this.router.push("/dashboard");
-    } catch (err) {
-        // ❌ Handle Error
-        toast.error("Login failed! Please check your credentials.", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-        });
+                this.router.push("/dashboard");
+            } catch (err) {
+                this.error =
+                    err.response?.data?.message ||
+                    "Failed to Update Cure Payment. Please try again.";
 
-        this.error = err.response
-            ? err.response.data.message
-            : "An error occurred!";
-    }
-},
-
+                // Show toast
+                toast.error(this.error, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            }
+        },
 
         async Logout() {
             this.error = null;
@@ -190,13 +193,15 @@ export let useAuthRepository = defineStore("AuthRepository", {
         },
         async UpdateRolePermission(id, data) {
             try {
-               const response = await axios.put("role_permissions/" + id, data);
-
+                const response = await axios.put(
+                    "role_permissions/" + id,
+                    data
+                );
 
                 // Using Axios to make a post request with async/await and custom headers
-        //        if (this.role && this.role.id === id) {
-            
-        // }
+                //        if (this.role && this.role.id === id) {
+
+                // }
                 await this.refreshPermissions();
                 this.router.push("/rolePermissions");
                 this.fetchRolePermissions({
@@ -221,7 +226,7 @@ export let useAuthRepository = defineStore("AuthRepository", {
 
                 // Using Axios to make a GET request with async/await and custom headers
                 const response = await axios(config);
-                   toast.success("Permission Created successful!", {
+                toast.success("Permission Created successful!", {
                     position: "top-right",
                     autoClose: 4000,
                     hideProgressBar: false,
@@ -236,7 +241,7 @@ export let useAuthRepository = defineStore("AuthRepository", {
                     itemsPerPage: this.itemsPerPage,
                 });
             } catch (err) {
-                 this.error =
+                this.error =
                     err.response?.data?.message ||
                     "Failed to create Permission. Please try again.";
 
@@ -276,22 +281,19 @@ export let useAuthRepository = defineStore("AuthRepository", {
         },
 
         async refreshPermissions() {
-        const meResponse = await axios.get("/me");
-        const permissions = meResponse.data.data.permissions;
-        console.log("Permissions:", permissions);
-        const role = meResponse.data.data.role;
+            const meResponse = await axios.get("/me");
+            const permissions = meResponse.data.data.permissions;
+            console.log("Permissions:", permissions);
+            const role = meResponse.data.data.role;
 
-        sessionStorage.setItem("permissions", JSON.stringify(permissions));
-        sessionStorage.setItem("role", JSON.stringify(role));
+            sessionStorage.setItem("permissions", JSON.stringify(permissions));
+            sessionStorage.setItem("role", JSON.stringify(role));
 
-        this.permissions = permissions;
-        this.role = role;
-        this.user = meResponse.data;
+            this.permissions = permissions;
+            this.role = role;
+            this.user = meResponse.data;
 
-   
-
-    sessionStorage.setItem("user", JSON.stringify(this.user));
-}
-
+            sessionStorage.setItem("user", JSON.stringify(this.user));
+        },
     },
 });
