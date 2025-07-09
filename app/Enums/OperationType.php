@@ -48,8 +48,9 @@ class OperationType
             self::IN_BOUND_LAB,
             self::CURE_CYLCE,
             self::OUT_BOUND_LAB_PAYMENT,
-            self::IN_BOUND_LAB_PAYMNET,
-            self::CURE_CYLCE_PAYMENT
+            self::IN_BOUND_LAB_PAYMENT,
+            self::CURE_CYLCE_PAYMENT,
+            self::BILL_EXPENSE_PAYMENT
         ];
     }
 

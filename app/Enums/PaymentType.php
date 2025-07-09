@@ -61,7 +61,7 @@ class PaymentType
             case OperationType::CURE_CYLCE_PAYMENT:
                 return self::RECEIVED;
             case OperationType::BILL_EXPENSE_PAYMENT:
-                return self::RECEIVED;    
+                return self::PAID;    
             default:
                 throw new InvalidArgumentException("Invalid operation type: $operationType");
         }

@@ -32,18 +32,18 @@
                             :rules="[rules.required, rules.password]"
                         ></v-text-field>
                         <v-btn
-                        class="submit-btn"
-                        color="primaryOld"
-                        block
-                        type="submit"
+                            class="submit-btn"
+                            color="primaryOld"
+                            block
+                            type="submit"
                         >
-                        Log In
-                    </v-btn>
-                    <div class="text-end pt-4 text-primaryOld">
-                        <a @click="goToForgotPassword" class="forgot-link"
-                            >Forgot Password?</a
-                        >
-                    </div>
+                            Log In
+                        </v-btn>
+                        <div class="text-end pt-4 text-primaryOld">
+                            <a @click="goToForgotPassword" class="forgot-link"
+                                >Forgot Password?</a
+                            >
+                        </div>
                     </div>
                 </v-form>
             </v-container>
@@ -64,7 +64,7 @@ const formData = reactive({
 });
 const visible = ref(false);
 const formRef = ref(null);
-// forget password 
+// forget password
 import { useRouter } from "vue-router";
 const router = useRouter();
 
@@ -72,7 +72,6 @@ const goToForgotPassword = () => {
     console.log("Navigating to forgot password page");
     router.push("/forgot-password");
 };
-
 
 // Validation rules
 const rules = {
@@ -85,16 +84,36 @@ const rules = {
 
 // Login function
 const loginFunc = async () => {
-    const isValid = await formRef.value.validate();
-    if (isValid) {
-        try {
-            await AuthRepository.Login(formData);
-            console.log("Login successful", formData);
-        } catch (error) {
-            console.error("Login failed", error);
-        }
+    // Manual check: if both fields are missing
+    if (!formData.email && !formData.password) {
+        alert("Both email and password are required.");
+        return;
+    }
+
+    // Validate only existing fields — skip if removed via DOM
+    const emailInputExists = document.querySelector('[placeholder="Email"]');
+    const passwordInputExists = document.querySelector('[placeholder="enter your password "]');
+
+    if (!emailInputExists || !passwordInputExists) {
+        alert("Form is broken. Please refresh the page.");
+        return;
+    }
+
+    const isValid = await formRef.value?.validate?.();
+
+    if (!isValid) {
+        console.warn("Validation failed.");
+        return;
+    }
+
+    try {
+        await AuthRepository.Login(formData);
+        console.log("Login successful", formData);
+    } catch (error) {
+        console.error("Login failed", error);
     }
 };
+
 </script>
 
 <style scoped>
