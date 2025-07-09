@@ -129,6 +129,7 @@
                                     v-model="pro.quantity"
                                     variant="outlined"
                                     density="compact"
+                                    :rules="[rules.required, rules.positive]"
                                     class="w-75"
                                 >
                                     <span class="span"> {{ pro.unit }}</span>
@@ -142,6 +143,7 @@
                                     variant="outlined"
                                     density="compact"
                                     class="w-75"
+                                    :rules="[rules.required, rules.positive]"
                                 >
                                     <span class="span">
                                         {{ displayedCurrencySymbol }}
@@ -182,6 +184,7 @@
                         :label="t('paid')"
                         class="w-100"
                         density="compact"
+                        :rules="[rules.positive]"
                     >
                         <div @click="changeCurrency" style="cursor: pointer">
                             <span class="paidSpan">
@@ -252,6 +255,8 @@ ExpenseRepository.fetchBillExpense(routeParams.params.id).then((res) => {
 const formRef = ref(null);
 const rules = {
     required: (value) => !!value || "This field is required.",
+    positive: (value) => value >= 0 || "Negative values are not allowed.",
+
     name: (value) =>
         /^[a-zA-Z\u0600-\u06FF\s]*$/.test(value) || "Invalid name.",
 };

@@ -97,10 +97,12 @@ const CureRepository = useCureRepository();
 const formRef = ref(null);
 
 const formData = reactive({
-    people_id: CureRepository.peopleId,
+    people_id:
+        CureRepository.peopleId || CureRepository.curePayment?.people?.id,
     parent_record_id: CureRepository.cureId,
     id: CureRepository.curePayment.id,
     amount: CureRepository.curePayment.amount,
+    accountId: CureRepository.account,
     date: CureRepository.curePayment.date,
     note: CureRepository.curePayment.note,
 });

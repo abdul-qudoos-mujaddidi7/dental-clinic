@@ -221,13 +221,35 @@ export let useAuthRepository = defineStore("AuthRepository", {
 
                 // Using Axios to make a GET request with async/await and custom headers
                 const response = await axios(config);
+                   toast.success("Permission Created successful!", {
+                    position: "top-right",
+                    autoClose: 4000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
                 this.router.push("/rolePermissions");
                 this.fetchRolePermissions({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });
             } catch (err) {
-                // If there's an error, set the error in the stor
+                 this.error =
+                    err.response?.data?.message ||
+                    "Failed to create Permission. Please try again.";
+
+                // Show toast
+                toast.error(this.error, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
             }
         },
         async DeleteRolePermission(id) {

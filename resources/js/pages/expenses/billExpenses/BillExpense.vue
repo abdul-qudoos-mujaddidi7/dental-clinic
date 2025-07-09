@@ -143,10 +143,10 @@
                                             <v-list>
                                                 <v-list-item>
                                                     <v-list-item-title
-                                                        class="cursor-pointer d-flex gap-3 justify-left pb-3"
+                                                        class="cursor-pointer  d-flex gap-3 justify-left pb-3"
                                                         @click="
                                                             CreateDialogShow(
-                                                                item.id
+                                                                item
                                                             )
                                                         "
                                                     >
@@ -279,8 +279,10 @@ const sendSelectedIds = () => {
     }
 };
 // create and update
-const CreateDialogShow = (id) => {
-    ExpenseRepository.billExpenseId = id;
+const CreateDialogShow = (item) => {
+    ExpenseRepository.billExpenseId = item.id;
+    ExpenseRepository.supplierId =item.supplier.id
+    console.log(item,'id supp')
 
     ExpenseRepository.billExpensesPayments = {};
     ExpenseRepository.setEditMode(false);

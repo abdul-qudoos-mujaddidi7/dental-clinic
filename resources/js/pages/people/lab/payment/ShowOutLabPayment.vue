@@ -42,22 +42,18 @@
                                     class="text-left"
                                 >
                                     <td>
-                                        {{ payment }}
+                                        {{ payment.date }}
                                     </td>
-                                    <!-- <td>
-                                            {{ payment.date }}
-                                        </td> -->
                                     <td>
-                                        <!-- {{ payment.amount }} -->
+                                        {{ payment.amount }}
+                                    </td>
+                                    <td>
+                                        {{ payment.people.name }}
+                                    </td>
+                                    <td>
+                                        {{ payment.description }}
+                                    </td>
 
-                                        <!-- {{ payment.people?.currency }} -->
-                                    </td>
-                                    <td dir="ltr">
-                                        <!-- {{ payment.user?.name }} -->
-                                    </td>
-                                    <td dir="ltr">
-                                        <!-- {{ payment.note }} -->
-                                    </td>
                                     <td class="text-end">
                                         <v-menu>
                                             <template
@@ -73,7 +69,7 @@
                                                 <v-list-item>
                                                     <v-list-item-title
                                                         @click="
-                                                            editItem(payment)
+                                                            editItem(payment.id)
                                                         "
                                                         class="cursor-pointer d-flex gap-3 justify-left pb-3"
                                                     >
@@ -118,15 +114,15 @@ const deleteItem = async (payment) => {
     await PeopleRepository.DeleteLabPayment(payment.id);
 };
 // PeopleRepository.FetchBillExpensePayment();
-const editItem = async (payment) => {
+const editItem = async (id) => {
     PeopleRepository.isEditMode = true;
     // PeopleRepository.meterCyclePaymentId = id;
     PeopleRepository.setEditMode(true);
     PeopleRepository.paymentLab = {};
     if (Object.keys(PeopleRepository.FetchLabPayment).length === 0) {
-        PeopleRepository.FetchLabPayment(payment.id)
+        PeopleRepository.FetchLabPayment(id)
             .then(() => {
-                PeopleRepository.createDialog = true;
+                PeopleRepository.labCreatePaymentDialog = true;
             })
             .catch((error) => {
                 console.error("Error fetching data: ", error);

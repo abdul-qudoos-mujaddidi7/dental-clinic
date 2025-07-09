@@ -122,7 +122,7 @@
                                     type="number"
                                     density="compact"
                                     class="w-75"
-                                    hide-details
+                                    :rules="[rules.required, rules.positive]"
                                     single-line
                                 ></v-text-field>
                             </td>
@@ -133,7 +133,7 @@
                                     variant="outlined"
                                     density="compact"
                                     class="w-75"
-                                    hide-details
+                                    :rules="[rules.required, rules.positive]"
                                     single-line
                                 >
                                     <span
@@ -175,6 +175,7 @@
                         label="Paid"
                         class="w-100"
                         density="compact"
+                        :rules="[rules.positive]"
                     >
                         <div @click="changeCurrency" style="cursor: pointer">
                             <span class="paidSpan">
@@ -214,7 +215,7 @@ const PeopleRepository = usePeopleRepository();
 const formData = reactive({
     tooths: PeopleRepository.services || [],
     grandTotal: "",
-    supplierId:"",
+    supplierId: "",
     toothId: "",
     returnDate: "",
     issueAt: "",
@@ -226,6 +227,8 @@ const formData = reactive({
 const formRef = ref(null);
 const rules = {
     required: (value) => !!value || "This field is required.",
+    positive: (value) => value >= 0 || "Negative values are not allowed.",
+
     name: (value) =>
         /^[a-zA-Z\u0600-\u06FF\s]*$/.test(value) || "Invalid name.",
 };
@@ -291,7 +294,6 @@ const createEarning = async () => {
         formData.description = "";
         formData.paid = "";
         formData.status = "";
-        
 
         console.log("Form submitted and cleared successfully!");
     }

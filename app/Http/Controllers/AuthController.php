@@ -50,19 +50,18 @@ class AuthController extends Controller
     {
         // Delete all tokens for the authenticated user
         $request->user()->tokens()->delete();
-      
+
         // $user():currently authenticated user from the request.
         return response()->json(['message' => 'The user logged out']);
     }
 
     // Fixed password reset methods
-  public function sendResetLink(Request $request)
+public function sendResetLink(Request $request)
 {
     $request->validate(['email' => 'required|email|exists:users,email']);
-    
-    // Manually find the user first to ensure they exist
+
     $user = User::where('email', $request->email)->first();
-    
+
     if (!$user) {
         return response()->json([
             'message' => 'We could not find a user with that email address.',
@@ -70,15 +69,14 @@ class AuthController extends Controller
         ], 404);
     }
 
-    $status = Password::sendResetLink(
-        $request->only('email')
-    );
+    $status = Password::sendResetLink($request->only('email'));
 
     return response()->json([
         'message' => __($status),
         'status' => $status === Password::RESET_LINK_SENT ? 'success' : 'error'
     ], $status === Password::RESET_LINK_SENT ? 200 : 400);
 }
+
 
 public function resetPassword(Request $request)
 {

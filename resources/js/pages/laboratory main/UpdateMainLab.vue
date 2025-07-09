@@ -138,7 +138,7 @@
                                     type="number"
                                     density="compact"
                                     class="w-75"
-                                    hide-details
+                                      :rules="[rules.required,rules.positive]"
                                     single-line
                                 ></v-text-field>
                             </td>
@@ -149,7 +149,7 @@
                                     variant="outlined"
                                     density="compact"
                                     class="w-75"
-                                    hide-details
+                                      :rules="[rules.required,rules.positive]"
                                     single-line
                                 >
                                     <span
@@ -191,6 +191,7 @@
                         label="Paid"
                         class="w-100"
                         density="compact"
+                        :rules="[rules.positive]"
                     >
                         <div @click="changeCurrency" style="cursor: pointer">
                             <span class="paidSpan">
@@ -228,8 +229,6 @@ import { LocaleConfigs } from "../../LocaleConfigs";
 import { useLaboratoryRepository } from "@/store/LaboratoryRepository";
 const LaboratoryRepository = useLaboratoryRepository();
 
-
-
 // LaboratoryRepository.services =  laboratory.details || [];
 const formData = reactive({
     tooths: LaboratoryRepository.services || [],
@@ -249,14 +248,13 @@ LaboratoryRepository.FetchLaboratory(routeParams.params.id).then((res) => {
     formData.id = laboratory.id;
     formData.returnDate = laboratory.returnDate;
     formData.issueAt = laboratory.issueAt;
-    LaboratoryRepository.services  = laboratory.details || [];
+    LaboratoryRepository.services = laboratory.details || [];
     formData.grandTotal = laboratory.grandTotal;
     formData.description = laboratory.description;
     formData.paid = laboratory.paid;
     formData.status = laboratory.status;
     formData.dentistId = laboratory.dentist?.id;
     formData.customerId = laboratory.customer?.id;
-
 
     console.log(laboratory.details, "Initial grand total");
 });
@@ -292,6 +290,8 @@ watch(
 const formRef = ref(null);
 const rules = {
     required: (value) => !!value || "This field is required.",
+    positive: (value) => value >= 0 || "Negative values are not allowed.",
+
     name: (value) =>
         /^[a-zA-Z\u0600-\u06FF\s]*$/.test(value) || "Invalid name.",
 };
