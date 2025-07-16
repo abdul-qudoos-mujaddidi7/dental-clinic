@@ -4,6 +4,9 @@ import { useRouter } from "vue-router";
 import { axios } from "../axios";
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
+import i18n from "@/i18n"; // Adjust the path correctly if it's in `src/i18n/index.js`
+
+const { t } = i18n.global;
 
 export let useAuthRepository = defineStore("AuthRepository", {
     state() {
@@ -73,23 +76,20 @@ export let useAuthRepository = defineStore("AuthRepository", {
                 this.user = meResponse.data;
 
                 // ✅ Toast + Redirect
-                toast.success("Login successful!", {
+                toast.success(t("toast.loginSuccess"), {
                     position: "top-right",
                     autoClose: 3000,
                     hideProgressBar: false,
                     closeOnClick: true,
                     pauseOnHover: true,
                     draggable: true,
-                    progress: undefined,
                 });
 
                 this.router.push("/dashboard");
             } catch (err) {
                 this.error =
-                    err.response?.data?.message ||
-                    "Failed to Update Cure Payment. Please try again.";
+                    err.response?.data?.message || t("toast.cureUpdateFailed");
 
-                // Show toast
                 toast.error(this.error, {
                     position: "top-right",
                     autoClose: 3000,
