@@ -1,7 +1,7 @@
 <template>
     <CReateExpensePRoduct v-if="LaboratoryRepository.createDialog" />
     <div class="all-expense rounded-xl m-4">
-        <div class="card rounded-xl bg-white" rtl>
+        <div class="card rounded-xl " rtl>
             <AppBar mainTitle="Create Laboratory " subTitle="Laboratory" />
             <v-divider
                 :thickness="1"

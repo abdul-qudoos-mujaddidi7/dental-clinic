@@ -47,9 +47,14 @@
                         </v-btn>
 
                         <div class="text-end pt-4 text-primaryOld">
-                            <a @click="goToForgotPassword" class="forgot-link">
-                                {{ $t("login.forgot") }}
-                            </a>
+                            <router-link to="/forgot-password">
+                                <a
+                                    @click="goToForgotPassword"
+                                    class="forgot-link"
+                                >
+                                    {{ $t("login.forgot") }}
+                                </a>
+                            </router-link>
                         </div>
                     </div>
                 </v-form>
@@ -62,6 +67,7 @@
 import { ref, reactive } from "vue";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
+
 import { useAuthRepository } from "@/store/AuthRepository";
 import AppBar from "../../components/AppBar.vue";
 import LangSwticher from "../../components/LangSwticher.vue";
@@ -102,6 +108,7 @@ const loginFunc = async () => {
     }
 };
 
+const goToForgotPassword = () => {};
 // Language switch logic
 const languages = [
     { title: t("english"), lang: "en", icon: "/assets/english.png" },
