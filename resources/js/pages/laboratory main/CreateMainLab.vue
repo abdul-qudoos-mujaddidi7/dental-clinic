@@ -1,7 +1,7 @@
 <template>
     <CReateExpensePRoduct v-if="LaboratoryRepository.createDialog" />
     <div class="all-expense rounded-xl m-4">
-        <div class="card rounded-xl " rtl>
+        <div class="card rounded-xl" rtl>
             <AppBar mainTitle="Create Laboratory " subTitle="Laboratory" />
             <v-divider
                 :thickness="1"
@@ -18,6 +18,7 @@
                         :column="1"
                         v-model="formData.issueAt"
                         :styles="styles"
+                        :max="today"
                         locale="fa"
                         type="date"
                         format="YYYY-MM-DD"
@@ -37,6 +38,7 @@
                             :column="1"
                             v-model="formData.returnDate"
                             :styles="styles"
+                            :max="today"
                             locale="fa"
                             type="date"
                             format="YYYY-MM-DD"
@@ -145,10 +147,11 @@
                                         variant="outlined"
                                         type="number"
                                         density="compact"
-                         :rules="[rules.required,rules.positive]"
-
+                                        :rules="[
+                                            rules.required,
+                                            rules.positive,
+                                        ]"
                                         class="w-75"
-                                       
                                         single-line
                                     ></v-text-field>
                                 </td>
@@ -158,10 +161,11 @@
                                         v-model="pro.cost"
                                         variant="outlined"
                                         density="compact"
-                         :rules="[rules.required,rules.positive]"
-
+                                        :rules="[
+                                            rules.required,
+                                            rules.positive,
+                                        ]"
                                         class="w-75"
-                                       
                                         single-line
                                     >
                                         <span
@@ -253,12 +257,20 @@ const formData = reactive({
     type: "in",
 });
 const formRef = ref(null);
+import { toast } from "vue3-toastify"; // Add this at the top if not already
+
 const rules = {
     required: (value) => !!value || "This field is required.",
     positive: (value) => value >= 0 || "Negative values are not allowed.",
-
     name: (value) =>
         /^[a-zA-Z\u0600-\u06FF\s]*$/.test(value) || "Invalid name.",
+    maxPaid: (value) => {
+        if (value > totalSum.value) {
+            toast.error("You can't pay more than the total amount.");
+            return false;
+        }
+        return true;
+    },
 };
 
 const multiple = (pro) => {
@@ -308,13 +320,20 @@ const Duo = computed(() => {
 
 const createEarning = async () => {
     const isValid = await formRef.value.validate();
+
+    // Prevent if paid > total
+    if (formData.paid > totalSum.value) {
+        toast.error("You can't pay more than the total amount.");
+        return;
+    }
+
     if (isValid) {
         formData.tooths.map((data) => (data.serviceId = data.id));
         await LaboratoryRepository.CreateLaboratory(formData);
         formData.tooths = [];
         LaboratoryRepository.services = [];
 
-        // Reset other formData fields
+        // Reset form
         formData.grandTotal = "";
         formData.toothId = "";
         formData.returnDate = LaboratoryRepository.getTodaysDate();
@@ -323,7 +342,7 @@ const createEarning = async () => {
         formData.paid = "";
         formData.status = "";
 
-        console.log("Form submitted and cleared successfully!");
+        toast.success("Laboratory created successfully!");
     }
 };
 

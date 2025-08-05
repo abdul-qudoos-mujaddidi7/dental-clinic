@@ -221,6 +221,9 @@ import { LocaleConfigs } from "../../../LocaleConfigs";
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 const ExpenseRepository = useExpenseRepository();
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
+
 const CalcFetchProduct = (index) => {
     console.log(index, "man of the match");
     ExpenseRepository.fetchProduct(index.id);
@@ -291,6 +294,11 @@ const Duo = computed(() => {
 });
 
 const createEarning = async () => {
+    if (formData.paid > totalSum.value) {
+        toast.error("Paid amount cannot be more than total.");
+        return;
+    }
+
     const isValid = await formRef.value.validate();
     if (isValid) {
         formData.expenseDetails.map((data) => (data.expenseProduct = data.id));

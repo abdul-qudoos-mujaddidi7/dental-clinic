@@ -12,8 +12,11 @@
                         class="px-2 pt-4 d-flex justify-space-between"
                     >
                         <h2 class="font-weight-bold pl-4">
-                            {{ ExpenseRepository.isEditMode ? $t("update") : $t("create") }}
-
+                            {{
+                                ExpenseRepository.isEditMode
+                                    ? $t("update")
+                                    : $t("create")
+                            }}
                         </h2>
                         <v-btn variant="text" @click="isActive.value = false">
                             <v-icon>mdi-close</v-icon>
@@ -32,7 +35,6 @@
                                     :items="ExpenseRepository.categories"
                                     variant="outlined"
                                     :label="$t('category')"
-
                                     item-value="id"
                                     item-title="name"
                                     density="compact"
@@ -49,11 +51,12 @@
                                         type="date"
                                         format="YYYY/MM/DD"
                                         :locale-config="LocaleConfigs"
+                                        @change="checkDate"
                                     />
                                 </div>
                             </div>
                             <div class="flex w-100">
-                            <v-autocomplete
+                                <v-autocomplete
                                     :items="ExpenseRepository.moneyAccsFor"
                                     v-model="formData.money_account_id"
                                     :return-object="false"
@@ -67,23 +70,21 @@
                                     :rules="[rules.required]"
                                 ></v-autocomplete>
 
-                            <v-text-field
-                                v-model="formData.amount"
-                                variant="outlined"
-                                :label="$t('amount')"
-
-                                class="pb-4 pl-2 w-50 "
-                                density="compact"
-                                :rules="[rules.required, rules.number]"
-                            ></v-text-field>
-                        </div>
+                                <v-text-field
+                                    v-model="formData.amount"
+                                    variant="outlined"
+                                    :label="$t('amount')"
+                                    class="pb-4 pl-2 w-50"
+                                    density="compact"
+                                    :rules="[rules.required, rules.number]"
+                                ></v-text-field>
+                            </div>
 
                             <v-textarea
                                 v-model="formData.note"
                                 density="compact"
                                 variant="outlined"
                                 :label="$t('details')"
-
                             ></v-textarea>
                         </v-form>
                     </v-card-text>
@@ -94,8 +95,11 @@
                             class="px-4"
                             @click="saveExpense"
                         >
-                        {{ ExpenseRepository.isEditMode ? $t("update") : $t("submit") }}
-
+                            {{
+                                ExpenseRepository.isEditMode
+                                    ? $t("update")
+                                    : $t("submit")
+                            }}
                         </v-btn>
                     </div>
                 </v-card>
@@ -105,47 +109,74 @@
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
+import { ref, reactive , watch} from "vue";
 import { useExpenseRepository } from "@/store/ExpenseRepository";
 import { LocaleConfigs } from "../../../LocaleConfigs";
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 const ExpenseRepository = useExpenseRepository();
 const formRef = ref(null);
+import dayjs from "dayjs";
+import { rule } from "postcss";
+
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
+
+const today = dayjs().format("YYYY/MM/DD"); // Match your date format
 
 const formData = reactive({
     id: ExpenseRepository.Expense.id,
     date: ExpenseRepository.Expense.date,
     amount: ExpenseRepository.Expense.amount,
-    money_account_id:ExpenseRepository.Expense.account?.id,
+    money_account_id: ExpenseRepository.Expense.account?.id,
     expenseCategoryId: ExpenseRepository.Expense.expenseCategory?.id,
     note: ExpenseRepository.Expense.note,
 });
 const rules = {
-    required: (value) => !!value || "This field is required.",
+    required: (value) => !!value || t("validation.required"),
 
     name: (value) =>
-        /^[a-zA-Z\u0600-\u06FF\s]*$/.test(value) ||
-        "Please enter a valid name with letters only.",
+        /^[a-zA-Z\u0600-\u06FF\s]*$/.test(value) || t("validation.onlyLetters"),
 
-    number: (value) =>
-        /^\d*\.?\d+$/.test(value) || "Please enter a valid number.",
+    number: (value) => /^\d*\.?\d+$/.test(value) || t("validation.number"),
 
-    numberLength: (value) =>
-        value.length <= 12 || "Must be 12 characters or fewer.",
+    numberLength: (value) => value.length <= 12 || t("validation.maxLength12"),
+
+    notFutureDate: (value) => {
+        if (!value) return true;
+        const selected = dayjs(value, "YYYY/MM/DD");
+        const now = dayjs();
+        return !selected.isAfter(now, "day") || t("validation.noFutureDate");
+    },
 };
+toast.error(t("validation.noFutureDate"))
+
 console.log(ExpenseRepository.Expense, "man");
 const saveExpense = async () => {
-    const isValid = await formRef.value.validate();
-    if (isValid) {
-        if (ExpenseRepository.isEditMode) {
-            await ExpenseRepository.UpdateExpense(formData.id, formData);
-        } else {
-            await ExpenseRepository.CreateExpense(formData);
-        }
+  const isValid = await formRef.value.validate();
+
+  if (isValid) {
+    if (ExpenseRepository.isEditMode) {
+      await ExpenseRepository.UpdateExpense(formData.id, formData);
+    } else {
+      await ExpenseRepository.CreateExpense(formData);
     }
+  }
 };
-ExpenseRepository.fetchMoneyAccountsFor()
+
+ExpenseRepository.fetchMoneyAccountsFor();
+
+watch(
+  () => formData.date,
+  (newDate) => {
+    const today = dayjs().format("YYYY/MM/DD");
+    if (dayjs(newDate).isAfter(today)) {
+      formData.date = today;
+      toast.error(t("validation.noFutureDate")); // Use i18n toast
+    }
+  }
+);
+
 
 formData.date = ExpenseRepository.getTodaysDate();
 ExpenseRepository.Categories();

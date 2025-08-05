@@ -8,7 +8,11 @@
 
             <!-- Login Form -->
             <v-container class="fill-height d-flex align-center justify-center">
-                <v-form @submit.prevent="loginFunc" ref="formRef">
+                <v-form
+                    @submit.prevent="loginFunc"
+                    ref="formRef"
+                    lazy-validation
+                >
                     <div class="form-wrapper">
                         <div class="login-header">
                             <h1>{{ $t("login.title") }}</h1>
@@ -36,7 +40,6 @@
                             @click:append-inner="visible = !visible"
                             :rules="[rules.required, rules.password]"
                         ></v-text-field>
-
                         <v-btn
                             class="submit-btn"
                             color="primaryOld"
@@ -64,13 +67,15 @@
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 
 import { useAuthRepository } from "@/store/AuthRepository";
 import AppBar from "../../components/AppBar.vue";
 import LangSwticher from "../../components/LangSwticher.vue";
+
+const formIsValid = ref(false);
 
 const router = useRouter();
 const { t, locale } = useI18n();
@@ -87,18 +92,44 @@ const formRef = ref(null);
 const rules = {
     required: (v) => !!v || t("validation.required"),
     email: (v) => /.+@.+\..+/.test(v) || t("validation.email"),
-    password: (v) => (v && v.length >= 3) || t("validation.passwordLength"),
+    password: (v) =>
+        (!!v && v.trim().length >= 3) || t("validation.passwordLength"),
+};
+
+const validateForm = async () => {
+    const result = await formRef.value?.validate();
+    formIsValid.value = !!result?.valid;
 };
 
 // Login
 const loginFunc = async () => {
-    if (!formData.email && !formData.password) {
+    // 1. Check that both fields exist in the DOM
+    const emailInput = document.querySelector(
+        'input[type="text"][placeholder]'
+    );
+    const passwordInput = document.querySelector(
+        'input[type="password"], input[type="text"][placeholder="' +
+            t("login.password") +
+            '"]'
+    );
+
+    // 2. Validate that inputs are present and not empty
+    if (
+        !emailInput ||
+        !passwordInput ||
+        emailInput.value.trim().length === 0 ||
+        passwordInput.value.trim().length < 3
+    ) {
         alert(t("validation.bothFields"));
         return;
     }
 
+    // 3. Vue validation
     const isValid = await formRef.value?.validate?.();
-    if (!isValid) return;
+    if (!isValid?.valid) {
+        console.warn("Validation failed");
+        return;
+    }
 
     try {
         await AuthRepository.Login(formData);
@@ -107,6 +138,18 @@ const loginFunc = async () => {
         console.error("Login failed", err);
     }
 };
+
+onMounted(() => {
+    const observer = new MutationObserver(() => {
+        const input = document.querySelector('input[type="password"]');
+        if (!input) formData.password = "";
+    });
+
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true,
+    });
+});
 
 const goToForgotPassword = () => {};
 // Language switch logic

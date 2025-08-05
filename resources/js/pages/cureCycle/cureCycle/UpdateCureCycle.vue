@@ -194,7 +194,7 @@
                         v-model="formData.paid"
                         variant="outlined"
                         :label="$t('paid')"
-                        :rules="[rules.positive]"
+                        :rules="[rules.positive, rules.maxPaid]"
                         class="w-100"
                         density="compact"
                     >
@@ -336,6 +336,8 @@ const formRef = ref(null);
 const rules = {
     required: (value) => !!value || "This field is required.",
     positive: (value) => value >= 0 || "Negative values are not allowed.",
+         maxPaid: (v) =>
+    v <= totalSum.value || t("validation.overpaid") || "Paid cannot exceed total.",
 
     name: (value) =>
         /^[a-zA-Z\u0600-\u06FF\s]*$/.test(value) || "Invalid name.",

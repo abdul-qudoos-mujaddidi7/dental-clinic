@@ -209,6 +209,8 @@ import AppBar from "../../../components/AppBar.vue";
 import { reactive, computed, ref, watch, onMounted } from "vue";
 import { LocaleConfigs } from "../../../LocaleConfigs";
 import { usePeopleRepository } from "@/store/PeopleRepository";
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
 
 const PeopleRepository = usePeopleRepository();
 
@@ -280,13 +282,20 @@ const Duo = computed(() => {
 
 const createEarning = async () => {
     const isValid = await formRef.value.validate();
-    if (isValid) {
+    if (!isValid) {
+        toast.error("مهرباني وکړئ ټول معلومات سم ډک کړئ");
+        return;
+    }
+
+    try {
         formData.tooths.map((data) => (data.serviceId = data.id));
         await PeopleRepository.CreateLaboratory(formData);
+
+        toast.success("بریالی اضافه شو");
+
+        // Reset after submission
         formData.tooths = [];
         PeopleRepository.services = [];
-
-        // Reset other formData fields
         formData.grandTotal = "";
         formData.toothId = "";
         formData.returnDate = PeopleRepository.getTodaysDate();
@@ -294,8 +303,9 @@ const createEarning = async () => {
         formData.description = "";
         formData.paid = "";
         formData.status = "";
-
-        console.log("Form submitted and cleared successfully!");
+    } catch (error) {
+        toast.error("خطا رامنځته شوه");
+        console.error(error);
     }
 };
 

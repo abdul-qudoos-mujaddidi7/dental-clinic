@@ -25,6 +25,7 @@
         "@alireza-ab/vue3-persian-datepicker": "^1.0.5",
         "@mdi/font": "^7.4.47",
         "@vue/compiler-sfc": "^3.5.11",
+        "dayjs": "^1.11.13",
         "echarts": "^5.5.1",
         "html2pdf.js": "^0.10.3",
         "moment": "^2.30.1",
