@@ -51,7 +51,10 @@
                                         type="date"
                                         format="YYYY/MM/DD"
                                         :locale-config="LocaleConfigs"
-                                        @change="checkDate"
+                                        :rules="[
+                                            rules.required,
+                                            rules.notFutureDate,
+                                        ]"
                                     />
                                 </div>
                             </div>
@@ -109,7 +112,7 @@
 </template>
 
 <script setup>
-import { ref, reactive , watch} from "vue";
+import { ref, reactive, watch } from "vue";
 import { useExpenseRepository } from "@/store/ExpenseRepository";
 import { LocaleConfigs } from "../../../LocaleConfigs";
 import { useI18n } from "vue-i18n";
@@ -119,8 +122,8 @@ const formRef = ref(null);
 import dayjs from "dayjs";
 import { rule } from "postcss";
 
-import { toast } from 'vue3-toastify';
-import 'vue3-toastify/dist/index.css';
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
 
 const today = dayjs().format("YYYY/MM/DD"); // Match your date format
 
@@ -149,34 +152,31 @@ const rules = {
         return !selected.isAfter(now, "day") || t("validation.noFutureDate");
     },
 };
-toast.error(t("validation.noFutureDate"))
+// toast.error(t("validation.noFutureDate"));
 
 console.log(ExpenseRepository.Expense, "man");
 const saveExpense = async () => {
-  const isValid = await formRef.value.validate();
+    const isValid = await formRef.value.validate();
 
-  if (isValid) {
-    if (ExpenseRepository.isEditMode) {
-      await ExpenseRepository.UpdateExpense(formData.id, formData);
-    } else {
-      await ExpenseRepository.CreateExpense(formData);
+    // Extra manual check for future date
+    const selected = dayjs(formData.date, "YYYY/MM/DD");
+    if (selected.isAfter(dayjs(), "day")) {
+        toast.error(t("validation.noFutureDate"));
+        return; // Stop submission
     }
-  }
+
+    if (!isValid) {
+        return;
+    }
+
+    if (ExpenseRepository.isEditMode) {
+        await ExpenseRepository.UpdateExpense(formData.id, formData);
+    } else {
+        await ExpenseRepository.CreateExpense(formData);
+    }
 };
 
 ExpenseRepository.fetchMoneyAccountsFor();
-
-watch(
-  () => formData.date,
-  (newDate) => {
-    const today = dayjs().format("YYYY/MM/DD");
-    if (dayjs(newDate).isAfter(today)) {
-      formData.date = today;
-      toast.error(t("validation.noFutureDate")); // Use i18n toast
-    }
-  }
-);
-
 
 formData.date = ExpenseRepository.getTodaysDate();
 ExpenseRepository.Categories();

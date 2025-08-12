@@ -208,7 +208,7 @@
                         label="Paid"
                         class="w-100"
                         density="compact"
-                        :rules="[rules.positive]"
+                        :rules="[rules.positive, rules.maxPaid]"
                     >
                         <div @click="changeCurrency" style="cursor: pointer">
                             <span class="paidSpan">

@@ -19,7 +19,7 @@ class Owner extends Model
     ];
 
     public function ownerPickups()
-    {
+    {   
         return $this->hasMany(OwnerPickup::class);
     }
 

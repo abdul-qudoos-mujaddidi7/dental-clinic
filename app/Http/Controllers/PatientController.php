@@ -73,7 +73,7 @@ class PatientController extends Controller
         Patient::whereIn('id',$validated['patientIds'])->delete();
 
         return response()->noContent();
-
+        
 
 
     }

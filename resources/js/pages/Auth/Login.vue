@@ -74,6 +74,8 @@ import { useI18n } from "vue-i18n";
 import { useAuthRepository } from "@/store/AuthRepository";
 import AppBar from "../../components/AppBar.vue";
 import LangSwticher from "../../components/LangSwticher.vue";
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
 
 const formIsValid = ref(false);
 
@@ -120,7 +122,7 @@ const loginFunc = async () => {
         emailInput.value.trim().length === 0 ||
         passwordInput.value.trim().length < 3
     ) {
-        alert(t("validation.bothFields"));
+        toast.error(t("validation.bothFields"));
         return;
     }
 

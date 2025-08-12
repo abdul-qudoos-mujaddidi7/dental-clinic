@@ -215,7 +215,7 @@
                         :label="$t('paid')"
                         class="w-100"
                         density="compact"
-                        :rules="[rules.required, rules.positive,rules.maxPaid]"
+                        :rules="[rules.required, rules.positive, rules.maxPaid]"
                         type="number"
                     >
                         <div @click="changeCurrency" style="cursor: pointer">
@@ -254,6 +254,7 @@ import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 import { useCureRepository } from "@/store/CureRepository";
 import { LocaleConfigs } from "../../../LocaleConfigs";
+import { toast } from "vue3-toastify"; // Add this at the top if not already
 
 const CureRepository = useCureRepository();
 const CalcFetchProduct = (index) => {
@@ -290,9 +291,10 @@ const rules = {
     positive: (value) => value >= 0 || "Negative values are not allowed.",
     name: (value) =>
         /^[a-zA-Z\u0600-\u06FF\s]*$/.test(value) || "Invalid name.",
-        maxPaid: (v) =>
-    v <= totalSum.value || t("validation.overpaid") || "Paid cannot exceed total.",
-
+    maxPaid: (v) =>
+        v <= totalSum.value ||
+        t("validation.overpaid") ||
+        "Paid cannot exceed total.",
 };
 
 const multiple = (pro) => {
@@ -346,13 +348,13 @@ const createEarning = async () => {
     if (!isValid) return;
 
     if (formData.paid > totalSum.value) {
-        alert(t("validation.overpaid") || "Amount paid cannot exceed total.");
+        toast.error(t("validation.overpaid") || "Amount paid cannot exceed total.");
         return;
     }
 
     // Optional: also prevent negative total
     if (totalSum.value <= 0) {
-        alert(t("validation.totalInvalid") || "Total must be greater than 0.");
+        toast.error(t("validation.totalInvalid") || "Total must be greater than 0.");
         return;
     }
 

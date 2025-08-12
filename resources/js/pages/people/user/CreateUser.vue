@@ -181,6 +181,8 @@ import { ref, reactive } from "vue";
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 import { usePeopleRepository } from "@/store/PeopleRepository";
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
 
 const PeopleRepository = usePeopleRepository();
 const formRef = ref(null);
@@ -204,7 +206,7 @@ const onChangeImage = (e) => {
 
     const allowedTypes = ["image/png", "image/jpeg", "image/jpg", "image/webp"];
     if (!allowedTypes.includes(file.type)) {
-        alert("Only image files (png, jpg, jpeg, webp) are allowed.");
+        toast.error("Only image files (png, jpg, jpeg, webp) are allowed.");
         return;
     }
 
