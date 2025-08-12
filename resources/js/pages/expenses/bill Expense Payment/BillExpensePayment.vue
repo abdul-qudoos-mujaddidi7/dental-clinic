@@ -61,8 +61,9 @@
                                 variant="outlined"
                                 label="Amount *"
                                 class="pb-4"
+                                type="number"
                                 density="compact"
-                                :rules="[rules.required]"
+                                :rules="[rules.required, rules.positive]"
                             ></v-text-field>
 
                             <v-textarea
@@ -106,9 +107,12 @@ const formData = reactive({
     accountId: ExpenseRepository.billExpensePayment.accountId,
     date: ExpenseRepository.billExpensePayment.date,
     note: ExpenseRepository.billExpensePayment.note,
+    people_id:ExpenseRepository.supplierId,
 });
 const rules = {
     required: (value) => !!value || "This field is required.",
+    positive: (value) => value >= 0 || "Negative values are not allowed.",
+
 
     name: (value) =>
         /^[a-zA-Z\u0600-\u06FF\s]*$/.test(value) ||

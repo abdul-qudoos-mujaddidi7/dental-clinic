@@ -90,7 +90,7 @@ class CreateInBoundLabTriggers extends Migration
             AFTER DELETE ON $table
             FOR EACH ROW
             BEGIN
-                CALL DeletePeopleAccountTransaction(OLD.id,'" . OperationType::IN_BOUND_LAB_PAYMNET . "');
+                CALL DeletePeopleAccountTransaction(OLD.id,'" . OperationType::IN_BOUND_LAB_PAYMENT . "');
             END;
         ");
     }

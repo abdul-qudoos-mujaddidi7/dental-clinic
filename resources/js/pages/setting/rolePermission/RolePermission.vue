@@ -18,7 +18,7 @@
                         :label="$t('search')"
                         append-inner-icon="mdi-magnify"
                         hide-details
-                        v-model="SettingRepository.permissionSearch"
+                        v-model="AuthRepository.search"
                     ></v-text-field>
                 </div>
                 <div class="btn">
@@ -48,17 +48,17 @@
                                 :dir="dir"
                                     theme="cursor-pointer"
                                     v-model:items-per-page="
-                                        SettingRepository.itemsPerPage
+                                        AuthRepository.itemsPerPage
                                     "
                                     :headers="headers"
-                                    :items-length="SettingRepository.totalItems"
-                                    :items="SettingRepository.permissions"
-                                    :loading="SettingRepository.loading"
-                                    :search="SettingRepository.permissionSearch"
+                                    :items-length="AuthRepository.totalItems"
+                                    :items="AuthRepository.permissio"
+                                    :loading="AuthRepository.loading"
+                                    :search="AuthRepository.search"
                                     @update:options="
-                                        SettingRepository.fetchRolePermissions
+                                        AuthRepository.fetchRolePermissions
                                     "
-                                    :item-key="SettingRepository.permissions"
+                                    :item-key="AuthRepository.permissio"
                                     hover
                                     class="w-100 mx-auto"
                                 >
@@ -123,8 +123,8 @@
 import { ref,computed } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 
-import { useSettingRepository } from "@/store/SettingRepository";
-const SettingRepository = useSettingRepository();
+import { useAuthRepository } from "@/store/AuthRepository";
+const AuthRepository = useAuthRepository();
 import { useI18n } from "vue-i18n";
 const { t,locale } = useI18n();
 
@@ -135,19 +135,19 @@ const dir = computed(() => {
 
 // delete and update Create
 const CreateDialogShow = () => {
-    SettingRepository.permission = {};
-    SettingRepository.setEditMode(false);
-    SettingRepository.createDialog = true;
+    AuthRepository.permission = {};
+    AuthRepository.setEditMode(false);
+    AuthRepository.createDialog = true;
 };
 
 const edit = (item) => {
     console.log(item, "me");
-    SettingRepository.setEditMode(true);
-    SettingRepository.permission = {};
-    if (Object.keys(SettingRepository.permission).length === 0) {
-        SettingRepository.fetchRolePermission(item.id)
+    AuthRepository.setEditMode(true);
+    AuthRepository.permission = {};
+    if (Object.keys(AuthRepository.permission).length === 0) {
+        AuthRepository.fetchRolePermission(item.id)
             .then(() => {
-                SettingRepository.createDialog = true;
+                AuthRepository.createDialog = true;
             })
             .catch((error) => {
                 console.error("Error fetching data:", error);
@@ -156,7 +156,7 @@ const edit = (item) => {
 };
 
 const deleteItem = async (item) => {
-    await SettingRepository.DeleteRolePermission(item.id);
+    await AuthRepository.DeleteRolePermission(item.id);
 };
 // header
 const headers = [

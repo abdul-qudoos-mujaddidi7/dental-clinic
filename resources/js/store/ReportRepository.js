@@ -11,7 +11,7 @@ export let useReportRepository = defineStore("ReportRepository", {
             serverItems: ref([]),
             loadingTable: ref(true),
             loading: ref(false),
-            totalItems: ref(0),
+            totalItems: ref(5),
             meta: "",
             totalItemsDOC: ref(1),
             selectedItems: ref([]),
@@ -52,7 +52,7 @@ export let useReportRepository = defineStore("ReportRepository", {
         },
         // patients payment ================================
         async fetchPatientsReports(
-            { page, itemsPerPage },
+           { page, itemsPerPage },
             startDate = null,
             endDate = null
         ) {
@@ -62,11 +62,11 @@ export let useReportRepository = defineStore("ReportRepository", {
                 return `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
             };
 
-            const formattedStartDate = formatDate(startDate);
-            const formattedEndDate = formatDate(endDate);
+            const formattedStartDate = startDate;
+            const formattedEndDate = endDate;
 
             console.log(
-                `Start Date: ${formattedStartDate}, End Date: ${formattedEndDate} in the repository for patients report`
+                `Start Date: ${formattedStartDate}, End Date: ${formattedEndDate}`
             );
 
             this.loading = true;
@@ -81,11 +81,12 @@ export let useReportRepository = defineStore("ReportRepository", {
                     },
                 });
 
-                this.patientReports = response.data.data;
-                console.log(this.patientReports, "payment report");
+                this.patientReports = response.data.patientPayments.data;
+                this.totalItems = response.data.patientPayments.total;
+                console.log(this.patientReports, "Patient report");
                 this.totalItems = response.data.total;
             } catch (error) {
-                console.error("Error fetching patients reports:", error);
+                console.error("Error fetching Patient reports:", error);
             } finally {
                 this.loading = false;
             }

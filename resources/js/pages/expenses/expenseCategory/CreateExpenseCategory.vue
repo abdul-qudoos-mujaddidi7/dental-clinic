@@ -14,8 +14,8 @@
                         <h2 class="font-weight-bold pl-4">
                             {{
                                 ExpenseRepository.isEditMode
-                                    ? t('update')
-                                    : t('create')
+                                    ? t("update")
+                                    : t("create")
                             }}
                         </h2>
                         <v-btn variant="text" @click="isActive.value = false">
@@ -38,14 +38,14 @@
                                 :rules="[rules.required]"
                             ></v-text-field>
 
-                            <v-text-field
+                            <v-textarea
                                 v-model="formData.description"
                                 variant="outlined"
                                 :label="t('details')"
                                 class="pb-3"
                                 density="compact"
                                 :rules="[rules.required]"
-                            ></v-text-field>
+                            ></v-textarea>
                         </v-form>
                     </v-card-text>
 
@@ -53,8 +53,8 @@
                         <v-btn color="#112F53" class="px-4" @click="save">
                             {{
                                 ExpenseRepository.isEditMode
-                                    ? t('update')
-                                    : t('submit')
+                                    ? t("update")
+                                    : t("submit")
                             }}
                         </v-btn>
                     </div>
@@ -63,7 +63,6 @@
         </v-dialog>
     </div>
 </template>
-
 
 <script setup>
 import { ref, reactive } from "vue";
@@ -97,5 +96,4 @@ const save = async () => {
         }
     }
 };
-
 </script>

@@ -29,6 +29,7 @@ import Leads from "./pages/lead/leads/Leads.vue";
 import LeadCategory from "./pages/lead/leadCategory/LeadCategory.vue";
 import LeadStage from "./pages/lead/leadStage/LeadStage.vue";
 import Appointments from "./pages/lead/appointment/Appointment.vue";
+import PrintAppointment from "./pages/lead/appointment/PrintAppointment.vue";
 // system setting
 import SystemSetting from "./pages/setting/system Setting/SystemSetting.vue";
 import RolePermission from "./pages/setting/rolePermission/RolePermission.vue";
@@ -60,12 +61,24 @@ import CreateMainLab from "./pages/laboratory main/CreateMainLab.vue";
 import UpdateMainLab from "./pages/laboratory main/UpdateMainLab.vue";
 // login
 import Login from "./pages/Auth/Login.vue";
+import ForgetPassword from "./pages/Auth/ForgetPassword.vue";
 import Home from "./Home.vue";
+import ResetPassword from "./pages/Auth/ResetPassword.vue";
 
 const router = createRouter({
     history: createWebHistory(),
     routes: [
         { path: "/", component: Login, meta: "" },
+        {
+            path: "/forgot-password",
+            name: "ForgotPassword",
+            component: ForgetPassword,
+        },
+        {
+            path: "/reset-password",
+            name: "ResetPassword",
+            component: ResetPassword,
+        },
         {
             path: "/home",
             component: Home,
@@ -133,6 +146,14 @@ const router = createRouter({
                 { path: "/leadCategory", component: LeadCategory },
                 { path: "/leadStage", component: LeadStage },
                 { path: "/appointments", component: Appointments },
+                {
+                    path: "/appointmentPrint/:id",
+                    name: "AppointmentPrint",
+                    component: () =>
+                        import("./pages/lead/appointment/PrintAppointment.vue"),
+                    meta: { layout: "blank" }, // or you can check this meta in your layout component to NOT render sidebar/appbar
+                },
+
                 // system setting
                 { path: "/systemSetting", component: SystemSetting },
                 { path: "/rolePermissions", component: RolePermission },

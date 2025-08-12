@@ -124,6 +124,15 @@
                                             class="w-6 d-flex"
                                         ></v-checkbox>
                                     </template>
+                                    <template v-slot:item.printBtn="{ item }">
+                                        <v-btn
+                                            color="primaryOld"
+                                            :text="$t('print')"
+                                            @click="generatePDF(item)"
+                                        >
+                                            {{ $t("print") }}
+                                        </v-btn>
+                                    </template>
 
                                     <template v-slot:item.action="{ item }">
                                         <v-menu>
@@ -213,9 +222,112 @@ import { usePeopleRepository } from "@/store/PeopleRepository";
 const PeopleRepository = usePeopleRepository();
 import Export from "../../../components/ExportComponent.vue";
 
+// ===================
+import html2pdf from "html2pdf.js";
+import PrintPatient from "./PrintPatient.vue";
+import { createApp, h } from "vue";
+// const generatePDF = (patient) => {
+//     const container = document.createElement("div");
+//     document.body.appendChild(container);
+
+//     let componentInstance = null;
+
+//     const app = createApp({
+//         render() {
+//             return h(PrintPatient, {
+//                 patient,
+//                 ref: (el) => {
+//                     componentInstance = el;
+//                 },
+//             });
+//         },
+//     });
+
+//     app.mount(container);
+
+//     // Wait a bit for rendering
+//     setTimeout(() => {
+//         if (componentInstance?.printContent) {
+//             html2pdf()
+//                 .set({
+//                     margin: 0.5,
+//                     filename: `${patient.name}_form.pdf`,
+//                     image: { type: "jpeg", quality: 0.98 },
+//                     html2canvas: { scale: 2 },
+//                     jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
+//                 })
+//                 .from(componentInstance.printContent)
+//                 .save()
+//                 .then(() => {
+//                     app.unmount();
+//                     container.remove();
+//                 });
+//         } else {
+//             console.error("printContent not found");
+//             app.unmount();
+//             container.remove();
+//         }
+//     }, 500);
+// };
+// ==========================
 // direction
+
+// ==============
+const generatePDF = (patient) => {
+    const container = document.createElement("div");
+    document.body.appendChild(container);
+
+    let componentInstance = null;
+
+    const app = createApp({
+        render() {
+            return h(PrintPatient, {
+                patient,
+                ref: (el) => {
+                    componentInstance = el;
+                },
+            });
+        },
+    });
+
+    app.mount(container);
+
+    // Wait for rendering
+    setTimeout(() => {
+        if (componentInstance?.printContent) {
+            html2pdf()
+                .set({
+                    margin: 0.5,
+                    filename: `${patient.name}_form.pdf`,
+                    image: { type: "jpeg", quality: 0.98 },
+                    html2canvas: { scale: 2 },
+                    jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
+                })
+                .from(componentInstance.printContent)
+                .output('bloburl') 
+                .then((pdfUrl) => {
+                    const printWindow = window.open(pdfUrl);
+                    if (printWindow) {
+                        printWindow.onload = () => {
+                            printWindow.focus();
+                            printWindow.print();
+                        };
+                    }
+                    // Clean up
+                    app.unmount();
+                    container.remove();
+                });
+        } else {
+            console.error("printContent not found");
+            app.unmount();
+            container.remove();
+        }
+    }, 500);
+};
+
+// ===================
 const dir = computed(() => {
-    return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
+    return locale.value === "fa" ? "rtl" : "ltr"; 
 });
 
 // export component
@@ -294,6 +406,8 @@ const headers = [
     { title: t("address"), key: "address", align: "start", sortable: false },
     { title: t("age"), key: "dateOfBirth", align: "center", sortable: false },
     { title: t("gender"), key: "gender", align: "center", sortable: false },
+    { title: t("print"), key: "printBtn", align: "center", sortable: false },
+
     { title: t("action"), key: "action", align: "center", sortable: false },
 ];
 </script>

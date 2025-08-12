@@ -5,6 +5,7 @@ use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\People;
 
 return new class extends Migration
 {
@@ -23,7 +24,7 @@ return new class extends Migration
             $table->decimal('grand_total', 10, 2);
             $table->text('note')->nullable();
             $table->string('reference',20);
-            $table->foreignIdFor(Supplier::class)->constrained();
+            $table->foreignIdFor(People::class,'supplier_id');
             $table->foreignIdFor(User::class);
             $table->softDeletes();
             $table->timestamps();

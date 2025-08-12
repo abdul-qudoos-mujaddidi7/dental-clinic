@@ -96,7 +96,7 @@ const onDateChange = (newRange) => {
     const [startDate, endDate] = newRange;
 
     if (startDate && endDate) {
-        ReportRepository.fetchServiceReports({ page: 1, itemsPerPage: 10 }, startDate, endDate);
+        ReportRepository.fetchPatientsReports({ page: 1, itemsPerPage: 10 }, startDate, endDate);
     }
 };
 
@@ -105,7 +105,7 @@ watch(
     (newSearchTerm) => {
         const [startDate, endDate] = ReportRepository.productDateRange;
         if (startDate && endDate) {
-            ReportRepository.fetchServiceReports(startDate, endDate);
+            ReportRepository.fetchPatientsReports(startDate, endDate);
         }
     }
 );

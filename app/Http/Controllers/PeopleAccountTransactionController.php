@@ -60,12 +60,18 @@ class PeopleAccountTransactionController extends Controller
 
     public function update(PeopleAccountTransactionRequest $request,$id)
     {
-        return new $this->resource($this->updateRecord($request,$this->model,$id));
+
+         $peopleAccountTransaction = PeopleAccountTransaction::findOrFail($id);
+        return new $this->resource($this->updateRecord($request,$peopleAccountTransaction));
     }
 
-    public function destroy($id)
+    public function destroy($id )
     {
-        return $this->deleteRecord($this->model,$id);
+
+    $peopleAccountTransaction = PeopleAccountTransaction::findOrFail($id);
+    return $this->deleteRecord($peopleAccountTransaction);
+
+       
     }
 
   
@@ -90,6 +96,10 @@ class PeopleAccountTransactionController extends Controller
     public function outBoundLabPayment(PeopleAccountTransactionRequest $request)
     {
         return new $this->resource($this->paymentService->outBoundLabPayment($request->validated()));
+    }
+    public function billExpensePayment(PeopleAccountTransactionRequest $request)
+    {
+        return new $this->resource($this->paymentService->billExpensePayment($request->validated()));
     }
 
     public function showPayments(Request $request)

@@ -23,6 +23,7 @@ class BillExpenseRequest extends FormRequest
             "grand_total" => $this->input("grandTotal"),
             "supplier_id" => $this->input("supplierId"),
             "billable_details" => $this->input("expenseDetails"),
+            "money_account_id" => $this->input("moneyAccountId"),
         ]);
     }
 
@@ -47,6 +48,7 @@ class BillExpenseRequest extends FormRequest
             'grand_total' => 'required|numeric|between:0,99999999.99',
             'note' => 'nullable|string',
             'supplier_id' => 'required|exists:suppliers,id',
+             'money_account_id' => 'required|exists:money_accounts,id',
 
             'billable_details' => 'required|array',
             'billable_details.*.id' => 'nullable',

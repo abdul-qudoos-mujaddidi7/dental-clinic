@@ -19,7 +19,9 @@ class BillExpense extends Model
         'supplier_id',
         'note',
         'bill_date',
-        'user_id'
+        'user_id',
+    'people_account_id',
+    'money_account_id'
     ];
 
     protected static function boot()
@@ -46,9 +48,9 @@ class BillExpense extends Model
     }
 
 
-    public function supplier()
+   public function supplier()
     {
-        return $this->belongsTo(Supplier::class);
+        return $this->belongsTo(People::class, 'supplier_id');
     }
 
 

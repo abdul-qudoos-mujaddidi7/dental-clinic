@@ -33,12 +33,18 @@ class PaymentService
 
     public function inBoundLabPayment(array $request)
     {
-        $data = $this->prepareData($request,OperationType::IN_BOUND_LAB_PAYMNET);
+        $data = $this->prepareData($request,OperationType::IN_BOUND_LAB_PAYMENT);
+     
         return PeopleAccountTransaction::create($data);
     }
     public function outBoundLabPayment(array $request)
     {
         $data = $this->prepareData($request,OperationType::OUT_BOUND_LAB_PAYMENT);
+        return PeopleAccountTransaction::create($data);
+    }
+    public function billExpensePayment(array $request)
+    {
+        $data = $this->prepareData($request,OperationType::BILL_EXPENSE_PAYMENT);
         return PeopleAccountTransaction::create($data);
     }
         
@@ -56,6 +62,7 @@ class PaymentService
 
     public function generatePaySlip(array $request)
     {
+        
         $data = $this->prepareData($request,OperationType::PAYSLIP);
         return PeopleAccountTransaction::create($data);
     }

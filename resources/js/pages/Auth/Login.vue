@@ -1,18 +1,27 @@
-<!-- b81B5XC1fMP7fItVMrfkhAiHmfJnMKzPll1pFlCJ78QWx79XVQp06gQY -->
 <template>
     <div class="bg-cover">
         <div class="login-page">
+            <div class="lang-switch">
+                <LangSwticher />
+            </div>
+            <!-- Language Switch Button -->
+
+            <!-- Login Form -->
             <v-container class="fill-height d-flex align-center justify-center">
-                <v-form @submit.prevent="loginFunc" ref="formRef">
+                <v-form
+                    @submit.prevent="loginFunc"
+                    ref="formRef"
+                    lazy-validation
+                >
                     <div class="form-wrapper">
                         <div class="login-header">
-                            <h1>Login </h1>
+                            <h1>{{ $t("login.title") }}</h1>
                         </div>
 
                         <v-text-field
                             v-model="formData.email"
                             density="compact"
-                            placeholder="Email"
+                            :placeholder="$t('login.email')"
                             prepend-inner-icon="mdi-email-outline"
                             variant="outlined"
                             :rules="[rules.required, rules.email]"
@@ -25,21 +34,31 @@
                             "
                             :type="visible ? 'text' : 'password'"
                             density="compact"
-                            placeholder="enter your password "
+                            :placeholder="$t('login.password')"
                             prepend-inner-icon="mdi-lock-outline"
                             variant="outlined"
                             @click:append-inner="visible = !visible"
                             :rules="[rules.required, rules.password]"
                         ></v-text-field>
-
                         <v-btn
                             class="submit-btn"
-                            color="primary"
+                            color="primaryOld"
                             block
                             type="submit"
                         >
-                            Log In 
+                            {{ $t("login.button") }}
                         </v-btn>
+
+                        <div class="text-end pt-4 text-primaryOld">
+                            <router-link to="/forgot-password">
+                                <a
+                                    @click="goToForgotPassword"
+                                    class="forgot-link"
+                                >
+                                    {{ $t("login.forgot") }}
+                                </a>
+                            </router-link>
+                        </div>
                     </div>
                 </v-form>
             </v-container>
@@ -48,12 +67,22 @@
 </template>
 
 <script setup>
-import { useAuthRepository } from "@/store/AuthRepository";
-import { ref, reactive } from "vue";
+import { ref, reactive, onMounted } from "vue";
+import { useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
 
+import { useAuthRepository } from "@/store/AuthRepository";
+import AppBar from "../../components/AppBar.vue";
+import LangSwticher from "../../components/LangSwticher.vue";
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
+
+const formIsValid = ref(false);
+
+const router = useRouter();
+const { t, locale } = useI18n();
 const AuthRepository = useAuthRepository();
 
-// Form state and visibility for password
 const formData = reactive({
     email: "",
     password: "",
@@ -63,28 +92,92 @@ const formRef = ref(null);
 
 // Validation rules
 const rules = {
-    required: (value) => !!value || "This field is required", // Required validation
-    email: (value) => /.+@.+\..+/.test(value) || "Invalid email address", // Simple email validation
-    password: (value) =>
-        (value && value.length >= 3) || "Password must be at least 3 characters long", // Password must be at least 3 characters
+    required: (v) => !!v || t("validation.required"),
+    email: (v) => /.+@.+\..+/.test(v) || t("validation.email"),
+    password: (v) =>
+        (!!v && v.trim().length >= 3) || t("validation.passwordLength"),
 };
 
+const validateForm = async () => {
+    const result = await formRef.value?.validate();
+    formIsValid.value = !!result?.valid;
+};
 
-// Login function
+// Login
 const loginFunc = async () => {
-    const isValid = await formRef.value.validate();
-    if (isValid) {
-        try {
-            await AuthRepository.Login(formData);
-            console.log("Login successful", formData);
-        } catch (error) {
-            console.error("Login failed", error);
-        }
+    // 1. Check that both fields exist in the DOM
+    const emailInput = document.querySelector(
+        'input[type="text"][placeholder]'
+    );
+    const passwordInput = document.querySelector(
+        'input[type="password"], input[type="text"][placeholder="' +
+            t("login.password") +
+            '"]'
+    );
+
+    // 2. Validate that inputs are present and not empty
+    if (
+        !emailInput ||
+        !passwordInput ||
+        emailInput.value.trim().length === 0 ||
+        passwordInput.value.trim().length < 3
+    ) {
+        toast.error(t("validation.bothFields"));
+        return;
     }
+
+    // 3. Vue validation
+    const isValid = await formRef.value?.validate?.();
+    if (!isValid?.valid) {
+        console.warn("Validation failed");
+        return;
+    }
+
+    try {
+        await AuthRepository.Login(formData);
+        console.log("Login successful");
+    } catch (err) {
+        console.error("Login failed", err);
+    }
+};
+
+onMounted(() => {
+    const observer = new MutationObserver(() => {
+        const input = document.querySelector('input[type="password"]');
+        if (!input) formData.password = "";
+    });
+
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true,
+    });
+});
+
+const goToForgotPassword = () => {};
+// Language switch logic
+const languages = [
+    { title: t("english"), lang: "en", icon: "/assets/english.png" },
+    { title: t("دری"), lang: "fa", icon: "/assets/dari.png" },
+    { title: t("پښتو"), lang: "pa", icon: "/assets/dari.png" },
+];
+
+const changeLanguage = (lang) => {
+    locale.value = lang;
 };
 </script>
 
 <style scoped>
+.forgot-link {
+    font-size: 0.9rem;
+    color: primaryOld;
+    cursor: pointer;
+    text-decoration: underline;
+    margin-top: -10px;
+    display: inline-block;
+}
+.forgot-link:hover {
+    color: primaryOld;
+}
 .bg-cover {
     background-image: url("https://picsum.photos/1920/1080");
     background-size: cover;
@@ -92,15 +185,20 @@ const loginFunc = async () => {
     background-repeat: no-repeat;
     height: 100vh;
 }
-
 .login-page {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100vh;
     width: 100vw;
 }
-
+.lang-switch {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+}
 .form-wrapper {
     background-color: #ffffff56;
     padding: 30px;
@@ -112,29 +210,27 @@ const loginFunc = async () => {
     position: relative;
     backdrop-filter: blur(4px);
 }
-
 .login-header h1 {
     font-size: 24px;
     margin-bottom: 20px;
     font-weight: bold;
     text-align: center;
 }
-
 .submit-btn {
     background-color: #1e88e5;
     color: white;
     margin-top: 20px;
 }
-
 .submit-btn:hover {
     background-color: #1565c0;
 }
-
 .v-text-field {
     margin-bottom: 20px;
 }
-
-.v-card {
-    margin-bottom: 20px;
+.lang-switch {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
 }
 </style>

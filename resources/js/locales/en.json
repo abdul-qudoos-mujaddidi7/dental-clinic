@@ -1,4 +1,30 @@
 {
+   
+    "login": {
+        "title": "Login",
+        "email": "Email",
+        "password": "Enter your password",
+        "button": "Log In",
+        "forgot": "Forgot Password?"
+    },
+
+    "validation": {
+        "required": "This field is required",
+        "email": "Invalid email address",
+        "passwordLength": "Password must be at least 3 characters long",
+        "bothFields": "Both email and password are required.",
+        "formBroken": "Form is broken. Please refresh the page.",
+             "noFutureDate": "Future Date Not allowed"
+    },
+
+    "toast": {
+        "loginSuccess": "Login successful!",
+        "loginFailed": "Login failed. Please try again."
+    },
+
+    "selectLanguage": "Select Language",
+
+    "print": "Print",
     "createPayment": "Create Payment",
     "showPayment": "Show Payment",
     "paySalary": "Pay Salary",

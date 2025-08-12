@@ -87,13 +87,13 @@
 
 <script setup>
 // Imports
-import { useSettingRepository } from "@/store/SettingRepository";
+import { useAuthRepository } from "@/store/AuthRepository";
 import { reactive, ref } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 import { useRoute } from "vue-router";
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
-const SettingRepository = useSettingRepository();
+const AuthRepository = useAuthRepository();
 const formRef = ref(null);
 const rules = {
     required: (value) => !!value || "This field is required.",
@@ -105,15 +105,15 @@ const formData = reactive({
     permissions: [],
 });
 const routeParams = useRoute();
-SettingRepository.fetchRolePermission(routeParams.params.id).then((res) => {
-    console.log(SettingRepository.permission.permissions, 'permissions');
+AuthRepository.fetchRolePermission(routeParams.params.id).then((res) => {
+    console.log(AuthRepository.permission.permissions, 'permissions');
 
-    formData.id = SettingRepository.permission.id;
-    formData.name = SettingRepository.permission.name;
-    formData.description = SettingRepository.permission.description;
+    formData.id = AuthRepository.permission.id;
+    formData.name = AuthRepository.permission.name;
+    formData.description = AuthRepository.permission.description;
 
     // Extract permission names from backend response
-    formData.permissions = SettingRepository.permission.permissions.map(
+    formData.permissions = AuthRepository.permission.permissions.map(
         (perm) => perm.name
     );
 });
@@ -156,7 +156,7 @@ const createRole = async () => {
     if (formRef.value) {
         const isValid = await formRef.value.validate();
         if (isValid) {
-            await SettingRepository.UpdateRolePermission(formData.id, formData);
+            await AuthRepository.UpdateRolePermission(formData.id, formData);
             console.log("Role created successfully:", formData);
         } else {
             console.error("Form validation failed.");

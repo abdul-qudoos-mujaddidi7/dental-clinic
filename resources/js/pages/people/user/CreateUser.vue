@@ -50,9 +50,10 @@
                                     <v-file-input
                                         type="file"
                                         ref="inputRef"
+                                        accept="image/png, image/jpeg, image/jpg, image/webp"
                                         style="display: none"
                                         @change="onChangeImage"
-                                    ></v-file-input>
+                                    />
 
                                     <img
                                         :src="imageSrc"
@@ -180,6 +181,8 @@ import { ref, reactive } from "vue";
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 import { usePeopleRepository } from "@/store/PeopleRepository";
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
 
 const PeopleRepository = usePeopleRepository();
 const formRef = ref(null);
@@ -198,9 +201,19 @@ const formData = reactive({
 let imageSrc = ref(PeopleRepository.user.profilePicture);
 const inputRef = ref(null);
 const onChangeImage = (e) => {
-    imageSrc.value = URL.createObjectURL(e.target.files[0]);
-    formData.profile_picture = e.target.files[0];
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const allowedTypes = ["image/png", "image/jpeg", "image/jpg", "image/webp"];
+    if (!allowedTypes.includes(file.type)) {
+        toast.error("Only image files (png, jpg, jpeg, webp) are allowed.");
+        return;
+    }
+
+    imageSrc.value = URL.createObjectURL(file);
+    formData.profile_picture = file;
 };
+
 const OpenWindow = (action) => {
     if (action) {
         ref(action).value.click();

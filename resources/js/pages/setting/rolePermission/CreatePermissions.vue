@@ -95,12 +95,13 @@
 
 <script setup>
 // Imports
-import { useSettingRepository } from "@/store/SettingRepository";
+
 import { reactive, ref } from "vue";
 import AppBar from "../../../components/AppBar.vue";
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
-const SettingRepository = useSettingRepository();
+import { useAuthRepository } from "@/store/AuthRepository";
+const AuthRepository = useAuthRepository();
 const formRef = ref(null);
 const rules = {
     required: (value) => !!value || "This field is required.",
@@ -149,7 +150,7 @@ const createRole = async () => {
     if (formRef.value) {
         const isValid = await formRef.value.validate();
         if (isValid) {
-            await SettingRepository.CreateRolePermission(formData);
+            await AuthRepository.CreateRolePermission(formData);
             console.log("Role created successfully:", formData);
         } else {
             console.error("Form validation failed.");

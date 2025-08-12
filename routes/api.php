@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\MoneyAccountTransactionController;
+use App\Http\Resources\UserResource;
 use App\Models\MoneyAccountTransaction;
 use App\Models\Service;
 use App\Models\Laboratory;
@@ -59,9 +60,7 @@ Route::get('/', function(){
 Route::middleware('auth:sanctum')->group(function () {
 
     // Authenticated user route
-    Route::get('/user', function (Request $request) {
-        return $request->user();
-    });
+    Route::get('/me', [UserController::class, 'me']);
 
     // Resource routes that require authentication
     Route::apiResource('/expenseCategories', ExpenseCategoryController::class);
@@ -126,6 +125,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/moneyTransfer', MoneyTransferController::class);
     Route::apiResource('/peopleAccount', PeopleAccountController::class);
     Route::apiResource('/salary', SalaryController::class);
+  
+
 
     
     
@@ -133,8 +134,19 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::post('/generatePaySlip', [PeopleAccountTransactionController::class, 'generatePaySlip']);
 Route::apiResource('/peopleAccountTransaction', PeopleAccountTransactionController::class);
+
 Route::post('/paySalary', [PeopleAccountTransactionController::class, 'paySalary']);
 Route::post('/payCureCycle', [PeopleAccountTransactionController::class, 'payCureCycle']);
-Route::post('/inBoundLabPayment', [PeopleAccountTransactionController::class, 'inBoundLabPayment']);
 Route::post('/outBoundLabPayment', [PeopleAccountTransactionController::class, 'outBoundLabPayment']);
+Route::post('/inBoundLabPayment', [PeopleAccountTransactionController::class, 'inBoundLabPayment']);
+Route::post('/billExpensePayment', [PeopleAccountTransactionController::class, 'billExpensePayment']);
+Route::get('/reset-password/{token}', function ($token) {
+    return view('auth.reset-password', ['token' => $token]);
+})->name('password.reset');
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::post('/forgot-password', [AuthController::class, 'sendResetLink']);
+Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 

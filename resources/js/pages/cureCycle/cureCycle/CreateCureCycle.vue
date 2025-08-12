@@ -22,6 +22,7 @@
                         type="date"
                         format="YYYY/MM/DD"
                         :locale-config="LocaleConfigs"
+                        :max="new Date().toISOString().split('T')[0]"
                     />
                 </div>
 
@@ -149,6 +150,7 @@
                                     v-model="pro.quantity"
                                     variant="outlined"
                                     type="number"
+                                    :rules="[rules.required, rules.positive]"
                                     density="compact"
                                     class="w-75"
                                 >
@@ -159,6 +161,7 @@
                                 <v-text-field
                                     v-if="formData.peopleId !== null"
                                     v-model="pro.cost"
+                                    :rules="[rules.required, rules.positive]"
                                     variant="outlined"
                                     density="compact"
                                     class="w-75"
@@ -212,6 +215,8 @@
                         :label="$t('paid')"
                         class="w-100"
                         density="compact"
+                        :rules="[rules.required, rules.positive, rules.maxPaid]"
+                        type="number"
                     >
                         <div @click="changeCurrency" style="cursor: pointer">
                             <span class="paidSpan">
@@ -249,6 +254,7 @@ import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 import { useCureRepository } from "@/store/CureRepository";
 import { LocaleConfigs } from "../../../LocaleConfigs";
+import { toast } from "vue3-toastify"; // Add this at the top if not already
 
 const CureRepository = useCureRepository();
 const CalcFetchProduct = (index) => {
@@ -282,8 +288,13 @@ const formData = reactive({
 const formRef = ref(null);
 const rules = {
     required: (value) => !!value || "This field is required.",
+    positive: (value) => value >= 0 || "Negative values are not allowed.",
     name: (value) =>
         /^[a-zA-Z\u0600-\u06FF\s]*$/.test(value) || "Invalid name.",
+    maxPaid: (v) =>
+        v <= totalSum.value ||
+        t("validation.overpaid") ||
+        "Paid cannot exceed total.",
 };
 
 const multiple = (pro) => {
@@ -333,22 +344,46 @@ const Duo = computed(() => {
 
 const createEarning = async () => {
     const isValid = await formRef.value.validate();
-    if (isValid) {
-        formData.services.map((data) => (data.serviceId = data.id));
-        await CureRepository.CreateCure(formData);
-        formData.services = [];
-        CureRepository.services = [];
 
-        // Reset other formData fields
-        formData.grandTotal = "";
-        formData.patientId = "";
-        formData.startDate = ""; // Reset to today's date
-        formData.description = "";
-        formData.paid = "";
-        formData.status = "";
+    if (!isValid) return;
 
-        console.log("Form submitted and cleared successfully!");
+    if (formData.paid > totalSum.value) {
+        toast.error(t("validation.overpaid") || "Amount paid cannot exceed total.");
+        return;
     }
+
+    // Optional: also prevent negative total
+    if (totalSum.value <= 0) {
+        toast.error(t("validation.totalInvalid") || "Total must be greater than 0.");
+        return;
+    }
+
+    // Optional: also check if startDate is not future (safety double-check)
+    const today = new Date().toISOString().split("T")[0];
+    const selected = new Date(formData.startDate).toISOString().split("T")[0];
+    if (selected > today) {
+        alert(
+            t("validation.noFutureDate") ||
+                "Start date cannot be in the future."
+        );
+        return;
+    }
+
+    formData.services.map((data) => (data.serviceId = data.id));
+    await CureRepository.CreateCure(formData);
+
+    // Reset
+    formData.services = [];
+    CureRepository.services = [];
+
+    formData.grandTotal = "";
+    formData.patientId = "";
+    formData.startDate = "";
+    formData.description = "";
+    formData.paid = "";
+    formData.status = "";
+
+    console.log("Form submitted and cleared successfully!");
 };
 
 const saveData = async (id) => {

@@ -45,10 +45,12 @@ class TransactionType
                 return self::OPERATION;
             case OperationType::OUT_BOUND_LAB_PAYMENT:
                 return self::PAYMENT;
-            case OperationType::IN_BOUND_LAB_PAYMNET:
+            case OperationType::IN_BOUND_LAB_PAYMENT:
                 return self::PAYMENT;
             case OperationType::CURE_CYLCE_PAYMENT:
                 return self::PAYMENT;
+            case OperationType::BILL_EXPENSE_PAYMENT:
+                return self::PAYMENT;    
              
             default:
                 throw new InvalidArgumentException("Invalid operation type: $operationType");

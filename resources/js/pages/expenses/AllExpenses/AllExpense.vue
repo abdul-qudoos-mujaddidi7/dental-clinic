@@ -116,7 +116,6 @@
                                 id="pdf-section"
                                 ref="pdfTable"
                                 class="export-table"
-                               
                             >
                                 <v-data-table-server
                                     :dir="dir"
@@ -160,12 +159,6 @@
                                             <v-list>
                                                 <v-list-item>
                                                     <v-list-item-title
-                                                        v-if="
-                                                            AuthRepository.permissions &&
-                                                            AuthRepository.permissions.includes(
-                                                                'editExpense'
-                                                            )
-                                                        "
                                                         @click="edit(item)"
                                                         class="cursor-pointer d-flex gap-3 justify-left pb-3"
                                                     >
@@ -234,18 +227,18 @@ const exportRef = ref(null);
 
 // Data you are exporting
 const flattenedExpenses = computed(() =>
-  ExpenseRepository.Expenses.map((item) => ({
-    date: item.date,
-    reference: item.reference,
-    addedBy: item.addedBy,
-    expenseCategory: item.expenseCategory?.name ?? "",
-    amount: item.amount,
-  }))
+    ExpenseRepository.Expenses.map((item) => ({
+        date: item.date,
+        reference: item.reference,
+        addedBy: item.addedBy,
+        expenseCategory: item.expenseCategory?.name ?? "",
+        amount: item.amount,
+    }))
 );
 
 // Trigger PDF download from the child component
 const downloadPDF = () => {
-  exportRef.value?.exportToPDF?.();
+    exportRef.value?.exportToPDF?.();
 };
 // ===================
 // bulk delete
@@ -267,7 +260,7 @@ const sendSelectedIds = () => {
 };
 // direction
 const dir = computed(() => {
-    return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
+    return ["fa", "pa"].includes(locale.value) ? "rtl" : "ltr";
 });
 
 // delete and update Create

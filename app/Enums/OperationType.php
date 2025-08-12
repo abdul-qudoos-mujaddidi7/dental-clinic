@@ -28,7 +28,8 @@ class OperationType
     const CURE_CYLCE = 'cure_cycle';
 
     const OUT_BOUND_LAB_PAYMENT = 'out_bound_lab_payment';
-    const IN_BOUND_LAB_PAYMNET = 'in_bound_lab_payment';
+    const BILL_EXPENSE_PAYMENT = 'bill_expense_payment';
+    const IN_BOUND_LAB_PAYMENT = 'in_bound_lab_payment';
     const CURE_CYLCE_PAYMENT = 'cure_cycle_payment';
 
 
@@ -47,8 +48,9 @@ class OperationType
             self::IN_BOUND_LAB,
             self::CURE_CYLCE,
             self::OUT_BOUND_LAB_PAYMENT,
-            self::IN_BOUND_LAB_PAYMNET,
-            self::CURE_CYLCE_PAYMENT
+            self::IN_BOUND_LAB_PAYMENT,
+            self::CURE_CYLCE_PAYMENT,
+            self::BILL_EXPENSE_PAYMENT
         ];
     }
 

@@ -133,7 +133,7 @@ const CreateDialogShow = () => {
 };
 
 const dir = computed(() => {
-    return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
+  return ["fa", "pa"].includes(locale.value) ? "rtl" : "ltr";
 });
 
 const edit = (item) => {
@@ -156,11 +156,11 @@ const deleteItem = async (item) => {
     await LeadRepository.DeleteCategory(item.id);
 };
 // header
-const headers = [
+const headers = computed(()=> [
     { title: t("name"), key: "name", align: "start", sortable: false },
     { title: t("items"), key: "items", align: "center", sortable: false },
     { title: t("action"), key: "action", align: "end", sortable: false },
-];
+]);
 </script>
 
 <style scoped>

@@ -1,6 +1,28 @@
 {
-    "viewEmployee": "د  کارکوونکی شودنه",
+    "toast": {
+        "loginSuccess": "بریالی ننوت!",
+        "loginFailed": "ننوتل ناکام شول. مهرباني وکړئ بیا هڅه وکړئ."
+    },
+    "login": {
+        "title": "ننوتل",
+        "email": "برېښنالیک",
+        "password": "خپل پټنوم ولیکئ",
+        "button": "ننوزئ",
+        "forgot": "پټنوم مو هېر شوی؟"
+    },
+    "pashto": "پښتو",
+    "validation": {
+        "required": "دا برخه لازمي ده",
+        "email": "برېښنالیک ناسم دی",
+        "passwordLength": "پټنوم باید لږ تر لږه ۳ توري ولري",
+        "bothFields": "برېښنالیک او پټنوم دواړه لازمي دي",
+        "formBroken": "فورمه خرابه شوې. مهرباني وکړئ پاڼه تازه کړئ",
+        "noFutureDate": "د راتلونکو نیټو انتخاب اجازه نه لري"
 
+    },
+    "viewEmployee": "د  کارکوونکی شودنه",
+    "print": "چاپ",
+    "selectLanguage": "ژبه وټاکئ",
     "createPayment": "تادیه جوړه کړئ",
     "showPayment": "تادیه وښایاست",
     "paySalary": "معاش ورکړئ",

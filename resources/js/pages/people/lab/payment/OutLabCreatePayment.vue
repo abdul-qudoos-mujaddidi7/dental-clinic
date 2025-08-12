@@ -66,7 +66,7 @@
                             ></v-text-field>
 
                             <v-textarea
-                                v-model="formData.note"
+                                v-model="formData.description"
                                 variant="outlined"
                                 label="Details "
                                 class="pb-3"
@@ -100,13 +100,14 @@ const PeopleRepository = usePeopleRepository();
 const formRef = ref(null);
 
 const formData = reactive({
-    people_id: PeopleRepository.peopleId,
-    outboundId: PeopleRepository.labIdForPayment,
-    id: PeopleRepository.paymentLab,
+    people_id:
+        PeopleRepository.peopleId || PeopleRepository.paymentLab?.people?.id,
+    parent_record_id: PeopleRepository.labIdForPayment,
+    id: PeopleRepository.paymentLab.id,
     amount: PeopleRepository.paymentLab.amount,
     accountId: PeopleRepository.paymentLab.accountId,
     date: PeopleRepository.paymentLab.date,
-    note: PeopleRepository.paymentLab.note,
+    description: PeopleRepository.paymentLab.note,
 });
 const rules = {
     required: (value) => !!value || "This field is required.",

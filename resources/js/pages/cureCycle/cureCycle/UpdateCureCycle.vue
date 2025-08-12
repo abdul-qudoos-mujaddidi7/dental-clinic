@@ -107,9 +107,8 @@
                         <tr>
                             <th scope="col" class="px-3 py-3 text-start">#</th>
                             <th scope="col" class="px-3 py-3 text-start">
-                                                               {{ t("service") }}
                                 {{ t("service") }}
-
+                                {{ t("service") }}
                             </th>
                             <th scope="col" class="px-3 py-3 text-start">
                                 {{ t("qty") }}
@@ -143,6 +142,7 @@
                                     variant="outlined"
                                     density="compact"
                                     class="w-75"
+                                    :rules="[rules.required, rules.positive]"
                                 ></v-text-field>
                             </td>
                             <td class="pt-2 pb-0 text-center w-[14rem]">
@@ -151,6 +151,7 @@
                                     variant="outlined"
                                     density="compact"
                                     class="w-75"
+                                    :rules="[rules.required, rules.positive]"
                                 ></v-text-field>
                             </td>
                             <td class="pt-2 text-center pb-0 w-[14rem]">
@@ -163,7 +164,7 @@
                                 ></v-autocomplete>
                             </td>
                             <td class="text-center">
-                                <span>{{ pro.total}}</span>
+                                <span>{{ pro.total }}</span>
                             </td>
                             <td class="px-3 text-end">
                                 <v-icon
@@ -193,7 +194,7 @@
                         v-model="formData.paid"
                         variant="outlined"
                         :label="$t('paid')"
-                    
+                        :rules="[rules.positive, rules.maxPaid]"
                         class="w-100"
                         density="compact"
                     >
@@ -203,7 +204,6 @@
                             </span>
                         </div>
                         {{ grandTotal }}
-
                     </v-text-field>
                 </div>
             </div>
@@ -219,7 +219,9 @@
                 </v-textarea>
             </div>
             <div class="d-flex flex-row-reverse mt-6">
-                <v-btn color="#112F53" @click="update"> {{ t("update") }}</v-btn>
+                <v-btn color="#112F53" @click="update">
+                    {{ t("update") }}</v-btn
+                >
             </div>
         </div>
     </div>
@@ -282,16 +284,20 @@ CureRepository.FetchCure(routeParams.params.id).then((res) => {
     formData.paid = cure.paid;
     formData.status = cure.status;
 
-    console.log(formData.grandTotal, "Initial grand total", formData.dentistId ,'den id');
+    console.log(
+        formData.grandTotal,
+        "Initial grand total",
+        formData.dentistId,
+        "den id"
+    );
 });
-console.log()
+console.log();
 
 // const multiple = (pro) => {
 //     const quantity = parseFloat(pro.quantity) || 0;
 //     const cost = parseFloat(pro.cost) || 0;
 //     return quantity * cost;
 // };
-
 
 // // Computed property to calculate the total
 // const totalSum = computed(() => {
@@ -313,18 +319,26 @@ console.log()
 const combinedServices = computed(() => {
     return [...formData.services];
 });
-watch(combinedServices, (newValues) => {
-  newValues.forEach((pro) => {
-    console.log("Row:", pro);
-    pro.total = (parseFloat(pro.quantity) || 0) * (parseFloat(pro.cost) || 0);
-    console.log("Updated Total:", pro.total);
-  });
-}, { deep: true });
-
+watch(
+    combinedServices,
+    (newValues) => {
+        newValues.forEach((pro) => {
+            console.log("Row:", pro);
+            pro.total =
+                (parseFloat(pro.quantity) || 0) * (parseFloat(pro.cost) || 0);
+            console.log("Updated Total:", pro.total);
+        });
+    },
+    { deep: true }
+);
 
 const formRef = ref(null);
 const rules = {
     required: (value) => !!value || "This field is required.",
+    positive: (value) => value >= 0 || "Negative values are not allowed.",
+         maxPaid: (v) =>
+    v <= totalSum.value || t("validation.overpaid") || "Paid cannot exceed total.",
+
     name: (value) =>
         /^[a-zA-Z\u0600-\u06FF\s]*$/.test(value) || "Invalid name.",
 };
@@ -342,7 +356,8 @@ const totalSum = computed(() => {
 
     if (Array.isArray(CureRepository.cure.servicesDetails)) {
         for (const item of CureRepository.cure.servicesDetails) {
-            total += (parseFloat(item.quantity) || 0) * (parseFloat(item.cost) || 0);
+            total +=
+                (parseFloat(item.quantity) || 0) * (parseFloat(item.cost) || 0);
         }
     }
 
@@ -466,7 +481,6 @@ const changeCurrency = () => {
 };
 CureRepository.fetchAccountDataForCreate();
 formData.startDate = CureRepository.getTodaysDate();
-
 
 CureRepository.Patients();
 CureRepository.Doctor();

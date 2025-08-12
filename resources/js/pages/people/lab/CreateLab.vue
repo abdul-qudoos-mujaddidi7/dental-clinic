@@ -122,7 +122,7 @@
                                     type="number"
                                     density="compact"
                                     class="w-75"
-                                    hide-details
+                                    :rules="[rules.required, rules.positive]"
                                     single-line
                                 ></v-text-field>
                             </td>
@@ -133,7 +133,7 @@
                                     variant="outlined"
                                     density="compact"
                                     class="w-75"
-                                    hide-details
+                                    :rules="[rules.required, rules.positive]"
                                     single-line
                                 >
                                     <span
@@ -175,6 +175,7 @@
                         label="Paid"
                         class="w-100"
                         density="compact"
+                        :rules="[rules.positive]"
                     >
                         <div @click="changeCurrency" style="cursor: pointer">
                             <span class="paidSpan">
@@ -208,13 +209,15 @@ import AppBar from "../../../components/AppBar.vue";
 import { reactive, computed, ref, watch, onMounted } from "vue";
 import { LocaleConfigs } from "../../../LocaleConfigs";
 import { usePeopleRepository } from "@/store/PeopleRepository";
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
 
 const PeopleRepository = usePeopleRepository();
 
 const formData = reactive({
     tooths: PeopleRepository.services || [],
     grandTotal: "",
-    supplierId:"",
+    supplierId: "",
     toothId: "",
     returnDate: "",
     issueAt: "",
@@ -226,6 +229,8 @@ const formData = reactive({
 const formRef = ref(null);
 const rules = {
     required: (value) => !!value || "This field is required.",
+    positive: (value) => value >= 0 || "Negative values are not allowed.",
+
     name: (value) =>
         /^[a-zA-Z\u0600-\u06FF\s]*$/.test(value) || "Invalid name.",
 };
@@ -277,13 +282,20 @@ const Duo = computed(() => {
 
 const createEarning = async () => {
     const isValid = await formRef.value.validate();
-    if (isValid) {
+    if (!isValid) {
+        toast.error("مهرباني وکړئ ټول معلومات سم ډک کړئ");
+        return;
+    }
+
+    try {
         formData.tooths.map((data) => (data.serviceId = data.id));
         await PeopleRepository.CreateLaboratory(formData);
+
+        toast.success("بریالی اضافه شو");
+
+        // Reset after submission
         formData.tooths = [];
         PeopleRepository.services = [];
-
-        // Reset other formData fields
         formData.grandTotal = "";
         formData.toothId = "";
         formData.returnDate = PeopleRepository.getTodaysDate();
@@ -291,9 +303,9 @@ const createEarning = async () => {
         formData.description = "";
         formData.paid = "";
         formData.status = "";
-        
-
-        console.log("Form submitted and cleared successfully!");
+    } catch (error) {
+        toast.error("خطا رامنځته شوه");
+        console.error(error);
     }
 };
 

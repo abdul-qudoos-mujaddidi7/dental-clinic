@@ -134,6 +134,14 @@
                                             class="w-10 d-flex"
                                         ></v-checkbox>
                                     </template>
+                                    <template v-slot:item.printBtn="{ item }">
+                                        <v-btn
+                                            @click="generateCurePrint(item)"
+                                            color="primaryOld"
+                                            >Print</v-btn
+                                        >
+                                    </template>
+
                                     <template
                                         v-slot:item.paymentStatus="{ item }"
                                     >
@@ -295,10 +303,92 @@ import { useAuthRepository } from "../../../store/AuthRepository";
 const AuthRepository = useAuthRepository();
 import Export from "../../../components/ExportComponent.vue";
 
+import { onMounted } from "vue";
+import { useRoute } from "vue-router";
+const route = useRoute();
+
+onMounted(() => {
+    if (route.query.print === "true") {
+        setTimeout(() => {
+            window.print(); // opens print dialog
+        }, 1000); // wait for DOM to render
+    }
+});
+
 const dir = computed(() => {
     return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
 });
 // export component
+import { createApp, h } from "vue";
+import html2pdf from "html2pdf.js";
+import PrintCure from "./PrintCure.vue";
+
+
+
+const generateCurePrint = async (cure) => {
+    const CureRepository = useCureRepository();
+    await CureRepository.FetchCure(cure.id); // Fetch and wait
+    const fullCure = CureRepository.cure;     // Get the fetched data
+
+    if (!fullCure) {
+        console.error("Cure not found!");
+        return;
+    }
+
+    const container = document.createElement("div");
+    document.body.appendChild(container);
+
+    let componentInstance = null;
+
+    const app = createApp({
+        render() {
+            return h(PrintCure, {
+                cure: fullCure,
+                ref: (el) => {
+                    componentInstance = el;
+                },
+            });
+        },
+    });
+
+    app.mount(container);
+
+    setTimeout(() => {
+        if (componentInstance?.printContent) {
+            html2pdf()
+                .set({
+                    margin: 0.5,
+                    filename: `${fullCure.patient?.name || "cure"}_cycle.pdf`,
+                    image: { type: "jpeg", quality: 0.98 },
+                    html2canvas: { scale: 2 },
+                    jsPDF: {
+                        unit: "in",
+                        format: "a4",
+                        orientation: "portrait",
+                    },
+                })
+                .from(componentInstance.printContent)
+                .output("bloburl")
+                .then((pdfUrl) => {
+                    const printWindow = window.open(pdfUrl);
+                    if (printWindow) {
+                        printWindow.onload = () => {
+                            printWindow.focus();
+                            printWindow.print();
+                        };
+                    }
+                    app.unmount();
+                    container.remove();
+                });
+        } else {
+            console.error("printContent not found");
+            app.unmount();
+            container.remove();
+        }
+    }, 500);
+};
+
+
 
 const exportDialog = ref(false);
 const exportRef = ref(null);
@@ -428,6 +518,7 @@ const headers = [
         align: "center",
         sortable: false,
     },
+    { title: t("print"), key: "printBtn", align: "center", sortable: false },
 
     { title: t("action"), key: "action", align: "center", sortable: false },
 ];
@@ -442,5 +533,16 @@ const headers = [
     top: 0.7rem;
     left: 0.7rem;
     z-index: 1;
+}
+@media print {
+    body {
+        background: white;
+        -webkit-print-color-adjust: exact;
+    }
+    .v-btn,
+    .v-app-bar,
+    .no-print {
+        display: none !important;
+    }
 }
 </style>

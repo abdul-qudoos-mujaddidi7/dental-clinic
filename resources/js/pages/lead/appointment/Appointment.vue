@@ -24,9 +24,8 @@
                         hide-details
                         v-model="LeadRepository.appointmentSearch"
                     ></v-text-field>
-                    
                 </div>
-                <div class="btn d-flex" >
+                <div class="btn d-flex">
                     <v-btn variant="outlined" color="primaryOld" class="px-6">
                         {{ $t("filter") }}
                     </v-btn>
@@ -75,6 +74,19 @@
                                     hover
                                     class="w-100 mx-auto"
                                 >
+                                    <template v-slot:item.printBtn="{ item }">
+                                        <v-btn
+                                            color="primaryOld"
+                                            @click="
+                                                generateAppointmentPrint(
+                                                    item
+                                                )
+                                            "
+                                        >
+                                            {{ $t("print") }}
+                                        </v-btn>
+                                    </template>
+
                                     <template v-slot:item.action="{ item }">
                                         <v-menu>
                                             <template
@@ -134,6 +146,11 @@
             </div>
         </div>
     </div>
+    <PrintAppointment
+        v-if="showPrint"
+        :appointment="selectedAppointment"
+        @close="showPrint = false"
+    />
 </template>
 
 <script setup>
@@ -147,6 +164,71 @@ const AuthRepository = useAuthRepository();
 import { useI18n } from "vue-i18n";
 const { t, locale } = useI18n();
 const LeadRepository = useLeadRepository();
+import PrintAppointment from "./PrintAppointment.vue";
+const showPrint = ref(false);
+const selectedAppointment = ref(null);
+import { createApp, h } from "vue";
+import html2pdf from "html2pdf.js";
+
+
+const generateAppointmentPrint = async (appointment) => {
+    if (!appointment) {
+        console.error("Appointment not found!");
+        return;
+    }
+
+    const container = document.createElement("div");
+    document.body.appendChild(container);
+
+    let componentInstance = null;
+
+    const app = createApp({
+        render() {
+            return h(PrintAppointment, {
+                appointment: appointment,
+                ref: (el) => {
+                    componentInstance = el;
+                },
+            });
+        },
+    });
+
+    app.mount(container);
+
+    setTimeout(() => {
+        if (componentInstance?.printContent) {
+            html2pdf()
+                .set({
+                    margin: 0.5,
+                    filename: `${appointment.patients?.name || "appointment"}_detail.pdf`,
+                    image: { type: "jpeg", quality: 0.98 },
+                    html2canvas: { scale: 2 },
+                    jsPDF: {
+                        unit: "in",
+                        format: "a4",
+                        orientation: "portrait",
+                    },
+                })
+                .from(componentInstance.printContent)
+                .output("bloburl")
+                .then((pdfUrl) => {
+                    const printWindow = window.open(pdfUrl);
+                    if (printWindow) {
+                        printWindow.onload = () => {
+                            printWindow.focus();
+                            printWindow.print();
+                        };
+                    }
+                    app.unmount();
+                    container.remove();
+                });
+        } else {
+            console.error("printContent not found");
+            app.unmount();
+            container.remove();
+        }
+    }, 500);
+};
 
 // bulk delete
 
@@ -158,7 +240,7 @@ const CreateDialogShow = () => {
 };
 
 const dir = computed(() => {
-    return locale.value === "fa"  ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
+    return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
 });
 
 const edit = (item) => {
@@ -198,6 +280,7 @@ const headers = [
     { title: t("addedBy"), key: "userName", align: "start", sortable: false },
     { title: t("time"), key: "time", align: "start", sortable: false },
     { title: t("status"), key: "status", align: "start", sortable: false },
+    { title: t("print"), key: "printBtn", align: "center", sortable: false },
     { title: t("action"), key: "action", align: "end", sortable: false },
 ];
 </script>

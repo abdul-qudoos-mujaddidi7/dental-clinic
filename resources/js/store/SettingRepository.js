@@ -134,14 +134,11 @@ export let useSettingRepository = defineStore("SettingRepository", {
 
                 this.createDialog = false;
 
-         
                 this.FetchSystemSettings({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });
-            } catch (err) {
-          
-            }
+            } catch (err) {}
         },
         async DeleteSystemSetting(id) {
             this.isLoading = true;
@@ -165,93 +162,7 @@ export let useSettingRepository = defineStore("SettingRepository", {
                 this.error = err;
             }
         },
-        // role permissions == role_permissions
-        async fetchRolePermissions({ page, itemsPerPage }) {
-            this.loading = true;
 
-            const response = await axios.get(
-                `role_permissions?page=${page}&perPage=${itemsPerPage}&search=${this.permissionSearch}`
-            );
-            this.permissions = response.data.data;
-            this.totalItems = response.data.meta.total;
-            this.loading = false;
-        },
-        async fetchRolePermission(id) {
-            // this.error = null;
-            try {
-                const response = await axios.get(`role_permissions/${id}`);
-
-                this.permission = response.data.data;
-                console.log(this.permission);
-            } catch (err) {
-                // this.error = err.message;
-            }
-        },
-        async UpdateRolePermission(id, data) {
-            try {
-                const config = {
-                    method: "PUT",
-                    url: "role_permissions/" + id,
-
-                    data: data,
-                };
-
-                // Using Axios to make a post request with async/await and custom headers
-                const response = await axios(config);
-                this.router.push("/rolePermissions");
-                this.fetchRolePermissions({
-                    page: this.page,
-                    itemsPerPage: this.itemsPerPage,
-                });
-            } catch (err) {
-                // If there's an error, set the error in the store
-                this.error = err;
-            }
-        },
-        async CreateRolePermission(formData) {
-            console.log(formData);
-            try {
-                // Adding a custom header to the Axios request
-                const config = {
-                    method: "POST",
-                    url: "role_permissions",
-
-                    data: formData,
-                };
-
-                // Using Axios to make a GET request with async/await and custom headers
-                const response = await axios(config);
-                this.router.push("/rolePermissions");
-                this.fetchRolePermissions({
-                    page: this.page,
-                    itemsPerPage: this.itemsPerPage,
-                });
-            } catch (err) {
-                // If there's an error, set the error in the stor
-            }
-        },
-        async DeleteRolePermission(id) {
-            this.isLoading = true;
-            this.setting = [];
-            this.error = null;
-
-            try {
-                const config = {
-                    method: "DELETE",
-                    url: "role_permissions/" + id,
-                };
-
-                const response = await axios(config);
-
-                // this.setting = response.data.data;
-                this.fetchRolePermissions({
-                    page: this.page,
-                    itemsPerPage: this.itemsPerPage,
-                });
-            } catch (err) {
-                this.error = err;
-            }
-        },
         // service Group
         async FetchServiceGroups({ page, itemsPerPage }) {
             this.loading = true;
@@ -566,12 +477,34 @@ export let useSettingRepository = defineStore("SettingRepository", {
                 // Using Axios to make a GET request with async/await and custom headers
                 const response = await axios(config);
                 this.createDialog = false;
+                toast.success("Money Account Created successful!", {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
                 this.fetchMoneyAccounts({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });
             } catch (err) {
-                // If there's an error, set the error in the stor
+                this.error =
+                    err.response?.data?.message ||
+                    "Failed to create Money Account. Please try again.";
+
+                // Show toast
+                toast.error(this.error, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
             }
         },
         async DeleteMoneyAcc(id) {

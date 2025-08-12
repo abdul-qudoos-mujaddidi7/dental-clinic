@@ -2,13 +2,15 @@ import { defineStore } from "pinia";
 import { ref, reactive, resolveComponent } from "vue";
 import { axios } from "../axios";
 import { useRouter } from "vue-router";
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
 
 export let useLaboratoryRepository = defineStore("LaboratoryRepository", {
     state() {
         return {
             isEditMode: ref(false),
-            mainLabPaymentID:ref(""),
-            peopleId:ref(""),
+            mainLabPaymentID: ref(""),
+            peopleId: ref(""),
 
             router: useRouter(),
 
@@ -37,11 +39,11 @@ export let useLaboratoryRepository = defineStore("LaboratoryRepository", {
             customersFor: reactive([]),
             //money acc
             account: reactive([]),
-            // payment 
+            // payment
 
-            PaymentLabSearch:ref(""),
-            paymentLabs:reactive([]),
-            paymentLab:reactive([]),
+            PaymentLabSearch: ref(""),
+            paymentLabs: reactive([]),
+            paymentLab: reactive([]),
         };
     },
     actions: {
@@ -203,12 +205,35 @@ export let useLaboratoryRepository = defineStore("LaboratoryRepository", {
                 // Using Axios to make a GET request with async/await and custom headers
                 const response = await axios(config);
                 this.router.push("/mainLaboratory");
+                toast.success("InBound Laboratory Created successful!", {
+                    position: "top-right",
+                    autoClose: 4000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
                 this.FetchLaboratories({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });
             } catch (err) {
-                // If there's an error, set the error in the stor
+                // Set the error message
+                this.error =
+                    err.response?.data?.message ||
+                    "Failed to create InBound Laboratory. Please try again.";
+
+                // Show toast
+                toast.error(this.error, {
+                    position: "top-right",
+                    autoClose: 4000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
             }
         },
         async UpdateLaboratory(id, data) {
@@ -260,10 +285,10 @@ export let useLaboratoryRepository = defineStore("LaboratoryRepository", {
             console.log(this.account);
         },
         //
-        async FetchLabPayments({ page, itemsPerPage }) {
+        async FetchLabPayments(id) {
             this.loading = true;
             const response = await axios.get(
-                `inBoundLabPayment?page=${page}&perPage=${itemsPerPage}&${this.PaymentLabSearch}`
+                `showPayments?parent_id=${id}&operation_type=in_bound_lab_payment`
             );
             this.paymentLabs = response.data.data;
             // this.totalItems = response.data.meta.total;
@@ -273,7 +298,9 @@ export let useLaboratoryRepository = defineStore("LaboratoryRepository", {
             // this.loading = true;
             console.log(id);
             try {
-                const response = await axios.get(`inBoundLabPayment/${id}`);
+                const response = await axios.get(
+                    `peopleAccountTransaction/${id}`
+                );
                 this.paymentLab = response.data.data;
                 console.log(this.paymentLab);
             } catch (err) {
@@ -290,12 +317,35 @@ export let useLaboratoryRepository = defineStore("LaboratoryRepository", {
                 };
                 const response = await axios(config);
                 this.mainLabCreatePaymentDialog = false;
-                this.FetchLabPayments({
-                    page: this.page,
-                    itemsPerPage: this.itemsPerPage,
-                });
+                this.createDialog = true;
+                toast.success(
+                    " InBound Laboratory Payment Created successful!",
+                    {
+                        position: "top-right",
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    }
+                );
+                this.FetchLabPayments(this.mainLabPaymentID);
             } catch (err) {
-                this.error = err;
+                this.error =
+                    err.response?.data?.message ||
+                    "Failed to Create InBound Laboratory Payment. Please try again.";
+
+                // Show toast
+                toast.error(this.error, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
             }
         },
         async UpdateLabPayment(id, formData) {
@@ -303,37 +353,53 @@ export let useLaboratoryRepository = defineStore("LaboratoryRepository", {
             try {
                 const config = {
                     method: "PUT",
-                    url: `inBoundLabPayment/${id}`,
+                    url: `peopleAccountTransaction/${id}`,
                     data: formData,
                 };
                 const response = await axios(config);
                 this.mainLabCreatePaymentDialog = false;
-                this.FetchLabPayments({
-                    page: this.page,
-                    itemsPerPage: this.itemsPerPage,
+                 toast.success("Inbound Laboratory Payment Updated successful!", {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
                 });
+                this.FetchLabPayments(this.mainLabPaymentID);
 
                 this.isEditMode = false;
             } catch (err) {
-                this.error = err;
+                      this.error =
+                    err.response?.data?.message ||
+                    "Failed to Update InBound Laboratory Payment. Please try again.";
+
+                // Show toast
+                toast.error(this.error, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
             }
         },
         async DeleteLabPayment(id) {
             try {
                 const config = {
                     method: "DELETE",
-                    url: `inBoundLabPayment/${id}`,
+                    url: `peopleAccountTransaction/${id}`,
                 };
                 const response = await axios(config);
-                this.FetchLabPayments({
-                    page: this.page,
-                    itemsPerPage: this.itemsPerPage,
-                });
+                this.FetchLabPayments(this.mainLabPaymentID);
             } catch (err) {
                 this.error = err;
             }
         },
-        // money account 
+        // money account
         async fetchMoneyAccountsFor() {
             this.loading = true;
 

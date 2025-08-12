@@ -62,7 +62,6 @@ class PeopleAccountTransactionRequest extends FormRequest
 
             PeopleAccountTransaction::COLUMN_DATE  => [
                 'required',
-                'date_format:Y/m/d'
             ],
 
         ];

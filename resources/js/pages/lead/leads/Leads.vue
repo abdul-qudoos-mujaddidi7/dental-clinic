@@ -236,8 +236,10 @@ const getStageName = (itemId) => {
 };
 
 const dir = computed(() => {
-    return locale.value === "fa" ? "rtl" : "ltr"; // Correctly set "rtl" and "ltr"
+  return ["fa", "pa"].includes(locale.value) ? "rtl" : "ltr";
 });
+
+
 
 // Function to get button color based on stage name
 const getStageColor = (stageName) => {
