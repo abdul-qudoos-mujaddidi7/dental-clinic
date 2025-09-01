@@ -16,22 +16,12 @@
         <!-- Styles -->
 
         @vite('resources/css/app.css')
-                   
- 
-
-        <!-- <link rel="stylesheet" href="{{ asset('build/assets/app-zzGLCxDt.css') }}"> -->
+                
     </head>
     <body class="antialiased">
     <div id="app"></div>
 
-
         @vite('resources/js/app.js')
-
-                                                          
-                            
-
-
-        <!-- <script src="{{ asset('build/assets/app-aUMbknpw.js') }}"></script> -->
 
     </body>
 </html>

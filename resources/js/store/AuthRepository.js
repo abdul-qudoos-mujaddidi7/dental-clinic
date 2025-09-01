@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { ref, reactive } from "vue";
 import { useRouter } from "vue-router";
-import { axios } from "../axios";
+import { axios, clearAuthToken, setAuthToken } from "../axios";
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
 import i18n from "@/i18n"; // Adjust the path correctly if it's in `src/i18n/index.js`
@@ -10,13 +10,24 @@ const { t } = i18n.global;
 
 // Helper functions for session storage
 const saveToSession = (key, value) => {
-    sessionStorage.setItem(key, JSON.stringify(value));
+  if (typeof value === "string") {
+    localStorage.setItem(key, value); // store raw string
+  } else {
+    localStorage.setItem(key, JSON.stringify(value));
+  }
 };
 
 const getFromSession = (key) => {
-    const value = sessionStorage.getItem(key);
-    return value ? JSON.parse(value) : null;
+  const value = localStorage.getItem(key);
+  if (!value) return null;
+
+  try {
+    return JSON.parse(value); // works for objects/numbers/arrays
+  } catch {
+    return value; // if it's a raw string, return as-is
+  }
 };
+
 
 // Helper function for toast notifications
 const showToast = (message, type = "success") => {
@@ -55,27 +66,31 @@ export let useAuthRepository = defineStore("AuthRepository", {
             this.rail = !this.rail;
         },
 
-        async Login(formData) {
+
+    async Login(formData) {
+        try {
+            this.isLoading = true;
             this.error = null;
+            const response = await axios.post("/login", formData);
+            const { access_token: token, user } = response.data;
 
-            try {
-                const response = await axios.post("/login", formData);
-                const { access_token: token, user } = response.data;
+            saveToSession("token", token);
+            saveToSession("user", user);
+            setAuthToken(token);
 
-                saveToSession("token", token);
-                saveToSession("user", user);
+            this.isLoggedIn = true; // Add this line
+            this.user = user;
 
-                axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+            await this.refreshPermissions();
+        } catch (err) {
+            this.error = err.response?.data?.message || t("toast.cureUpdateFailed");
+            this.isLoggedIn = false; // Ensure this is set to false on error
+            showToast(this.error, "error");
+        } finally {
+            this.isLoading = false;
+        }
+    },
 
-                await this.refreshPermissions();
-
-                showToast(t("toast.loginSuccess"));
-                this.router.push("/dashboard");
-            } catch (err) {
-                this.error = err.response?.data?.message || t("toast.cureUpdateFailed");
-                showToast(this.error, "error");
-            }
-        },
 
         async Logout() {
             this.error = null;
@@ -83,7 +98,8 @@ export let useAuthRepository = defineStore("AuthRepository", {
             try {
                 await axios.post("logout", { token: getFromSession("token") });
 
-                sessionStorage.clear();
+                localStorage.clear();
+                clearAuthToken();
 
                 showToast("Logout successful!");
                 setTimeout(() => {
@@ -98,7 +114,7 @@ export let useAuthRepository = defineStore("AuthRepository", {
         initialize() {
             this.permissions = getFromSession("permissions") || [];
             this.user = getFromSession("user") || null;
-            this.isLoggedIn = !!getFromSession("token");
+            this.isLoggedIn = getFromSession("token");
         },
 
         async fetchRolePermissions({ page, itemsPerPage }) {

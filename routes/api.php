@@ -60,7 +60,7 @@ Route::get('/', function(){
 Route::middleware('auth:sanctum')->group(function () {
 
     // Authenticated user route
-    Route::get('/me', [UserController::class, 'me']);
+    // Route::get('/me', [UserController::class, 'me']);
 
     // Resource routes that require authentication
     Route::apiResource('/expenseCategories', ExpenseCategoryController::class);

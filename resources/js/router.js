@@ -66,7 +66,7 @@ import Home from "./Home.vue";
 import ResetPassword from "./pages/Auth/ResetPassword.vue";
 
 const router = createRouter({
-    history: createWebHistory(),
+    history: createWebHistory('/'),
     routes: [
         { path: "/", component: Login, meta: "" },
         {
@@ -90,7 +90,8 @@ const router = createRouter({
             meta: { authentication: true },
             children: [
                 {
-                    path: "/dashboard",
+                    path: "/dashboard", // ✅ relative path
+                    name: "Dashboard",
                     alias: "/dashboard",
                     component: Dashboard,
                 },
@@ -211,19 +212,19 @@ const router = createRouter({
     ],
 });
 router.beforeEach(async function (to, from, next) {
-    if (to.meta.authentication && !sessionStorage.getItem("token")) {
+    if (to.meta.authentication && !localStorage.getItem("token")) {
         // If the route requires authentication and the user is not logged in, redirect to login page
         next("/");
     } else {
         // Check if the user is already authenticated and trying to access the login page
-        if (to.path === "/" && JSON.parse(sessionStorage.getItem("token"))) {
+        if (to.path === "/" && localStorage.getItem("token")) {
             // If the user is logged in, find the first route that the user has permission to access and redirect
             const userPermissions = JSON.parse(
-                sessionStorage.getItem("permissions")
+                localStorage.getItem("permissions")
             );
 
             if (!userPermissions) {
-                console.error("User permissions not found in sessionStorage.");
+                console.error("User permissions not found in localStorage.");
                 next("/login");
                 return;
             }
@@ -246,13 +247,13 @@ router.beforeEach(async function (to, from, next) {
             if (to.meta.permissions) {
                 try {
                     const userPermissions = JSON.parse(
-                        sessionStorage.getItem("permissions")
+                        localStorage.getItem("permissions")
                     );
 
                     if (!userPermissions) {
-                        // Handle case when user permissions are not found in sessionStorage
+                        // Handle case when user permissions are not found in localStorage
                         console.error(
-                            "User permissions not found in sessionStorage."
+                            "User permissions not found in localStorage."
                         );
                         next("/login");
                         return;
@@ -279,7 +280,6 @@ router.beforeEach(async function (to, from, next) {
             } else {
                 // If the route doesn't have permissions defined, proceed to the route
                 next();
-                console.log("mm");
             }
         }
     }

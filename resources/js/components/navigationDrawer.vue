@@ -298,7 +298,7 @@ const SettingRepository = useSettingRepository();
 SettingRepository.FetchSystemSettings();
 const route = useRoute();
 const AuthRepository = useAuthRepository();
-console.log(AuthRepository.user, "data");
+
 const dialog = ref(false);
 
 const user = ref({
@@ -308,12 +308,13 @@ const user = ref({
 });
 
 onMounted(() => {
-    const storedUser = sessionStorage.getItem("user");
+    const storedUser = localStorage.getItem("user");
+
     if (storedUser) {
         const parsed = JSON.parse(storedUser);
-        user.value.name = parsed.name;
-        user.value.email = parsed.email;
-        user.value.photo = parsed.photo;
+        user.value.name = parsed.data.firstName + " " + parsed.data.lastName;
+        user.value.email = parsed.data.email;
+        user.value.photo = parsed.data.photo;
     }
 });
 

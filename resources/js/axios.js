@@ -8,36 +8,65 @@ axios.defaults.baseURL = "/api/";
 axios.defaults.headers.common["Accept"] = "application/json";
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
+// Enable credentials for cross-origin requests
+axios.defaults.withCredentials = true;
+
+// Normalize token string: trim and strip surrounding quotes
+const normalizeToken = (token) => {
+    if (!token) return null;
+    return String(token).trim().replace(/^['"]|['"]$/g, "");
+};
+
+// Helpers to set/clear token programmatically
+const setAuthToken = (token) => {
+    if (token) {
+        const normalizedToken = normalizeToken(token);
+        localStorage.setItem("token", normalizedToken);
+        axios.defaults.headers.common["Authorization"] = `Bearer ${normalizedToken}`;
+    } else {
+        clearAuthToken();
+    }
+};
+
+const clearAuthToken = () => {
+    localStorage.removeItem("token");
+    delete axios.defaults.headers.common["Authorization"];
+};
+
 // Request interceptor for auth token
 axios.interceptors.request.use(
-  (config) => {
-    const token = sessionStorage.getItem("token");
-    if (token) {
-      config.headers["Authorization"] = `Bearer ${token}`;
-    } else {
-      delete config.headers["Authorization"];
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
+    (config) => {
+        const token = normalizeToken(localStorage.getItem("token"));
+        if (token) {
+            config.headers = config.headers || {};
+            config.headers.Authorization = `Bearer ${token}`;
+        } else if (config.headers) {
+            delete config.headers.Authorization;
+        }
+        return config;
+    },
+    (error) => Promise.reject(error)
 );
 
 // Response interceptor for error handling
 axios.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response) {
-      if (error.response.status === 401) {
-        console.warn("Unauthorized - maybe redirect to login");
-        router.push("/login");
-        // You can trigger a logout or redirect here
-      }
+    (response) => response,
+    (error) => {
+        if (error.response) {
+            if (error.response.status === 401) {
+                console.warn("Unauthorized - redirecting to login");
+                clearAuthToken(); // Clear token on unauthorized
+                router.push("/login"); // Redirect to login page
+            }
+        }
+        console.error("API error:", error);
+        return Promise.reject(error);
     }
-    console.error("API error:", error);
-    return Promise.reject(error);
-  }
 );
 
-// Export axios for explicit import if needed
-export { axios };      // named export
-export default axios;  // default export
+// Helper to set content type for POST requests
+const setContentType = (contentType) => {
+    axios.defaults.headers.post["Content-Type"] = contentType;
+};
+
+export { axios, setContentType, setAuthToken, clearAuthToken };

@@ -4,9 +4,7 @@
             <div class="lang-switch">
                 <LangSwticher />
             </div>
-            <!-- Language Switch Button -->
 
-            <!-- Login Form -->
             <v-container class="fill-height d-flex align-center justify-center">
                 <v-form
                     @submit.prevent="loginFunc"
@@ -40,21 +38,21 @@
                             @click:append-inner="visible = !visible"
                             :rules="[rules.required, rules.password]"
                         ></v-text-field>
+
                         <v-btn
                             class="submit-btn"
                             color="primaryOld"
                             block
                             type="submit"
+                            :loading="isLoading"
+                            :disabled="isLoading"
                         >
-                            {{ $t("login.button") }}
+                            {{ isLoading ? $t("login.loading") : $t("login.button") }}
                         </v-btn>
 
                         <div class="text-end pt-4 text-primaryOld">
                             <router-link to="/forgot-password">
-                                <a
-                                    @click="goToForgotPassword"
-                                    class="forgot-link"
-                                >
+                                <a class="forgot-link">
                                     {{ $t("login.forgot") }}
                                 </a>
                             </router-link>
@@ -67,17 +65,13 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from "vue";
+import { ref, reactive, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
-
 import { useAuthRepository } from "@/store/AuthRepository";
-import AppBar from "../../components/AppBar.vue";
-import LangSwticher from "../../components/LangSwticher.vue";
+import LangSwticher from "@/components/LangSwticher.vue";
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
-
-const formIsValid = ref(false);
 
 const router = useRouter();
 const { t, locale } = useI18n();
@@ -89,6 +83,7 @@ const formData = reactive({
 });
 const visible = ref(false);
 const formRef = ref(null);
+const isLoading = computed(() => AuthRepository.isLoading);
 
 // Validation rules
 const rules = {
@@ -98,75 +93,38 @@ const rules = {
         (!!v && v.trim().length >= 3) || t("validation.passwordLength"),
 };
 
-const validateForm = async () => {
-    const result = await formRef.value?.validate();
-    formIsValid.value = !!result?.valid;
-};
-
-// Login
+// Login function - corrected version
 const loginFunc = async () => {
-    // 1. Check that both fields exist in the DOM
-    const emailInput = document.querySelector(
-        'input[type="text"][placeholder]'
-    );
-    const passwordInput = document.querySelector(
-        'input[type="password"], input[type="text"][placeholder="' +
-            t("login.password") +
-            '"]'
-    );
-
-    // 2. Validate that inputs are present and not empty
-    if (
-        !emailInput ||
-        !passwordInput ||
-        emailInput.value.trim().length === 0 ||
-        passwordInput.value.trim().length < 3
-    ) {
+    const isValid = await formRef.value?.validate();
+    if (!isValid.valid) {
         toast.error(t("validation.bothFields"));
-        return;
-    }
-
-    // 3. Vue validation
-    const isValid = await formRef.value?.validate?.();
-    if (!isValid?.valid) {
-        console.warn("Validation failed");
         return;
     }
 
     try {
         await AuthRepository.Login(formData);
-        console.log("Login successful");
-    } catch (err) {
-        console.error("Login failed", err);
+        
+        // Check if login was successful by verifying if user is logged in
+        if (AuthRepository.isLoggedIn) {
+            toast.success(t("login.success"));
+            router.push("/dashboard");
+        } else if (AuthRepository.error) {
+            toast.error(AuthRepository.error);
+        }
+    } catch (error) {
+        toast.error(t("login.error"));
     }
 };
 
-onMounted(() => {
-    const observer = new MutationObserver(() => {
-        const input = document.querySelector('input[type="password"]');
-        if (!input) formData.password = "";
-    });
 
-    observer.observe(document.body, {
-        childList: true,
-        subtree: true,
-    });
-});
-
-const goToForgotPassword = () => {};
 // Language switch logic
-const languages = [
-    { title: t("english"), lang: "en", icon: "/assets/english.png" },
-    { title: t("دری"), lang: "fa", icon: "/assets/dari.png" },
-    { title: t("پښتو"), lang: "pa", icon: "/assets/dari.png" },
-];
-
 const changeLanguage = (lang) => {
     locale.value = lang;
 };
 </script>
 
 <style scoped>
+/* Your existing styles remain the same */
 .forgot-link {
     font-size: 0.9rem;
     color: primaryOld;
