@@ -1,21 +1,43 @@
 import axios from "axios";
+import router from "./router";
 
-// Function to set the content type
-// const contentType = (appType) => {
-//     axios.defaults.headers.post["Content-Type"] = appType;
-// };
+// Set baseURL for all axios requests
+axios.defaults.baseURL = "/api/";
 
-// Set default base URL
-axios.defaults.baseURL = "http://127.0.0.1:8000/api/";
-// axios.defaults.baseURL = "https://omary.arzantelecom.com/api/";
+// Set default headers
+axios.defaults.headers.common["Accept"] = "application/json";
+axios.defaults.headers.post["Content-Type"] = "application/json";
 
-// Retrieve the token from session storage
+// Request interceptor for auth token
+axios.interceptors.request.use(
+  (config) => {
+    const token = sessionStorage.getItem("token");
+    if (token) {
+      config.headers["Authorization"] = `Bearer ${token}`;
+    } else {
+      delete config.headers["Authorization"];
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
-// Set the Authorization header with the Bearer token
-// axios.defaults.headers.common["Authorization"] =
-//     "Bearer " + sessionStorage.getItem("token");
+// Response interceptor for error handling
+axios.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response) {
+      if (error.response.status === 401) {
+        console.warn("Unauthorized - maybe redirect to login");
+        router.push("/login");
+        // You can trigger a logout or redirect here
+      }
+    }
+    console.error("API error:", error);
+    return Promise.reject(error);
+  }
+);
 
-// Export axios and setContentType
-export { axios };
-
-//
+// Export axios for explicit import if needed
+export { axios };      // named export
+export default axios;  // default export

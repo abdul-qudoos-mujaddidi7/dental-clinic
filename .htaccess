@@ -1,0 +1,34 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # ------------------------------------------
+    # Ensure the public directory is the entry
+    # ------------------------------------------
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ public/$1 [L]
+
+</IfModule>
+
+# ==========================================
+# Security headers
+# ==========================================
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+</IfModule>
+
+# ==========================================
+# Deny access to sensitive files
+# ==========================================
+<FilesMatch "(^\.env|composer\.(json|lock)|package\.json|webpack\.mix\.js|artisan|phpunit\.xml)">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Block Git & other hidden files
+RedirectMatch 404 /\.git
+RedirectMatch 404 /\.env
+RedirectMatch 404 /\.htaccess

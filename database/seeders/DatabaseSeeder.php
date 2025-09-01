@@ -33,36 +33,36 @@ class DatabaseSeeder extends Seeder
         $this->call(SystemSettingSeeder::class);
 
         MoneyAccount::create([
-            "name" => 'account name'
+            "name" => 'Main Account',
         ]);
 
-        User::factory(3)->create();
-        Supplier::factory(3)->create();
+        // User::factory(3)->create();
+        // Supplier::factory(3)->create();
 
-        ExpenseCategory::factory(3)->create();
-        Expense::factory(3)->create();
-        Product::factory(3)->create();
+        // ExpenseCategory::factory(3)->create();
+        // Expense::factory(3)->create();
+        // Product::factory(3)->create();
 
-        // Lead
-        Stage::factory(3)->create();
-        Category::factory(3)->create();
-        Lead::factory(3)->create();
+        // // Lead
+        // Stage::factory(3)->create();
+        // Category::factory(3)->create();
+        // Lead::factory(3)->create();
         
-        People::create([
-            "name" => "Mohammad jan naser",
-            "type" => 'customer'
-        ]);
+        // People::create([
+        //     "name" => "Mohammad jan naser",
+        //     "type" => 'customer'
+        // ]);
 
-        PeopleAccount::create([
-            'people_id' => 1,
-            "name" => 'account name'
-        ]);
+        // PeopleAccount::create([
+        //     'people_id' => 1,
+        //     "name" => 'account name'
+        // ]);
 
     
         // $this->call(SystemSettingSeeder::class);
-        Patient::factory(3)->create();
-        Dentist::factory(3)->create();
-        Service::factory(2)->create();
+        // Patient::factory(3)->create();
+        // Dentist::factory(3)->create();
+        // Service::factory(2)->create();
         // Cure::factory(2)->create();
     }
 }

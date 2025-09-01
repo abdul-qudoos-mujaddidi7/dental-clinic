@@ -8,13 +8,34 @@ import i18n from "@/i18n"; // Adjust the path correctly if it's in `src/i18n/ind
 
 const { t } = i18n.global;
 
+// Helper functions for session storage
+const saveToSession = (key, value) => {
+    sessionStorage.setItem(key, JSON.stringify(value));
+};
+
+const getFromSession = (key) => {
+    const value = sessionStorage.getItem(key);
+    return value ? JSON.parse(value) : null;
+};
+
+// Helper function for toast notifications
+const showToast = (message, type = "success") => {
+    const options = {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+    };
+    type === "success" ? toast.success(message, options) : toast.error(message, options);
+};
+
 export let useAuthRepository = defineStore("AuthRepository", {
     state() {
         return {
             user: null,
             permissions: [],
-            permissio: reactive([]),
-            permission: reactive([]),
             role: null,
             isLoading: false,
             error: null,
@@ -33,267 +54,85 @@ export let useAuthRepository = defineStore("AuthRepository", {
         toggleRail() {
             this.rail = !this.rail;
         },
-        // closeRail() {
-        //     this.rail = true; // Enable rail mode
-        // },
-        // openRail() {
-        //     this.rail = false; // Disable rail mode
-        // },
+
         async Login(formData) {
             this.error = null;
 
             try {
-                // Step 1: Login and get token
                 const response = await axios.post("/login", formData);
+                const { access_token: token, user } = response.data;
 
-                const token = response.data.access_token;
-                const user = response.data.user;
+                saveToSession("token", token);
+                saveToSession("user", user);
 
-                // Step 2: Save token & user to sessionStorage
-                sessionStorage.setItem("token", JSON.stringify(token));
-                sessionStorage.setItem("user", JSON.stringify(user));
+                axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-                // Step 3: Set token for future requests
-                axios.defaults.headers.common[
-                    "Authorization"
-                ] = `Bearer ${token}`;
+                await this.refreshPermissions();
 
-                // Step 4: Fetch user permissions from /api/me
-                const meResponse = await axios.get("/me");
-
-                const permissions = meResponse.data.data.permissions;
-                console.log("Permissions:", permissions);
-                const role = meResponse.data.data.role;
-
-                sessionStorage.setItem(
-                    "permissions",
-                    JSON.stringify(permissions)
-                );
-                sessionStorage.setItem("role", JSON.stringify(role));
-
-                this.permissions = permissions;
-                this.role = role;
-                this.user = meResponse.data;
-
-                // ✅ Toast + Redirect
-                toast.success(t("toast.loginSuccess"), {
-                    position: "top-right",
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                });
-
+                showToast(t("toast.loginSuccess"));
                 this.router.push("/dashboard");
             } catch (err) {
-                this.error =
-                    err.response?.data?.message || t("toast.cureUpdateFailed");
-
-                toast.error(this.error, {
-                    position: "top-right",
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
+                this.error = err.response?.data?.message || t("toast.cureUpdateFailed");
+                showToast(this.error, "error");
             }
         },
 
         async Logout() {
             this.error = null;
-            const formData = {
-                token: JSON.parse(sessionStorage.getItem("token")),
-            };
+
             try {
-                const config = {
-                    method: "POST",
-                    url: "logout",
-                    data: formData,
-                };
+                await axios.post("logout", { token: getFromSession("token") });
 
-                const response = await axios(config);
-                sessionStorage.removeItem("token");
-                sessionStorage.removeItem("permissions");
-                sessionStorage.removeItem("user");
+                sessionStorage.clear();
 
-                // Show success message using vue3-toastify
-                toast.success("Logout successful!", {
-                    position: "top-right",
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
-
+                showToast("Logout successful!");
                 setTimeout(() => {
                     this.router.push("/");
                 }, 1000);
             } catch (err) {
-                // Show error message using vue3-toastify
-                toast.error("Logout failed! Please try again.", {
-                    position: "top-right",
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
-
-                this.error = err.response
-                    ? err.response.data.message
-                    : "An error occurred!";
+                this.error = err.response?.data?.message || "An error occurred!";
+                showToast("Logout failed! Please try again.", "error");
             }
         },
 
         initialize() {
-            const storedPermissions = JSON.parse(
-                sessionStorage.getItem("permissions")
-            );
-            if (storedPermissions) {
-                this.permissions = storedPermissions;
-            }
-            const storedUser = JSON.parse(sessionStorage.getItem("user"));
-            if (storedUser) {
-                this.user = storedUser;
-            }
-
-            const token = JSON.parse(sessionStorage.getItem("token"));
-            if (token) {
-                this.isLoggedIn = true;
-            }
+            this.permissions = getFromSession("permissions") || [];
+            this.user = getFromSession("user") || null;
+            this.isLoggedIn = !!getFromSession("token");
         },
 
-        // role permissions == role_permissions
         async fetchRolePermissions({ page, itemsPerPage }) {
-            this.loading = true;
-
-            const response = await axios.get(
-                `role_permissions?page=${page}&perPage=${itemsPerPage}&search=${this.search}`
-            );
-            this.permissio = response.data.data;
-            this.totalItems = response.data.meta.total;
-            this.loading = false;
-        },
-        async fetchRolePermission(id) {
-            // this.error = null;
-            try {
-                const response = await axios.get(`role_permissions/${id}`);
-
-                this.permission = response.data.data;
-                console.log(this.permission);
-            } catch (err) {
-                // this.error = err.message;
-            }
-        },
-        async UpdateRolePermission(id, data) {
-            try {
-                const response = await axios.put(
-                    "role_permissions/" + id,
-                    data
-                );
-
-                // Using Axios to make a post request with async/await and custom headers
-                //        if (this.role && this.role.id === id) {
-
-                // }
-                await this.refreshPermissions();
-                this.router.push("/rolePermissions");
-                this.fetchRolePermissions({
-                    page: this.page,
-                    itemsPerPage: this.itemsPerPage,
-                });
-            } catch (err) {
-                // If there's an error, set the error in the store
-                this.error = err;
-            }
-        },
-        async CreateRolePermission(formData) {
-            console.log(formData);
-            try {
-                // Adding a custom header to the Axios request
-                const config = {
-                    method: "POST",
-                    url: "role_permissions",
-
-                    data: formData,
-                };
-
-                // Using Axios to make a GET request with async/await and custom headers
-                const response = await axios(config);
-                toast.success("Permission Created successful!", {
-                    position: "top-right",
-                    autoClose: 4000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
-                this.router.push("/rolePermissions");
-                this.fetchRolePermissions({
-                    page: this.page,
-                    itemsPerPage: this.itemsPerPage,
-                });
-            } catch (err) {
-                this.error =
-                    err.response?.data?.message ||
-                    "Failed to create Permission. Please try again.";
-
-                // Show toast
-                toast.error(this.error, {
-                    position: "top-right",
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
-            }
-        },
-        async DeleteRolePermission(id) {
             this.isLoading = true;
-            this.setting = [];
-            this.error = null;
 
             try {
-                const config = {
-                    method: "DELETE",
-                    url: "role_permissions/" + id,
-                };
-
-                const response = await axios(config);
-
-                // this.setting = response.data.data;
-                this.fetchRolePermissions({
-                    page: this.page,
-                    itemsPerPage: this.itemsPerPage,
-                });
+                const response = await axios.get(
+                    `role_permissions?page=${page}&perPage=${itemsPerPage}&search=${this.search}`
+                );
+                this.permissions = response.data.data;
+                this.totalItems = response.data.meta.total;
             } catch (err) {
-                this.error = err;
+                this.error = err.response?.data?.message || "Failed to fetch role permissions.";
+            } finally {
+                this.isLoading = false;
             }
         },
 
         async refreshPermissions() {
-            const meResponse = await axios.get("/me");
-            const permissions = meResponse.data.data.permissions;
-            console.log("Permissions:", permissions);
-            const role = meResponse.data.data.role;
+            try {
+                const meResponse = await axios.get("/me");
+                const { permissions, role } = meResponse.data.data;
 
-            sessionStorage.setItem("permissions", JSON.stringify(permissions));
-            sessionStorage.setItem("role", JSON.stringify(role));
+                saveToSession("permissions", permissions);
+                saveToSession("role", role);
 
-            this.permissions = permissions;
-            this.role = role;
-            this.user = meResponse.data;
+                this.permissions = permissions;
+                this.role = role;
+                this.user = meResponse.data;
 
-            sessionStorage.setItem("user", JSON.stringify(this.user));
+                saveToSession("user", this.user);
+            } catch (err) {
+                this.error = err.response?.data?.message || "Failed to refresh permissions.";
+            }
         },
     },
 });

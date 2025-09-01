@@ -70,6 +70,11 @@ const router = createRouter({
     routes: [
         { path: "/", component: Login, meta: "" },
         {
+            path: "/login",
+            name: "Login",
+            component: Login
+        },
+        {
             path: "/forgot-password",
             name: "ForgotPassword",
             component: ForgetPassword,
@@ -219,7 +224,7 @@ router.beforeEach(async function (to, from, next) {
 
             if (!userPermissions) {
                 console.error("User permissions not found in sessionStorage.");
-                next("/unAuth");
+                next("/login");
                 return;
             }
 
@@ -233,8 +238,8 @@ router.beforeEach(async function (to, from, next) {
                 console.log(authorizedRoute.path);
             } else {
                 // If no authorized route found, redirect to unauthorized page
-                next("/unAuth");
-                console.log("unAuth");
+                next("/login");
+                console.log("login");
             }
         } else {
             // Check if the route has permissions defined and the user has those permissions
@@ -249,7 +254,7 @@ router.beforeEach(async function (to, from, next) {
                         console.error(
                             "User permissions not found in sessionStorage."
                         );
-                        next("/unAuth");
+                        next("/login");
                         return;
                     }
 
@@ -263,7 +268,7 @@ router.beforeEach(async function (to, from, next) {
                         console.log("ddd");
                     } else {
                         // User doesn't have required permissions, redirect to unauthorized page or any other action
-                        next("/unAuth");
+                        next("/login");
                         console.log("ww");
                     }
                 } catch (error) {

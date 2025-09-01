@@ -126,23 +126,23 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/peopleAccount', PeopleAccountController::class);
     Route::apiResource('/salary', SalaryController::class);
   
+    Route::post('/generatePaySlip', [PeopleAccountTransactionController::class, 'generatePaySlip']);
+    Route::apiResource('/peopleAccountTransaction', PeopleAccountTransactionController::class);
 
+    Route::post('/paySalary', [PeopleAccountTransactionController::class, 'paySalary']);
+    Route::post('/payCureCycle', [PeopleAccountTransactionController::class, 'payCureCycle']);
+    Route::post('/outBoundLabPayment', [PeopleAccountTransactionController::class, 'outBoundLabPayment']);
+    Route::post('/inBoundLabPayment', [PeopleAccountTransactionController::class, 'inBoundLabPayment']);
+    Route::post('/billExpensePayment', [PeopleAccountTransactionController::class, 'billExpensePayment']);
+    Route::get('/reset-password/{token}', function ($token) {
+        return view('auth.reset-password', ['token' => $token]);
+    })->name('password.reset');
 
     
     
 });
 
-Route::post('/generatePaySlip', [PeopleAccountTransactionController::class, 'generatePaySlip']);
-Route::apiResource('/peopleAccountTransaction', PeopleAccountTransactionController::class);
 
-Route::post('/paySalary', [PeopleAccountTransactionController::class, 'paySalary']);
-Route::post('/payCureCycle', [PeopleAccountTransactionController::class, 'payCureCycle']);
-Route::post('/outBoundLabPayment', [PeopleAccountTransactionController::class, 'outBoundLabPayment']);
-Route::post('/inBoundLabPayment', [PeopleAccountTransactionController::class, 'inBoundLabPayment']);
-Route::post('/billExpensePayment', [PeopleAccountTransactionController::class, 'billExpensePayment']);
-Route::get('/reset-password/{token}', function ($token) {
-    return view('auth.reset-password', ['token' => $token]);
-})->name('password.reset');
 Route::get('/', function () {
     return view('welcome');
 });
