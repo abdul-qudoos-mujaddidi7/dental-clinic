@@ -25,10 +25,7 @@
                 </v-list-item>
             </router-link>
             <v-list-item
-                v-if="
-                    AuthRepository.permissions &&
-                    AuthRepository.permissions.includes('viewLead')
-                "
+                
                 active-class="bg-primaryOld text-white"
                 prepend-icon="mdi mdi-gauge"
                 value="lead"
@@ -58,10 +55,7 @@
             <!-- appointment -->
             <router-link to="/appointments">
                 <v-list-item
-                    v-if="
-                        AuthRepository.permissions &&
-                        AuthRepository.permissions.includes('viewAppointment')
-                    "
+                    
                     @click="toggleMenu('appointment')"
                     active-class="bg-primaryOld text-white"
                     prepend-icon="mdi mdi-calendar-clock"
@@ -74,10 +68,7 @@
             <!-- cure cycle  -->
             <router-link to="/cure">
                 <v-list-item
-                    v-if="
-                        AuthRepository.permissions &&
-                        AuthRepository.permissions.includes('viewCureCycle')
-                    "
+                   
                     @click="toggleMenu('cureCycle')"
                     active-class="bg-primaryOld text-white"
                     prepend-icon="mdi-tooth-outline"
@@ -91,10 +82,7 @@
             <!-- main lab -->
             <router-link to="/mainLaboratory">
                 <v-list-item
-                    v-if="
-                        AuthRepository.permissions &&
-                        AuthRepository.permissions.includes('viewInboundLab')
-                    "
+                    
                     @click="toggleMenu('inboundLaboratory')"
                     active-class="bg-primaryOld text-white"
                     prepend-icon="mdi-microscope"
@@ -106,10 +94,7 @@
             </router-link>
             <router-link to="/laboratory">
                 <v-list-item
-                    v-if="
-                        AuthRepository.permissions &&
-                        AuthRepository.permissions.includes('viewOutBoundLab')
-                    "
+                   
                     @click="toggleMenu('outboundLaboratory')"
                     active-class="bg-primaryOld text-white"
                     prepend-icon="mdi-test-tube"
@@ -121,10 +106,7 @@
             </router-link>
 
             <v-list-item
-                v-if="
-                    AuthRepository.permissions &&
-                    AuthRepository.permissions.includes('viewExpense')
-                "
+                
                 @click="toggleMenu('expense')"
                 active-class="bg-primaryOld text-white"
                 prepend-icon="mdi-currency-usd-off"
@@ -153,10 +135,7 @@
             </transition>
 
             <v-list-item
-                v-if="
-                    AuthRepository.permissions &&
-                    AuthRepository.permissions.includes('viewPeople')
-                "
+                
                 active-class="bg-primaryOld text-white"
                 prepend-icon="mdi mdi-card-account-details-outline"
                 value="people"
@@ -186,10 +165,7 @@
                 active-class="bg-primaryOld text-white"
                 prepend-icon="mdi-finance"
                 value="Reports"
-                v-if="
-                    AuthRepository.permissions &&
-                    AuthRepository.permissions.includes('viewReport')
-                "
+               
                 @click="toggleMenu('reports')"
                 class="transition-all duration-300 cursor-pointer py-3 borderRadius"
             >
@@ -215,10 +191,7 @@
             <!-- setting -->
 
             <v-list-item
-                v-if="
-                    AuthRepository.permissions &&
-                    AuthRepository.permissions.includes('viewSetting')
-                "
+                
                 active-class="bg-primaryOld text-white"
                 prepend-icon="mdi-cog-outline"
                 value="Setting"
@@ -310,12 +283,16 @@ const user = ref({
 onMounted(() => {
     const storedUser = localStorage.getItem("user");
 
-    if (storedUser) {
-        const parsed = JSON.parse(storedUser);
-        user.value.name = parsed.data.firstName + " " + parsed.data.lastName;
-        user.value.email = parsed.data.email;
-        user.value.photo = parsed.data.photo;
-    }
+    user.value.name = "MOhammadJan Naser";
+    user.value.email = "jan@gmail.com";
+        
+
+    // if (storedUser) {
+    //     const parsed = JSON.parse(storedUser);
+    //     user.value.name = parsed.data.firstName + " " + parsed.data.lastName;
+    //     user.value.email = parsed.data.email;
+    //     user.value.photo = parsed.data.photo;
+    // }
 });
 
 const logout = () => {

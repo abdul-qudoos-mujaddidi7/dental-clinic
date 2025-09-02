@@ -26,6 +26,7 @@ export default defineConfig({
         Vuetify() // Add Vuetify plugin here
     ],
     build: {
+        
         chunkSizeWarningLimit: 10000,
     },
 });
