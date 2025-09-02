@@ -31,12 +31,7 @@
                     </v-btn>
                     &nbsp;
                     <div
-                        v-if="
-                            AuthRepository.permissions &&
-                            AuthRepository.permissions.includes(
-                                'addAppointment'
-                            )
-                        "
+                        
                     >
                         <v-btn
                             @click="CreateDialogShow"
@@ -101,12 +96,7 @@
                                             <v-list>
                                                 <v-list-item>
                                                     <v-list-item-title
-                                                        v-if="
-                                                            AuthRepository.permissions &&
-                                                            AuthRepository.permissions.includes(
-                                                                'updateAppointment'
-                                                            )
-                                                        "
+                                                        
                                                         @click="edit(item)"
                                                         class="cursor-pointer d-flex gap-3 justify-left pb-3"
                                                     >
@@ -118,12 +108,7 @@
                                                     </v-list-item-title>
 
                                                     <v-list-item-title
-                                                        v-if="
-                                                            AuthRepository.permissions &&
-                                                            AuthRepository.permissions.includes(
-                                                                'deleteAppointment'
-                                                            )
-                                                        "
+                                                        
                                                         class="cursor-pointer d-flex gap-3"
                                                         @click="
                                                             deleteItem(item)

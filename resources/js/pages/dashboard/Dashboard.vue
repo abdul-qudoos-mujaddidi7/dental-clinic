@@ -1,10 +1,7 @@
 <template>
     <div
         class="rounded-xl"
-        v-if="
-            AuthRepository.permissions &&
-            AuthRepository.permissions.includes('viewDashboard')
-        "
+        
     >
         <AppBar :subTitle="$t('dashboard')" :main-title="$t('dashboard')" />
         <v-divider

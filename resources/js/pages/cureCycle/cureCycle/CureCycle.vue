@@ -84,10 +84,7 @@
                     &nbsp;
                     <router-link
                         to="/createCure"
-                        v-if="
-                            AuthRepository.permissions &&
-                            AuthRepository.permissions.includes('addCureCycle')
-                        "
+                       
                     >
                         <v-btn
                             color="primaryOld"
@@ -212,12 +209,7 @@
                                                         Show Payment
                                                     </v-list-item-title>
                                                     <router-link
-                                                        v-if="
-                                                            AuthRepository.permissions &&
-                                                            AuthRepository.permissions.includes(
-                                                                'updateCureCycle'
-                                                            )
-                                                        "
+                                                      
                                                         :to="
                                                             '/updateCure/' +
                                                             item.id
@@ -251,12 +243,7 @@
                                                     </router-link>
 
                                                     <v-list-item-title
-                                                        v-if="
-                                                            AuthRepository.permissions &&
-                                                            AuthRepository.permissions.includes(
-                                                                'deleteCureCycle'
-                                                            )
-                                                        "
+                                                        
                                                         class="cursor-pointer d-flex gap-3"
                                                         @click="
                                                             deleteItem(item)
@@ -538,6 +525,7 @@ const headers = [
     body {
         background: white;
         -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
     }
     .v-btn,
     .v-app-bar,

@@ -2,10 +2,7 @@
     <!-- addSetting -->
     <div
         class="all-expense rounded-xl mt-4"
-        v-if="
-            AuthRepository.permissions &&
-            AuthRepository.permissions.includes('viewSetting')
-        "
+        
     >
         <div class="card rounded-xl bg-white">
             <AppBar

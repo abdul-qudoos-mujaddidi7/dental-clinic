@@ -24,20 +24,7 @@
                 </div>
                 <div class="btn d-flex">
                     <!-- Export PDF Button -->
-                    <!-- <Export
-                        :table-data="flattenedExpenses"
-                        :fields="{
-                            date: t('date'),
-                            reference: t('reference'),
-                            addedBy: t('addedBy'),
-                            expenseCategory: t('category'),
-                            amount: t('amount'),
-                        }"
-                        file-name="PDF"
-                        btn-color="danger"
-                        variant="outlined"
-                        density="compact"
-                    /> -->
+                   
                     <!-- ====================== -->
                     <v-btn
                         color="danger"
@@ -90,11 +77,9 @@
                         {{ t("filter") }}
                     </v-btn>
                     &nbsp;
+                    
                     <div
-                        v-if="
-                            AuthRepository.permissions &&
-                            AuthRepository.permissions.includes('addExpense')
-                        "
+                        
                     >
                         <v-btn
                             @click="CreateDialogShow"
@@ -170,12 +155,7 @@
                                                     </v-list-item-title>
 
                                                     <v-list-item-title
-                                                        v-if="
-                                                            AuthRepository.permissions &&
-                                                            AuthRepository.permissions.includes(
-                                                                'deleteExpense'
-                                                            )
-                                                        "
+                                                        
                                                         class="cursor-pointer d-flex gap-3"
                                                         @click="
                                                             deleteItem(item)
