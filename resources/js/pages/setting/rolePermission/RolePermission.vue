@@ -52,13 +52,13 @@
                                     "
                                     :headers="headers"
                                     :items-length="AuthRepository.totalItems"
-                                    :items="AuthRepository.permissio"
+                                    :items="AuthRepository.permissions"
                                     :loading="AuthRepository.loading"
                                     :search="AuthRepository.search"
                                     @update:options="
                                         AuthRepository.fetchRolePermissions
                                     "
-                                    :item-key="AuthRepository.permissio"
+                                    :item-key="AuthRepository.permissions"
                                     hover
                                     class="w-100 mx-auto"
                                 >

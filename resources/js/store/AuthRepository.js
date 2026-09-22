@@ -150,5 +150,39 @@ export let useAuthRepository = defineStore("AuthRepository", {
                 this.error = err.response?.data?.message || "Failed to refresh permissions.";
             }
         },
+          async CreateRolePermission(formData) {
+            console.log(formData);
+            try {
+                // Adding a custom header to the Axios request
+                const config = {
+                    method: "POST",
+                    url: "role_permissions",
+
+                    data: formData,
+                };
+
+                // Using Axios to make a GET request with async/await and custom headers
+                const response = await axios(config);
+                this.createDialog = false;
+                this.router.push("/rolePermissions");
+                toast.success("Role permission Created successfully!", {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+
+                this.fetchRolePermissions({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                // If there's an error, set the error in the store
+                this.error = err.response?.data?.message || "Failed to create role permission.";
+            }
+        },
     },
 });

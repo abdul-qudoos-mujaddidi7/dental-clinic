@@ -59,6 +59,12 @@ class DatabaseSeeder extends Seeder
         // ]);
 
     
+
+    $this->call([
+        UserSeeder::class,
+    ]);
+
+    
         // $this->call(SystemSettingSeeder::class);
         // Patient::factory(3)->create();
         // Dentist::factory(3)->create();
